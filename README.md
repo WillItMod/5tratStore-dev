@@ -74,6 +74,6 @@ Use a DigiByte address (typically Base58 `D...` / `S...` or Bech32 `dgb1...`).
 - ckpool (XEC) runs from `ghcr.io/willitmod/ecash-ckpool-solo` (pinned by tag in `docker-compose.yml`).
 - BTC node selector runs from `ghcr.io/willitmod/axebtc-bitcoind-switch` (pinned by version tag in `docker-compose.yml`).
 - BC2 node runs from `ghcr.io/willitmod/bitcoinii-core` (pinned by version tag in `docker-compose.yml`).
-- XEC node is built locally from official Bitcoin ABC release tarballs (pinned by version in `data/xecd/Dockerfile`).
+- XEC node runs from `ghcr.io/willitmod/xecd-abc` (pinned by version tag in `docker-compose.yml`; image is built from official Bitcoin ABC release tarballs).
 - PPC node runs from `ghcr.io/willitmod/peercoin-core` (pinned by version tag in `docker-compose.yml`).
 - This store repo does not patch upstream source code; it only orchestrates upstream components via Docker images (some are built from official release tarballs).

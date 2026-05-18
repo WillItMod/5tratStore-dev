@@ -164,8 +164,7 @@ services:
         fi
 
   xecd:
-    build:
-      context: ${APP_DATA_DIR}/data/xecd
+    image: ghcr.io/willitmod/xecd-abc:0.33.4-nojemalloc
     user: "1000:1000"
     restart: unless-stopped
     stop_grace_period: 15m30s
@@ -243,7 +242,7 @@ services:
       CKPOOL_STATUS_DIR: "/data/pool/www/pool"
       APP_CHANNEL: "DEV"
       APP_VERSION_SUFFIX: "-dev"
-      XECD_IMAGE: "Bitcoin ABC v0.33.4"
+      XECD_IMAGE: "ghcr.io/willitmod/xecd-abc:0.33.4-nojemalloc"
       CKPOOL_IMAGE: "ghcr.io/willitmod/ecash-ckpool-solo:18b38ad"
       STATIC_DIR: "/app/static"
 
