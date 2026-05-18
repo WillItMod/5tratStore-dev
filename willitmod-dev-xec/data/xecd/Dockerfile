@@ -1,6 +1,7 @@
 FROM debian:bookworm-slim
 
-ARG BITCOINABC_VERSION=0.33.3
+<<<<<<< HEAD
+ARG BITCOINABC_VERSION=0.33.4
 ARG TARGETARCH
 
 RUN set -eux; \
