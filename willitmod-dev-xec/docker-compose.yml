@@ -165,9 +165,7 @@ services:
 
   xecd:
     build:
-      context: ./data/xecd
-      dockerfile: Dockerfile
-    image: xecd-abc:0.33.4
+      context: ${APP_DATA_DIR}/data/xecd
     user: "1000:1000"
     restart: unless-stopped
     stop_grace_period: 15m30s
