@@ -1,6 +1,5 @@
 FROM debian:bookworm-slim
 
-<<<<<<< HEAD
 ARG BITCOINABC_VERSION=0.33.4
 ARG TARGETARCH
 
