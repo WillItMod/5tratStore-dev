@@ -1,0 +1,43 @@
+diff --git a/src/Miningcore/Blockchain/Bitcoin/BitcoinPool.cs b/src/Miningcore/Blockchain/Bitcoin/BitcoinPool.cs
+index b4cc30f..d05cc0d 100644
+--- a/src/Miningcore/Blockchain/Bitcoin/BitcoinPool.cs
++++ b/src/Miningcore/Blockchain/Bitcoin/BitcoinPool.cs
+@@ -228,7 +228,11 @@ public class BitcoinPool : PoolBase
+ 
+         try
+         {
+-            var requestedDiff = (double) Convert.ChangeType(request.Params, TypeCode.Double)!;
++            var requestParams = request.ParamsAs<JToken[]>();
++            if(requestParams == null || requestParams.Length == 0)
++                throw new StratumException(StratumError.Other, "missing suggested difficulty");
++
++            var requestedDiff = requestParams[0].Value<double>();
+ 
+             // client may suggest higher-than-base difficulty, but not a lower one
+             var poolEndpoint = poolConfig.Ports[connection.LocalEndpoint.Port];
+@@ -281,14 +285,23 @@ public class BitcoinPool : PoolBase
+     private void ConfigureVersionRolling(StratumConnection connection, BitcoinWorkerContext context,
+         IReadOnlyDictionary<string, JToken> extensionParams, Dictionary<string, object> result)
+     {
++        var poolMask = BitcoinConstants.VersionRollingPoolMask;
++
++        // DigiByte v9 uses BIP9 bit 23 for DigiDollar signalling. That bit is part of
++        // Miningcore's generic rolling mask, but it must remain exactly as supplied by
++        // getblocktemplate. ESP-Miner-family firmware submits an XOR delta, so exposing
++        // the signalling bit causes the miner and pool to hash different headers.
++        if(poolConfig.Template?.Symbol == "DGB")
++            poolMask &= ~0x00800000u;
++
+         //var requestedBits = extensionParams[BitcoinStratumExtensions.VersionRollingBits].Value<int>();
+-        var requestedMask = BitcoinConstants.VersionRollingPoolMask;
++        var requestedMask = poolMask;
+ 
+         if(extensionParams.TryGetValue(BitcoinStratumExtensions.VersionRollingMask, out var requestedMaskValue))
+             requestedMask = uint.Parse(requestedMaskValue.Value<string>(), NumberStyles.HexNumber);
+ 
+         // Compute effective mask
+-        context.VersionRollingMask = BitcoinConstants.VersionRollingPoolMask & requestedMask;
++        context.VersionRollingMask = poolMask & requestedMask;
+ 
+         // enabled
+         result[BitcoinStratumExtensions.VersionRolling] = true;

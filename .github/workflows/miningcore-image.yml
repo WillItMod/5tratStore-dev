@@ -38,6 +38,7 @@ jobs:
           set -eux
           cd _vendor/miningcore
           git apply ../../willitmod-dev-dgb/images/miningcore/patches/axedgb-best-share.patch
+          git apply ../../willitmod-dev-dgb/images/miningcore/patches/axedgb-dgb-v9-compat.patch
           # AxeDGB uses an older Postgres schema where blocks.status is INT (not TEXT).
           # Upstream Miningcore uses TEXT comparisons in the /blocks API which 500s with:
           #   operator does not exist: integer = text
