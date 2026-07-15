@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-dgb
 category: altcoin
 name: AxeDGB
-version: "0.9.173-dev"
+version: "0.9.174-dev"
 tagline: DGB node + solo pool
 description: >-
   RC3 RELEASE (DEV CHANNEL)
@@ -45,7 +45,7 @@ description: >-
 
 
   Status:
-    - RC3 build: expect minor bugs. This update moves the bundled DigiByte node to DigiByte Core v9.26.4 for current network consensus compatibility.
+    - RC3 build: expect minor bugs. This update fixes DigiByte v9 version-rolling share validation for ESP-Miner/NerdQAxe devices and accepts their suggested-difficulty message format.
 developer: WillItMod
 website: https://github.com/WillItMod/umbrel-dev-community-store
 repo: https://github.com/WillItMod/umbrel-dev-community-store
