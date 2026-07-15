@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-bch
 category: bitcoin
 name: AxeBCH
-version: "0.9.9-dev"
+version: "0.9.10-dev"
 tagline: BCH node + solo pool
 description: >-
   RC1 RELEASE (DEV CHANNEL)
