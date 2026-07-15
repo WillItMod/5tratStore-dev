@@ -1040,7 +1040,7 @@ services:
       # Treat workers as inactive (hashrate=0) after this many seconds with no activity.
       # (Activity = last accepted share when present, else minerstats snapshot time.)
       WORKER_ACTIVE_SECONDS: "300"
-      APP_CHANNEL: "RC3"
+      APP_CHANNEL: "RC4"
       APP_VERSION_SUFFIX: "-dev"
       DGB_IMAGE: "ghcr.io/willitmod/digibyte:9.26.4"
       MININGCORE_IMAGE: "ghcr.io/willitmod/axedgb-miningcore:axedgb-0.8.10-r26"
