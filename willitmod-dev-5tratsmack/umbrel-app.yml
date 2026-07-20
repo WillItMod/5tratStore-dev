@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-5tratsmack
 category: altcoin
 name: 5tratSmack
-version: "0.10.6"
+version: "0.10.7"
 tagline: Home-miner 5TRAT node, wallet, solo pool and atomic trade lab
 description: >-
   DEV PRE-LAUNCH
