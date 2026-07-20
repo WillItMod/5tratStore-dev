@@ -59,7 +59,7 @@ services:
           /data/updater
 
   p2p-helper:
-    image: ghcr.io/willitmod/5tratsmack-upnp:0.10.0-dev.1
+    image: ghcr.io/willitmod/5tratsmack-upnp:0.10.1
     restart: unless-stopped
     network_mode: host
     depends_on:
@@ -88,7 +88,7 @@ services:
       retries: 12
 
   dex-p2p-helper:
-    image: ghcr.io/willitmod/5tratsmack-upnp:0.10.0-dev.1
+    image: ghcr.io/willitmod/5tratsmack-upnp:0.10.1
     restart: unless-stopped
     network_mode: host
     depends_on:
@@ -116,7 +116,7 @@ services:
       retries: 12
 
   node-a:
-    image: ghcr.io/willitmod/5tratsmack-core:0.10.0-dev.1
+    image: ghcr.io/willitmod/5tratsmack-core:0.10.1
     restart: unless-stopped
     stop_grace_period: 2m
     depends_on:
@@ -148,7 +148,7 @@ services:
       start_period: 30s
 
   swap:
-    image: ghcr.io/willitmod/5tratsmack-kdf:0.10.0-dev.1
+    image: ghcr.io/willitmod/5tratsmack-kdf:0.10.1
     restart: unless-stopped
     network_mode: service:node-a
     depends_on:
@@ -174,7 +174,7 @@ services:
       start_period: 30s
 
   ckpool:
-    image: ghcr.io/willitmod/5tratsmack-ckpool:0.10.0-dev.1
+    image: ghcr.io/willitmod/5tratsmack-ckpool:0.10.1
     command: ["-k", "-L", "-c", "/data/pool/config/ckpool.conf"]
     restart: unless-stopped
     depends_on:
@@ -206,7 +206,7 @@ services:
       - chain
 
   app:
-    image: ghcr.io/willitmod/5tratsmack-app:0.10.0-dev.1
+    image: ghcr.io/willitmod/5tratsmack-app:0.10.1
     restart: unless-stopped
     depends_on:
       init_permissions:
@@ -215,14 +215,14 @@ services:
         condition: service_started
     environment:
       APP_ID: willitmod-dev-5tratsmack
-      APP_VERSION: 0.10.0-dev.1
+      APP_VERSION: 0.10.1
       APP_CHANNEL: DEV
       APP_RELEASE_PHASE: PRELAUNCH
       APP_PLATFORM: 5TRATUMOS
       APP_SELF_RESTART_ENABLED: "0"
       FIVETRAT_UPDATER_ENABLED: "0"
       FIVETRAT_INSTALL_REVISION: dev-store
-      FIVETRAT_RELEASE_TAG: 0.10.0-dev.1
+      FIVETRAT_RELEASE_TAG: 0.10.1
       NETWORK_IP: "${NETWORK_IP}"
       BCH2_RPC_HOST: node-a
       BCH2_RPC_PORT: "57576"
@@ -252,6 +252,7 @@ services:
       - ${APP_DATA_DIR}/data/updater:/data/updater
     networks:
       chain:
+      edge:
       umbrel_main_network:
         aliases:
           - 5tratsmack-app
