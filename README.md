@@ -31,6 +31,7 @@ Development/test app store for WillItMod apps.
 - **AxeDGB** (`willitmod-dev-dgb`) - `0.9.170-dev`
 - **AxePPC** (`willitmod-dev-ppc`) - `0.2.30-dev`
 - **AxeXEC** (`willitmod-dev-xec`) - `0.1.14-dev`
+- **5tratSmack** (`willitmod-dev-5tratsmack`) - `0.10.0-dev.1` (pre-launch; mining opens at candidate block 1000)
 - **PowPow** (`willitmod-dev-powpow`) - `0.2.30-dev`
 
 Use `umbrel-app.yml` in each app directory as the current source of truth for the store-visible version number.
@@ -49,6 +50,7 @@ For the broader cross-store version matrix and changelog pointers, see `https://
    - DGB (Scrypt): `stratum+tcp://<host-ip>:5679`
    - XEC: `stratum+tcp://<host-ip>:4321`
    - PPC: `stratum+tcp://<host-ip>:8765`
+   - 5TRAT (after candidate block 1000 opens): `stratum+tcp://<host-ip>:57557`
    - PowPow (LTC + DOGE merged mining): `stratum+tcp://<host-ip>:9555`
 
 Hosted / utility apps such as AxeBench, AxeLive, and AxeMIG are dashboard/UI apps rather than miner endpoints.
