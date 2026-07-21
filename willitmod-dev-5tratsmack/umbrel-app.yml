@@ -2,26 +2,24 @@ manifestVersion: 1
 id: willitmod-dev-5tratsmack
 category: altcoin
 name: 5tratSmack
-version: "0.10.8"
+version: "0.10.9"
 tagline: Home-miner 5TRAT node, wallet, solo pool and atomic trade lab
 description: >-
-  DEV PRE-LAUNCH
-
-  Install, synchronize the complete 5TRAT blockchain, create or restore a
-  wallet, configure miners, and explore the chain before launch. The bundled
-  Stratum service is deliberately locked until candidate block #1000.
-
-  Block 1000 is included: when the accepted chain tip reaches block 999, the
-  next template is block 1000 and mining opens automatically. The app does not
-  wait for block 1001 and no restart is required. While locked, a clear
-  reminder is shown on launch and every five minutes.
+  Install and synchronize a complete 5TRAT node, create or restore an encrypted
+  wallet, connect home miners to the bundled solo pool, explore the chain, and
+  use the experimental atomic trade lab from one 5tratumOS app.
 
   5tratSmack is experimental DEV software. Back up both the mining wallet and
   trading recovery file before moving funds. The experimental shared trade
   book connects through the public 5TRAT DEX seed; every atomic swap still
   requires the participating wallets to approve and settle it.
 
-  Miner connection after activation:
+  Trade Pulse uses an anonymous completed-swap tape. A price point becomes
+  network-visible only when the maker and taker independently report matching
+  settlement details. Wallet addresses, node names and open offers are not
+  published and cannot move the guide price.
+
+  Miner connection:
     - URL: `stratum+tcp://<your-5tratumos-host-ip>:57557`
     - Username: your 5TRAT address plus an optional worker name
     - Password: anything
@@ -33,7 +31,6 @@ dependencies: []
 port: 21226
 icon: https://raw.githubusercontent.com/WillItMod/umbrel-dev-community-store/main/willitmod-dev-5tratsmack/icon.png
 gallery:
-  - https://raw.githubusercontent.com/WillItMod/umbrel-dev-community-store/main/willitmod-dev-5tratsmack/images/1.png
   - https://raw.githubusercontent.com/WillItMod/umbrel-dev-community-store/main/willitmod-dev-5tratsmack/icon.png
 path: ""
 defaultUsername: ""
