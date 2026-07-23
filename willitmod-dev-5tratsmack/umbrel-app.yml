@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-5tratsmack
 category: altcoin
 name: 5tratSmack
-version: "0.10.23"
+version: "0.10.24"
 tagline: Home-miner 5TRAT node, wallet, solo pool and atomic trade lab
 description: >-
   Install and synchronize a complete 5TRAT node, create or restore an encrypted
@@ -10,9 +10,9 @@ description: >-
   use the experimental atomic trade lab from one 5tratumOS app.
 
   5tratSmack is experimental DEV software. Back up both the mining wallet and
-  trading recovery file before moving funds. The experimental shared trade
-  book connects through two independent 5TRAT DEX seeds; every atomic swap
-  still requires the participating wallets to approve and settle it.
+  trading recovery file before moving funds. The trade book uses the public
+  Komodo DeFi Framework network through outbound peer connections; every atomic
+  swap still requires the participating wallets to approve and settle it.
 
   Trade Pulse uses an anonymous completed-swap tape. A price point becomes
   network-visible only when the maker and taker independently report matching
