@@ -2,11 +2,6 @@ name: Build DigiByte Core image (multi-arch)
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "willitmod-dev-dgb/images/digibyte/**"
-      - ".github/workflows/digibyte-image.yml"
 
 permissions:
   contents: read
@@ -35,6 +30,6 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           tags: |
-            ghcr.io/willitmod/digibyte:9.26.4
+            ghcr.io/willitmod/digibyte:9.26.5
             ghcr.io/willitmod/digibyte:9.26
           provenance: false

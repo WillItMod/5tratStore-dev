@@ -28,7 +28,7 @@ Development/test app store for WillItMod apps.
 - **AxeBCH** (`willitmod-dev-bch`) - `0.9.3-dev`
 - **AxeBCH2** (`willitmod-dev-axebch2`) - `0.2.0.01-dev`
 - **AxeBC2** (`willitmod-dev-bc2`) - `0.1.8-dev`
-- **AxeDGB** (`willitmod-dev-dgb`) - `0.9.170-dev`
+- **AxeDGB** (`willitmod-dev-dgb`) - `0.9.178-dev`
 - **AxePPC** (`willitmod-dev-ppc`) - `0.2.30-dev`
 - **AxeXEC** (`willitmod-dev-xec`) - `0.1.14-dev`
 - **5tratSmack** (`willitmod-dev-5tratsmack`) - `0.10.22`
