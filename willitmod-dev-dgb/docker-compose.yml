@@ -1096,7 +1096,7 @@ services:
       - ${APP_DATA_DIR}/data/pool/config/coins.json:/app/coins.json:ro
 
   app:
-    image: ghcr.io/willitmod/axedgb-app:0.9.178-dev
+    image: ghcr.io/willitmod/axedgb-app:0.9.179-dev
     user: "1000:1000"
     restart: on-failure
     stop_grace_period: 30s
