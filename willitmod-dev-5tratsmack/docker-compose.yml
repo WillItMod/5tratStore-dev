@@ -35,7 +35,6 @@ services:
           /data/pool/config \
           /data/ui/state \
           /data/p2p-state \
-          /data/dex-p2p-state \
           /data/swap \
           /data/updater
         # Never recurse through the blockchain during an app update. Existing
@@ -46,10 +45,9 @@ services:
           /data/ui \
           /data/ui/state \
           /data/p2p-state \
-          /data/dex-p2p-state \
           /data/swap \
           /data/updater
-        find /data/p2p-state /data/dex-p2p-state \
+        find /data/p2p-state \
           -mindepth 1 -maxdepth 1 -type f -exec chown 1000:1000 {} +
         chmod ug+rwx \
           /data/node \
@@ -58,12 +56,11 @@ services:
           /data/ui \
           /data/ui/state \
           /data/p2p-state \
-          /data/dex-p2p-state \
           /data/swap \
           /data/updater
 
   p2p-helper:
-    image: ghcr.io/willitmod/5tratsmack-upnp:0.10.23
+    image: ghcr.io/willitmod/5tratsmack-upnp:0.10.24
     restart: unless-stopped
     user: "1000:1000"
     network_mode: host
@@ -96,37 +93,8 @@ services:
       timeout: 3s
       retries: 12
 
-  dex-p2p-helper:
-    image: ghcr.io/willitmod/5tratsmack-upnp:0.10.23
-    restart: unless-stopped
-    user: "1000:1000"
-    network_mode: host
-    depends_on:
-      init_permissions:
-        condition: service_completed_successfully
-    environment:
-      FIVETRAT_UPNP_ENABLED: "1"
-      FIVETRAT_BIND_IP: ""
-      FIVETRAT_P2P_INTERNAL_PORT: "30808"
-      FIVETRAT_P2P_EXTERNAL_PORT: "30808"
-      FIVETRAT_UPNP_DESCRIPTION: 5TRAT DEV swap mesh
-    volumes:
-      - ${APP_DATA_DIR}/data/dex-p2p-state:/state
-    cap_drop:
-      - ALL
-    security_opt:
-      - no-new-privileges:true
-    read_only: true
-    tmpfs:
-      - /tmp
-    healthcheck:
-      test: ["CMD-SHELL", "test -s /state/reachability.json && test -f /state/attempted"]
-      interval: 5s
-      timeout: 3s
-      retries: 12
-
   node-a:
-    image: ghcr.io/willitmod/5tratsmack-core:0.10.23
+    image: ghcr.io/willitmod/5tratsmack-core:0.10.24
     restart: unless-stopped
     stop_grace_period: 2m
     depends_on:
@@ -145,7 +113,6 @@ services:
     ports:
       - "127.0.0.1:57576:57576/tcp"
       - "57555:57555/tcp"
-      - "30808:30808/tcp"
     networks:
       - chain
       - edge
@@ -159,7 +126,7 @@ services:
       start_period: 30s
 
   swap:
-    image: ghcr.io/willitmod/5tratsmack-kdf:0.10.23
+    image: ghcr.io/willitmod/5tratsmack-kdf:0.10.24
     restart: unless-stopped
     network_mode: service:node-a
     depends_on:
@@ -170,8 +137,10 @@ services:
     environment:
       FIVETRAT_DEX_NETWORK_ENABLED: "1"
       FIVETRAT_DEX_BOOTSTRAP: "0"
-      FIVETRAT_DEX_SEEDNODES: "dex1.5trat.net,dex2.5trat.net"
-      FIVETRAT_DEX_BIND_IP: "0.0.0.0"
+      FIVETRAT_DEX_NETID: "6133"
+      FIVETRAT_DEX_NETWORK_NAME: Komodo DeFi public network
+      FIVETRAT_DEX_SEEDNODES: "seed01.kmdefi.net,seed03.kmdefi.net,kdfseed1.decker.im,staking1.gleec.com,staking2.gleec.com"
+      FIVETRAT_DEX_BIND_IP: ""
       FIVETRAT_TRADE_MAX_5TRAT: "100"
       FIVETRAT_TRADE_MAX_DGB: "50000"
     volumes:
@@ -185,7 +154,7 @@ services:
       start_period: 30s
 
   ckpool:
-    image: ghcr.io/willitmod/5tratsmack-ckpool:0.10.23
+    image: ghcr.io/willitmod/5tratsmack-ckpool:0.10.24
     command: ["-k", "-L", "-c", "/data/pool/config/ckpool.conf"]
     restart: unless-stopped
     depends_on:
@@ -218,7 +187,7 @@ services:
       - edge
 
   app:
-    image: ghcr.io/willitmod/5tratsmack-app:0.10.23
+    image: ghcr.io/willitmod/5tratsmack-app:0.10.24
     restart: unless-stopped
     depends_on:
       init_permissions:
@@ -227,7 +196,7 @@ services:
         condition: service_started
     environment:
       APP_ID: 5tratsmack
-      APP_VERSION: 0.10.23
+      APP_VERSION: 0.10.24
       APP_CHANNEL: DEV
       APP_RELEASE_PHASE: BETA
       APP_PLATFORM: 5TRATUMOS
@@ -236,7 +205,7 @@ services:
       FIVETRAT_STORE_UPDATE_APP_ID: 5tratsmack
       FIVETRAT_STORE_UPDATE_CHANNEL: dev
       FIVETRAT_INSTALL_REVISION: dev-store
-      FIVETRAT_RELEASE_TAG: 0.10.23
+      FIVETRAT_RELEASE_TAG: 0.10.24
       FIVETRAT_OS_UPDATE_PROXY_BASE: http://host.docker.internal
       NETWORK_IP: "${NETWORK_IP}"
       BCH2_RPC_HOST: node-a
