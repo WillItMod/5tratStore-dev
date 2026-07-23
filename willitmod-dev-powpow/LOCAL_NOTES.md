@@ -5,11 +5,11 @@ This package is now wired to the real PowPow stack.
 ## Current status
 
 - Uses GHCR images published from `WillItMod/PowPow_Build`
-- App image: `ghcr.io/willitmod/powpow-app:0.2.30-dev`
+- App image: `ghcr.io/willitmod/powpow-app:0.2.31-dev`
 - Service images:
   - `ghcr.io/willitmod/powpow-litecoin:0.2.26-dev`
   - `ghcr.io/willitmod/powpow-dogecoin:0.2.26-dev`
-  - `ghcr.io/willitmod/powpow-pool:0.2.30-dev`
+  - `ghcr.io/willitmod/powpow-pool:0.2.31-dev`
 - Runtime UI behavior was smoke-tested on the current live host baseline at `10.10.10.235`
 - Miner endpoint hint is injected through packaging with `NETWORK_HOST_HINT: "${NETWORK_IP}"`
 - App version display is set from `APP_VERSION`
