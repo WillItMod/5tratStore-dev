@@ -63,7 +63,7 @@ services:
           /data/updater
 
   p2p-helper:
-    image: ghcr.io/willitmod/5tratsmack-upnp:0.10.22
+    image: ghcr.io/willitmod/5tratsmack-upnp:0.10.23
     restart: unless-stopped
     user: "1000:1000"
     network_mode: host
@@ -97,7 +97,7 @@ services:
       retries: 12
 
   dex-p2p-helper:
-    image: ghcr.io/willitmod/5tratsmack-upnp:0.10.22
+    image: ghcr.io/willitmod/5tratsmack-upnp:0.10.23
     restart: unless-stopped
     user: "1000:1000"
     network_mode: host
@@ -126,7 +126,7 @@ services:
       retries: 12
 
   node-a:
-    image: ghcr.io/willitmod/5tratsmack-core:0.10.22
+    image: ghcr.io/willitmod/5tratsmack-core:0.10.23
     restart: unless-stopped
     stop_grace_period: 2m
     depends_on:
@@ -136,7 +136,7 @@ services:
         condition: service_healthy
     environment:
       <<: *node-environment
-      FIVETRAT_BOOTSTRAP_NODES: "vps-b9997072.vps.ovh.net:57555"
+      FIVETRAT_BOOTSTRAP_NODES: "seed1.5trat.net:57555,seed2.5trat.net:57555"
       FIVETRAT_EXTERNAL_IP: ""
       FIVETRAT_P2P_ADVERTISE_FILE: /p2p-state/external-p2p
     volumes:
@@ -159,7 +159,7 @@ services:
       start_period: 30s
 
   swap:
-    image: ghcr.io/willitmod/5tratsmack-kdf:0.10.22
+    image: ghcr.io/willitmod/5tratsmack-kdf:0.10.23
     restart: unless-stopped
     network_mode: service:node-a
     depends_on:
@@ -170,7 +170,7 @@ services:
     environment:
       FIVETRAT_DEX_NETWORK_ENABLED: "1"
       FIVETRAT_DEX_BOOTSTRAP: "0"
-      FIVETRAT_DEX_SEEDNODES: "vps-b9997072.vps.ovh.net"
+      FIVETRAT_DEX_SEEDNODES: "dex1.5trat.net,dex2.5trat.net"
       FIVETRAT_DEX_BIND_IP: "0.0.0.0"
       FIVETRAT_TRADE_MAX_5TRAT: "100"
       FIVETRAT_TRADE_MAX_DGB: "50000"
@@ -185,7 +185,7 @@ services:
       start_period: 30s
 
   ckpool:
-    image: ghcr.io/willitmod/5tratsmack-ckpool:0.10.22
+    image: ghcr.io/willitmod/5tratsmack-ckpool:0.10.23
     command: ["-k", "-L", "-c", "/data/pool/config/ckpool.conf"]
     restart: unless-stopped
     depends_on:
@@ -218,7 +218,7 @@ services:
       - edge
 
   app:
-    image: ghcr.io/willitmod/5tratsmack-app:0.10.22
+    image: ghcr.io/willitmod/5tratsmack-app:0.10.23
     restart: unless-stopped
     depends_on:
       init_permissions:
@@ -227,7 +227,7 @@ services:
         condition: service_started
     environment:
       APP_ID: 5tratsmack
-      APP_VERSION: 0.10.22
+      APP_VERSION: 0.10.23
       APP_CHANNEL: DEV
       APP_RELEASE_PHASE: BETA
       APP_PLATFORM: 5TRATUMOS
@@ -236,7 +236,7 @@ services:
       FIVETRAT_STORE_UPDATE_APP_ID: 5tratsmack
       FIVETRAT_STORE_UPDATE_CHANNEL: dev
       FIVETRAT_INSTALL_REVISION: dev-store
-      FIVETRAT_RELEASE_TAG: 0.10.22
+      FIVETRAT_RELEASE_TAG: 0.10.23
       FIVETRAT_OS_UPDATE_PROXY_BASE: http://host.docker.internal
       NETWORK_IP: "${NETWORK_IP}"
       BCH2_RPC_HOST: node-a
@@ -257,7 +257,7 @@ services:
       FIVETRAT_P2P_STATE_PATH: /data/p2p-state/reachability.json
       FIVETRAT_SWAP_CONTROL_URL: http://node-a:7784
       FIVETRAT_SWAP_CONTROL_TOKEN_PATH: /data/swap/control-token
-      FIVETRAT_MARKET_TAPE_URL: https://vps-b9997072.vps.ovh.net/trade-tape
+      FIVETRAT_MARKET_TAPE_URLS: https://market1.5trat.net/trade-tape,https://market2.5trat.net/trade-tape
       FIVETRAT_COINGECKO_ID: ""
     volumes:
       - ${APP_DATA_DIR}/data/node:/data/node
