@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-5tratsmack
 category: altcoin
 name: 5tratSmack
-version: "0.10.26-dev"
+version: "0.10.27-dev"
 tagline: Home-miner 5TRAT node, wallet, solo pool and atomic trade lab
 description: >-
   Install and synchronize a complete 5TRAT node, create or restore an encrypted
@@ -18,6 +18,11 @@ description: >-
   network-visible only when the maker and taker independently report matching
   settlement details. Wallet addresses, node names and open offers are not
   published and cannot move the guide price.
+
+  Version 0.10.27 adds the portable browser-wallet bridge, clearer separation
+  between mining electricity cost and traded value, an in-app field guide, the
+  latest named Blue, Pink and Gold winners, and a strongest-proof Wall of Hash
+  with one entry per personalised coinbase name.
 
   Miner connection:
     - URL: `stratum+tcp://<your-5tratumos-host-ip>:57557`
