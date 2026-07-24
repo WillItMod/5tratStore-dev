@@ -12,6 +12,7 @@ services:
     stop_grace_period: 30s
     init: true
     environment:
+      APP_VERSION: 0.1.21-dev
       AXEMIG_HOME: /data
       AXEMIG_PORT: 12150
       AXEMIG_HOST: 0.0.0.0
