@@ -187,7 +187,7 @@ services:
       - edge
 
   app:
-    image: ghcr.io/willitmod/5tratsmack-app:0.10.26-dev
+    image: ghcr.io/willitmod/5tratsmack-app:0.10.27-dev
     restart: unless-stopped
     depends_on:
       init_permissions:
@@ -196,7 +196,7 @@ services:
         condition: service_started
     environment:
       APP_ID: 5tratsmack
-      APP_VERSION: 0.10.26-dev
+      APP_VERSION: 0.10.27-dev
       APP_CHANNEL: DEV
       APP_RELEASE_PHASE: BETA
       APP_PLATFORM: 5TRATUMOS
@@ -205,7 +205,7 @@ services:
       FIVETRAT_STORE_UPDATE_APP_ID: 5tratsmack
       FIVETRAT_STORE_UPDATE_CHANNEL: dev
       FIVETRAT_INSTALL_REVISION: dev-store
-      FIVETRAT_RELEASE_TAG: 0.10.26-dev
+      FIVETRAT_RELEASE_TAG: 0.10.27-dev
       FIVETRAT_OS_UPDATE_PROXY_BASE: http://host.docker.internal
       NETWORK_IP: "${NETWORK_IP}"
       BCH2_RPC_HOST: node-a
