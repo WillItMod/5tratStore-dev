@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-axebch2
 category: altcoin
 name: "AxeBCH2"
-version: "0.2.0.00-dev"
+version: "0.2.0.1-dev"
 tagline: BCH2 node + solo pool (alpha)
 description: >-
   ALPHA RELEASE (DEV CHANNEL)
