@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-5tratsmack
 category: altcoin
 name: 5tratSmack
-version: "0.10.29-dev"
+version: "0.10.30-dev"
 tagline: Home-miner 5TRAT node, wallet, solo pool and atomic trade lab
 description: >-
   Install and synchronize a complete 5TRAT node, create or restore an encrypted
@@ -18,6 +18,11 @@ description: >-
   network-visible only when the maker and taker independently report matching
   settlement details. Wallet addresses, node names and open offers are not
   published and cannot move the guide price.
+
+  Version 0.10.30 restores the four-byte extranonce contract required by
+  5tratMux warm routing. Updating recreates the bundled pool with the corrected
+  setting while retaining the wallet RPC, restore, rescan and trading fixes
+  already present in 0.10.29.
 
   Version 0.10.29 fixes wallet restores that could time out after the node had
   already created the restored database. Restore requests now have enough time
