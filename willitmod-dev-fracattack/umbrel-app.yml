@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-fracattack
 category: bitcoin
 name: FracAttack
-version: "0.1.3-dev"
+version: "0.1.4-dev"
 tagline: Fractal node + solo pool
 description: >-
   EXPERIMENTAL RELEASE (DEV CHANNEL)
@@ -48,6 +48,11 @@ gallery:
 path: ""
 defaultUsername: ""
 defaultPassword: ""
+releaseNotes: >-
+  Workers using either coin-prefixed or prefixless payout usernames now appear
+  as one combined worker entry in the app and Fleet Dashboard APIs. Hashrate,
+  shares and best-share data are merged without double-counting duplicate
+  worker names.
 widgets:
   - id: "sync"
     type: "text-with-progress"

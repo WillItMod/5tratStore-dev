@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-ppc
 category: altcoin
 name: AxePPC
-version: "0.2.30-dev"
+version: "0.2.31-dev"
 tagline: PPC node + solo pool
 description: >-
   ALPHA RELEASE (DEV CHANNEL)
@@ -39,6 +39,11 @@ gallery:
 path: ""
 defaultUsername: ""
 defaultPassword: ""
+releaseNotes: >-
+  Workers using either coin-prefixed or prefixless payout usernames now appear
+  as one combined worker entry in the app and Fleet Dashboard APIs. Hashrate,
+  shares and best-share data are merged without double-counting duplicate
+  worker names.
 widgets:
   - id: "sync"
     type: "text-with-progress"
