@@ -4,7 +4,7 @@ category: bitcoin
 name: AxeLive (Dev)
 version: "1.4.2-dev"
 tagline: Real-time miner monitoring and thermal control
-icon: https://raw.githubusercontent.com/WillItMod/umbrel-community-store/main/willitmod-axelive/icon.png
+icon: https://raw.githubusercontent.com/WillItMod/5tratStore-main/main/willitmod-axelive/icon.png
 description: >-
   ALPHA RELEASE (DEV CHANNEL)
 
@@ -22,9 +22,9 @@ support: https://discord.gg/vC2UrFAbUF
 dependencies: []
 port: 5210
 gallery:
-  - https://raw.githubusercontent.com/WillItMod/umbrel-community-store/main/willitmod-axelive/1.png
-  - https://raw.githubusercontent.com/WillItMod/umbrel-community-store/main/willitmod-axelive/2.png
-  - https://raw.githubusercontent.com/WillItMod/umbrel-community-store/main/willitmod-axelive/3.png
+  - https://raw.githubusercontent.com/WillItMod/5tratStore-main/main/willitmod-axelive/1.png
+  - https://raw.githubusercontent.com/WillItMod/5tratStore-main/main/willitmod-axelive/2.png
+  - https://raw.githubusercontent.com/WillItMod/5tratStore-main/main/willitmod-axelive/3.png
 path: ""
 defaultUsername: ""
 defaultPassword: ""

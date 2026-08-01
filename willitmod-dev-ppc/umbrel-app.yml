@@ -26,16 +26,16 @@ description: >-
   Notes:
     - Payout address must be a Base58 Peercoin address.
     - Stratum will not respond until the node finishes initial sync.
-    - ALPHA: expect breaking changes while this is being tested on Umbrel/5tratumOS.
+    - ALPHA: expect breaking changes while this is being tested on 5tratumOS.
 developer: WillItMod
 website: https://github.com/WillItMod/AxePPC
 repo: https://github.com/WillItMod/AxePPC
 support: https://discord.gg/vC2UrFAbUF
 dependencies: []
 port: 21220
-icon: https://raw.githubusercontent.com/WillItMod/umbrel-dev-community-store/main/willitmod-dev-ppc/icon.png
+icon: https://raw.githubusercontent.com/WillItMod/5tratStore-dev/main/willitmod-dev-ppc/icon.png
 gallery:
-  - https://raw.githubusercontent.com/WillItMod/umbrel-dev-community-store/main/willitmod-dev-ppc/icon.png
+  - https://raw.githubusercontent.com/WillItMod/5tratStore-dev/main/willitmod-dev-ppc/icon.png
 path: ""
 defaultUsername: ""
 defaultPassword: ""

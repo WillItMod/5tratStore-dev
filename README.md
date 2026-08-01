@@ -34,7 +34,7 @@ Development/test app store for WillItMod apps.
 - **5tratSmack** (`willitmod-dev-5tratsmack`) - `0.10.22`
 - **PowPow** (`willitmod-dev-powpow`) - `0.2.31-dev`
 
-Use `umbrel-app.yml` in each app directory as the current source of truth for the store-visible version number.
+Use the app manifest in each app directory as the current source of truth for the store-visible version number.
 
 For the broader cross-store version matrix and changelog pointers, see `https://github.com/WillItMod/AxeSuite/blob/main/docs/releases.md`.
 
