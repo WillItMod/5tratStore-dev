@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-5tratsmack
 category: altcoin
 name: 5tratSmack
-version: "0.11.7"
+version: "0.11.9"
 tagline: Home-miner 5TRAT node, wallet, solo pool and atomic trade lab
 description: >-
   Install and synchronize a complete 5TRAT node, create or restore an encrypted
@@ -14,10 +14,11 @@ description: >-
   Komodo DeFi Framework network through outbound peer connections; every atomic
   swap still requires the participating wallets to approve and settle it.
 
-  Trade Pulse uses an anonymous completed-swap tape. A price point becomes
-  network-visible only when the maker and taker independently report matching
-  settlement details. Wallet addresses, node names and open offers are not
-  published and cannot move the guide price.
+  Your Private Activity and My Trades are read only from this installation's
+  isolated trading wallet. Global Trades can read completed-swap reports from
+  configured public relays for market comparison. 5tratSmack does not publish
+  this wallet's orders, trade history, payment identity or swap receipts to
+  those relays.
 
   Miner connection:
     - URL: `stratum+tcp://<your-5tratumos-host-ip>:57557`
@@ -36,12 +37,13 @@ path: ""
 defaultUsername: ""
 defaultPassword: ""
 releaseNotes: >-
-  Automatically recovers from the specific damaged transaction-index startup
-  loop that could survive an app reinstall. Only the rebuildable txindex is
-  quarantined; wallets, blocks, chainstate, pool and trading data are retained.
-  Repeated recovery is rate-limited and later healthy startups supersede old
-  errors. Restores live 5tratMux hardware identity and active-route hashrate
-  telemetry with stale-route, standby and worker-alias protection.
+  Privacy hotfix: Your Private Activity now comes only from this installation's
+  isolated trading wallet, and automatic completed-swap relay publication has
+  been removed. Trade Pulse adds separate Global Trades, My Trades and Compare
+  views with readable execution-order charts. Embedded development-fund and
+  donation payment identities are removed; the pool now refuses to mine until
+  the local node validates its configured payout. Adds a GLEEC Wallet & DEX
+  information tab. Existing wallets, blockchain, pool and trading data are retained.
 widgets:
   - id: sync
     type: text-with-progress
