@@ -11,7 +11,7 @@ SCRIPT = ROOT / "scripts/finalize-axebc2-0.1.10-dev.sh"
 COMPOSE = ROOT / "willitmod-dev-bc2/docker-compose.yml"
 APP_DIGEST = "sha256:" + "a" * 64
 CORE_DIGEST = "sha256:" + "b" * 64
-CORE_TAG = "31.1.0-rc.d2d53fb1bd30"
+CORE_TAG = "31.1.0-rc.3c2cafcab19e"
 
 class AxeBC2DevFinalizerTests(unittest.TestCase):
     def setUp(self):
@@ -30,7 +30,7 @@ config="$2"; [ "$1" = --config ]; [ "$(cat "$config/config.json")" = '{"auths":{
 if [ "$1 $2" = 'buildx imagetools' ]; then
  case "$4" in
   ghcr.io/willitmod/axebc2-app-umbrel-dev:0.1.10-candidate.6e4ef58218e8) printf 'Digest: %s\\n' "$APP_DIGEST" ;;
-  ghcr.io/willitmod/bitcoinii-core:31.1.0-rc.d2d53fb1bd30) printf 'Digest: %s\\n' "$CORE_DIGEST" ;;
+  ghcr.io/willitmod/bitcoinii-core:31.1.0-rc.3c2cafcab19e) printf 'Digest: %s\\n' "$CORE_DIGEST" ;;
   *) exit 2 ;;
  esac
 elif [ "$1 $2" = 'manifest inspect' ]; then
@@ -55,7 +55,8 @@ fi
         self.assertEqual(compose.count(core_ref),2)
         evidence=json.loads((self.root/"willitmod-dev-bc2/DEV-ACCEPTANCE-EVIDENCE.json").read_text(encoding="utf-8"))
         self.assertEqual(evidence["source_revision"],"6e4ef58218e8cd5a4d1113196f9872a7f501f52e")
-        self.assertEqual(evidence["core_source_revision"],"d2d53fb1bd307e2ec464fd752255cbc78023efbd")
+        self.assertEqual(evidence["core_source_revision"],"3c2cafcab19efde33c1e476a982c3389957dacb2")
+        self.assertEqual(evidence["core_candidate_run"],33674007419)
         self.assertEqual(evidence["app_digest"],APP_DIGEST); self.assertEqual(evidence["core_digest"],CORE_DIGEST)
         calls=self.log.read_text(encoding="utf-8")
         self.assertEqual(calls.count("--platform linux/amd64"),2); self.assertEqual(calls.count("--platform linux/arm64"),2)

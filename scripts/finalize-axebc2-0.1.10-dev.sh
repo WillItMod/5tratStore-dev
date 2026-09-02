@@ -12,12 +12,12 @@ evidence_output="${4:-$repo_root/willitmod-dev-bc2/DEV-ACCEPTANCE-EVIDENCE.json}
 docker_bin="${DOCKER_BIN:-docker}"
 app_tag="ghcr.io/willitmod/axebc2-app-umbrel-dev:0.1.10-candidate.6e4ef58218e8"
 app_revision="6e4ef58218e8cd5a4d1113196f9872a7f501f52e"
-core_revision="d2d53fb1bd307e2ec464fd752255cbc78023efbd"
+core_revision="3c2cafcab19efde33c1e476a982c3389957dacb2"
 core_tag="ghcr.io/willitmod/bitcoinii-core:$core_candidate_tag"
 fail() { echo "ERROR: $*" >&2; exit 1; }
 [[ "$app_digest" =~ ^sha256:[0-9a-f]{64}$ ]] || fail "app digest is not an exact sha256 digest"
 [[ "$core_digest" =~ ^sha256:[0-9a-f]{64}$ ]] || fail "Core digest is not an exact sha256 digest"
-[[ "$core_candidate_tag" == "31.1.0-rc.d2d53fb1bd30" ]] || fail "Core tag must be 31.1.0-rc.d2d53fb1bd30"
+[[ "$core_candidate_tag" == "31.1.0-rc.3c2cafcab19e" ]] || fail "Core tag must be 31.1.0-rc.3c2cafcab19e"
 command -v "$docker_bin" >/dev/null 2>&1 || fail "Docker is required for registry verification"
 
 anon_config="$(mktemp -d "${TMPDIR:-/tmp}/axebc2-anonymous-docker.XXXXXX")"
@@ -64,7 +64,7 @@ python3 - "$evidence_tmp" "$app_tag" "$app_digest" "$app_revision" "$core_tag" "
 import json,sys
 path,app_image,app_digest,revision,core_image,core_digest,core_revision=sys.argv[1:]
 with open(path,"w",encoding="utf-8") as h:
- json.dump({"schema":1,"result":"RECORD_passed_AFTER_LIVE_DEV_ACCEPTANCE","app_image":app_image,"app_digest":app_digest,"core_image":core_image,"core_digest":core_digest,"app_version":"0.1.10-dev","source_revision":revision,"core_source_revision":core_revision,"tested_on":"RECORD_TEST_NODE","tested_at":"RECORD_ISO_8601_TIMESTAMP","checks":["RECORD_COMPLETED_LIVE_DEV_ACCEPTANCE_CHECKS"]},h,indent=2); h.write("\n")
+ json.dump({"schema":1,"result":"RECORD_passed_AFTER_LIVE_DEV_ACCEPTANCE","app_image":app_image,"app_digest":app_digest,"core_image":core_image,"core_digest":core_digest,"app_version":"0.1.10-dev","source_revision":revision,"core_source_revision":core_revision,"core_candidate_run":33674007419,"tested_on":"RECORD_TEST_NODE","tested_at":"RECORD_ISO_8601_TIMESTAMP","checks":["RECORD_COMPLETED_LIVE_DEV_ACCEPTANCE_CHECKS"]},h,indent=2); h.write("\n")
 PY
 chmod 0644 "$evidence_tmp"
 mv -f "$tmp" "$compose"; mv -f "$evidence_tmp" "$evidence_output"
