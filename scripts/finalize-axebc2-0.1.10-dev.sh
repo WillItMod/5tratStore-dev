@@ -12,11 +12,12 @@ evidence_output="${4:-$repo_root/willitmod-dev-bc2/DEV-ACCEPTANCE-EVIDENCE.json}
 docker_bin="${DOCKER_BIN:-docker}"
 app_tag="ghcr.io/willitmod/axebc2-app-umbrel-dev:0.1.10-candidate.6e4ef58218e8"
 app_revision="6e4ef58218e8cd5a4d1113196f9872a7f501f52e"
+core_revision="d2d53fb1bd307e2ec464fd752255cbc78023efbd"
 core_tag="ghcr.io/willitmod/bitcoinii-core:$core_candidate_tag"
 fail() { echo "ERROR: $*" >&2; exit 1; }
 [[ "$app_digest" =~ ^sha256:[0-9a-f]{64}$ ]] || fail "app digest is not an exact sha256 digest"
 [[ "$core_digest" =~ ^sha256:[0-9a-f]{64}$ ]] || fail "Core digest is not an exact sha256 digest"
-[[ "$core_candidate_tag" =~ ^31\.1\.0-candidate\.[0-9a-f]{12}$ ]] || fail "Core tag must be 31.1.0-candidate.<12 hex>"
+[[ "$core_candidate_tag" == "31.1.0-rc.d2d53fb1bd30" ]] || fail "Core tag must be 31.1.0-rc.d2d53fb1bd30"
 command -v "$docker_bin" >/dev/null 2>&1 || fail "Docker is required for registry verification"
 
 anon_config="$(mktemp -d "${TMPDIR:-/tmp}/axebc2-anonymous-docker.XXXXXX")"
@@ -26,7 +27,7 @@ printf '{"auths":{}}\n' >"$anon_config/config.json"
 
 resolve_tag() {
   local ref="$1" expected="$2" output resolved
-  [[ "$ref" =~ :[0-9]+\.[0-9]+\.[0-9]+-candidate\.[0-9a-f]{12}$ ]] || fail "not an exact candidate tag: $ref"
+  [[ "$ref" == "$app_tag" || "$ref" == "$core_tag" ]] || fail "not an approved candidate tag: $ref"
   output="$("$docker_bin" --config "$anon_config" buildx imagetools inspect "$ref")" || fail "anonymous resolution failed: $ref"
   resolved="$(printf '%s\n' "$output" | awk '$1 == "Digest:" {print $2; exit}')"
   [[ "$resolved" == "$expected" ]] || fail "$ref resolves to ${resolved:-nothing}, expected $expected"
@@ -59,11 +60,11 @@ grep -Fx "    image: $core_tag@$core_digest" "$tmp" >/dev/null || fail "Core ser
 grep -Fx "      BTC2D_IMAGE: \"$core_tag@$core_digest\"" "$tmp" >/dev/null || fail "BTC2D_IMAGE is incorrect"
 
 evidence_tmp="$(mktemp "${evidence_output}.finalize.XXXXXX")"
-python3 - "$evidence_tmp" "$app_tag" "$app_digest" "$app_revision" "$core_tag" "$core_digest" <<'PY'
+python3 - "$evidence_tmp" "$app_tag" "$app_digest" "$app_revision" "$core_tag" "$core_digest" "$core_revision" <<'PY'
 import json,sys
-path,app_image,app_digest,revision,core_image,core_digest=sys.argv[1:]
+path,app_image,app_digest,revision,core_image,core_digest,core_revision=sys.argv[1:]
 with open(path,"w",encoding="utf-8") as h:
- json.dump({"schema":1,"result":"RECORD_passed_AFTER_LIVE_DEV_ACCEPTANCE","app_image":app_image,"app_digest":app_digest,"core_image":core_image,"core_digest":core_digest,"app_version":"0.1.10-dev","source_revision":revision,"tested_on":"RECORD_TEST_NODE","tested_at":"RECORD_ISO_8601_TIMESTAMP","checks":["RECORD_COMPLETED_LIVE_DEV_ACCEPTANCE_CHECKS"]},h,indent=2); h.write("\n")
+ json.dump({"schema":1,"result":"RECORD_passed_AFTER_LIVE_DEV_ACCEPTANCE","app_image":app_image,"app_digest":app_digest,"core_image":core_image,"core_digest":core_digest,"app_version":"0.1.10-dev","source_revision":revision,"core_source_revision":core_revision,"tested_on":"RECORD_TEST_NODE","tested_at":"RECORD_ISO_8601_TIMESTAMP","checks":["RECORD_COMPLETED_LIVE_DEV_ACCEPTANCE_CHECKS"]},h,indent=2); h.write("\n")
 PY
 chmod 0644 "$evidence_tmp"
 mv -f "$tmp" "$compose"; mv -f "$evidence_tmp" "$evidence_output"

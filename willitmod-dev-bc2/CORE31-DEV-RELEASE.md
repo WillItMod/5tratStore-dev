@@ -29,10 +29,13 @@ any production promotion.
 Run `scripts/finalize-axebc2-0.1.10-dev.sh` with the exact application index
 digest, exact Core candidate tag and exact Core index digest. The application
 candidate is fixed to `0.1.10-candidate.6e4ef58218e8` from source revision
-`6e4ef58218e8cd5a4d1113196f9872a7f501f52e`. Before editing Compose, the
+`6e4ef58218e8cd5a4d1113196f9872a7f501f52e`. The Core candidate is fixed to
+`31.1.0-rc.d2d53fb1bd30` from source revision
+`d2d53fb1bd307e2ec464fd752255cbc78023efbd`. Before editing Compose, the
 finalizer anonymously verifies candidate resolution, amd64 and arm64 manifests
-and pulls. It atomically replaces every sentinel and emits the evidence JSON
-template that must be completed only after live DEV acceptance.
+and pulls. It atomically replaces every sentinel and emits both exact source
+revisions in the evidence JSON template, which must be completed only after
+live DEV acceptance.
 
 The store validator exercises a pinned copy of the relevant 5tratumOS
 materialization contract from platform commit `4f979cb9541622c1fdccdf43b8a885bbf845ba38`:
