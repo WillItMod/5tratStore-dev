@@ -15,3 +15,9 @@ class ReleaseStateTests(unittest.TestCase):
         validate(text,"finalized")
         with self.assertRaises(ValueError): validate(text.replace(c,"sha256:"+"d"*64,1),"finalized")
         with self.assertRaises(ValueError): validate(text+"\n_DIGEST_REQUIRED","finalized")
+    def test_lifecycle_matrix_rejects_cross_phase_validation(self):
+        pre=f"{APP_TAG}@sha256:APP_CANDIDATE_DIGEST_REQUIRED\n{CORE_TAG}@sha256:CORE31_CANDIDATE_DIGEST_REQUIRED\n{CORE_TAG}@sha256:CORE31_CANDIDATE_DIGEST_REQUIRED"
+        final=f"{APP_TAG}@sha256:{'a'*64}\n{CORE_TAG}@sha256:{'c'*64}\n{CORE_TAG}@sha256:{'c'*64}"
+        validate(pre,"prefinalization"); validate(final,"finalized")
+        with self.assertRaises(ValueError): validate(pre,"finalized")
+        with self.assertRaises(ValueError): validate(final,"prefinalization")

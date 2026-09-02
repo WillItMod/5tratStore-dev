@@ -1,5 +1,6 @@
 import json
 import os
+import re
 from pathlib import Path
 import shutil
 import subprocess
@@ -19,7 +20,12 @@ class AxeBC2DevFinalizerTests(unittest.TestCase):
         self.root = Path(self.temp.name)
         (self.root / "scripts").mkdir(); (self.root / "willitmod-dev-bc2").mkdir()
         shutil.copy2(SCRIPT, self.root / "scripts" / SCRIPT.name)
-        shutil.copy2(COMPOSE, self.root / "willitmod-dev-bc2/docker-compose.yml")
+        fixture = COMPOSE.read_text(encoding="utf-8")
+        fixture = re.sub(r"(ghcr\.io/willitmod/axebc2-app-umbrel-dev:0\.1\.10-candidate\.6e4ef58218e8@sha256:)[0-9a-f]{64}", r"\1APP_CANDIDATE_DIGEST_REQUIRED", fixture)
+        fixture = re.sub(r"(ghcr\.io/willitmod/bitcoinii-core:31\.1\.0-rc\.cdf44542dde2@sha256:)[0-9a-f]{64}", r"\1CORE31_CANDIDATE_DIGEST_REQUIRED", fixture)
+        (self.root / "willitmod-dev-bc2/docker-compose.yml").write_text(fixture, encoding="utf-8")
+        self.assertEqual(fixture.count("APP_CANDIDATE_DIGEST_REQUIRED"), 1)
+        self.assertEqual(fixture.count("CORE31_CANDIDATE_DIGEST_REQUIRED"), 2)
         self.original = (self.root / "willitmod-dev-bc2/docker-compose.yml").read_bytes()
         self.log = self.root / "docker.log"
         self.fake = self.root / "docker"
