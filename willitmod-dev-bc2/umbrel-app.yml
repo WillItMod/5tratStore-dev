@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-bc2
 category: bitcoin
 name: AxeBC2
-version: "0.1.9-dev"
+version: "0.1.10-dev"
 tagline: BC2 node + solo pool
 description: >-
   ALPHA RELEASE (DEV CHANNEL)
@@ -25,6 +25,8 @@ description: >-
 
   Notes:
     - Set your payout address in the app Settings tab.
+    - Requires 5tratumOS 0.7.11 or newer.
+    - The node makes outbound peer connections; this app does not publish a public P2P port or request NAT-PMP mappings.
     - Initial sync can take a long time and a lot of bandwidth/storage (the node downloads and validates the chain).
     - Solo mining is extremely unlikely to find blocks without significant hashrate.
 
@@ -45,10 +47,12 @@ path: ""
 defaultUsername: ""
 defaultPassword: ""
 releaseNotes: >-
-  Workers using either coin-prefixed or prefixless payout usernames now appear
-  as one combined worker entry in the app and Fleet Dashboard APIs. Hashrate,
-  shares and best-share data are merged without double-counting duplicate
-  worker names.
+  Upgrades BitcoinII Core to 31.1 for the ShockWave consensus change. Requires
+  5tratumOS 0.7.11 or newer. Back up your app data before upgrading. Existing
+  nodes must perform a full blockchain redownload and reindex; mining and sync
+  data will be unavailable until validation completes. Stratum remains on TCP
+  port 2345. Support telemetry is disabled by default. The node uses outbound
+  peer connections only: no public P2P port or NAT-PMP mapping is enabled.
 widgets:
   - id: "sync"
     type: "text-with-progress"
