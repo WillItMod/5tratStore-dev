@@ -1,7 +1,7 @@
 import re
 
 APP_TAG = "ghcr.io/willitmod/axebc2-app-umbrel-dev:0.1.10-candidate.6e4ef58218e8"
-CORE_TAG = "ghcr.io/willitmod/bitcoinii-core:31.1.0-rc.3c2cafcab19e"
+CORE_TAG = "ghcr.io/willitmod/bitcoinii-core:31.1.0-rc.cdf44542dde2"
 
 def validate(compose, phase):
     if phase not in {"prefinalization", "finalized"}:

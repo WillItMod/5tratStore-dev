@@ -12,12 +12,12 @@ evidence_output="${4:-$repo_root/willitmod-dev-bc2/DEV-ACCEPTANCE-EVIDENCE.json}
 docker_bin="${DOCKER_BIN:-docker}"
 app_tag="ghcr.io/willitmod/axebc2-app-umbrel-dev:0.1.10-candidate.6e4ef58218e8"
 app_revision="6e4ef58218e8cd5a4d1113196f9872a7f501f52e"
-core_revision="3c2cafcab19efde33c1e476a982c3389957dacb2"
+core_revision="cdf44542dde255648008249d187fafc15f3a2f09"
 core_tag="ghcr.io/willitmod/bitcoinii-core:$core_candidate_tag"
 fail() { echo "ERROR: $*" >&2; exit 1; }
 [[ "$app_digest" =~ ^sha256:[0-9a-f]{64}$ ]] || fail "app digest is not an exact sha256 digest"
 [[ "$core_digest" =~ ^sha256:[0-9a-f]{64}$ ]] || fail "Core digest is not an exact sha256 digest"
-[[ "$core_candidate_tag" == "31.1.0-rc.3c2cafcab19e" ]] || fail "Core tag must be 31.1.0-rc.3c2cafcab19e"
+[[ "$core_candidate_tag" == "31.1.0-rc.cdf44542dde2" ]] || fail "Core tag must be 31.1.0-rc.cdf44542dde2"
 command -v "$docker_bin" >/dev/null 2>&1 || fail "Docker is required for registry verification"
 
 anon_config="$(mktemp -d "${TMPDIR:-/tmp}/axebc2-anonymous-docker.XXXXXX")"
@@ -64,7 +64,7 @@ python3 - "$evidence_tmp" "$app_tag" "$app_digest" "$app_revision" "$core_tag" "
 import json,sys
 path,app_image,app_digest,revision,core_image,core_digest,core_revision=sys.argv[1:]
 with open(path,"w",encoding="utf-8") as h:
- json.dump({"schema":1,"result":"RECORD_passed_AFTER_LIVE_DEV_ACCEPTANCE","app_image":app_image,"app_digest":app_digest,"core_image":core_image,"core_digest":core_digest,"app_version":"0.1.10-dev","source_revision":revision,"core_source_revision":core_revision,"core_candidate_run":33674007419,"tested_on":"RECORD_TEST_NODE","tested_at":"RECORD_ISO_8601_TIMESTAMP","acceptance":{"observed_at":"RECORD_ISO_8601_TIMESTAMP","core_version":"RECORD_INTEGER_VERSION","migration_required_marker_absent":"RECORD_BOOLEAN","migration_complete_marker_valid":"RECORD_BOOLEAN","checkpoint_height":57752,"checkpoint_hash":"000000000000000013ceffe797280c57f75a5b9f1d9e70c3503584058c322576","chainwork":"RECORD_64_HEX_CHAINWORK","ibd":False,"verification_progress":"RECORD_NUMBER","blocks":"RECORD_INTEGER","headers":"RECORD_SAME_INTEGER","best_block_hash":"RECORD_64_HEX_HASH","explorer_common_height":"RECORD_SAME_INTEGER","explorer_common_hash":"RECORD_SAME_64_HEX_HASH","outbound_core31_peers":"RECORD_INTEGER_AT_LEAST_3","verifychain_level":4,"verifychain_passed":"RECORD_BOOLEAN","payout_configured":"RECORD_BOOLEAN","payout_preserved":"RECORD_BOOLEAN","pool_stratum_result":"RECORD_passed","app_ui_privacy_passed":"RECORD_BOOLEAN","telemetry_disabled":"RECORD_BOOLEAN","app_rollback_rejected":"RECORD_BOOLEAN","os_rollback_rejected":"RECORD_BOOLEAN"}},h,indent=2); h.write("\n")
+ json.dump({"schema":1,"result":"RECORD_passed_AFTER_LIVE_DEV_ACCEPTANCE","app_image":app_image,"app_digest":app_digest,"core_image":core_image,"core_digest":core_digest,"app_version":"0.1.10-dev","source_revision":revision,"core_source_revision":core_revision,"core_candidate_run":33675068951,"tested_on":"RECORD_TEST_NODE","tested_at":"RECORD_ISO_8601_TIMESTAMP","acceptance":{"observed_at":"RECORD_ISO_8601_TIMESTAMP","core_version":"RECORD_INTEGER_VERSION","migration_required_marker_absent":"RECORD_BOOLEAN","migration_complete_marker_valid":"RECORD_BOOLEAN","checkpoint_height":57752,"checkpoint_hash":"000000000000000013ceffe797280c57f75a5b9f1d9e70c3503584058c322576","chainwork":"RECORD_64_HEX_CHAINWORK","ibd":False,"verification_progress":"RECORD_NUMBER","blocks":"RECORD_INTEGER","headers":"RECORD_SAME_INTEGER","best_block_hash":"RECORD_64_HEX_HASH","explorer_common_height":"RECORD_SAME_INTEGER","explorer_common_hash":"RECORD_SAME_64_HEX_HASH","outbound_core31_peers":"RECORD_INTEGER_AT_LEAST_3","verifychain_level":4,"verifychain_passed":"RECORD_BOOLEAN","payout_configured":"RECORD_BOOLEAN","payout_preserved":"RECORD_BOOLEAN","pool_stratum_result":"RECORD_passed","app_ui_privacy_passed":"RECORD_BOOLEAN","telemetry_disabled":"RECORD_BOOLEAN","app_rollback_rejected":"RECORD_BOOLEAN","os_rollback_rejected":"RECORD_BOOLEAN"}},h,indent=2); h.write("\n")
 PY
 chmod 0644 "$evidence_tmp"
 mv -f "$tmp" "$compose"; mv -f "$evidence_tmp" "$evidence_output"
