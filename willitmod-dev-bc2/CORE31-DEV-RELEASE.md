@@ -15,21 +15,18 @@ persistent app-data or node-data mutation and prevents Core from starting. A
 future dedicated, independently built and digest-pinned init image could remove
 that availability dependency; it is not introduced in this consensus release.
 
-The committed Compose file deliberately retains these non-runnable sentinels:
+The committed Compose file is finalized: it contains one immutable application
+sha256 pin and two identical immutable Core sha256 pins, with no digest
+sentinels. CI detects this as the strict `finalized` phase. The earlier
+`prefinalization` phase accepted exactly one `APP_CANDIDATE_DIGEST_REQUIRED` and
+two `CORE31_CANDIDATE_DIGEST_REQUIRED` occurrences; a partial or mixed state is
+rejected in either phase.
 
-- `CORE31_CANDIDATE_DIGEST_REQUIRED`
-- `APP_CANDIDATE_DIGEST_REQUIRED`
-
-CI treats this as the strict `prefinalization` phase. It accepts exactly all
-three expected sentinel occurrences. Once finalization is committed, CI
-switches to `finalized` and requires one immutable application sha256 pin and
-two identical immutable Core sha256 pins. A partial or mixed state is rejected.
-
-They must be replaced with the exact verified multi-architecture candidate
-digests. After substitution, the merged platform Compose must pass validation,
-all images must pull anonymously by digest, init must complete successfully on
-5tratumOS 0.7.12+, and the resulting installation must be tested on DEV before
-any production promotion.
+Finalization replaced those sentinels with the exact verified
+multi-architecture candidate digests. The merged platform Compose must pass
+validation, all images must pull anonymously by digest, init must complete
+successfully on 5tratumOS 0.7.12+, and the resulting installation must be
+tested on DEV before any production promotion.
 
 Run `scripts/finalize-axebc2-0.1.10-dev.sh` with the exact application index
 digest, exact Core candidate tag and exact Core index digest. The application
@@ -42,6 +39,14 @@ finalizer anonymously verifies candidate resolution, amd64 and arm64 manifests
 and pulls. It atomically replaces every sentinel and emits both exact source
 revisions in the evidence JSON template, which must be completed only after
 live DEV acceptance.
+
+The test platform is also fixed to the published DEV-only
+[`v0.7.12-dev`](https://github.com/WillItMod/5tratum/releases/tag/v0.7.12-dev)
+bundle with SHA-256
+`11a35e68ab169eb0446485992a57b33fae018a92020b7d86bbf9a005571377af`.
+The finalizer writes that exact value into the acceptance template; it is not a
+free-form observation. MAIN promotion rejects evidence from a different OS
+bundle even when the displayed version string is the same.
 
 The store validator exercises a pinned copy of the relevant 5tratumOS
 materialization contract from platform commit `4f979cb9541622c1fdccdf43b8a885bbf845ba38`:

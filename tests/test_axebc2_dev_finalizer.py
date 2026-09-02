@@ -13,6 +13,7 @@ COMPOSE = ROOT / "willitmod-dev-bc2/docker-compose.yml"
 APP_DIGEST = "sha256:" + "a" * 64
 CORE_DIGEST = "sha256:" + "b" * 64
 CORE_TAG = "31.1.0-rc.cdf44542dde2"
+OS_BUNDLE_SHA256 = "11a35e68ab169eb0446485992a57b33fae018a92020b7d86bbf9a005571377af"
 
 class AxeBC2DevFinalizerTests(unittest.TestCase):
     def setUp(self):
@@ -83,6 +84,8 @@ esac
         self.assertEqual(evidence["source_revision"],"6e4ef58218e8cd5a4d1113196f9872a7f501f52e")
         self.assertEqual(evidence["core_source_revision"],"cdf44542dde255648008249d187fafc15f3a2f09")
         self.assertEqual(evidence["core_candidate_run"],33675068951)
+        self.assertEqual(evidence["tested_os_version"],"v0.7.12-dev")
+        self.assertEqual(evidence["tested_os_bundle_sha256"],OS_BUNDLE_SHA256)
         self.assertEqual(evidence["app_digest"],APP_DIGEST); self.assertEqual(evidence["core_digest"],CORE_DIGEST)
         calls=self.log.read_text(encoding="utf-8")
         self.assertEqual(calls.count("--platform linux/amd64"),2); self.assertEqual(calls.count("--platform linux/arm64"),2)

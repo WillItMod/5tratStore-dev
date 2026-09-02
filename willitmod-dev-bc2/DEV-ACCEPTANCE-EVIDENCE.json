@@ -10,7 +10,7 @@
   "core_source_revision": "cdf44542dde255648008249d187fafc15f3a2f09",
   "core_candidate_run": 33675068951,
   "tested_os_version": "v0.7.12-dev",
-  "tested_os_bundle_sha256": "RECORD_64_HEX_OS_BUNDLE_SHA256",
+  "tested_os_bundle_sha256": "11a35e68ab169eb0446485992a57b33fae018a92020b7d86bbf9a005571377af",
   "tested_on": "RECORD_TEST_NODE",
   "tested_at": "RECORD_ISO_8601_TIMESTAMP",
   "acceptance": {

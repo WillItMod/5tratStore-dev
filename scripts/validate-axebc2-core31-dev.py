@@ -32,9 +32,16 @@ except ValueError as exc:
     raise SystemExit(str(exc))
 manifest = (APP / "umbrel-app.yml").read_text(encoding="utf-8")
 node_config = (APP / "data/templates/bitcoinII.conf.template").read_text(encoding="utf-8")
+evidence = json.loads((APP / "DEV-ACCEPTANCE-EVIDENCE.json").read_text(encoding="utf-8"))
 
 require('version: "0.1.10-dev"' in manifest, "manifest must be 0.1.10-dev")
 require("Requires 5tratumOS 0.7.12" in manifest, "OS prerequisite must be disclosed")
+require(evidence.get("tested_os_version") == "v0.7.12-dev", "evidence must name the tested DEV OS release")
+require(
+    evidence.get("tested_os_bundle_sha256")
+    == "11a35e68ab169eb0446485992a57b33fae018a92020b7d86bbf9a005571377af",
+    "evidence must be bound to the exact verified v0.7.12-dev bundle",
+)
 require('"2345:3333/tcp"' in compose, "Stratum host port 2345 must be retained")
 require("SUPPORT_CHECKIN_ENABLED: \"false\"" in compose, "telemetry must default off")
 require("create_host_path: false" in compose, "build metadata bind must fail closed")
