@@ -40,11 +40,31 @@ else exit 3
 fi
 """, encoding="utf-8")
         self.fake.chmod(0o755)
+        self.curl_log = self.root / "curl.log"
+        self.fake_curl = self.root / "curl"
+        self.fake_curl.write_text("""#!/bin/sh
+set -eu
+printf '%s\\n' "$*" >>"$FAKE_CURL_LOG"
+for arg in "$@"; do url="$arg"; done
+case "$url" in
+ *'/token?'*) printf '%s\\n' '{"token":"anonymous-test-token"}' ;;
+ *)
+  case "${CURL_DIGEST_MODE:-correct}" in
+   correct) case "$url" in *axebc2-app-umbrel-dev*) digest="$APP_DIGEST";; *) digest="$CORE_DIGEST";; esac ;;
+   wrong) digest="sha256:$(printf '%064d' 0)" ;;
+   missing) printf 'HTTP/2 200\\r\\n\\r\\n'; exit 0 ;;
+   malformed) digest='sha256:not-a-digest' ;;
+  esac
+  printf 'HTTP/2 200\\r\\nDocker-Content-Digest: %s\\r\\n\\r\\n' "$digest"
+ ;;
+esac
+""", encoding="utf-8")
+        self.fake_curl.chmod(0o755)
 
     def tearDown(self): self.temp.cleanup()
 
-    def run_it(self, core_tag=CORE_TAG):
-        env=os.environ.copy(); env.update({"DOCKER_BIN":str(self.fake),"FAKE_DOCKER_LOG":str(self.log),"APP_DIGEST":APP_DIGEST,"CORE_DIGEST":CORE_DIGEST})
+    def run_it(self, core_tag=CORE_TAG, curl_mode="correct"):
+        env=os.environ.copy(); env.update({"DOCKER_BIN":str(self.fake),"CURL_BIN":str(self.fake_curl),"FAKE_DOCKER_LOG":str(self.log),"FAKE_CURL_LOG":str(self.curl_log),"CURL_DIGEST_MODE":curl_mode,"APP_DIGEST":APP_DIGEST,"CORE_DIGEST":CORE_DIGEST})
         return subprocess.run([str(self.root/"scripts"/SCRIPT.name),APP_DIGEST,core_tag,CORE_DIGEST],env=env,text=True,capture_output=True,check=False)
 
     def test_anonymous_candidate_checks_finalize_and_emit_evidence(self):
@@ -60,6 +80,15 @@ fi
         self.assertEqual(evidence["app_digest"],APP_DIGEST); self.assertEqual(evidence["core_digest"],CORE_DIGEST)
         calls=self.log.read_text(encoding="utf-8")
         self.assertEqual(calls.count("--platform linux/amd64"),2); self.assertEqual(calls.count("--platform linux/arm64"),2)
+        self.assertNotIn("buildx", calls)
+        self.assertTrue(all("--config" in line for line in calls.splitlines()))
+
+    def test_bad_registry_digest_headers_fail_without_docker_or_mutation(self):
+        for mode in ("wrong", "missing", "malformed"):
+            if self.log.exists(): self.log.unlink()
+            result=self.run_it(curl_mode=mode); self.assertNotEqual(result.returncode,0)
+            self.assertFalse(self.log.exists())
+            self.assertEqual((self.root/"willitmod-dev-bc2/docker-compose.yml").read_bytes(),self.original)
 
     def test_wrong_core_revision_tag_fails_before_registry_and_mutation(self):
         result=self.run_it("31.1.0-rc.000000000000"); self.assertNotEqual(result.returncode,0)
