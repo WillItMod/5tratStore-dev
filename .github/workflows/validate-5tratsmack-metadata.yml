@@ -3,12 +3,16 @@ name: Validate 5tratSmack store metadata
 on:
   pull_request:
     paths:
+      - "README.md"
       - "willitmod-dev-5tratsmack/**"
+      - "scripts/validate-5tratsmack-metadata.py"
       - ".github/workflows/validate-5tratsmack-metadata.yml"
   push:
     branches: [main]
     paths:
+      - "README.md"
       - "willitmod-dev-5tratsmack/**"
+      - "scripts/validate-5tratsmack-metadata.py"
       - ".github/workflows/validate-5tratsmack-metadata.yml"
 
 permissions:
@@ -21,53 +25,4 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Check compatible manifests and versions
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          import re
-
-          app_dir = Path("willitmod-dev-5tratsmack")
-          primary = app_dir / "5tratstore-app.yml"
-          compatibility = app_dir / "umbrel-app.yml"
-          compose = app_dir / "docker-compose.yml"
-
-          for path in (primary, compatibility, compose):
-              if not path.is_file() or not path.stat().st_size:
-                  raise SystemExit(f"missing required store file: {path}")
-
-          primary_bytes = primary.read_bytes()
-          compatibility_bytes = compatibility.read_bytes()
-          if primary_bytes != compatibility_bytes:
-              raise SystemExit(
-                  "5tratstore-app.yml and umbrel-app.yml must remain byte-identical"
-              )
-
-          manifest_text = primary_bytes.decode("utf-8")
-          compose_text = compose.read_text(encoding="utf-8")
-
-          def one(pattern: str, text: str, label: str) -> str:
-              matches = re.findall(pattern, text, flags=re.MULTILINE)
-              if len(matches) != 1:
-                  raise SystemExit(f"expected one {label}, found {len(matches)}")
-              return matches[0]
-
-          manifest_version = one(
-              r'^version:\s*["\']?([^"\'\s]+)', manifest_text, "manifest version"
-          )
-          app_version = one(
-              r'^\s{6}APP_VERSION:\s*["\']?([^"\'\s]+)', compose_text, "APP_VERSION"
-          )
-          release_tag = one(
-              r'^\s{6}FIVETRAT_RELEASE_TAG:\s*["\']?([^"\'\s]+)',
-              compose_text,
-              "FIVETRAT_RELEASE_TAG",
-          )
-          if len({manifest_version, app_version, release_tag}) != 1:
-              raise SystemExit(
-                  "store version mismatch: "
-                  f"manifest={manifest_version}, APP_VERSION={app_version}, "
-                  f"FIVETRAT_RELEASE_TAG={release_tag}"
-              )
-
-          print(f"5tratSmack store metadata is consistent at {manifest_version}")
-          PY
+        run: python3 scripts/validate-5tratsmack-metadata.py
