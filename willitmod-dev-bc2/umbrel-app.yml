@@ -49,8 +49,8 @@ defaultPassword: ""
 releaseNotes: >-
   Upgrades BitcoinII Core to 31.1 for the ShockWave consensus change. Requires
   5tratumOS 0.7.11 or newer. Back up your app data before upgrading. Existing
-  nodes must perform a full blockchain redownload and reindex; mining and sync
-  data will be unavailable until validation completes. Stratum remains on TCP
+  nodes must perform a full reindex of their stored blockchain data; mining and
+  sync data will be unavailable until validation completes. Stratum remains on TCP
   port 2345. Support telemetry is disabled by default. The node uses outbound
   peer connections only: no public P2P port or NAT-PMP mapping is enabled.
 widgets:
