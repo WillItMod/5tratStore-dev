@@ -10,7 +10,7 @@ import sys
 import tempfile
 import unittest
 import argparse
-from axebc2_release_state import validate as validate_release_state
+from axebc2_release_state import validate as validate_release_state, validate_rendered_binds
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -91,10 +91,12 @@ def validate_platform_merged_compose():
             (app_data / relative).mkdir(parents=True, exist_ok=True)
         (app_data / "data/init/init.sh").write_text("#!/bin/sh\n", encoding="utf-8")
         source = temp / "docker-compose.yml"
+        build_metadata = temp / "build.json"
+        build_metadata.write_text('{"tag":"v0.7.12-dev"}\n', encoding="utf-8")
         source.write_text(
-            compose.replace("CORE31_CANDIDATE_DIGEST_REQUIRED", "a" * 64).replace(
-                "APP_CANDIDATE_DIGEST_REQUIRED", "b" * 64
-            ),
+            compose.replace("CORE31_CANDIDATE_DIGEST_REQUIRED", "a" * 64)
+            .replace("APP_CANDIDATE_DIGEST_REQUIRED", "b" * 64)
+            .replace("/etc/5tratumos/build.json", str(build_metadata)),
             encoding="utf-8",
         )
         parsed = temp / "parsed-compose.json"
@@ -158,13 +160,10 @@ with open(sys.argv[2], 'w', encoding='utf-8') as handle:
             == "service_completed_successfully",
             "Core must wait for successful init completion",
         )
-        for service in services.values():
-            for volume in service.get("volumes", []):
-                if volume.get("type") == "bind":
-                    require(
-                        volume.get("bind", {}).get("create_host_path") is False,
-                        "rendered Compose contains an implicit host-path bind",
-                    )
+        try:
+            validate_rendered_binds(rendered_contract, rendered, {"APP_DATA_DIR": str(app_data)})
+        except ValueError as exc:
+            raise SystemExit(str(exc))
 
 
 validate_platform_merged_compose()
