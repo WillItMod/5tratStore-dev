@@ -20,6 +20,11 @@ The committed Compose file deliberately retains these non-runnable sentinels:
 - `CORE31_CANDIDATE_DIGEST_REQUIRED`
 - `APP_CANDIDATE_DIGEST_REQUIRED`
 
+CI treats this as the strict `prefinalization` phase. It accepts exactly all
+three expected sentinel occurrences. Once finalization is committed, CI
+switches to `finalized` and requires one immutable application sha256 pin and
+two identical immutable Core sha256 pins. A partial or mixed state is rejected.
+
 They must be replaced with the exact verified multi-architecture candidate
 digests. After substitution, the merged platform Compose must pass validation,
 all images must pull anonymously by digest, init must complete successfully on

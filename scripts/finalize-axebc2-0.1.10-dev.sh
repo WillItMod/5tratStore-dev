@@ -51,7 +51,7 @@ verify_index "$app_tag" "$app_digest"; verify_index "$core_tag" "$core_digest"
 [[ "$(grep -oF CORE31_CANDIDATE_DIGEST_REQUIRED "$compose" | wc -l | tr -d ' ')" == 2 ]] || fail "expected two Core sentinels"
 tmp="$(mktemp "${compose}.finalize.XXXXXX")"
 sed -e "s/APP_CANDIDATE_DIGEST_REQUIRED/${app_digest#sha256:}/g" \
-    -e "s|ghcr.io/willitmod/bitcoinii-core:31.1.0-dev@sha256:CORE31_CANDIDATE_DIGEST_REQUIRED|$core_tag@$core_digest|g" "$compose" >"$tmp"
+    -e "s|$core_tag@sha256:CORE31_CANDIDATE_DIGEST_REQUIRED|$core_tag@$core_digest|g" "$compose" >"$tmp"
 chmod 0644 "$tmp"
 grep -F _DIGEST_REQUIRED "$tmp" >/dev/null && fail "unresolved digest sentinel remains"
 [[ "$(grep -oF "$core_tag@$core_digest" "$tmp" | wc -l | tr -d ' ')" == 2 ]] || fail "Core references differ"

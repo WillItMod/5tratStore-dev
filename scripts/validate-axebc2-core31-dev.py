@@ -9,6 +9,8 @@ import subprocess
 import sys
 import tempfile
 import unittest
+import argparse
+from axebc2_release_state import validate as validate_release_state
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -21,14 +23,15 @@ def require(condition, message):
 
 
 compose = (APP / "docker-compose.yml").read_text(encoding="utf-8")
+parser = argparse.ArgumentParser()
+parser.add_argument("--phase", required=True, choices=("prefinalization", "finalized"))
+phase = parser.parse_args().phase
+try:
+    validate_release_state(compose, phase)
+except ValueError as exc:
+    raise SystemExit(str(exc))
 manifest = (APP / "umbrel-app.yml").read_text(encoding="utf-8")
 node_config = (APP / "data/templates/bitcoinII.conf.template").read_text(encoding="utf-8")
-
-require(
-    "ghcr.io/willitmod/axebc2-app-umbrel-dev:0.1.10-candidate.6e4ef58218e8@sha256:APP_CANDIDATE_DIGEST_REQUIRED"
-    in compose,
-    "DEV app must retain the exact reviewed candidate tag and pending digest",
-)
 
 require('version: "0.1.10-dev"' in manifest, "manifest must be 0.1.10-dev")
 require("Requires 5tratumOS 0.7.11" in manifest, "OS prerequisite must be disclosed")
@@ -53,9 +56,6 @@ require(
 )
 require("natpmp=0" in node_config and "upnp=1" not in node_config, "NAT-PMP must be off")
 require(not re.search(r'^\s+-\s+"?8338:', compose, re.MULTILINE), "P2P must not be published")
-
-for placeholder in ("CORE31_CANDIDATE_DIGEST_REQUIRED", "APP_CANDIDATE_DIGEST_REQUIRED"):
-    require(placeholder in compose, f"pending digest sentinel is missing: {placeholder}")
 
 require(
     compose.count("create_host_path: false") == 9,
