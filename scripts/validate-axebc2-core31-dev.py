@@ -24,6 +24,12 @@ compose = (APP / "docker-compose.yml").read_text(encoding="utf-8")
 manifest = (APP / "umbrel-app.yml").read_text(encoding="utf-8")
 node_config = (APP / "data/templates/bitcoinII.conf.template").read_text(encoding="utf-8")
 
+require(
+    "ghcr.io/willitmod/axebc2-app-umbrel-dev:0.1.10-candidate.6e4ef58218e8@sha256:APP_CANDIDATE_DIGEST_REQUIRED"
+    in compose,
+    "DEV app must retain the exact reviewed candidate tag and pending digest",
+)
+
 require('version: "0.1.10-dev"' in manifest, "manifest must be 0.1.10-dev")
 require("Requires 5tratumOS 0.7.11" in manifest, "OS prerequisite must be disclosed")
 require('"2345:3333/tcp"' in compose, "Stratum host port 2345 must be retained")

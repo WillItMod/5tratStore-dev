@@ -26,6 +26,14 @@ all images must pull anonymously by digest, init must complete successfully on
 5tratumOS 0.7.11+, and the resulting installation must be tested on DEV before
 any production promotion.
 
+Run `scripts/finalize-axebc2-0.1.10-dev.sh` with the exact application index
+digest, exact Core candidate tag and exact Core index digest. The application
+candidate is fixed to `0.1.10-candidate.6e4ef58218e8` from source revision
+`6e4ef58218e8cd5a4d1113196f9872a7f501f52e`. Before editing Compose, the
+finalizer anonymously verifies candidate resolution, amd64 and arm64 manifests
+and pulls. It atomically replaces every sentinel and emits the evidence JSON
+template that must be completed only after live DEV acceptance.
+
 The store validator exercises a pinned copy of the relevant 5tratumOS
 materialization contract from platform commit `4f979cb9541622c1fdccdf43b8a885bbf845ba38`:
 it consumes `app_proxy`, publishes the manifest port on the resolved app
