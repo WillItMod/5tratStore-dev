@@ -37,7 +37,7 @@ resolve_tag() {
   headers="$("$curl_bin" -fsSI -H "Authorization: Bearer $token" \
     -H 'Accept: application/vnd.oci.image.index.v1+json, application/vnd.docker.distribution.manifest.list.v2+json' \
     "https://ghcr.io/v2/${repository}/manifests/${tag}")" || fail "anonymous manifest HEAD failed: $ref"
-  resolved="$(printf '%s\n' "$headers" | awk 'BEGIN{IGNORECASE=1} /^Docker-Content-Digest:/ {gsub("\\r","",$2); print $2}' | tail -n 1)"
+  resolved="$(printf '%s\n' "$headers" | awk 'tolower($0) ~ /^docker-content-digest:/ {sub(/^[^:]*:[[:space:]]*/, ""); sub(/\r$/, ""); print}' | tail -n 1)"
   [[ "$resolved" =~ ^sha256:[0-9a-f]{64}$ ]] || fail "$ref returned a missing or malformed Docker-Content-Digest"
   [[ "$resolved" == "$expected" ]] || fail "$ref resolves to ${resolved:-nothing}, expected $expected"
 }
