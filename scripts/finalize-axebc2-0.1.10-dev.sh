@@ -23,6 +23,13 @@ fail() { echo "ERROR: $*" >&2; exit 1; }
 command -v "$docker_bin" >/dev/null 2>&1 || fail "Docker is required for registry verification"
 command -v "$curl_bin" >/dev/null 2>&1 || fail "curl is required for anonymous registry verification"
 command -v "$jq_bin" >/dev/null 2>&1 || fail "jq is required for anonymous registry verification"
+docker_host="${DOCKER_HOST:-}"
+if [[ -z "$docker_host" ]]; then
+  active_context="$("$docker_bin" context show)" || fail "cannot determine active Docker context"
+  [[ -n "$active_context" ]] || fail "active Docker context is empty"
+  docker_host="$("$docker_bin" context inspect "$active_context" --format '{{.Endpoints.docker.Host}}')" || fail "cannot resolve active Docker daemon endpoint"
+fi
+[[ "$docker_host" =~ ^(unix|tcp|ssh|npipe)://[^[:space:]]+$ ]] || fail "Docker daemon endpoint is missing or malformed"
 
 anon_config="$(mktemp -d "${TMPDIR:-/tmp}/axebc2-anonymous-docker.XXXXXX")"
 cleanup() { rm -rf -- "$anon_config"; }
@@ -43,15 +50,15 @@ resolve_tag() {
 }
 verify_index() {
   local ref="$1" digest="$2" manifest
-  manifest="$("$docker_bin" --config "$anon_config" manifest inspect "$ref@$digest")" || fail "anonymous inspection failed: $ref@$digest"
+  manifest="$("$docker_bin" --host "$docker_host" --config "$anon_config" manifest inspect "$ref@$digest")" || fail "anonymous inspection failed: $ref@$digest"
   python3 -c '
 import json,sys
 d=json.load(sys.stdin); p={(m.get("platform",{}).get("os"),m.get("platform",{}).get("architecture")) for m in d.get("manifests",[])}
 missing={("linux","amd64"),("linux","arm64")}-p
 if missing: raise SystemExit("missing required platforms: "+str(sorted(missing)))
 ' <<<"$manifest" || fail "$ref@$digest is not an amd64+arm64 index"
-  "$docker_bin" --config "$anon_config" pull --platform linux/amd64 "$ref@$digest" >/dev/null || fail "anonymous amd64 pull failed"
-  "$docker_bin" --config "$anon_config" pull --platform linux/arm64 "$ref@$digest" >/dev/null || fail "anonymous arm64 pull failed"
+  "$docker_bin" --host "$docker_host" --config "$anon_config" pull --platform linux/amd64 "$ref@$digest" >/dev/null || fail "anonymous amd64 pull failed"
+  "$docker_bin" --host "$docker_host" --config "$anon_config" pull --platform linux/arm64 "$ref@$digest" >/dev/null || fail "anonymous arm64 pull failed"
 }
 resolve_tag "$app_tag" "$app_digest"; resolve_tag "$core_tag" "$core_digest"
 verify_index "$app_tag" "$app_digest"; verify_index "$core_tag" "$core_digest"
@@ -73,7 +80,7 @@ python3 - "$evidence_tmp" "$app_tag" "$app_digest" "$app_revision" "$core_tag" "
 import json,sys
 path,app_image,app_digest,revision,core_image,core_digest,core_revision=sys.argv[1:]
 with open(path,"w",encoding="utf-8") as h:
- json.dump({"schema":1,"result":"RECORD_passed_AFTER_LIVE_DEV_ACCEPTANCE","app_image":app_image,"app_digest":app_digest,"core_image":core_image,"core_digest":core_digest,"app_version":"0.1.10-dev","source_revision":revision,"core_source_revision":core_revision,"core_candidate_run":33675068951,"tested_on":"RECORD_TEST_NODE","tested_at":"RECORD_ISO_8601_TIMESTAMP","acceptance":{"observed_at":"RECORD_ISO_8601_TIMESTAMP","core_version":"RECORD_INTEGER_VERSION","migration_required_marker_absent":"RECORD_BOOLEAN","migration_complete_marker_valid":"RECORD_BOOLEAN","checkpoint_height":57752,"checkpoint_hash":"000000000000000013ceffe797280c57f75a5b9f1d9e70c3503584058c322576","chainwork":"RECORD_64_HEX_CHAINWORK","ibd":False,"verification_progress":"RECORD_NUMBER","blocks":"RECORD_INTEGER","headers":"RECORD_SAME_INTEGER","best_block_hash":"RECORD_64_HEX_HASH","explorer_common_height":"RECORD_SAME_INTEGER","explorer_common_hash":"RECORD_SAME_64_HEX_HASH","outbound_core31_peers":"RECORD_INTEGER_AT_LEAST_3","verifychain_level":4,"verifychain_passed":"RECORD_BOOLEAN","payout_configured":"RECORD_BOOLEAN","payout_preserved":"RECORD_BOOLEAN","pool_stratum_result":"RECORD_passed","app_ui_privacy_passed":"RECORD_BOOLEAN","telemetry_disabled":"RECORD_BOOLEAN","app_rollback_rejected":"RECORD_BOOLEAN","os_rollback_rejected":"RECORD_BOOLEAN"}},h,indent=2); h.write("\n")
+ json.dump({"schema":1,"result":"RECORD_passed_AFTER_LIVE_DEV_ACCEPTANCE","app_image":app_image,"app_digest":app_digest,"core_image":core_image,"core_digest":core_digest,"app_version":"0.1.10-dev","source_revision":revision,"core_source_revision":core_revision,"core_candidate_run":33675068951,"tested_os_version":"v0.7.12-dev","tested_os_bundle_sha256":"RECORD_64_HEX_OS_BUNDLE_SHA256","tested_on":"RECORD_TEST_NODE","tested_at":"RECORD_ISO_8601_TIMESTAMP","acceptance":{"observed_at":"RECORD_ISO_8601_TIMESTAMP","chain":"main","core_version":"RECORD_INTEGER_VERSION","migration_required_marker_absent":"RECORD_BOOLEAN","migration_started_marker_valid":"RECORD_BOOLEAN","migration_complete_marker_valid":"RECORD_BOOLEAN","checkpoint_height":57752,"checkpoint_hash":"000000000000000013ceffe797280c57f75a5b9f1d9e70c3503584058c322576","chainwork":"RECORD_64_HEX_CHAINWORK","ibd":False,"verification_progress":"RECORD_NUMBER","blocks":"RECORD_INTEGER","headers":"RECORD_SAME_INTEGER","best_block_hash":"RECORD_64_HEX_HASH","explorer_common_height":"RECORD_SAME_INTEGER","explorer_common_hash":"RECORD_SAME_64_HEX_HASH","outbound_core31_peers":"RECORD_INTEGER_AT_LEAST_3","competing_valid_tips":0,"verifychain_level":4,"verifychain_passed":"RECORD_BOOLEAN","payout_configured":"RECORD_BOOLEAN","payout_preserved":"RECORD_BOOLEAN","pool_stratum_result":"RECORD_passed","app_ui_privacy_passed":"RECORD_BOOLEAN","telemetry_disabled":"RECORD_BOOLEAN","p2p_port_unpublished":"RECORD_BOOLEAN","natpmp_disabled":"RECORD_BOOLEAN","post_completion_restart_passed":"RECORD_BOOLEAN","reindex_not_repeated":"RECORD_BOOLEAN","app_rollback_rejected":"RECORD_BOOLEAN","os_rollback_rejected":"RECORD_BOOLEAN"}},h,indent=2); h.write("\n")
 PY
 chmod 0644 "$evidence_tmp"
 mv -f "$tmp" "$compose"; mv -f "$evidence_tmp" "$evidence_output"

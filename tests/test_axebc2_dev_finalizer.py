@@ -26,7 +26,7 @@ class AxeBC2DevFinalizerTests(unittest.TestCase):
         self.fake.write_text("""#!/bin/sh
 set -eu
 printf '%s\\n' "$*" >>"$FAKE_DOCKER_LOG"
-config="$2"; [ "$1" = --config ]; [ "$(cat "$config/config.json")" = '{"auths":{}}' ]; shift 2
+host="$2"; config="$4"; [ "$1" = --host ]; [ "$3" = --config ]; [ -n "$host" ]; [ "$(cat "$config/config.json")" = '{"auths":{}}' ]; shift 4
 if [ "$1 $2" = 'buildx imagetools' ]; then
  case "$4" in
   ghcr.io/willitmod/axebc2-app-umbrel-dev:0.1.10-candidate.6e4ef58218e8) printf 'Digest: %s\\n' "$APP_DIGEST" ;;
@@ -64,7 +64,7 @@ esac
     def tearDown(self): self.temp.cleanup()
 
     def run_it(self, core_tag=CORE_TAG, curl_mode="correct"):
-        env=os.environ.copy(); env.update({"DOCKER_BIN":str(self.fake),"CURL_BIN":str(self.fake_curl),"FAKE_DOCKER_LOG":str(self.log),"FAKE_CURL_LOG":str(self.curl_log),"CURL_DIGEST_MODE":curl_mode,"APP_DIGEST":APP_DIGEST,"CORE_DIGEST":CORE_DIGEST})
+        env=os.environ.copy(); env.update({"DOCKER_BIN":str(self.fake),"DOCKER_HOST":"unix:///tmp/test-colima.sock","CURL_BIN":str(self.fake_curl),"FAKE_DOCKER_LOG":str(self.log),"FAKE_CURL_LOG":str(self.curl_log),"CURL_DIGEST_MODE":curl_mode,"APP_DIGEST":APP_DIGEST,"CORE_DIGEST":CORE_DIGEST})
         return subprocess.run([str(self.root/"scripts"/SCRIPT.name),APP_DIGEST,core_tag,CORE_DIGEST],env=env,text=True,capture_output=True,check=False)
 
     def test_anonymous_candidate_checks_finalize_and_emit_evidence(self):
@@ -81,7 +81,13 @@ esac
         calls=self.log.read_text(encoding="utf-8")
         self.assertEqual(calls.count("--platform linux/amd64"),2); self.assertEqual(calls.count("--platform linux/arm64"),2)
         self.assertNotIn("buildx", calls)
-        self.assertTrue(all("--config" in line for line in calls.splitlines()))
+        self.assertTrue(all("--host unix:///tmp/test-colima.sock --config" in line for line in calls.splitlines()))
+
+    def test_bad_explicit_docker_host_fails_before_registry_or_mutation(self):
+        env=os.environ.copy(); env.update({"DOCKER_BIN":str(self.fake),"DOCKER_HOST":"not-an-endpoint","CURL_BIN":str(self.fake_curl),"FAKE_DOCKER_LOG":str(self.log),"FAKE_CURL_LOG":str(self.curl_log),"APP_DIGEST":APP_DIGEST,"CORE_DIGEST":CORE_DIGEST})
+        result=subprocess.run([str(self.root/"scripts"/SCRIPT.name),APP_DIGEST,CORE_TAG,CORE_DIGEST],env=env,text=True,capture_output=True,check=False)
+        self.assertNotEqual(result.returncode,0); self.assertFalse(self.log.exists()); self.assertFalse(self.curl_log.exists())
+        self.assertEqual((self.root/"willitmod-dev-bc2/docker-compose.yml").read_bytes(),self.original)
 
     def test_bad_registry_digest_headers_fail_without_docker_or_mutation(self):
         for mode in ("wrong", "missing", "malformed"):

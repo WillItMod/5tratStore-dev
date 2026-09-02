@@ -34,7 +34,7 @@ manifest = (APP / "umbrel-app.yml").read_text(encoding="utf-8")
 node_config = (APP / "data/templates/bitcoinII.conf.template").read_text(encoding="utf-8")
 
 require('version: "0.1.10-dev"' in manifest, "manifest must be 0.1.10-dev")
-require("Requires 5tratumOS 0.7.11" in manifest, "OS prerequisite must be disclosed")
+require("Requires 5tratumOS 0.7.12" in manifest, "OS prerequisite must be disclosed")
 require('"2345:3333/tcp"' in compose, "Stratum host port 2345 must be retained")
 require("SUPPORT_CHECKIN_ENABLED: \"false\"" in compose, "telemetry must default off")
 require("create_host_path: false" in compose, "build metadata bind must fail closed")
