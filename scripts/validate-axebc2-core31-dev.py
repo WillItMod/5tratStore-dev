@@ -71,6 +71,12 @@ require("create_host_path: false" in compose, "build metadata bind must fail clo
 require("/etc/5tratumos/build.json" in compose, "build metadata must be mounted")
 require('JWT_SECRET: "${JWT_SECRET}"' in compose, "init must receive the platform JWT secret")
 require(
+    "chown -R 1000:1000 /data/pool/config" in compose
+    and compose.index("chown -R 1000:1000 /data/pool/config")
+    < compose.index("exec /bin/sh /opt/axebc2/init.sh"),
+    "versioned Compose init must keep fresh and preserved CKPool config writable",
+)
+require(
     "chown -R 1000:1000 /data/pool/www" in compose
     and compose.count("$$(stat -c '%u:%g' /data/pool/www") == 3,
     "versioned Compose init must repair the persistent CKPool sharelog tree",
@@ -82,6 +88,10 @@ require(
 require(
     ".5tratumos-rollback-policy.json" in (APP / "data/init/init.sh").read_text(encoding="utf-8"),
     "init must use the policy filename consumed by AxeBC2 and 5tratumOS",
+)
+require(
+    'chown -R 1000:1000 "${data_dir}/pool/config"' in (APP / "data/init/init.sh").read_text(encoding="utf-8"),
+    "seeded init must retain targeted CKPool config ownership repair",
 )
 require(
     "alpine:3.22.1@sha256:4bcff63911fcb4448bd4fdacec207030997caf25e9bea4045fa6c8c44de311d1"

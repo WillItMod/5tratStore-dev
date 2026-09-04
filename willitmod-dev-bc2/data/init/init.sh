@@ -206,12 +206,19 @@ if [ -f "$settings" ]; then
   fi
 fi
 
-# CKPool runs as uid/gid 1000 and creates per-height sharelog directories
+# The app atomically replaces files in pool/config as uid/gid 1000, so the
+# directory itself must remain writable even when a fresh install seeded it as
+# root. This tree is tiny and safe to repair on every initializer run.
+#
+# CKPool also runs as uid/gid 1000 and creates per-height sharelog directories
 # directly under /www. Existing installs can already have a current config and
 # therefore skip the regeneration branch above while /www remains root-owned.
 # Check only the three known writable directories on normal starts; recursively
 # repair the existing sharelog tree once if an upgrade left any of them behind.
 if [ "${AXEBC2_TEST_SKIP_CHOWN:-false}" != "true" ]; then
+  chown -R 1000:1000 "${data_dir}/pool/config" 2>/dev/null ||
+    fail "cannot assign CKPool config data to the app user"
+
   repair_sharelog_ownership=false
   for writable_dir in \
     "${data_dir}/pool/www" \
