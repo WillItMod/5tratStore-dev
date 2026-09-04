@@ -51,7 +51,30 @@ services:
     command:
       - /bin/sh
       - -ec
-      - exec /bin/sh /opt/axebc2/init.sh
+      - |-
+        # 5tratumOS preserves an installed app's data directory during an
+        # update, including its previously seeded init script. Keep this
+        # upgrade repair in the versioned Compose command so 0.1.10 installs
+        # receive it even when /data/init/init.sh is intentionally retained.
+        sharelog_root="/data/pool/www"
+        mkdir -p "$sharelog_root/pool" "$sharelog_root/users"
+        repair_sharelog_ownership=false
+        for writable_dir in \
+          "$sharelog_root" \
+          "$sharelog_root/pool" \
+          "$sharelog_root/users"
+        do
+          owner_group="$(stat -c '%u:%g' "$writable_dir" 2>/dev/null || true)"
+          if [ "$owner_group" != "1000:1000" ]; then
+            repair_sharelog_ownership=true
+            break
+          fi
+        done
+        if [ "$repair_sharelog_ownership" = "true" ]; then
+          chown -R 1000:1000 "$sharelog_root" ||
+            { echo >&2 "cannot assign CKPool sharelog data to uid/gid 1000"; exit 1; }
+        fi
+        exec /bin/sh /opt/axebc2/init.sh
 
   btc2d:
     image: ghcr.io/willitmod/bitcoinii-core:31.1.0-rc.cdf44542dde2@sha256:8875917ece57668fe9925d40a256ce8d429a3071511bb555d4ace1fa4370afc6

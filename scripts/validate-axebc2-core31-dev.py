@@ -71,6 +71,15 @@ require("create_host_path: false" in compose, "build metadata bind must fail clo
 require("/etc/5tratumos/build.json" in compose, "build metadata must be mounted")
 require('JWT_SECRET: "${JWT_SECRET}"' in compose, "init must receive the platform JWT secret")
 require(
+    'sharelog_root="/data/pool/www"' in compose
+    and 'chown -R 1000:1000 "$sharelog_root"' in compose,
+    "versioned Compose init must repair the persistent CKPool sharelog tree",
+)
+require(
+    "previously seeded init script" in compose,
+    "ownership repair must document why it cannot live only in seeded app data",
+)
+require(
     ".5tratumos-rollback-policy.json" in (APP / "data/init/init.sh").read_text(encoding="utf-8"),
     "init must use the policy filename consumed by AxeBC2 and 5tratumOS",
 )
