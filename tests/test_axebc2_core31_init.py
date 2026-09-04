@@ -216,6 +216,44 @@ class AxeBC2InitTests(unittest.TestCase):
         self.assertEqual(chown_log.read_text(encoding="utf-8").splitlines().count(repair), 1)
         self.assertEqual(config.read_text(encoding="utf-8"), original)
 
+    def test_fresh_install_repairs_mutable_pool_config_ownership(self):
+        fake_bin = self.tmp / "fake-bin"
+        fake_bin.mkdir()
+        chown_log = self.tmp / "chown.log"
+        fake_chown = fake_bin / "chown"
+        fake_chown.write_text(
+            "#!/bin/sh\n"
+            'printf "%s\\n" "$*" >> "$AXEBC2_TEST_CHOWN_LOG"\n',
+            encoding="utf-8",
+        )
+        fake_chown.chmod(0o755)
+        fake_stat = fake_bin / "stat"
+        fake_stat.write_text("#!/bin/sh\nprintf '1000:1000\\n'\n", encoding="utf-8")
+        fake_stat.chmod(0o755)
+
+        self.run_init(
+            extra_env={
+                "AXEBC2_TEST_SKIP_CHOWN": "false",
+                "AXEBC2_TEST_CHOWN_LOG": str(chown_log),
+                "PATH": f"{fake_bin}{os.pathsep}{os.environ['PATH']}",
+            }
+        )
+
+        config_dir = self.data / "pool/config"
+        self.assertTrue((config_dir / "ckpool.conf").is_file())
+        self.assertIn(
+            f"-R 1000:1000 {config_dir}",
+            chown_log.read_text(encoding="utf-8").splitlines(),
+        )
+        # Atomic payout saves need directory-level create and replace access.
+        replacement = config_dir / ".ckpool.conf.atomic-test"
+        replacement.write_text("replacement\n", encoding="utf-8")
+        replacement.replace(config_dir / "ckpool.conf")
+        self.assertEqual(
+            (config_dir / "ckpool.conf").read_text(encoding="utf-8"),
+            "replacement\n",
+        )
+
     def test_missing_or_malformed_build_metadata_fails_closed(self):
         self.build.write_text("not-json", encoding="utf-8")
         env = os.environ.copy()
