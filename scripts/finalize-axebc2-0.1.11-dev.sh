@@ -20,6 +20,8 @@ core_tag="ghcr.io/willitmod/bitcoinii-core:31.1.0-rc.cdf44542dde2"
 core_digest="sha256:8875917ece57668fe9925d40a256ce8d429a3071511bb555d4ace1fa4370afc6"
 os_version="v0.7.12-dev"
 os_bundle_sha256="11a35e68ab169eb0446485992a57b33fae018a92020b7d86bbf9a005571377af"
+dev_store_revision="249ab61506dc09c2151d39e2b210f5f18d75ff21"
+dev_compose_sha256="93ceba92069947f47d650a5fb32205836fe070d83707f36912a2e0e83beb1244"
 fail() { echo "ERROR: $*" >&2; exit 1; }
 [[ "$app_digest" =~ ^sha256:[0-9a-f]{64}$ ]] || fail "app digest is not an exact sha256 digest"
 [[ "$core_digest" =~ ^sha256:[0-9a-f]{64}$ ]] || fail "Core digest is not an exact sha256 digest"
@@ -77,11 +79,19 @@ grep -F _DIGEST_REQUIRED "$tmp" >/dev/null && fail "unresolved digest sentinel r
 grep -Fx "    image: $app_tag@$app_digest" "$tmp" >/dev/null || fail "app reference is incorrect"
 grep -Fx "    image: $core_tag@$core_digest" "$tmp" >/dev/null || fail "Core service reference is incorrect"
 grep -Fx "      BTC2D_IMAGE: \"$core_tag@$core_digest\"" "$tmp" >/dev/null || fail "BTC2D_IMAGE is incorrect"
+rendered_compose_sha256="$(python3 - "$tmp" <<'PY'
+import hashlib, sys
+with open(sys.argv[1], "rb") as handle:
+    print(hashlib.sha256(handle.read()).hexdigest())
+PY
+)"
+[[ "$rendered_compose_sha256" == "$dev_compose_sha256" ]] ||
+  fail "finalized DEV Compose SHA-256 differs from the accepted recipe"
 
 evidence_tmp="$(mktemp "${evidence_output}.finalize.XXXXXX")"
-python3 - "$evidence_tmp" "$app_tag" "$app_digest" "$app_revision" "$app_candidate_run" "$core_tag" "$core_digest" "$core_revision" "$os_version" "$os_bundle_sha256" <<'PY'
+python3 - "$evidence_tmp" "$app_tag" "$app_digest" "$app_revision" "$app_candidate_run" "$core_tag" "$core_digest" "$core_revision" "$os_version" "$os_bundle_sha256" "$dev_store_revision" "$dev_compose_sha256" <<'PY'
 import json,sys
-path,app_image,app_digest,revision,app_candidate_run,core_image,core_digest,core_revision,os_version,os_bundle_sha256=sys.argv[1:]
+path,app_image,app_digest,revision,app_candidate_run,core_image,core_digest,core_revision,os_version,os_bundle_sha256,dev_store_revision,dev_compose_sha256=sys.argv[1:]
 payload = {
  "schema": 1,
  "result": "RECORD_passed_AFTER_LIVE_DEV_ACCEPTANCE",
@@ -96,6 +106,8 @@ payload = {
  "core_candidate_run": 33675068951,
  "tested_os_version": os_version,
  "tested_os_bundle_sha256": os_bundle_sha256,
+ "dev_store_revision": dev_store_revision,
+ "dev_compose_sha256": dev_compose_sha256,
  "tested_on": "RECORD_TEST_NODE",
  "tested_at": "RECORD_ISO_8601_TIMESTAMP",
  "acceptance": {
@@ -129,6 +141,7 @@ payload = {
   "pending_payout_revalidation_passed": "RECORD_BOOLEAN",
   "main_payout_banner_hidden": "RECORD_BOOLEAN",
   "ckpool_sharelog_ownership_repaired": "RECORD_BOOLEAN",
+  "pool_config_directory_writable": "RECORD_BOOLEAN",
   "telemetry_disabled": "RECORD_BOOLEAN",
   "p2p_port_unpublished": "RECORD_BOOLEAN",
   "natpmp_disabled": "RECORD_BOOLEAN",

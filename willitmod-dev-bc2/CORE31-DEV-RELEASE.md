@@ -32,13 +32,21 @@ candidate workflow run `33675068951`. Both the DEV finalizer and validator must
 reject any change to that tag, digest, source revision, or the two-reference
 invariant.
 
+The corrected DEV recipe was merged at store revision
+`249ab61506dc09c2151d39e2b210f5f18d75ff21`. The exact finalized
+`docker-compose.yml` tested from that revision has SHA-256
+`93ceba92069947f47d650a5fb32205836fe070d83707f36912a2e0e83beb1244`.
+Acceptance evidence and every downstream promotion gate are bound to both
+values so evidence from the earlier recipe cannot authorize release.
+
 `scripts/finalize-axebc2-0.1.11-dev.sh` accepts the exact application index
 digest once the candidate is available. Before editing Compose, it anonymously
 verifies the application and retained Core tag resolutions, amd64 and arm64
 manifests, and digest pulls. It atomically replaces only the application
-sentinel and emits an evidence template bound to both exact source revisions.
-CI accepts either the complete one-sentinel prefinalization state or the complete
-immutable finalization state; partial or mixed states fail.
+sentinel, verifies that the resulting recipe has the accepted checksum, and
+emits an evidence template bound to both exact source revisions and the corrected
+DEV store recipe. CI accepts either the complete one-sentinel prefinalization
+state or the complete immutable finalization state; partial or mixed states fail.
 
 The test platform remains fixed to the published DEV-only
 [`v0.7.12-dev`](https://github.com/WillItMod/5tratum/releases/tag/v0.7.12-dev)
@@ -68,20 +76,26 @@ competing valid tip at or beyond ShockWave checkpoint height `57,752`.
 That evidence remains valid for the unchanged Core image, but it does not replace
 live acceptance of the new application candidate.
 
-## Required 0.1.11 live DEV acceptance
+## Completed 0.1.11 live DEV acceptance
 
-Exercise installation and update on DEV. Confirm that the existing node chain,
-migration markers, pool configuration, payout address, and rollback policy are
-preserved; no blockchain reindex is started; sync, Explorer, private UI data,
-and the non-submitting Stratum probe work; and telemetry, P2P port, and NAT-PMP
-controls remain unchanged.
+The corrected recipe was installed through the DEV store on `10.10.10.235` and
+accepted at `2026-09-04T17:22:22Z`. The update preserved the existing node chain,
+migration markers, pool configuration, payout address, and rollback policy. It
+did not start another blockchain reindex. The non-submitting Stratum probe passed,
+and telemetry, P2P-port, and NAT-PMP controls remained unchanged.
 
-Specifically verify the payout fix with Core-accepted mainnet `1...`, `3...`, and
-`bc1...` address families. An invalid or wrong-network address and an RPC-not-ready
-condition must both leave the saved pool configuration and payout history
-unchanged. Any legacy pending-validation record must be rechecked at the bounded
-interval and resolve to either validated or a definitive warning. Confirm that a
-MAIN/stable channel value no longer displays the misleading payout warning, and
-that the one-time conditional CKPool `/www` ownership repair makes existing
-sharelog paths writable by uid/gid 1000 without rewriting a current pool config.
-Complete `DEV-ACCEPTANCE-EVIDENCE.json` only after those live checks pass.
+Core `310100` reported main-chain height and headers `58,444`, chainwork
+`00000000000000000000000000000000000000000000fb2888bffb8c3c655c9c`, and best
+block hash `00000000000000001e6ee54b268e62f3f1306a04cdb8f08a30c712e3e1cc3996`.
+The official explorer matched that exact height and hash. Level-4 `verifychain`
+passed, ten outbound Core 31 peers were observed, and there were no competing
+valid tips.
+
+The payout tests covered Core-accepted mainnet `1...`, `3...`, and `bc1...`
+address families. Invalid and RPC-unavailable submissions did not mutate the
+saved configuration, bounded pending validation passed, private UI behavior was
+retained, and the misleading MAIN payout banner remained hidden. The corrected
+initializer left `/data/pool/config` owned by uid/gid 1000; an atomic create and
+replace probe from the uid-1000 application container passed. The targeted config
+repair did not rewrite the current pool configuration, and the conditional
+CKPool `/www` sharelog repair also passed.
