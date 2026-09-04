@@ -71,8 +71,8 @@ require("create_host_path: false" in compose, "build metadata bind must fail clo
 require("/etc/5tratumos/build.json" in compose, "build metadata must be mounted")
 require('JWT_SECRET: "${JWT_SECRET}"' in compose, "init must receive the platform JWT secret")
 require(
-    'sharelog_root="/data/pool/www"' in compose
-    and 'chown -R 1000:1000 "$sharelog_root"' in compose,
+    "chown -R 1000:1000 /data/pool/www" in compose
+    and compose.count("$$(stat -c '%u:%g' /data/pool/www") == 3,
     "versioned Compose init must repair the persistent CKPool sharelog tree",
 )
 require(

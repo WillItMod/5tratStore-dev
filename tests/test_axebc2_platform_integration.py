@@ -62,10 +62,11 @@ def load_policy_module(platform: Path):
 class AxeBC2PlatformIntegrationTests(unittest.TestCase):
     def test_upgrade_repair_is_in_versioned_compose_not_only_seeded_data(self):
         source = COMPOSE.read_text(encoding="utf-8")
-        self.assertIn('sharelog_root="/data/pool/www"', source)
-        self.assertIn('chown -R 1000:1000 "$sharelog_root"', source)
+        self.assertEqual(source.count("$$(stat -c '%u:%g' /data/pool/www"), 3)
+        self.assertIn("chown -R 1000:1000 /data/pool/www", source)
+        self.assertNotIn('"$(stat -c', source)
         self.assertLess(
-            source.index('chown -R 1000:1000 "$sharelog_root"'),
+            source.index("chown -R 1000:1000 /data/pool/www"),
             source.index("exec /bin/sh /opt/axebc2/init.sh"),
         )
 

@@ -56,22 +56,11 @@ services:
         # update, including its previously seeded init script. Keep this
         # upgrade repair in the versioned Compose command so 0.1.10 installs
         # receive it even when /data/init/init.sh is intentionally retained.
-        sharelog_root="/data/pool/www"
-        mkdir -p "$sharelog_root/pool" "$sharelog_root/users"
-        repair_sharelog_ownership=false
-        for writable_dir in \
-          "$sharelog_root" \
-          "$sharelog_root/pool" \
-          "$sharelog_root/users"
-        do
-          owner_group="$(stat -c '%u:%g' "$writable_dir" 2>/dev/null || true)"
-          if [ "$owner_group" != "1000:1000" ]; then
-            repair_sharelog_ownership=true
-            break
-          fi
-        done
-        if [ "$repair_sharelog_ownership" = "true" ]; then
-          chown -R 1000:1000 "$sharelog_root" ||
+        mkdir -p /data/pool/www/pool /data/pool/www/users
+        if [ "$$(stat -c '%u:%g' /data/pool/www 2>/dev/null || true)" != "1000:1000" ] ||
+           [ "$$(stat -c '%u:%g' /data/pool/www/pool 2>/dev/null || true)" != "1000:1000" ] ||
+           [ "$$(stat -c '%u:%g' /data/pool/www/users 2>/dev/null || true)" != "1000:1000" ]; then
+          chown -R 1000:1000 /data/pool/www ||
             { echo >&2 "cannot assign CKPool sharelog data to uid/gid 1000"; exit 1; }
         fi
         exec /bin/sh /opt/axebc2/init.sh
