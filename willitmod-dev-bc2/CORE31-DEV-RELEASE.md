@@ -57,3 +57,25 @@ update commands, so invoking the live implementation from isolated store CI
 would require performing a stateful platform transaction. Final DEV acceptance
 therefore still runs the real platform materializer and validates its generated
 Compose file before containers are started.
+
+## Live DEV acceptance
+
+The exact finalized candidate was accepted on `10.10.10.235` using the pinned
+5tratumOS `v0.7.12-dev` bundle on 2026-09-04. The mandatory Core 31 full reindex
+completed, its protected migration markers validated, and a subsequent full app
+restart did not repeat the reindex. Core reported version `310100`, completed a
+level-4 `verifychain`, and matched the official BitcoinII explorer at height
+58,433 and block hash
+`0000000000000001077a5ea39eefb3a44e5d88357c723f56484840a7f89c5554`.
+
+Five outbound BitcoinII Core 31 peers were observed. Six historical one-block
+header branches ended between heights 53,093 and 53,209, all before the
+ShockWave checkpoint; no non-active valid tip existed at or beyond checkpoint
+height 57,752, so the recorded number of competing valid tips is zero.
+
+The non-submitting Stratum probe received subscribe, authorize, difficulty and
+job notifications. The configured payout was compared using a private HMAC and
+remained unchanged. The UI/privacy checks, telemetry and port-exposure checks,
+post-completion restart, app rollback rejection and OS rollback rejection all
+passed. All 39 unrelated application containers retained their preflight image
+and container identifiers.
