@@ -1,4 +1,5 @@
 import json
+import hashlib
 import os
 import re
 from pathlib import Path
@@ -10,10 +11,12 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts/finalize-axebc2-0.1.11-dev.sh"
 COMPOSE = ROOT / "willitmod-dev-bc2/docker-compose.yml"
-APP_DIGEST = "sha256:" + "a" * 64
+APP_DIGEST = "sha256:23a7962e223da5549eba52697c6f4cfa16ab74cba935c68c48148a4c515302b4"
 CORE_DIGEST = "sha256:8875917ece57668fe9925d40a256ce8d429a3071511bb555d4ace1fa4370afc6"
 CORE_TAG = "31.1.0-rc.cdf44542dde2"
 OS_BUNDLE_SHA256 = "11a35e68ab169eb0446485992a57b33fae018a92020b7d86bbf9a005571377af"
+DEV_STORE_REVISION = "249ab61506dc09c2151d39e2b210f5f18d75ff21"
+DEV_COMPOSE_SHA256 = "93ceba92069947f47d650a5fb32205836fe070d83707f36912a2e0e83beb1244"
 
 class AxeBC2DevFinalizerTests(unittest.TestCase):
     def setUp(self):
@@ -77,6 +80,7 @@ esac
         result=self.run_it(); self.assertEqual(result.returncode,0,result.stderr)
         compose=(self.root/"willitmod-dev-bc2/docker-compose.yml").read_text(encoding="utf-8")
         self.assertNotIn("_DIGEST_REQUIRED",compose)
+        self.assertEqual(hashlib.sha256(compose.encode()).hexdigest(),DEV_COMPOSE_SHA256)
         core_ref="ghcr.io/willitmod/bitcoinii-core:"+CORE_TAG+"@"+CORE_DIGEST
         self.assertEqual(compose.count(core_ref),2)
         evidence=json.loads((self.root/"willitmod-dev-bc2/DEV-ACCEPTANCE-EVIDENCE.json").read_text(encoding="utf-8"))
@@ -87,11 +91,24 @@ esac
         self.assertEqual(evidence["core_candidate_run"],33675068951)
         self.assertEqual(evidence["tested_os_version"],"v0.7.12-dev")
         self.assertEqual(evidence["tested_os_bundle_sha256"],OS_BUNDLE_SHA256)
+        self.assertEqual(evidence["dev_store_revision"],DEV_STORE_REVISION)
+        self.assertEqual(evidence["dev_compose_sha256"],DEV_COMPOSE_SHA256)
+        self.assertEqual(evidence["acceptance"]["pool_config_directory_writable"],"RECORD_BOOLEAN")
         self.assertEqual(evidence["app_digest"],APP_DIGEST); self.assertEqual(evidence["core_digest"],CORE_DIGEST)
         calls=self.log.read_text(encoding="utf-8")
         self.assertEqual(calls.count("--platform linux/amd64"),2); self.assertEqual(calls.count("--platform linux/arm64"),2)
         self.assertNotIn("buildx", calls)
         self.assertTrue(all("--host unix:///tmp/test-colima.sock --config" in line for line in calls.splitlines()))
+
+    def test_recipe_drift_fails_before_compose_or_evidence_mutation(self):
+        compose=self.root/"willitmod-dev-bc2/docker-compose.yml"
+        compose.write_bytes(compose.read_bytes()+b"\n# unexpected recipe drift\n")
+        original=compose.read_bytes()
+        result=self.run_it()
+        self.assertNotEqual(result.returncode,0)
+        self.assertIn("finalized DEV Compose SHA-256 differs",result.stderr)
+        self.assertEqual(compose.read_bytes(),original)
+        self.assertFalse((self.root/"willitmod-dev-bc2/DEV-ACCEPTANCE-EVIDENCE.json").exists())
 
     def test_bad_explicit_docker_host_fails_before_registry_or_mutation(self):
         env=os.environ.copy(); env.update({"DOCKER_BIN":str(self.fake),"DOCKER_HOST":"not-an-endpoint","CURL_BIN":str(self.fake_curl),"FAKE_DOCKER_LOG":str(self.log),"FAKE_CURL_LOG":str(self.curl_log),"APP_DIGEST":APP_DIGEST,"CORE_DIGEST":CORE_DIGEST})
