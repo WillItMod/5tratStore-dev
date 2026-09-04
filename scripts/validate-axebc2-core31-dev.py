@@ -34,7 +34,30 @@ manifest = (APP / "umbrel-app.yml").read_text(encoding="utf-8")
 node_config = (APP / "data/templates/bitcoinII.conf.template").read_text(encoding="utf-8")
 evidence = json.loads((APP / "DEV-ACCEPTANCE-EVIDENCE.json").read_text(encoding="utf-8"))
 
-require('version: "0.1.10-dev"' in manifest, "manifest must be 0.1.10-dev")
+require('version: "0.1.11-dev"' in manifest, "manifest must be 0.1.11-dev")
+require(evidence.get("app_version") == "0.1.11-dev", "evidence must name the 0.1.11 DEV app version")
+require(
+    evidence.get("app_image")
+    == "ghcr.io/willitmod/axebc2-app-umbrel-dev:0.1.11-candidate.ecf6e2c8cfd0",
+    "evidence must name the exact application candidate tag",
+)
+require(
+    evidence.get("source_revision") == "ecf6e2c8cfd0e42ea53d3cc146b18cd6d4c4b563",
+    "evidence must name the exact application source revision",
+)
+require(
+    evidence.get("app_digest")
+    == "sha256:23a7962e223da5549eba52697c6f4cfa16ab74cba935c68c48148a4c515302b4",
+    "evidence must name the exact application index digest",
+)
+require(evidence.get("app_candidate_run") == 33895447789, "evidence must name the application candidate workflow run")
+require(
+    evidence.get("core_image") == "ghcr.io/willitmod/bitcoinii-core:31.1.0-rc.cdf44542dde2"
+    and evidence.get("core_digest")
+    == "sha256:8875917ece57668fe9925d40a256ce8d429a3071511bb555d4ace1fa4370afc6"
+    and evidence.get("core_source_revision") == "cdf44542dde255648008249d187fafc15f3a2f09",
+    "evidence must retain the accepted Core 31 tag, digest, and source revision",
+)
 require("Requires 5tratumOS 0.7.12" in manifest, "OS prerequisite must be disclosed")
 require(evidence.get("tested_os_version") == "v0.7.12-dev", "evidence must name the tested DEV OS release")
 require(
@@ -101,8 +124,7 @@ def validate_platform_merged_compose():
         build_metadata = temp / "build.json"
         build_metadata.write_text('{"tag":"v0.7.12-dev"}\n', encoding="utf-8")
         source.write_text(
-            compose.replace("CORE31_CANDIDATE_DIGEST_REQUIRED", "a" * 64)
-            .replace("APP_CANDIDATE_DIGEST_REQUIRED", "b" * 64)
+            compose.replace("APP_CANDIDATE_DIGEST_REQUIRED", "b" * 64)
             .replace("/etc/5tratumos/build.json", str(build_metadata)),
             encoding="utf-8",
         )
