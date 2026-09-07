@@ -6,12 +6,58 @@ The generated template uses `hooks/umbrel-init` and `hooks/umbrel-ckpool` as
 container entrypoints, so an older initializer preserved under `data/` cannot
 block an upgraded Umbrel installation.
 
-5tratumOS consumes `docker-compose.yml` directly. Its platform integration and
-`data/init/init.sh` remain unchanged, including the minimum OS check. The DEV
-0.1.14 recipe updates Umbrel export handling, gateway hostname discovery, and
-the aligned application version. The Umbrel template needs no 5tratumOS host
-file. Native and Umbrel recipes share the same pinned application and retain
-the existing Core 31, CKPool, and initialization images.
+5tratumOS consumes `docker-compose.yml` directly. Its initializer
+`data/init/init.sh` retains the minimum OS check and migration safeguards. The
+Umbrel template needs no 5tratumOS host file. Native and Umbrel recipes share
+the same pinned application and retain the existing Core 31, CKPool, and
+initialization images.
+
+## Umbrel 1.7.4 packaging repair 0.1.15-dev
+
+Umbrel 1.7.4 reads the shipped Compose file before its shell installer renders
+templates. Its `App.patchComposeFile()` treats every `service.volumes` entry as
+a string and calls `.replace()` on it. The long-form bind objects in the 0.1.14
+package therefore fail immediately, before image downloads or initialization.
+The same patch runs against a previously rendered file on start, and after
+template rendering during updates; both Compose forms must satisfy it.
+
+The 0.1.15-dev package keeps service volume entries as short strings backed by
+project-scoped local-driver bind volumes. Each volume still binds the exact
+existing host directory, and fails if that directory is missing. `nocopy`
+prevents Docker from populating those directories from image contents.
+Read-only file mounts use file-backed Compose configs, which reject missing
+source files instead of creating directories in their place. The native
+`/etc/5tratumos/build.json` mount remains read-only at the same container path.
+The Umbrel template omits that config and supplies its initializer and CKPool
+entrypoint through configs pointing to the refreshed `hooks/` files. The
+read-only CKPool config directory also retains its write protection.
+
+This changes mount representation; all nine effective native host mounts,
+container users, node/pool/initialization image pins, commands, dependency order, network behavior and
+persistent paths are preserved. The native initializer is unchanged, including
+the OS floor, Core 31 migration checks, payout preservation and rollback policy.
+The template declares the `${APP_ID}_<service>_1` container names that Umbrel
+1.7.4 expects, so rendering does not discard names inserted by its earlier patch.
+
+Regression tests execute the relevant 1.7.4 patch statements against both
+Compose forms in install/start/update order. The accepted 0.1.14 recipe fixture
+reproduces the original TypeError. A semantic comparison verifies the complete
+native container contract and mount permissions rather than blessing a new
+whole-file hash. The optional Docker tests exercise missing file/directory
+rejection and attempted writes to the read-only file and directory mounts:
+
+```sh
+AXEBC2_TEST_DOCKER_RUNTIME=1 python3 -m unittest discover -s tests -p 'test_axebc2_mount_runtime.py' -v
+```
+
+Run these tests on the Docker host with the pinned Alpine image already
+available. They create isolated temporary files, containers and project volumes,
+and clean them up afterwards. Package and application versions align at
+0.1.15-dev, using the same verified application digest as MAIN 0.1.15.
+The node, CKPool, and initialization image pins retain their accepted values.
+
+Upstream source:
+https://github.com/getumbrel/umbrel/blob/1.7.4/packages/umbreld/source/modules/apps/app.ts#L100-L219
 
 The generated Umbrel initializer retains migration-marker validation, reindex
 requirements, payout preservation, data ownership repair, and the persistent
@@ -64,9 +110,11 @@ Automated validation: 33 DEV tests and 40 MAIN tests passed. Real Umbrel
 installation, authenticated opening, and upgrade remain pending VM access.
 
 The BETA application candidate is bound in `BETA-RELEASE-EVIDENCE.json`.
-Historical Core 31 acceptance remains tied to 0.1.11. Validation permits only
-the explicit BETA application-image and stage changes relative to that recipe;
-any other change to the native recipe fails the baseline hash check.
+Historical Core 31 acceptance remains tied to 0.1.11. The original 0.1.14-dev
+fixture retains its baseline hash after reversing the explicit BETA app-image
+and stage changes. Validation compares the current recipe with that verified
+fixture, preserving all effective mounts and non-mount runtime settings while
+allowing the app release image to advance through the exact-pin release gate.
 
 ## Aligned release 0.1.13
 
@@ -108,3 +156,9 @@ completed migrations retain their record. Node and pool configuration were
 preserved. No payout address was configured on this new VM, so actual mining
 and share submission were not exercised. See RELEASE-0.1.14-EVIDENCE.json for
 precise validation scope and results; older observations above are historical.
+
+The equivalent MAIN 0.1.15 packaging passed live Umbrel 1.7.4 amd64 install,
+update, stop/start and VM reboot recovery. Configuration and chain data were
+preserved. DEV lifecycle was covered by automated parser and Docker mount tests;
+this release did not run a separate live DEV installation or a new Umbrel 2 VM
+test. See `RELEASE-0.1.15-EVIDENCE.json` for exact validation scope.

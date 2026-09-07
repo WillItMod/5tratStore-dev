@@ -12,7 +12,9 @@ import sys
 import tempfile
 import unittest
 import argparse
-from axebc2_release_state import validate as validate_release_state, validate_rendered_binds, APP_TAG as CURRENT_APP_TAG, APP_DIGEST as CURRENT_APP_DIGEST
+import yaml
+from axebc2_release_state import validate as validate_release_state, APP_DIGEST as CURRENT_APP_DIGEST
+from axebc2_mount_contract import effective_mounts
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -42,25 +44,52 @@ manifest = (APP / "umbrel-app.yml").read_text(encoding="utf-8")
 node_config = (APP / "data/templates/bitcoinII.conf.template").read_text(encoding="utf-8")
 evidence = json.loads((APP / "DEV-ACCEPTANCE-EVIDENCE.json").read_text(encoding="utf-8"))
 
-# Preserve the original Core 31 acceptance binding. This release changes only
-# the UI image and DEV stage; undo those two explicit changes for the baseline
-# check, so any unrelated runtime/configuration change is still rejected.
+# Bind the accepted 0.1.14 recipe fixture to the original Core 31 evidence.
+# Mount notation may change for Umbrel 1.7.4, but every effective host source,
+# target, permission and all non-mount runtime settings must remain identical.
 finalized_compose = compose.replace(
     "APP_CANDIDATE_DIGEST_REQUIRED", CURRENT_APP_DIGEST.removeprefix("sha256:")
 )
 require('APP_CHANNEL: "BETA"' in finalized_compose, "DEV stage must be BETA")
-baseline_compose = finalized_compose.replace(
-    CURRENT_APP_TAG + "@" + CURRENT_APP_DIGEST,
+accepted_compose = (ROOT / "tests/fixtures/axebc2_0_1_14_native.yml").read_text()
+accepted_recipe = yaml.safe_load(accepted_compose)
+current_recipe = yaml.safe_load(finalized_compose)
+baseline_compose = accepted_compose.replace(
+    accepted_recipe["services"]["app"]["image"],
     "ghcr.io/willitmod/axebc2-app-umbrel-dev:0.1.11-candidate.ecf6e2c8cfd0@" + APP_DIGEST,
 ).replace('APP_CHANNEL: "BETA"', 'APP_CHANNEL: "ALPHA"')
 computed_compose_sha256 = hashlib.sha256(baseline_compose.encode()).hexdigest()
 require(
     computed_compose_sha256 == DEV_COMPOSE_SHA256,
-    "DEV runtime differs from its accepted baseline beyond the BETA UI image/stage",
+    "accepted DEV fixture differs from its original Core 31 acceptance evidence",
+)
+try:
+    accepted_mounts = effective_mounts(accepted_recipe)
+    current_mounts = effective_mounts(current_recipe)
+except ValueError as exc:
+    raise SystemExit(str(exc))
+require(
+    current_mounts == accepted_mounts and len(current_mounts) == 9,
+    "DEV mounts must preserve all nine accepted host sources, targets, and permissions",
+)
+require(
+    all("name" not in definition for definition in current_recipe.get("volumes", {}).values()),
+    "DEV local bind volumes must remain scoped to the Compose project",
+)
+for recipe in (accepted_recipe, current_recipe):
+    recipe.pop("volumes", None)
+    recipe.pop("configs", None)
+    for service in recipe["services"].values():
+        service.pop("volumes", None)
+        service.pop("configs", None)
+    recipe["services"]["app"]["image"] = "application-release-image"
+require(
+    current_recipe == accepted_recipe,
+    "DEV runtime differs from its accepted baseline beyond mount notation and the app release image",
 )
 
 # BETA release; the historical Core 31 baseline evidence below remains 0.1.11-dev.
-require('version: "0.1.14-dev"' in manifest, "manifest must be 0.1.14-dev")
+require('version: "0.1.15-dev"' in manifest, "manifest must be 0.1.15-dev")
 require(evidence.get("app_version") == "0.1.11-dev", "evidence must name the 0.1.11 DEV app version")
 require(
     evidence.get("app_image")
@@ -211,7 +240,6 @@ else:
     )
 require('"2345:3333/tcp"' in compose, "Stratum host port 2345 must be retained")
 require("SUPPORT_CHECKIN_ENABLED: \"false\"" in compose, "telemetry must default off")
-require("create_host_path: false" in compose, "build metadata bind must fail closed")
 require("/etc/5tratumos/build.json" in compose, "build metadata must be mounted")
 require('JWT_SECRET: "${JWT_SECRET}"' in compose, "init must receive the platform JWT secret")
 require(
@@ -249,12 +277,6 @@ require(
 )
 require("natpmp=0" in node_config and "upnp=1" not in node_config, "NAT-PMP must be off")
 require(not re.search(r'^\s+-\s+"?8338:', compose, re.MULTILINE), "P2P must not be published")
-
-require(
-    compose.count("create_host_path: false") == 9,
-    "every AxeBC2 host bind must disable implicit source-path creation",
-)
-
 
 def yaml_python():
     candidates = [os.environ.get("YAML_PYTHON"), "/usr/bin/python3", sys.executable]
@@ -309,6 +331,15 @@ with open(sys.argv[2], 'w', encoding='utf-8') as handle:
         rendered_contract = contract.materialize_compose(
             json.loads(parsed.read_text(encoding="utf-8")), 21219
         )
+        try:
+            declared_mounts = effective_mounts(rendered_contract)
+        except ValueError as exc:
+            raise SystemExit(str(exc))
+        require(len(declared_mounts) == 9, "the nine accepted native host mounts must remain")
+        require(
+            ("init", str(build_metadata), str(build_metadata), True) in declared_mounts,
+            "native metadata must remain an exact-path read-only file mount",
+        )
         merged.write_text(json.dumps(rendered_contract), encoding="utf-8")
         env = os.environ.copy()
         env.update(
@@ -353,9 +384,22 @@ with open(sys.argv[2], 'w', encoding='utf-8') as handle:
             "Core must wait for successful init completion",
         )
         try:
-            validate_rendered_binds(rendered_contract, rendered, {"APP_DATA_DIR": str(app_data)})
+            rendered_mounts = effective_mounts(rendered)
         except ValueError as exc:
             raise SystemExit(str(exc))
+        expected_mounts = sorted(
+            (service, source.replace("${APP_DATA_DIR}", str(app_data)), target, readonly)
+            for service, source, target, readonly in declared_mounts
+        )
+        require(
+            rendered_mounts == expected_mounts,
+            "Docker Compose changed the exact host sources, targets, or write permissions",
+        )
+        for service, source, target, _ in rendered_mounts:
+            require(
+                Path(source).exists(),
+                f"rendered mount source was not pre-staged: service={service} source={source} target={target}",
+            )
 
 
 validate_platform_merged_compose()

@@ -11,9 +11,8 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
-from axebc2_release_state import APP_TAG as CURRENT_APP_TAG, APP_DIGEST as CURRENT_APP_DIGEST
 SCRIPT = ROOT / "scripts/finalize-axebc2-0.1.11-dev.sh"
-COMPOSE = ROOT / "willitmod-dev-bc2/docker-compose.yml"
+COMPOSE = ROOT / "tests/fixtures/axebc2_0_1_14_native.yml"
 APP_DIGEST = "sha256:23a7962e223da5549eba52697c6f4cfa16ab74cba935c68c48148a4c515302b4"
 CORE_DIGEST = "sha256:8875917ece57668fe9925d40a256ce8d429a3071511bb555d4ace1fa4370afc6"
 CORE_TAG = "31.1.0-rc.cdf44542dde2"
@@ -28,10 +27,11 @@ class AxeBC2DevFinalizerTests(unittest.TestCase):
         (self.root / "scripts").mkdir(); (self.root / "willitmod-dev-bc2").mkdir()
         shutil.copy2(SCRIPT, self.root / "scripts" / SCRIPT.name)
         # This finalizer belongs to 0.1.11. Restore that exact UI pin/stage
-        # before exercising its historical acceptance workflow.
+        # from the original native fixture before exercising its historical
+        # acceptance workflow; later mount notation is validated separately.
         fixture = COMPOSE.read_text(encoding="utf-8")
         fixture = fixture.replace(
-            CURRENT_APP_TAG + "@" + CURRENT_APP_DIGEST,
+            "ghcr.io/willitmod/axebc2-app-umbrel-dev:0.1.14-dev@sha256:57903091f4b89c297e2adfd741eef834aed2b4ec4a1eee65d64000da770fa4ca",
             "ghcr.io/willitmod/axebc2-app-umbrel-dev:0.1.11-candidate.ecf6e2c8cfd0@" + APP_DIGEST,
         ).replace('APP_CHANNEL: "BETA"', 'APP_CHANNEL: "ALPHA"')
         fixture = re.sub(r"(ghcr\.io/willitmod/axebc2-app-umbrel-dev:0\.1\.11-candidate\.ecf6e2c8cfd0@sha256:)[0-9a-f]{64}", r"\1APP_CANDIDATE_DIGEST_REQUIRED", fixture)
