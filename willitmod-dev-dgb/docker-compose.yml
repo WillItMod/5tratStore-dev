@@ -85,7 +85,7 @@ services:
         done
 
   init:
-    image: ghcr.io/willitmod/axedgb-init:0.9.180-dev
+    image: ghcr.io/willitmod/axedgb-init:0.9.181-dev
     depends_on:
       init_permissions:
         condition: service_completed_successfully
@@ -1009,7 +1009,7 @@ services:
         init_status ready
 
   dgbd:
-    image: ghcr.io/willitmod/axedgb-core:0.9.180-dev
+    image: ghcr.io/willitmod/axedgb-core:0.9.181-dev
     user: "1000:1000"
     restart: unless-stopped
     stop_grace_period: 15m30s
@@ -1065,7 +1065,7 @@ services:
       - ${APP_DATA_DIR}/data/pool/config/coins.json:/app/coins.json:ro
 
   app:
-    image: ghcr.io/willitmod/axedgb-app:0.9.180-dev
+    image: ghcr.io/willitmod/axedgb-app:0.9.181-dev
     user: "1000:1000"
     restart: on-failure
     stop_grace_period: 30s
@@ -1103,7 +1103,7 @@ services:
       WORKER_ACTIVE_SECONDS: "300"
       APP_CHANNEL: "RC6"
       APP_VERSION_SUFFIX: "-dev"
-      DGB_IMAGE: "ghcr.io/willitmod/axedgb-core:0.9.180-dev"
+      DGB_IMAGE: "ghcr.io/willitmod/axedgb-core:0.9.181-dev"
       MININGCORE_IMAGE: "ghcr.io/willitmod/axedgb-miningcore:axedgb-0.8.10-r26"
       POSTGRES_IMAGE: "postgres:16-alpine"
       STATIC_DIR: "/app/static"
