@@ -2,16 +2,17 @@ manifestVersion: 1
 id: willitmod-dev-dgb
 category: altcoin
 name: AxeDGB
-version: "0.9.179-dev"
+version: "0.9.180-dev"
 tagline: DGB node + solo pool
 description: >-
   RC6 RELEASE (DEV CHANNEL)
 
   AxeDGB is functional and has successfully found blocks. This build remains on
-  the dev channel for final soak testing and pool/node tuning. This update makes
-  DigiByte Core startup progress visible, reduces peak RAM pressure on shared nodes,
-  and moves the node to Core 9.26.5, which fixes the long DigiDollar oracle startup
-  delay seen in 9.26.4.
+  the dev channel for final soak testing and pool/node tuning. This update adds
+  actual Core RAM and swap measurements, conservative database-cache sizing, and
+  a configurable memory guard that shuts Core down cleanly and holds it paused
+  until resumed. Setup tools are bundled so installation no longer depends on
+  Alpine package mirrors at startup. Core remains at 9.26.5.
 
   Verify payout addresses before mining and send helpful feedback if anything
   behaves oddly.
