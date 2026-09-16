@@ -32,7 +32,7 @@ Development/test app store for WillItMod apps.
 - **AxePPC** (`willitmod-dev-ppc`) - `0.2.30-dev`
 - **AxeXEC** (`willitmod-dev-xec`) - `0.1.14-dev`
 - **5tratSmack** (`willitmod-dev-5tratsmack`) - `0.11.13`
-- **PowPow** (`willitmod-dev-powpow`) - `0.2.31-dev`
+- **PowPow** (`willitmod-dev-powpow`) - `0.2.32-dev`
 
 Use the app manifest in each app directory as the current source of truth for the store-visible version number.
 
