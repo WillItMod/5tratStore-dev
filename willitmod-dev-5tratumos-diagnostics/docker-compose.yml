@@ -22,7 +22,7 @@ services:
       HOST_PROC: /host/proc
       HOST_VAR_LOG: /host/var-log
       HOST_DOCKER_CONTAINERS: /host/docker-containers
-      HOST_JOURNAL: /host/run-log-journal
+      HOST_JOURNAL: /host/var-log-journal
     volumes:
       - ${APP_DATA_DIR}/data:/data
       - ${FIVETRAT_TARGET_APP_DATA_PATH:-/opt/5tratumos/app-data/5tratsmack}:/target-app-data:ro
@@ -32,4 +32,4 @@ services:
       - /proc:/host/proc:ro
       - /var/log:/host/var-log:ro
       - /var/lib/docker/containers:/host/docker-containers:ro
-      - /run/log/journal:/host/run-log-journal:ro
+      - /var/log/journal:/host/var-log-journal:ro
