@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-axediagnostics
 category: utilities
 name: 5tratumOS Diagnostics
-version: "0.1.0"
+version: "0.1.1"
 tagline: Find node faults and download an email-ready support archive
 description: >-
   A read-only support GUI for 5tratumOS nodes. Select the 5tratumOS host,

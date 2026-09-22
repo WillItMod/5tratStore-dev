@@ -5,7 +5,7 @@ services:
       APP_PORT: 3000
 
   app:
-    image: ghcr.io/willitmod/5tratumos-diagnostics:0.1.0
+    image: ghcr.io/willitmod/5tratumos-diagnostics:0.1.1@sha256:e768c27b46d13216ed811fac9c2fe8690ce3b3b51957151f5f830baf6c0f44e8
     restart: unless-stopped
     read_only: true
     security_opt:
@@ -13,7 +13,7 @@ services:
     tmpfs:
       - /tmp
     environment:
-      APP_VERSION: "0.1.0"
+      APP_VERSION: "0.1.1"
       EXPORT_DIR: /data/exports
       TARGET_DATA_DIR: /target-app-data
       TARGET_APP_ROOT: /target-app-root
@@ -25,9 +25,9 @@ services:
       HOST_JOURNAL: /host/var-log-journal
     volumes:
       - ${APP_DATA_DIR}/data:/data
-      - ${FIVETRAT_TARGET_APP_DATA_PATH:-/opt/5tratumos/app-data/5tratsmack}:/target-app-data:ro
+      - ${FIVETRAT_TARGET_APP_DATA_PATH:-/var/lib/5tratumos/apps/5tratsmack}:/target-app-data:ro
       - ${FIVETRAT_TARGET_APP_ROOT_PATH:-/opt/5tratumos/apps/5tratsmack}:/target-app-root:ro
-      - ${FIVETRAT_TARGET_APP_DATA_ROOT_PATH:-/opt/5tratumos/app-data}:/target-app-data-root:ro
+      - ${FIVETRAT_TARGET_APP_DATA_ROOT_PATH:-/var/lib/5tratumos/apps}:/target-app-data-root:ro
       - ${FIVETRAT_TARGET_APPS_ROOT_PATH:-/opt/5tratumos/apps}:/target-apps:ro
       - /proc:/host/proc:ro
       - /var/log:/host/var-log:ro
