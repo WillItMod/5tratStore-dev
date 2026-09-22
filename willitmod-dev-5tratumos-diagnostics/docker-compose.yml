@@ -1,0 +1,35 @@
+services:
+  app_proxy:
+    environment:
+      APP_HOST: app
+      APP_PORT: 3000
+
+  app:
+    image: ghcr.io/willitmod/5tratumos-diagnostics:0.1.0
+    restart: unless-stopped
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp
+    environment:
+      APP_VERSION: "0.1.0"
+      EXPORT_DIR: /data/exports
+      TARGET_DATA_DIR: /target-app-data
+      TARGET_APP_ROOT: /target-app-root
+      TARGET_APP_DATA_ROOT: /target-app-data-root
+      TARGET_APPS_ROOT: /target-apps
+      HOST_PROC: /host/proc
+      HOST_VAR_LOG: /host/var-log
+      HOST_DOCKER_CONTAINERS: /host/docker-containers
+      HOST_JOURNAL: /host/var-log-journal
+    volumes:
+      - ${APP_DATA_DIR}/data:/data
+      - ${FIVETRAT_TARGET_APP_DATA_PATH:-/opt/5tratumos/app-data/5tratsmack}:/target-app-data:ro
+      - ${FIVETRAT_TARGET_APP_ROOT_PATH:-/opt/5tratumos/apps/5tratsmack}:/target-app-root:ro
+      - ${FIVETRAT_TARGET_APP_DATA_ROOT_PATH:-/opt/5tratumos/app-data}:/target-app-data-root:ro
+      - ${FIVETRAT_TARGET_APPS_ROOT_PATH:-/opt/5tratumos/apps}:/target-apps:ro
+      - /proc:/host/proc:ro
+      - /var/log:/host/var-log:ro
+      - /var/lib/docker/containers:/host/docker-containers:ro
+      - /var/log/journal:/host/var-log-journal:ro
