@@ -1,7 +1,7 @@
 services:
   app_proxy:
     environment:
-      APP_HOST: willitmod-dev-5tratumos-diagnostics_app_1
+      APP_HOST: app
       APP_PORT: 3000
 
   app:
