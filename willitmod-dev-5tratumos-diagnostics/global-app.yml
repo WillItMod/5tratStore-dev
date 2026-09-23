@@ -2,9 +2,13 @@ manifestVersion: 1
 id: willitmod-dev-axediagnostics
 category: utilities
 name: 5tratumOS Diagnostics
-version: "0.1.3"
+version: "0.1.4"
 tagline: Find node faults and download an email-ready support archive
 description: >-
+  Support and diagnostics included with a paid 5tratMux licence on this
+  5tratumOS node. Annual and lifetime licences unlock the app; trials do not.
+  Without a valid licence, the app shows activation instructions. The runtime
+  uses a compiled backend and signed local licence verification.
   A read-only support GUI for 5tratumOS nodes. Select the 5tratumOS host,
   5tratMux, 5tratSmack, AxeDGB, AxeBTC or another installed app; review
   memory, swap, storage and pressure, seven days of monitoring, and separate
