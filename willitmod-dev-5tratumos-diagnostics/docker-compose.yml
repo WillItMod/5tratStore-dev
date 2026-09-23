@@ -5,15 +5,18 @@ services:
       APP_PORT: 3000
 
   app:
-    image: ghcr.io/willitmod/5tratumos-diagnostics:0.1.4@sha256:537dc83afd0e19d6ca1f28235fe38dcab446ae249dc28b307625fbed79ee1c18
+    image: ghcr.io/willitmod/5tratumos-diagnostics:0.1.5@sha256:1c9f861570cbfa06e88fdf0b1d8cf6f7c03946da48dfecd6d27f6ad5278301d6
     restart: unless-stopped
+    depends_on:
+      - support-relay
     read_only: true
     security_opt:
       - no-new-privileges:true
     tmpfs:
       - /tmp
     environment:
-      APP_VERSION: "0.1.4"
+      APP_VERSION: "0.1.5"
+      SUPPORT_RELAY_SOCKET: /run/5tratdiag-support/relay.sock
       EXPORT_DIR: /data/exports
       TARGET_DATA_DIR: /target-app-data
       TARGET_APP_ROOT: /target-app-root
@@ -29,9 +32,32 @@ services:
       - ${FIVETRAT_TARGET_APP_ROOT_PATH:-/opt/5tratumos/apps/5tratsmack}:/target-app-root:ro
       - ${FIVETRAT_TARGET_APP_DATA_ROOT_PATH:-/var/lib/5tratumos/apps}:/target-app-data-root:ro
       - ${FIVETRAT_TARGET_APPS_ROOT_PATH:-/opt/5tratumos/apps}:/target-apps:ro
-      - /var/lib/5tratumos/5tratmux:/mux-state:ro
+      - support-receipt:/mux-state:ro
+      - support-socket:/run/5tratdiag-support:ro
       - /var/lib/5tratumos/support/install_id.txt:/host/support/install_id.txt:ro
       - /proc:/host/proc:ro
       - /var/log:/host/var-log:ro
       - /var/lib/docker/containers:/host/docker-containers:ro
       - /var/log/journal:/host/var-log-journal:ro
+
+  support-relay:
+    image: ghcr.io/willitmod/5tratumos-diagnostics:0.1.5-relay@sha256:37a89eb8b70f7869c83e682e6b055670529f44a93ee1d3f3076390b1664bfbff
+    restart: unless-stopped
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp
+    environment:
+      SUPPORT_SERVICE_URL: https://licensing.5trat.net/support
+    volumes:
+      - /var/lib/5tratumos/5tratmux:/var/lib/5tratumos/5tratmux:ro
+      - /var/lib/5tratumos/support:/var/lib/5tratumos/support:ro
+      - support-receipt:/var/lib/5tratumos/diagnostics-entitlement
+      - support-socket:/run/5tratdiag-support
+
+volumes:
+  support-receipt:
+  support-socket:
