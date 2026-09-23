@@ -5,7 +5,7 @@ services:
       APP_PORT: 3000
 
   app:
-    image: ghcr.io/willitmod/5tratumos-diagnostics:0.1.2@sha256:81a07c02613c1cd0b70ea6518fd8a7e5be8ae27e39fb0439f8c4d7c7a7c66106
+    image: ghcr.io/willitmod/5tratumos-diagnostics:0.1.3@sha256:76b44e619da4ffbda348faa45cfc36a4b3e8bfb531dbee420d6af60c66803978
     restart: unless-stopped
     read_only: true
     security_opt:
@@ -13,7 +13,7 @@ services:
     tmpfs:
       - /tmp
     environment:
-      APP_VERSION: "0.1.2"
+      APP_VERSION: "0.1.3"
       EXPORT_DIR: /data/exports
       TARGET_DATA_DIR: /target-app-data
       TARGET_APP_ROOT: /target-app-root
