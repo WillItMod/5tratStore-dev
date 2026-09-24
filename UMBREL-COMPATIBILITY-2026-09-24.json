@@ -1,0 +1,313 @@
+{
+  "base_commit": "9644215262d1da02af80dfd6a665ebafb679d97b",
+  "scope": "DEV packaging only; no application image rebuilds",
+  "apps": {
+    "willitmod-dev-5tratsmack": {
+      "package_version": "0.11.14",
+      "images": {
+        "init_permissions": "alpine:3.22.1@sha256:4bcff63911fcb4448bd4fdacec207030997caf25e9bea4045fa6c8c44de311d1",
+        "p2p-helper": "ghcr.io/willitmod/5tratsmack-upnp:0.11.1@sha256:c85d527b8a12007be2565b200b99dfe46781ddaa773831852414d2cc5ad041d0",
+        "node-a": "ghcr.io/willitmod/5tratsmack-core:0.11.2@sha256:7bf02513144c7a157965fb8e9ad5865f5e84fa679afa7cb61fc0a8e140a40070",
+        "swap": "ghcr.io/willitmod/5tratsmack-kdf:0.11.1@sha256:9eff0bfdc330bb997eacbce2b98500a52a084d682aec3644b73e663d54e6606a",
+        "ckpool": "ghcr.io/willitmod/5tratsmack-ckpool:0.11.3-rc.a992f40e96d4@sha256:95a1a5f343d579206a0f8bb3c961cafa7500b5d487211a0cfb7b989cf34b895e",
+        "app": "ghcr.io/willitmod/5tratsmack-app:0.11.13-rc.53f0415e5179@sha256:70d007cf7a65fcdbee82d50c70d48aacb63af66b4cd9985e919bd99387401a42"
+      },
+      "compose_contract_sha256": "ca18ef3fee82c69cca34ea160fc311e65af17ed133ff4edb1ae0dcbcd3e44d04",
+      "previous_package_version": "0.11.13"
+    },
+    "willitmod-dev-axebch2": {
+      "package_version": "0.2.0.4-dev",
+      "images": {
+        "init_permissions": "alpine:3.22.1",
+        "app": "ghcr.io/willitmod/axebch2-app:0.2.0.3-dev",
+        "bch2": "ghcr.io/willitmod/axebch2-node:0.1.33-dev",
+        "ckpool": "ghcr.io/willitmod/axebch2-ckpool:0.1.33-dev"
+      },
+      "compose_contract_sha256": "8fd9bca4b1baffec706c9737cfd239b00e937bb710f7ab317589f7043a15591a",
+      "previous_package_version": "0.2.0.3-dev"
+    },
+    "willitmod-dev-bch": {
+      "package_version": "0.9.19-dev",
+      "images": {
+        "init": "alpine:3.22.1",
+        "bchn": "ghcr.io/willitmod/bitcoin-cash-node:v29.0.0-wm3",
+        "ckpool": "ghcr.io/willitmod/wim-solo-ckpool:0.8.3-rc1-590fb2a",
+        "app": "ghcr.io/willitmod/axebch-app-umbrel-dev:0.9.18-dev"
+      },
+      "compose_contract_sha256": "13c13d4417033a2ea0e938c5591b4b96e69ecc8085734806744727963a4a4c89",
+      "previous_package_version": "0.9.18-dev"
+    },
+    "willitmod-dev-btc": {
+      "package_version": "0.7.82.10-dev",
+      "images": {
+        "init": "alpine:3.22.1",
+        "bitcoind": "ghcr.io/willitmod/axebtc-bitcoind-switch:0.7.44",
+        "ckpool": "ghcr.io/willitmod/docker-ckpool-solo:590fb2a",
+        "app": "ghcr.io/willitmod/axebtc-app-umbrel-dev:0.7.82.9-dev"
+      },
+      "compose_contract_sha256": "97230c8ac3ec29b50c734dfd16b588e18e49f4ce98e1f96719d6b8a901c68a83",
+      "previous_package_version": "0.7.82.9-dev"
+    },
+    "willitmod-dev-dgb": {
+      "package_version": "0.9.182-dev",
+      "images": {
+        "init_permissions": "alpine:3.22.1",
+        "perm_watchdog": "alpine:3.22.1",
+        "init": "ghcr.io/willitmod/axedgb-init:0.9.181-dev",
+        "dgbd": "ghcr.io/willitmod/axedgb-core:0.9.181-dev",
+        "postgres": "postgres:16-alpine",
+        "miningcore": "ghcr.io/willitmod/axedgb-miningcore:axedgb-0.8.10-r26",
+        "app": "ghcr.io/willitmod/axedgb-app:0.9.181-dev"
+      },
+      "compose_contract_sha256": "dec161acdb99fd944d482d19eb9e5a347be0f7e7ce8c06ae2bf2a6e0017133e6",
+      "previous_package_version": "0.9.181-dev"
+    },
+    "willitmod-dev-fracattack": {
+      "package_version": "0.1.5-dev",
+      "images": {
+        "init": "alpine:3.22.1",
+        "fractald": "ghcr.io/willitmod/fracattack-fractald:0.3.1-dev",
+        "ckpool": "ghcr.io/willitmod/docker-ckpool-solo:590fb2a",
+        "app": "ghcr.io/willitmod/fracattack-app-umbrel-dev:0.1.4-dev"
+      },
+      "compose_contract_sha256": "cab01996d1906eab1ebae5bf81cb1209870ec052662f510bee230f7d98982fe9",
+      "previous_package_version": "0.1.4-dev",
+      "additional_fix": "Remove duplicate dashboard host port 21225:3000/tcp; Umbrel gateway owns public port 21225."
+    },
+    "willitmod-dev-powpow": {
+      "package_version": "0.2.33-dev",
+      "images": {
+        "init_permissions": "alpine:3.22.1",
+        "app": "ghcr.io/willitmod/powpow-app:0.2.31-dev",
+        "litecoin": "ghcr.io/willitmod/powpow-litecoin:0.2.32-dev",
+        "dogecoin": "ghcr.io/willitmod/powpow-dogecoin:0.2.26-dev",
+        "pool": "ghcr.io/willitmod/powpow-pool:0.2.31-dev",
+        "postgres": "postgres:16-alpine"
+      },
+      "compose_contract_sha256": "cfb7452854ec65a1da1951dfeda3bf2158ce267187006140ea07da27896de05e",
+      "previous_package_version": "0.2.32-dev",
+      "additional_fix": "Run Litecoin and Dogecoin as UID/GID 1000:1000, matching the dashboard and existing initializer ownership."
+    },
+    "willitmod-dev-ppc": {
+      "package_version": "0.2.32-dev",
+      "images": {
+        "init": "alpine:3.22.1",
+        "redis": "redis:7-alpine",
+        "pool": "ghcr.io/willitmod/axeppc-pool:0.2.30",
+        "app": "ghcr.io/willitmod/axeppc-app-umbrel-dev:0.2.31"
+      },
+      "compose_contract_sha256": "537bf105badd2df4c93f891a5b5f4b2364b41996a911eb072c93a8250f58d89c",
+      "previous_package_version": "0.2.31-dev"
+    },
+    "willitmod-dev-xec": {
+      "package_version": "0.1.18-dev",
+      "images": {
+        "init": "alpine:3.22.1",
+        "xecd": "ghcr.io/willitmod/xecd-abc:0.33.4-nojemalloc-r1",
+        "ckpool": "ghcr.io/willitmod/ecash-ckpool-solo:18b38ad",
+        "app": "ghcr.io/willitmod/axexec-app-umbrel-dev:0.1.17-dev"
+      },
+      "compose_contract_sha256": "efbcf1b218e32c8f53ff6d2cb17d24a97b86914b3c05b89c2d6f705f5c1ef36e",
+      "previous_package_version": "0.1.17-dev"
+    }
+  },
+  "live_verification": {
+    "architecture": "x86_64",
+    "date": "2026-09-24",
+    "scope": "Install/update, initial container state, gateway authentication and immediate stop; no chain sync or mining test",
+    "apps": {
+      "willitmod-dev-5tratsmack": {
+        "2.0.0": {
+          "operation": "install",
+          "anonymous_http": 302,
+          "authenticated_http": 200,
+          "stopped": true,
+          "data_mib": 29
+        },
+        "1.7.4": {
+          "operation": "install",
+          "anonymous_http": 302,
+          "authenticated_http": 200,
+          "stopped": true,
+          "data_mib": 31
+        }
+      },
+      "willitmod-dev-axebch2": {
+        "2.0.0": {
+          "operation": "install",
+          "anonymous_http": 302,
+          "authenticated_http": 200,
+          "stopped": true,
+          "data_mib": 37
+        },
+        "1.7.4": {
+          "operation": "install",
+          "anonymous_http": 302,
+          "authenticated_http": 200,
+          "stopped": true,
+          "data_mib": 45
+        }
+      },
+      "willitmod-dev-bch": {
+        "2.0.0": {
+          "operation": "install",
+          "anonymous_http": 302,
+          "authenticated_http": 200,
+          "stopped": true,
+          "data_mib": 262
+        },
+        "1.7.4": {
+          "operation": "update",
+          "anonymous_http": 302,
+          "authenticated_http": 200,
+          "stopped": true,
+          "data_mib": 124
+        }
+      },
+      "willitmod-dev-btc": {
+        "2.0.0": {
+          "operation": "install",
+          "anonymous_http": 302,
+          "authenticated_http": 200,
+          "stopped": true,
+          "data_mib": 1
+        },
+        "1.7.4": {
+          "operation": "update",
+          "anonymous_http": 302,
+          "authenticated_http": 200,
+          "stopped": true,
+          "data_mib": 1
+        }
+      },
+      "willitmod-dev-dgb": {
+        "2.0.0": {
+          "operation": "install",
+          "anonymous_http": 302,
+          "authenticated_http": 200,
+          "stopped": true,
+          "data_mib": 77
+        },
+        "1.7.4": {
+          "operation": "install",
+          "anonymous_http": 302,
+          "authenticated_http": 200,
+          "stopped": true,
+          "data_mib": 70
+        }
+      },
+      "willitmod-dev-fracattack": {
+        "2.0.0": {
+          "operation": "update",
+          "anonymous_http": 302,
+          "authenticated_http": 200,
+          "stopped": true,
+          "data_mib": 775
+        },
+        "1.7.4": {
+          "operation": "install",
+          "anonymous_http": 302,
+          "authenticated_http": 200,
+          "stopped": true,
+          "data_mib": 739
+        }
+      },
+      "willitmod-dev-powpow": {
+        "2.0.0": {
+          "operation": "update",
+          "anonymous_http": 302,
+          "authenticated_http": 200,
+          "stopped": true,
+          "data_mib": 112
+        },
+        "1.7.4": {
+          "operation": "install",
+          "anonymous_http": 302,
+          "authenticated_http": 200,
+          "stopped": true,
+          "data_mib": 93
+        }
+      },
+      "willitmod-dev-ppc": {
+        "2.0.0": {
+          "operation": "install",
+          "anonymous_http": 302,
+          "authenticated_http": 200,
+          "stopped": true,
+          "data_mib": 17
+        },
+        "1.7.4": {
+          "operation": "install",
+          "anonymous_http": 302,
+          "authenticated_http": 200,
+          "stopped": true,
+          "data_mib": 36
+        }
+      },
+      "willitmod-dev-xec": {
+        "2.0.0": {
+          "operation": "install",
+          "anonymous_http": 302,
+          "authenticated_http": 200,
+          "stopped": true,
+          "data_mib": 240
+        },
+        "1.7.4": {
+          "operation": "install",
+          "anonymous_http": 302,
+          "authenticated_http": 200,
+          "stopped": true,
+          "data_mib": 17
+        }
+      },
+      "willitmod-dev-axebench": {
+        "2.0.0": {
+          "operation": "install",
+          "anonymous_http": 302,
+          "authenticated_http": 200,
+          "stopped": true,
+          "data_mib": 1
+        },
+        "1.7.4": {
+          "operation": "install",
+          "anonymous_http": 302,
+          "authenticated_http": 200,
+          "stopped": true,
+          "data_mib": 1
+        }
+      },
+      "willitmod-dev-axelive": {
+        "2.0.0": {
+          "operation": "install",
+          "anonymous_http": 302,
+          "authenticated_http": 200,
+          "stopped": true,
+          "data_mib": 1
+        },
+        "1.7.4": {
+          "operation": "install",
+          "anonymous_http": 302,
+          "authenticated_http": 200,
+          "stopped": true,
+          "data_mib": 1
+        }
+      },
+      "willitmod-dev-axemig": {
+        "2.0.0": {
+          "operation": "install",
+          "anonymous_http": 302,
+          "authenticated_http": 200,
+          "stopped": true,
+          "data_mib": 1
+        },
+        "1.7.4": {
+          "operation": "install",
+          "anonymous_http": 302,
+          "authenticated_http": 200,
+          "stopped": true,
+          "data_mib": 1
+        }
+      }
+    }
+  }
+}

@@ -24,6 +24,7 @@ services:
         chmod -R ug+rwX /data/ui /data/node /data/pool || true
 
   app:
+    hostname: axebch2-app
     image: ghcr.io/willitmod/axebch2-app:0.2.0.3-dev
     user: "1000:1000"
     restart: unless-stopped

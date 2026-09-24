@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-5tratsmack
 category: altcoin
 name: 5tratSmack
-version: "0.11.13"
+version: "0.11.14"
 tagline: Home-miner 5TRAT node, wallet, solo pool and atomic trade lab
 description: >-
   Install and synchronize a complete 5TRAT node, create or restore an encrypted
@@ -37,6 +37,10 @@ path: ""
 defaultUsername: ""
 defaultPassword: ""
 releaseNotes: >-
+  Umbrel compatibility package update. Fixes installation and authenticated
+  dashboard access on Umbrel 2.0 while retaining Umbrel 1.x support. Existing
+  application, node and pool images and persistent data paths are unchanged.
+
   Quarterly recovery checks help protect the main and trading wallets: test your
   saved wallet password, read back a saved recovery file, and download a fresh
   backup. Encryption with a separate backup passphrase is recommended and selected

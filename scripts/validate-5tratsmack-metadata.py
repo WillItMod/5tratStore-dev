@@ -7,6 +7,8 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 APP_DIR = REPO_ROOT / "willitmod-dev-5tratsmack"
 
 EXPECTED_VERSION = "0.11.13"
+# The Umbrel integration revision changes packaging, not the pinned app binary.
+EXPECTED_PACKAGE_VERSION = "0.11.14"
 EXPECTED_PHASE = "RC1"
 EXPECTED_SOURCE_REVISION = "53f0415e517952a98d21f02b11009976a16a1d20"
 EXPECTED_APP_REF = (
@@ -72,11 +74,12 @@ app_revision = one(
 
 if manifest_id != "willitmod-dev-5tratsmack":
     raise SystemExit(f"unexpected manifest id: {manifest_id}")
-if {manifest_version, app_version, release_tag} != {EXPECTED_VERSION}:
+if manifest_version != EXPECTED_PACKAGE_VERSION or {app_version, release_tag} != {EXPECTED_VERSION}:
     raise SystemExit(
         "store version mismatch: "
         f"manifest={manifest_version}, APP_VERSION={app_version}, "
-        f"FIVETRAT_RELEASE_TAG={release_tag}, expected={EXPECTED_VERSION}"
+        f"FIVETRAT_RELEASE_TAG={release_tag}, expected app={EXPECTED_VERSION}, "
+        f"expected package={EXPECTED_PACKAGE_VERSION}"
     )
 if release_phase != EXPECTED_PHASE:
     raise SystemExit(
@@ -115,10 +118,10 @@ for line in required_compose_lines:
         raise SystemExit(f"expected one exact compose line: {line}")
 
 expected_readme_line = (
-    "- **5tratSmack** (`willitmod-dev-5tratsmack`) - `0.11.13`"
+    "- **5tratSmack** (`willitmod-dev-5tratsmack`) - `0.11.14`"
 )
 if readme_text.count(expected_readme_line) != 1:
-    raise SystemExit("README current-version entry is not exactly 0.11.13")
+    raise SystemExit("README current-version entry is not exactly 0.11.14")
 
 for release_note_fragment in (
     "Quarterly recovery checks",
@@ -133,6 +136,6 @@ for release_note_fragment in (
 
 print(
     "5tratSmack DEV metadata verified: "
-    f"version={EXPECTED_VERSION} source={EXPECTED_SOURCE_REVISION} "
+    f"package={EXPECTED_PACKAGE_VERSION} app={EXPECTED_VERSION} source={EXPECTED_SOURCE_REVISION} "
     "app candidate pinned; CKPool unchanged"
 )

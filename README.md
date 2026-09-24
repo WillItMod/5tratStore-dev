@@ -24,17 +24,21 @@ Development/test app store for WillItMod apps.
 
 ### Node + solo pool / mining apps
 
-- **AxeBTC** (`willitmod-dev-btc`) - `0.7.82.8-dev`
-- **AxeBCH** (`willitmod-dev-bch`) - `0.9.3-dev`
-- **AxeBCH2** (`willitmod-dev-axebch2`) - `0.2.0.01-dev`
+- **AxeBTC** (`willitmod-dev-btc`) - `0.7.82.10-dev`
+- **AxeBCH** (`willitmod-dev-bch`) - `0.9.19-dev`
+- **AxeBCH2** (`willitmod-dev-axebch2`) - `0.2.0.4-dev`
 - **AxeBC2** (`willitmod-dev-bc2`) - `0.1.11-dev`
-- **AxeDGB** (`willitmod-dev-dgb`) - `0.9.179-dev`
-- **AxePPC** (`willitmod-dev-ppc`) - `0.2.30-dev`
-- **AxeXEC** (`willitmod-dev-xec`) - `0.1.14-dev`
-- **5tratSmack** (`willitmod-dev-5tratsmack`) - `0.11.13`
-- **PowPow** (`willitmod-dev-powpow`) - `0.2.32-dev`
+- **AxeDGB** (`willitmod-dev-dgb`) - `0.9.182-dev`
+- **AxePPC** (`willitmod-dev-ppc`) - `0.2.32-dev`
+- **AxeXEC** (`willitmod-dev-xec`) - `0.1.18-dev`
+- **5tratSmack** (`willitmod-dev-5tratsmack`) - `0.11.14`
+- **FracAttack** (`willitmod-dev-fracattack`) - `0.1.5-dev`
+- **PowPow** (`willitmod-dev-powpow`) - `0.2.33-dev`
 
 Use the app manifest in each app directory as the current source of truth for the store-visible version number.
+
+See [Umbrel 1.x and 2.0 compatibility](UMBREL-COMPATIBILITY.md) for the DEV
+packaging changes, version table and verification scope.
 
 For the broader cross-store version matrix and changelog pointers, see `https://github.com/WillItMod/AxeSuite/blob/main/docs/releases.md`.
 

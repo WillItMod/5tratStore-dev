@@ -2,8 +2,13 @@ manifestVersion: 1
 id: willitmod-dev-powpow
 category: altcoin
 name: "PowPow"
-version: "0.2.32-dev"
+version: "0.2.33-dev"
 releaseNotes: >-
+  Umbrel compatibility package update. Fixes installation and authenticated
+  dashboard access on Umbrel 2.0 while retaining Umbrel 1.x support. Existing
+  application, node and pool images and persistent data paths are unchanged.
+  Runs the Litecoin and Dogecoin containers with the dashboard UID to prevent root-owned node configuration files from blocking fresh startup.
+
   Upgrades the bundled Litecoin node from Litecoin Core 0.21.4 to 0.21.5.8,
   including upstream security, MWEB validation, and mining fixes for the
   consensus rule activated at block 3,172,640. AMD64 and ARM64 release archives are

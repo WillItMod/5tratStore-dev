@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-fracattack
 category: bitcoin
 name: FracAttack
-version: "0.1.4-dev"
+version: "0.1.5-dev"
 tagline: Fractal node + solo pool
 description: >-
   EXPERIMENTAL RELEASE (DEV CHANNEL)
@@ -49,6 +49,11 @@ path: ""
 defaultUsername: ""
 defaultPassword: ""
 releaseNotes: >-
+  Umbrel compatibility package update. Fixes installation and authenticated
+  dashboard access on Umbrel 2.0 while retaining Umbrel 1.x support. Existing
+  application, node and pool images and persistent data paths are unchanged.
+  Removes a duplicate dashboard port binding that prevented installation on Umbrel 1.7.4.
+
   Workers using either coin-prefixed or prefixless payout usernames now appear
   as one combined worker entry in the app and Fleet Dashboard APIs. Hashrate,
   shares and best-share data are merged without double-counting duplicate

@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-bch
 category: bitcoin
 name: AxeBCH
-version: "0.9.18-dev"
+version: "0.9.19-dev"
 tagline: BCH node + solo pool
 description: >-
   RC1 RELEASE (DEV CHANNEL)
@@ -70,6 +70,10 @@ path: ""
 defaultUsername: ""
 defaultPassword: ""
 releaseNotes: >-
+  Umbrel compatibility package update. Fixes installation and authenticated
+  dashboard access on Umbrel 2.0 while retaining Umbrel 1.x support. Existing
+  application, node and pool images and persistent data paths are unchanged.
+
   Workers using either coin-prefixed or prefixless payout usernames now appear
   as one combined worker entry in the app and Fleet Dashboard APIs. Hashrate,
   shares and best-share data are merged without double-counting duplicate

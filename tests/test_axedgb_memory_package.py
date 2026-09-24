@@ -1,4 +1,5 @@
 """Packaging contracts for the memory supervisor and offline startup."""
+import json
 import subprocess
 import unittest
 from pathlib import Path
@@ -31,8 +32,10 @@ class AxeDgbPackageTests(unittest.TestCase):
         self.assertIn("--single-transaction", self.init)
         self.assertIn("axedgb-init:", self.services["init"]["image"])
 
-    def test_all_changed_images_match_release_version(self):
-        version = yaml.safe_load((ROOT / "umbrel-app.yml").read_text())["version"]
+    def test_packaging_revision_preserves_accepted_application_images(self):
+        release = json.loads((ROOT.parent / "UMBREL-COMPATIBILITY-2026-09-24.json").read_text())["apps"][ROOT.name]
+        version = release["previous_package_version"]
+        self.assertEqual(yaml.safe_load((ROOT / "umbrel-app.yml").read_text())["version"], release["package_version"])
         for service in ["app", "init", "dgbd"]:
             self.assertTrue(self.services[service]["image"].endswith(":" + version), service)
         self.assertEqual(self.services["app"]["environment"]["DGB_IMAGE"], self.services["dgbd"]["image"])

@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-axebch2
 category: altcoin
 name: "AxeBCH2"
-version: "0.2.0.3-dev"
+version: "0.2.0.4-dev"
 tagline: BCH2 node + solo pool (alpha)
 description: >-
   ALPHA RELEASE (DEV CHANNEL)
@@ -33,6 +33,10 @@ path: ""
 defaultUsername: ""
 defaultPassword: ""
 releaseNotes: >-
+  Umbrel compatibility package update. Fixes installation and authenticated
+  dashboard access on Umbrel 2.0 while retaining Umbrel 1.x support. Existing
+  application, node and pool images and persistent data paths are unchanged.
+
   Corrects stale version metadata from 0.2.0.2-dev so the store, image, app UI,
   API and support check-in now consistently report 0.2.0.3-dev. Includes the
   worker identity compatibility fix from the previous release.

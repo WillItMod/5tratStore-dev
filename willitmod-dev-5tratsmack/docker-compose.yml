@@ -197,6 +197,7 @@ services:
       start_period: 90s
 
   app:
+    hostname: 5tratsmack-app
     image: ghcr.io/willitmod/5tratsmack-app:0.11.13-rc.53f0415e5179@sha256:70d007cf7a65fcdbee82d50c70d48aacb63af66b4cd9985e919bd99387401a42
     restart: unless-stopped
     depends_on:
