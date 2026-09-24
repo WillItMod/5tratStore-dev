@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-axediagnostics
 category: utilities
 name: 5tratDiag
-version: "0.1.5"
+version: "0.1.6"
 tagline: Node diagnostics and private support with your 5tratMux licence
 description: >-
   Diagnostics and support included with a valid paid 5tratMux licence on this
@@ -10,11 +10,11 @@ description: >-
   The Orbit welcome screen guides unlicensed users to the existing 5tratMux
   purchase and activation flow. Review host and installed-app health, select
   logs, and download a bounded ZIP archive or submit it privately for support.
-  Private Discord ticket submission is awaiting server setup in this DEV release;
-  local diagnostics and ZIP downloads are available now. Once enabled, link your
-  Discord account to open a private conversation with the maintainer.
-  Support tickets and uploaded logs expire after 14 days; Discord applies its
-  own backup retention policy. Archives stay in the private support service
+  Link your Discord account to open a private conversation with the maintainer
+  in the dedicated 5trat Support server. Each customer has one active private
+  conversation; no Discord DMs or changes to your DM privacy settings are needed.
+  Support tickets, conversation channels and uploaded logs expire after 14 days;
+  Discord applies its own backup retention policy. Archives stay in the private support service
   and are never posted to Discord. The app uploads only after you review and
   confirm your submission. It excludes wallet files, private keys, passwords,
   node configuration and process environments. The compiled app and support
@@ -23,7 +23,7 @@ description: >-
 developer: WillItMod
 website: https://5trat.com
 repo: https://github.com/WillItMod/5tratumOS-Diagnostics
-support: https://github.com/WillItMod/5tratumOS-Diagnostics/issues
+support: https://licensing.5trat.net/support/join
 dependencies: []
 port: 21227
 icon: icon.png
