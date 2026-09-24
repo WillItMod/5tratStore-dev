@@ -1,0 +1,46 @@
+manifestVersion: 1
+id: willitmod-dev-fumbrel
+category: utilities
+name: Fumbrel
+version: "0.1.0-dev"
+tagline: Fuck Up on Umbrel? Recover your apps.
+description: >-
+  Fumbrel — Fuck Up on Umbrel. For when an OS upgrade leaves your apps having a bad day.
+
+  Scan installed WillItMod apps, repair known Umbrel 1.x/2.0 recipe problems,
+  or force-apply the compatible packages bundled with this release. Covers
+  AxeBTC, AxeBCH, AxeBCH2, AxeBC2, AxeDGB, AxePPC, AxeXEC, FracAttack,
+  PowPow, 5tratSmack, AxeBench, AxeLive, AxeMIG and AxeSim.
+
+  Enter this Umbrel's SSH username and password to begin. Administrator access
+  through sudo is required. Credentials stay in memory for the session; Fumbrel
+  verifies the host's SSH public key before authenticating. SSH must be enabled.
+
+  Every recovery saves a recipe backup and preserves the installed app ID.
+  It does not uninstall apps or delete their data. Starting an updated app may
+  run that application's normal data migrations. Recipe restore does not roll
+  back application data. Apps stay stopped unless you choose to start them.
+
+  DEV preview: recovery is limited to recognized WillItMod recipes. It cannot
+  fix every failure, CPU instruction crashes, or damaged application data.
+  Packages are pinned to this Fumbrel release, not automatically downloaded
+  from the latest store. MAIN installations can receive DEV packages while
+  keeping their existing IDs; their original store may show an older version.
+developer: WillItMod
+website: https://github.com/WillItMod/5tratStore-dev
+repo: https://github.com/WillItMod/5tratStore-dev
+support: https://discord.gg/vC2UrFAbUF
+dependencies: []
+port: 21227
+icon: https://raw.githubusercontent.com/WillItMod/5tratStore-dev/main/willitmod-dev-fumbrel/icon.svg
+gallery: []
+path: ""
+defaultUsername: ""
+defaultPassword: ""
+releaseNotes: >-
+  Initial DEV preview. Local SSH recovery with host-key verification, installed-app
+  scanning, recipe backups, compatibility repairs, forced package updates,
+  preservation of MAIN app IDs, and recipe restore while stopped.
+submitter: WillItMod
+backupIgnore:
+  - data/backups
