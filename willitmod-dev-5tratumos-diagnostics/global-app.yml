@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-axediagnostics
 category: utilities
 name: 5tratDiag
-version: "0.1.6"
+version: "0.1.7"
 tagline: Node diagnostics and private support with your 5tratMux licence
 description: >-
   Diagnostics and support included with a valid paid 5tratMux licence on this
@@ -10,6 +10,8 @@ description: >-
   The Orbit welcome screen guides unlicensed users to the existing 5tratMux
   purchase and activation flow. Review host and installed-app health, select
   logs, and download a bounded ZIP archive or submit it privately for support.
+  Exports include retained host logs from the last 24 hours across reboots and
+  the first detected kernel fault, with a warning when capture is incomplete.
   Link your Discord account to open a private conversation with the maintainer
   in the dedicated 5trat Support server. Each customer has one active private
   conversation; no Discord DMs or changes to your DM privacy settings are needed.

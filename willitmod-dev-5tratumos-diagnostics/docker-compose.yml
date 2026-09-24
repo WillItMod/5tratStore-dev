@@ -5,7 +5,7 @@ services:
       APP_PORT: 3000
 
   app:
-    image: ghcr.io/willitmod/5tratumos-diagnostics:0.1.6@sha256:2ce8f8a1fee36a262a787806b1072a460a38c2c7f1811f4f460c8f3cc93a81dd
+    image: ghcr.io/willitmod/5tratumos-diagnostics:0.1.7@sha256:99621754c982e07132b4282f4839375c15642fac458ff7dd092d59e4cf2d63c8
     restart: unless-stopped
     depends_on:
       - support-relay
@@ -15,7 +15,7 @@ services:
     tmpfs:
       - /tmp
     environment:
-      APP_VERSION: "0.1.6"
+      APP_VERSION: "0.1.7"
       SUPPORT_RELAY_SOCKET: /run/5tratdiag-support/relay.sock
       EXPORT_DIR: /data/exports
       TARGET_DATA_DIR: /target-app-data
