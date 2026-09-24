@@ -5,7 +5,7 @@ services:
       APP_HOST: fumbrel-app
       APP_PORT: 3000
   server:
-    image: ghcr.io/willitmod/fumbrel:0.1.0-dev
+    image: ghcr.io/willitmod/fumbrel:0.1.0-dev@sha256:a2f6f66a6227264ff88bd2053b36ea09ea55193b01730d467dfefd005165968b
     hostname: fumbrel-app
     restart: on-failure
     init: true
