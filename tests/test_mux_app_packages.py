@@ -155,6 +155,9 @@ class MuxPackageTests(unittest.TestCase):
                         manifest = yaml.safe_load(path.read_text())
                         self.assertEqual(manifest["id"], name)
                         self.assertEqual(manifest["version"], record["version"])
+                        self.assertIn("Block alerts in this browser", manifest["releaseNotes"])
+                        self.assertIn("browser-only Close", manifest["releaseNotes"])
+                        self.assertIn("OS and MUX", manifest["releaseNotes"])
                 for filename in ("docker-compose.yml", "docker-compose.yml.template"):
                     path = app / filename
                     if not path.exists():

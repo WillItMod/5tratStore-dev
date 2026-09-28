@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "scope": "Static packaging regression contracts; this is not new live Umbrel acceptance evidence. Candidate node acceptance is recorded separately.",
-  "reviewed_store_base": "cf72507651d46b7f432d75d0e5626e792c40a723",
+  "reviewed_store_base": "3f1e8be7ecde1e1f0e1018d5d318bc31d5961cac",
   "historical_evidence": "UMBREL-COMPATIBILITY-2026-09-24.json",
   "historical_evidence_sha256": "def19c680b39769c58a31a832ef8092438180ef5d6a141fc3c3afa27901e06b8",
   "apps": {
@@ -10,45 +10,45 @@
       "compose_contract_sha256": "ce305d67a8e94bfb9ee5ac10b3c199918f4b1d538309ac394b63b309352469c1"
     },
     "willitmod-dev-axebch2": {
-      "package_version": "0.2.0.7-dev",
-      "compose_contract_sha256": "1990aaa5a068e8ac64b0a701ab323b79abc7892227d86fbfb89a8c8902404832"
+      "package_version": "0.2.0.8-dev",
+      "compose_contract_sha256": "8af900f4f3c703c4f76c9f484941bbb1d87de055f82ffd22355f1f77b200381c"
     },
     "willitmod-dev-bc2": {
-      "package_version": "0.1.17-dev",
-      "compose_contract_sha256": "70b23bb108ffb31489ce4e25082a14a2ab9da4a18c35310fe5465387d1a6b5f4"
+      "package_version": "0.1.18-dev",
+      "compose_contract_sha256": "671b72d305fdb66201904c42fd08a5aded29600f95e1d6f4ad3699e5d1aceb44"
     },
     "willitmod-dev-bch": {
-      "package_version": "0.9.21-dev",
-      "compose_contract_sha256": "a686f4b4c34b05ed9994a613942dc81696e48bfb875462e7c561eafc72d0d6a1"
+      "package_version": "0.9.22-dev",
+      "compose_contract_sha256": "11396d9bb2bba9573c00e42f5d76b0dd89e80a7b5e68ed0cbaaa7fe04260918a"
     },
     "willitmod-dev-btc": {
-      "package_version": "0.7.82.13-dev",
-      "compose_contract_sha256": "17b541a6ad3a49262806a3284081f12d8ccec1c5425f73603b5fe33de79b0df6"
+      "package_version": "0.7.82.14-dev",
+      "compose_contract_sha256": "a1154b5464b0812d2912d1930219ed78f69660bac4e15087f1e393d10a58e84f"
     },
     "willitmod-dev-dgb": {
-      "package_version": "0.9.184-dev",
-      "compose_contract_sha256": "0e6ba5c280a011174ae3c76e40aac74d130defe588a56c1d0df92f821f61a45b"
+      "package_version": "0.9.185-dev",
+      "compose_contract_sha256": "7c82ff353227fce21b006d01c340d7f1d55d6484435aab315cf77f24608be9e4"
     },
     "willitmod-dev-fracattack": {
-      "package_version": "0.1.7",
-      "compose_contract_sha256": "ebf50be974c650547e9e7b42812fd3486f81b082332cfcaa2ecd6c5489a5ed56"
+      "package_version": "0.1.8",
+      "compose_contract_sha256": "2ffcc76fbb539c0fdb74c0d6534a34a430dd3933d713dfca3bb6bd719377ced9"
     },
     "willitmod-dev-powpow": {
-      "package_version": "0.2.35-dev",
-      "compose_contract_sha256": "a416a794ecd5980365c9a2b6c06f47c71731b8069ffe0459127d4b583e94a8fb"
+      "package_version": "0.2.36-dev",
+      "compose_contract_sha256": "131e17b75cab3f52e15d9b75b6658567de581d637891a1e1dedb660cb7bf8691"
     },
     "willitmod-dev-ppc": {
-      "package_version": "0.2.34-dev",
-      "compose_contract_sha256": "17cbff7a79cc718f7ada854542a56c5f49add03c8d07ed66ebf4d01b42862296"
+      "package_version": "0.2.35-dev",
+      "compose_contract_sha256": "1fdc185f68e9361a1b9fde57138814e252c9ba2d864ccdca04b7b642f5c1e55b"
     },
     "willitmod-dev-xec": {
-      "package_version": "0.1.20-dev",
-      "compose_contract_sha256": "9b1c2e087a283e633134881cd8a15fc42b3d569871f09c7723aa2d2bbe13babb"
+      "package_version": "0.1.21-dev",
+      "compose_contract_sha256": "6c9501a4004d8f48030419f381d387978d3b33d7c4787924536aec201ae5ce07"
     }
   },
   "python_app_stop_policy": {
     "baseline_store_commit": "cf72507651d46b7f432d75d0e5626e792c40a723",
-    "scope": "Only these app services gain SIGINT; all other fields and stop grace periods retain the baseline contract. Initial legacy PID1 migration requires the reviewed OS normal updater; no live shutdown acceptance is claimed.",
+    "scope": "Eight Python app services retain SIGINT and original grace periods. Candidate image/version updates are normalized to the exact original image baseline for full-model comparison; all other fields retain that baseline. Initial legacy PID1 migration requires the reviewed OS normal updater; no live shutdown acceptance is claimed.",
     "service": "app",
     "stop_signal": "SIGINT",
     "baseline_compose_contract_sha256": {
@@ -60,6 +60,36 @@
       "willitmod-dev-ppc": "5c192ef1d232631e3ca7f494024c715995509f404c811a48cd226323170bdfa1",
       "willitmod-dev-powpow": "eb188cd8e15ba20a565198113b6c536949d0845d77d6dbf649a723d161e616de",
       "willitmod-dev-fracattack": "b9e979729384607c678b70d9c5788a8a320fa51202f8a17125c6e3e3f5640e69"
+    },
+    "baseline_image_versions": {
+      "willitmod-dev-btc": {
+        "app_image": "ghcr.io/willitmod/axebtc-app-umbrel-dev:0.7.82.13-mux.acb758599434@sha256:34c342dd742ceb6e7db07535ab006e5b7688f871558c4fdbc03313d6a306280f"
+      },
+      "willitmod-dev-bch": {
+        "app_image": "ghcr.io/willitmod/axebch-app-umbrel-dev:0.9.21-mux.5d551863e059@sha256:c26b6a691c5b14557436a0db1c168c70ec868190f79727f0bce4fe89fd3e1ff6"
+      },
+      "willitmod-dev-axebch2": {
+        "app_image": "ghcr.io/willitmod/axebch2-app:0.2.0.7-mux.8d8882c243ab@sha256:13539c61643abb8039d0fbb538b58ec18643c6c41b519503cf78de71e4701fde",
+        "app_version": "0.2.0.7-dev"
+      },
+      "willitmod-dev-dgb": {
+        "app_image": "ghcr.io/willitmod/axedgb-app:0.9.184-mux.cadecd86e872@sha256:7096803fb3c11c2a05251c0b5b591f02cd097e91dae41bcf7e1f44b7f563d430"
+      },
+      "willitmod-dev-xec": {
+        "app_image": "ghcr.io/willitmod/axexec-app-umbrel-dev:0.1.20-mux.ab5b1884ccdd@sha256:d02b560c814e870e0871ff0b38fac57f29b9b2cf241a178713947201af62715b"
+      },
+      "willitmod-dev-ppc": {
+        "app_image": "ghcr.io/willitmod/axeppc-app-umbrel-dev:0.2.34-mux.ca95e432c83c@sha256:967713adf6277b1e54289edcb203ad28e9c6ee87b18a39b8966c21fdd5953679"
+      },
+      "willitmod-dev-powpow": {
+        "app_image": "ghcr.io/willitmod/powpow-app:0.2.35-mux.34f15532986c@sha256:0502e188cdd00ed3253b133c80757c295d4604ab8f44fa14c5429d9fb38333eb",
+        "app_version": "0.2.35-dev",
+        "pool_image": "ghcr.io/willitmod/powpow-pool:0.2.35-mux.34f15532986c@sha256:6602e1bdb932fc76617113896959a83372fa52ef85870280208feb96d789b08c"
+      },
+      "willitmod-dev-fracattack": {
+        "app_image": "ghcr.io/willitmod/fracattack-app-umbrel-dev:0.1.7-mux.a180312e1091@sha256:d4e82ffc370dda03fb8a605b6c1de7785979b97ab82fc44590eb9abc4cecd38b",
+        "app_version": "0.1.7"
+      }
     }
   }
 }

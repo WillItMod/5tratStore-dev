@@ -94,7 +94,7 @@ require(
 )
 
 # BETA release; the historical Core 31 baseline evidence below remains 0.1.11-dev.
-require('version: "0.1.17-dev"' in manifest, "manifest must be 0.1.17-dev")
+require('version: "0.1.18-dev"' in manifest, "manifest must be 0.1.18-dev")
 require(evidence.get("app_version") == "0.1.11-dev", "evidence must name the 0.1.11 DEV app version")
 require(
     evidence.get("app_image")

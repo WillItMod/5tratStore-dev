@@ -2,13 +2,18 @@ manifestVersion: 1
 id: willitmod-dev-powpow
 category: altcoin
 name: "PowPow"
-version: "0.2.35-dev"
+version: "0.2.36-dev"
 releaseNotes: >-
   Current miner hash rate from 5tratMux appears separately from accepted-share
   estimates, with stale or unavailable telemetry handled explicitly. Block
   history checks the full block hash against the correct chain and refreshes
   confirmation and reorganisation status before showing a confirmed find.
   Unverified reports remain distinguishable from confirmed pool blocks.
+
+  Block alerts in this browser is a separate local preference. Recent verified
+  blocks queue across app tabs, with browser-only Close acknowledgements.
+  Reorgs or unavailable proof retract the alert without acknowledging it.
+  OS and MUX delivery and acknowledgements remain independently managed.
 
   The app and pool are updated together. Litecoin and Dogecoin events retain
   separate chain identities; rejected RPC submissions are not counted as accepted.

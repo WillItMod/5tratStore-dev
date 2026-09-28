@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-ppc
 category: altcoin
 name: AxePPC
-version: "0.2.34-dev"
+version: "0.2.35-dev"
 tagline: PPC node + solo pool
 description: >-
   ALPHA RELEASE (DEV CHANNEL)
@@ -45,6 +45,11 @@ releaseNotes: >-
   history checks the full block hash against the correct chain and refreshes
   confirmation and reorganisation status before showing a confirmed find.
   Unverified reports remain distinguishable from confirmed pool blocks.
+
+  Block alerts in this browser is a separate local preference. Recent verified
+  blocks queue across app tabs, with browser-only Close acknowledgements.
+  Reorgs or unavailable proof retract the alert without acknowledging it.
+  OS and MUX delivery and acknowledgements remain independently managed.
 
   Pool block detection follows the Peercoin pool records and verifies the
   Peercoin chain. Future pool containers use an init process for reliable shutdown.

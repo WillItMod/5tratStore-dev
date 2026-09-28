@@ -1,94 +1,94 @@
 {
   "schemaVersion": 1,
-  "description": "Verified MUX telemetry and canonical block-detection images. PowPow app and pool are paired; accepted Core baselines are retained.",
+  "description": "Verified MUX telemetry, canonical block-detection and browser-local queued-alert images. PowPow app and pool are paired; accepted Core and shutdown policies are retained. Node/package acceptance is pending.",
   "apps": {
     "willitmod-dev-btc": {
-      "sourceRevision": "acb7585994347670c30c8e60a024d8cae5b855b8",
-      "imageRef": "ghcr.io/willitmod/axebtc-app-umbrel-dev:0.7.82.13-mux.acb758599434@sha256:34c342dd742ceb6e7db07535ab006e5b7688f871558c4fdbc03313d6a306280f",
-      "version": "0.7.82.13-dev",
-      "buildRun": "https://github.com/WillItMod/AxeBTC_Build/actions/runs/36449938815",
+      "sourceRevision": "6202831bba65f2651fa5ef25d672137acfb6df58",
+      "imageRef": "ghcr.io/willitmod/axebtc-app-umbrel-dev:0.7.82.14-mux.6202831bba65@sha256:7fede2a88a66074a166c1fb62ec71e2de49b440440fc00269751d8492ef242e5",
+      "version": "0.7.82.14-dev",
+      "buildRun": "https://github.com/WillItMod/AxeBTC_Build/actions/runs/36462182345",
       "platforms": [
         "linux/amd64",
         "linux/arm64"
       ]
     },
     "willitmod-dev-bch": {
-      "sourceRevision": "5d551863e059d7ad0d71b750ffdc9d69c11bee5a",
-      "imageRef": "ghcr.io/willitmod/axebch-app-umbrel-dev:0.9.21-mux.5d551863e059@sha256:c26b6a691c5b14557436a0db1c168c70ec868190f79727f0bce4fe89fd3e1ff6",
-      "version": "0.9.21-dev",
-      "buildRun": "https://github.com/WillItMod/AxeBCH_Build/actions/runs/36450034462",
+      "sourceRevision": "30b2044e9efb88df7982287edde734231cdfc240",
+      "imageRef": "ghcr.io/willitmod/axebch-app-umbrel-dev:0.9.22-mux.30b2044e9efb@sha256:a1f0c78c59b4649df6c4eae83381f4ee43f023982cd3611cc534d213d4c83553",
+      "version": "0.9.22-dev",
+      "buildRun": "https://github.com/WillItMod/AxeBCH_Build/actions/runs/36462197864",
       "platforms": [
         "linux/amd64",
         "linux/arm64"
       ]
     },
     "willitmod-dev-bc2": {
-      "sourceRevision": "b1c1119763a89cf34258ce7e319013ddc35a7963",
-      "imageRef": "ghcr.io/willitmod/axebc2-app-umbrel-dev:0.1.17-mux.b1c1119763a8@sha256:496016b8f52c99833be0a277acfebdd5a6ae5566521df18ed705abe19adc0d98",
-      "version": "0.1.17-dev",
-      "buildRun": "https://github.com/WillItMod/AxeBC2_Build/actions/runs/36451618062",
+      "sourceRevision": "8eae6c37ef92d8f9103be0600530c24d40ca6554",
+      "imageRef": "ghcr.io/willitmod/axebc2-app-umbrel-dev:0.1.18-mux.8eae6c37ef92@sha256:a70084e5e6897fba03bf5051a031b045deb48c51bdf54b64834b33c45aeed0cb",
+      "version": "0.1.18-dev",
+      "buildRun": "https://github.com/WillItMod/AxeBC2_Build/actions/runs/36462215370",
       "platforms": [
         "linux/amd64",
         "linux/arm64"
       ]
     },
     "willitmod-dev-axebch2": {
-      "sourceRevision": "8d8882c243abaf7dfc12047c85ddd34e1f6540a9",
-      "imageRef": "ghcr.io/willitmod/axebch2-app:0.2.0.7-mux.8d8882c243ab@sha256:13539c61643abb8039d0fbb538b58ec18643c6c41b519503cf78de71e4701fde",
-      "version": "0.2.0.7-dev",
-      "buildRun": "https://github.com/WillItMod/AxeBCH2_Build/actions/runs/36450147204",
+      "sourceRevision": "63c55a8b82f7fe71429a8ac75842b19b9d22a767",
+      "imageRef": "ghcr.io/willitmod/axebch2-app:0.2.0.8-mux.63c55a8b82f7@sha256:bafbe07900479416b13d2090e45fc63183daadc26f404e4ff0fccd4244ce0366",
+      "version": "0.2.0.8-dev",
+      "buildRun": "https://github.com/WillItMod/AxeBCH2_Build/actions/runs/36462231377",
       "platforms": [
         "linux/amd64",
         "linux/arm64"
       ]
     },
     "willitmod-dev-dgb": {
-      "sourceRevision": "cadecd86e87268fb3fa7e77671842f5a8065f33e",
-      "imageRef": "ghcr.io/willitmod/axedgb-app:0.9.184-mux.cadecd86e872@sha256:7096803fb3c11c2a05251c0b5b591f02cd097e91dae41bcf7e1f44b7f563d430",
-      "version": "0.9.184-dev",
-      "buildRun": "https://github.com/WillItMod/AxeDGB_Build/actions/runs/36449861696",
+      "sourceRevision": "ea95d1bccbe5bb02316bbdc983f7862d83abbff5",
+      "imageRef": "ghcr.io/willitmod/axedgb-app:0.9.185-mux.ea95d1bccbe5@sha256:07e6e4d6554b13e5f87727efef654411ba4659fa2d7bfa77c7a0d0824141e19e",
+      "version": "0.9.185-dev",
+      "buildRun": "https://github.com/WillItMod/AxeDGB_Build/actions/runs/36462280373",
       "platforms": [
         "linux/amd64",
         "linux/arm64"
       ]
     },
     "willitmod-dev-xec": {
-      "sourceRevision": "ab5b1884ccddca0051148655b9520a6de6f753da",
-      "imageRef": "ghcr.io/willitmod/axexec-app-umbrel-dev:0.1.20-mux.ab5b1884ccdd@sha256:d02b560c814e870e0871ff0b38fac57f29b9b2cf241a178713947201af62715b",
-      "version": "0.1.20-dev",
-      "buildRun": "https://github.com/WillItMod/AxeXEC_Build/actions/runs/36450154482",
+      "sourceRevision": "f29d53f02ff12969344dc69f24f00b14f5da50b1",
+      "imageRef": "ghcr.io/willitmod/axexec-app-umbrel-dev:0.1.21-mux.f29d53f02ff1@sha256:0d44709424b2edaae265c491e2cee658a7001379fdedb95c1577ec82b4422fd8",
+      "version": "0.1.21-dev",
+      "buildRun": "https://github.com/WillItMod/AxeXEC_Build/actions/runs/36462247280",
       "platforms": [
         "linux/amd64",
         "linux/arm64"
       ]
     },
     "willitmod-dev-ppc": {
-      "sourceRevision": "ca95e432c83c4bff12ea1bf0f226ae4dd196976e",
-      "imageRef": "ghcr.io/willitmod/axeppc-app-umbrel-dev:0.2.34-mux.ca95e432c83c@sha256:967713adf6277b1e54289edcb203ad28e9c6ee87b18a39b8966c21fdd5953679",
-      "version": "0.2.34-dev",
-      "buildRun": "https://github.com/WillItMod/AxePPC_Build/actions/runs/36449979573",
+      "sourceRevision": "bd4b37d3f099b3a6325385a12896bfad59faed14",
+      "imageRef": "ghcr.io/willitmod/axeppc-app-umbrel-dev:0.2.35-mux.bd4b37d3f099@sha256:8cc138d5e84f284199c66e3cd709d085adb2b5e40a351a31620c9963e0fe43c9",
+      "version": "0.2.35-dev",
+      "buildRun": "https://github.com/WillItMod/AxePPC_Build/actions/runs/36462263285",
       "platforms": [
         "linux/amd64",
         "linux/arm64"
       ]
     },
     "willitmod-dev-powpow": {
-      "sourceRevision": "34f15532986c30b1dde47a4b91b744cc542a4a61",
-      "imageRef": "ghcr.io/willitmod/powpow-app:0.2.35-mux.34f15532986c@sha256:0502e188cdd00ed3253b133c80757c295d4604ab8f44fa14c5429d9fb38333eb",
-      "version": "0.2.35-dev",
-      "buildRun": "https://github.com/WillItMod/PowPow_Build/actions/runs/36449957558",
+      "sourceRevision": "e5ce6530186b2c6749ed62b54e537932a2cd1fd2",
+      "imageRef": "ghcr.io/willitmod/powpow-app:0.2.36-mux.e5ce6530186b@sha256:a4cbc9f32170c638b8ef0d80811f6518b00cd66e734bd500129c86ae036c9c28",
+      "version": "0.2.36-dev",
+      "buildRun": "https://github.com/WillItMod/PowPow_Build/actions/runs/36462295651",
       "platforms": [
         "linux/amd64",
         "linux/arm64"
       ],
-      "poolImageRef": "ghcr.io/willitmod/powpow-pool:0.2.35-mux.34f15532986c@sha256:6602e1bdb932fc76617113896959a83372fa52ef85870280208feb96d789b08c",
-      "poolSourceRevision": "34f15532986c30b1dde47a4b91b744cc542a4a61"
+      "poolImageRef": "ghcr.io/willitmod/powpow-pool:0.2.36-mux.e5ce6530186b@sha256:56c1995f85816ee0ed5da2c267a1d4f650d4b50c656062d0bc6090d697a216d0",
+      "poolSourceRevision": "e5ce6530186b2c6749ed62b54e537932a2cd1fd2"
     },
     "willitmod-dev-fracattack": {
-      "sourceRevision": "a180312e1091cad9210d8dd38963b45763d7a3db",
-      "imageRef": "ghcr.io/willitmod/fracattack-app-umbrel-dev:0.1.7-mux.a180312e1091@sha256:d4e82ffc370dda03fb8a605b6c1de7785979b97ab82fc44590eb9abc4cecd38b",
-      "version": "0.1.7",
-      "buildRun": "https://github.com/WillItMod/FracAttack_Build/actions/runs/36450163504",
+      "sourceRevision": "faf94ec42e795f1b2a63e5abeca524f2b7943696",
+      "imageRef": "ghcr.io/willitmod/fracattack-app-umbrel-dev:0.1.8-mux.faf94ec42e79@sha256:3dd1528191acfbca99305661cb41e89ffdff9defa8b23afd1356a0aea4931ef4",
+      "version": "0.1.8",
+      "buildRun": "https://github.com/WillItMod/FracAttack_Build/actions/runs/36462310956",
       "platforms": [
         "linux/amd64",
         "linux/arm64"

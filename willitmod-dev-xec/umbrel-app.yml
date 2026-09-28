@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-xec
 category: bitcoin
 name: AxeXEC
-version: "0.1.20-dev"
+version: "0.1.21-dev"
 tagline: XEC node + solo pool
 description: >-
   ALPHA RELEASE (DEV CHANNEL)
@@ -72,6 +72,11 @@ releaseNotes: >-
   history checks the full block hash against the correct chain and refreshes
   confirmation and reorganisation status before showing a confirmed find.
   Unverified reports remain distinguishable from confirmed pool blocks.
+
+  Block alerts in this browser is a separate local preference. Recent verified
+  blocks queue across app tabs, with browser-only Close acknowledgements.
+  Reorgs or unavailable proof retract the alert without acknowledging it.
+  OS and MUX delivery and acknowledgements remain independently managed.
 widgets:
   - id: "sync"
     type: "text-with-progress"

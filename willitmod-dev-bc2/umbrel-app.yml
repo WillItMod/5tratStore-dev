@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-bc2
 category: bitcoin
 name: AxeBC2
-version: "0.1.17-dev"
+version: "0.1.18-dev"
 tagline: BC2 node + solo pool
 description: >-
   BETA RELEASE (DEV CHANNEL)
@@ -48,6 +48,11 @@ releaseNotes: >-
   history checks the full block hash against the correct chain and refreshes
   confirmation and reorganisation status before showing a confirmed find.
   Unverified reports remain distinguishable from confirmed pool blocks.
+
+  Block alerts in this browser is a separate local preference. Recent verified
+  blocks queue across app tabs, with browser-only Close acknowledgements.
+  Reorgs or unavailable proof retract the alert without acknowledging it.
+  OS and MUX delivery and acknowledgements remain independently managed.
 widgets:
   - id: "sync"
     type: "text-with-progress"

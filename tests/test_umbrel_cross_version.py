@@ -28,13 +28,24 @@ class UmbrelCrossVersionTests(unittest.TestCase):
                          'cf72507651d46b7f432d75d0e5626e792c40a723')
         self.assertEqual(migration['service'], 'app')
         self.assertEqual(migration['stop_signal'], 'SIGINT')
+        self.assertEqual(set(migration['baseline_image_versions']), expected)
         for app_id in expected:
             with self.subTest(app=app_id):
                 compose = yaml.safe_load((ROOT / app_id / 'docker-compose.yml').read_text())
                 self.assertEqual(compose['services']['app'].pop('stop_signal'), 'SIGINT')
-                # Comparing the entire preceding contract also protects every
-                # Core/pool/Redis field, image, mount, secret interpolation and
-                # existing grace period; no unrelated lifecycle change slips in.
+                # Image/version pins evolve in the separately verified release
+                # record. Restore only those exact fields before comparing the
+                # original SIGINT migration baseline; all other runtime fields,
+                # Core/Redis images, mounts and grace periods remain protected.
+                pins = migration['baseline_image_versions'][app_id]
+                self.assertEqual(set(pins), {'app_image'} |
+                    ({'app_version'} if 'APP_VERSION' in compose['services']['app']['environment'] else set()) |
+                    ({'pool_image'} if app_id == 'willitmod-dev-powpow' else set()))
+                compose['services']['app']['image'] = pins['app_image']
+                if 'app_version' in pins:
+                    compose['services']['app']['environment']['APP_VERSION'] = pins['app_version']
+                if 'pool_image' in pins:
+                    compose['services']['pool']['image'] = pins['pool_image']
                 digest = hashlib.sha256(json.dumps(compose, sort_keys=True,
                                                    separators=(',', ':')).encode()).hexdigest()
                 self.assertEqual(digest, migration['baseline_compose_contract_sha256'][app_id])

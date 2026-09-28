@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-btc
 category: bitcoin
 name: AxeBTC
-version: "0.7.82.13-dev"
+version: "0.7.82.14-dev"
 tagline: BTC node + solo pool
 description: >-
   BETA RELEASE (DEV CHANNEL)
@@ -52,6 +52,11 @@ releaseNotes: >-
   history checks the full block hash against the correct chain and refreshes
   confirmation and reorganisation status before showing a confirmed find.
   Unverified reports remain distinguishable from confirmed pool blocks.
+
+  Block alerts in this browser is a separate local preference. Recent verified
+  blocks queue across app tabs, with browser-only Close acknowledgements.
+  Reorgs or unavailable proof retract the alert without acknowledging it.
+  OS and MUX delivery and acknowledgements remain independently managed.
 
   Pool statistics use the canonical status file, keeping the dashboard responsive.
 widgets:

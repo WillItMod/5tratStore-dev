@@ -219,7 +219,7 @@ services:
   app:
     stop_signal: SIGINT
     hostname: axexec-app
-    image: ghcr.io/willitmod/axexec-app-umbrel-dev:0.1.20-mux.ab5b1884ccdd@sha256:d02b560c814e870e0871ff0b38fac57f29b9b2cf241a178713947201af62715b
+    image: ghcr.io/willitmod/axexec-app-umbrel-dev:0.1.21-mux.f29d53f02ff1@sha256:0d44709424b2edaae265c491e2cee658a7001379fdedb95c1577ec82b4422fd8
     user: "1000:1000"
     restart: on-failure
     stop_grace_period: 30s

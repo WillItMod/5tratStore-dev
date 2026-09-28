@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-fracattack
 category: bitcoin
 name: FracAttack
-version: "0.1.7"
+version: "0.1.8"
 tagline: Fractal node + solo pool
 description: >-
   EXPERIMENTAL RELEASE (DEV CHANNEL)
@@ -54,6 +54,11 @@ releaseNotes: >-
   history checks the full block hash against the correct chain and refreshes
   confirmation and reorganisation status before showing a confirmed find.
   Unverified reports remain distinguishable from confirmed pool blocks.
+
+  Block alerts in this browser is a separate local preference. Recent verified
+  blocks queue across app tabs, with browser-only Close acknowledgements.
+  Reorgs or unavailable proof retract the alert without acknowledging it.
+  OS and MUX delivery and acknowledgements remain independently managed.
 
   Retains Fractal Core v0.4.0 and the subsidy correction introduced in 0.1.6.
   Maturity and orphan status remain visible. No live block find has yet qualified
