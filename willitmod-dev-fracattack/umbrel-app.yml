@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-fracattack
 category: bitcoin
 name: FracAttack
-version: "0.1.5-dev.1"
+version: "0.1.6"
 tagline: Fractal node + solo pool
 description: >-
   EXPERIMENTAL RELEASE (DEV CHANNEL)
