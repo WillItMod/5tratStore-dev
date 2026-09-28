@@ -7,6 +7,7 @@ on:
       - "willitmod-dev-*/umbrel-app.yml"
       - "willitmod-dev-*/global-app.yml"
       - "tests/test_mux_app_packages.py"
+      - "tests/test_ppc_pool_lifecycle.py"
       - ".github/workflows/validate-mux-app-packages.yml"
   push:
     branches: [main]
@@ -16,6 +17,7 @@ on:
       - "willitmod-dev-*/umbrel-app.yml"
       - "willitmod-dev-*/global-app.yml"
       - "tests/test_mux_app_packages.py"
+      - "tests/test_ppc_pool_lifecycle.py"
       - ".github/workflows/validate-mux-app-packages.yml"
 permissions:
   contents: read
@@ -27,3 +29,4 @@ jobs:
       - run: python3 -m pip install PyYAML==6.0.2
       - run: sudo apt-get update && sudo apt-get install --yes gettext-base jq
       - run: python3 -m unittest discover -s tests -p test_mux_app_packages.py -v
+      - run: python3 -m unittest discover -s tests -p test_ppc_pool_lifecycle.py -v

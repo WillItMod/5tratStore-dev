@@ -213,6 +213,9 @@ services:
     restart: unless-stopped
 
   pool:
+    # Node 12 must not be PID 1: its default TERM handler cannot terminate
+    # PID 1, causing Docker to reach the forced-kill timeout on updates.
+    init: true
     image: ghcr.io/willitmod/axeppc-pool:0.2.30
     user: "1000:1000"
     restart: unless-stopped
