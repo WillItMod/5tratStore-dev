@@ -35,7 +35,7 @@
     },
     "willitmod-dev-powpow": {
       "package_version": "0.2.36-dev",
-      "compose_contract_sha256": "131e17b75cab3f52e15d9b75b6658567de581d637891a1e1dedb660cb7bf8691"
+      "compose_contract_sha256": "a2bbdbd0279e3ad0948355edbf7a2eea1973029f7a42b0032ae965b7102af0e8"
     },
     "willitmod-dev-ppc": {
       "package_version": "0.2.35-dev",

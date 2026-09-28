@@ -32,6 +32,14 @@ class UmbrelCrossVersionTests(unittest.TestCase):
         for app_id in expected:
             with self.subTest(app=app_id):
                 compose = yaml.safe_load((ROOT / app_id / 'docker-compose.yml').read_text())
+                if app_id == 'willitmod-dev-powpow':
+                    # A versioned OS extension is inert to legacy Compose.
+                    # Check its entire shape before removing it from this
+                    # historical raw-service comparison.
+                    self.assertEqual(compose.pop('x-5tratumos-stop-policy'), {
+                        'version': 1, 'services': {
+                            name: {'stop_signal': 'SIGTERM', 'stop_grace_period': '15m30s', 'user': '1000:1000'}
+                            for name in ('litecoin', 'dogecoin')}})
                 self.assertEqual(compose['services']['app'].pop('stop_signal'), 'SIGINT')
                 # Image/version pins evolve in the separately verified release
                 # record. Restore only those exact fields before comparing the
