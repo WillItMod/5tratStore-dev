@@ -218,7 +218,7 @@ services:
 
   app:
     hostname: axebch-app
-    image: ghcr.io/willitmod/axebch-app-umbrel-dev:0.9.20-mux.692c1ab9f8e4@sha256:e2f8a979029b5ff557b84c22377cfe0e535324dc2a3443974c035bd456f27d50
+    image: ghcr.io/willitmod/axebch-app-umbrel-dev:0.9.21-mux.5d551863e059@sha256:c26b6a691c5b14557436a0db1c168c70ec868190f79727f0bce4fe89fd3e1ff6
     user: "1000:1000"
     restart: on-failure
     stop_grace_period: 30s

@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-fracattack
 category: bitcoin
 name: FracAttack
-version: "0.1.3-dev"
+version: "0.1.7"
 tagline: Fractal node + solo pool
 description: >-
   EXPERIMENTAL RELEASE (DEV CHANNEL)
@@ -48,6 +48,16 @@ gallery:
 path: ""
 defaultUsername: ""
 defaultPassword: ""
+releaseNotes: >-
+  Current miner hash rate from 5tratMux appears separately from accepted-share
+  estimates, with stale or unavailable telemetry handled explicitly. Block
+  history checks the full block hash against the correct chain and refreshes
+  confirmation and reorganisation status before showing a confirmed find.
+  Unverified reports remain distinguishable from confirmed pool blocks.
+
+  Retains Fractal Core v0.4.0 and the subsidy correction introduced in 0.1.6.
+  Maturity and orphan status remain visible. No live block find has yet qualified
+  this release; updating cannot recover rewards outside the accepted chain.
 widgets:
   - id: "sync"
     type: "text-with-progress"

@@ -139,7 +139,7 @@ class MuxPackageTests(unittest.TestCase):
         release = json.loads((ROOT / "MUX-HASHRATE-2026-09-28.json").read_text())
         self.assertEqual(release["schemaVersion"], 1)
         expected = {"willitmod-dev-" + name for name in
-                    ("btc", "bch", "bc2", "axebch2", "dgb", "xec", "ppc", "powpow")}
+                    ("btc", "bch", "bc2", "axebch2", "dgb", "xec", "ppc", "powpow", "fracattack")}
         self.assertEqual(set(release["apps"]), expected)
         for name, record in release["apps"].items():
             with self.subTest(app=name):
@@ -166,6 +166,23 @@ class MuxPackageTests(unittest.TestCase):
                                      "http://172.17.0.1:21222/api/integrations/workers")
                     if "APP_VERSION" in environment:
                         self.assertEqual(environment["APP_VERSION"], record["version"])
+
+    def test_powpow_app_and_pool_bind_to_the_same_verified_source(self):
+        release = json.loads((ROOT / "MUX-HASHRATE-2026-09-28.json").read_text())
+        record = release["apps"]["willitmod-dev-powpow"]
+        compose = yaml.safe_load((ROOT / "willitmod-dev-powpow/docker-compose.yml").read_text())
+        self.assertEqual(compose["services"]["pool"]["image"], record["poolImageRef"])
+        self.assertEqual(record["poolSourceRevision"], record["sourceRevision"])
+        version = record["version"].removesuffix("-dev")
+        self.assertRegex(record["poolImageRef"], r":" + re.escape(version) + r"-mux\." +
+                         record["sourceRevision"][:12] + r"@sha256:[0-9a-f]{64}$")
+
+    def test_fractal_update_retains_the_consensus_fixed_core(self):
+        compose = yaml.safe_load((ROOT / "willitmod-dev-fracattack/docker-compose.yml").read_text())
+        self.assertEqual(compose["services"]["fractald"]["image"],
+                         "ghcr.io/willitmod/fracattack-fractald:0.4.0")
+        self.assertEqual(compose["services"]["app"]["environment"]["FRACTAL_IMAGE"],
+                         "ghcr.io/willitmod/fracattack-fractald:0.4.0")
 
 
 if __name__ == "__main__":

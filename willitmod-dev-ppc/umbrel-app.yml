@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-ppc
 category: altcoin
 name: AxePPC
-version: "0.2.33-dev"
+version: "0.2.34-dev"
 tagline: PPC node + solo pool
 description: >-
   ALPHA RELEASE (DEV CHANNEL)
@@ -40,19 +40,14 @@ path: ""
 defaultUsername: ""
 defaultPassword: ""
 releaseNotes: >-
-  Preserves valid pool configuration during updates and retains the saved
-  payout address when an older configuration needs repair.
+  Current miner hash rate from 5tratMux appears separately from accepted-share
+  estimates, with stale or unavailable telemetry handled explicitly. Block
+  history checks the full block hash against the correct chain and refreshes
+  confirmation and reorganisation status before showing a confirmed find.
+  Unverified reports remain distinguishable from confirmed pool blocks.
 
-  Adds current routed miner hash rate from 5tratMux, with its source and age
-  shown separately from the pool's accepted-share estimates. Worker cards
-  follow the active app route, include miners before their first share, and
-  fall back to pool estimates when MUX telemetry is unavailable or stale.
-  SHA-256 and Scrypt measurements remain separate; renamed workers are
-  counted once. Accepted-share history, wallets and mining settings are
-  preserved.
-
-  Aligns the app and store version and pins the app image to a verified
-  AMD64/ARM64 build. Node and pool images are unchanged.
+  Pool block detection follows the Peercoin pool records and verifies the
+  Peercoin chain. Future pool containers use an init process for reliable shutdown.
 widgets:
   - id: "sync"
     type: "text-with-progress"

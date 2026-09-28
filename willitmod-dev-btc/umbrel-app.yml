@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-btc
 category: bitcoin
 name: AxeBTC
-version: "0.7.82.12-dev"
+version: "0.7.82.13-dev"
 tagline: BTC node + solo pool
 description: >-
   BETA RELEASE (DEV CHANNEL)
@@ -47,19 +47,13 @@ path: ""
 defaultUsername: ""
 defaultPassword: ""
 releaseNotes: >-
-  Reads the configured pool status file directly, avoiding long statistics
-  warm-up delays on installations with large worker-history directories.
+  Current miner hash rate from 5tratMux appears separately from accepted-share
+  estimates, with stale or unavailable telemetry handled explicitly. Block
+  history checks the full block hash against the correct chain and refreshes
+  confirmation and reorganisation status before showing a confirmed find.
+  Unverified reports remain distinguishable from confirmed pool blocks.
 
-  Adds current routed miner hash rate from 5tratMux, with its source and age
-  shown separately from the pool's accepted-share estimates. Worker cards
-  follow the active app route, include miners before their first share, and
-  fall back to pool estimates when MUX telemetry is unavailable or stale.
-  SHA-256 and Scrypt measurements remain separate; renamed workers are
-  counted once. Accepted-share history, wallets and mining settings are
-  preserved.
-
-  Aligns the app and store version and pins the app image to a verified
-  AMD64/ARM64 build. Node and pool images are unchanged.
+  Pool statistics use the canonical status file, keeping the dashboard responsive.
 widgets:
   - id: "sync"
     type: "text-with-progress"

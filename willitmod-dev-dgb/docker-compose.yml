@@ -1066,7 +1066,7 @@ services:
 
   app:
     hostname: axedgb-app
-    image: ghcr.io/willitmod/axedgb-app:0.9.183-mux.45aff375d7c4@sha256:1aae549c039e10cdaff5bd25b2682f85d44d81f4ec149f88d667bf8e762648fa
+    image: ghcr.io/willitmod/axedgb-app:0.9.184-mux.cadecd86e872@sha256:7096803fb3c11c2a05251c0b5b591f02cd097e91dae41bcf7e1f44b7f563d430
     user: "1000:1000"
     restart: on-failure
     stop_grace_period: 30s

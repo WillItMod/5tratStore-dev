@@ -236,7 +236,7 @@ services:
 
   app:
     hostname: axeppc-app
-    image: ghcr.io/willitmod/axeppc-app-umbrel-dev:0.2.33-mux.148f9619e547@sha256:c7d214f957629e24fa967cc52afc9bf149f1b8e22e94b30482b9de4674f62a8c
+    image: ghcr.io/willitmod/axeppc-app-umbrel-dev:0.2.34-mux.ca95e432c83c@sha256:967713adf6277b1e54289edcb203ad28e9c6ee87b18a39b8966c21fdd5953679
     user: "1000:1000"
     restart: unless-stopped
     stop_grace_period: 30s

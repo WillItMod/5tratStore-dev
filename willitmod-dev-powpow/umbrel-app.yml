@@ -2,18 +2,16 @@ manifestVersion: 1
 id: willitmod-dev-powpow
 category: altcoin
 name: "PowPow"
-version: "0.2.34-dev"
+version: "0.2.35-dev"
 releaseNotes: >-
-  Adds current routed miner hash rate from 5tratMux, with its source and age
-  shown separately from the pool's accepted-share estimates. Worker cards
-  follow the active app route, include miners before their first share, and
-  fall back to pool estimates when MUX telemetry is unavailable or stale.
-  SHA-256 and Scrypt measurements remain separate; renamed workers are
-  counted once. Accepted-share history, wallets and mining settings are
-  preserved.
+  Current miner hash rate from 5tratMux appears separately from accepted-share
+  estimates, with stale or unavailable telemetry handled explicitly. Block
+  history checks the full block hash against the correct chain and refreshes
+  confirmation and reorganisation status before showing a confirmed find.
+  Unverified reports remain distinguishable from confirmed pool blocks.
 
-  Aligns the app and store version and pins the app image to a verified
-  AMD64/ARM64 build. Node and pool images are unchanged.
+  The app and pool are updated together. Litecoin and Dogecoin events retain
+  separate chain identities; rejected RPC submissions are not counted as accepted.
 tagline: LTC + DOGE merged mining (alpha dev)
 description: >-
   ALPHA RELEASE (DEV CHANNEL)

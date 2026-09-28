@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-bc2
 category: bitcoin
 name: AxeBC2
-version: "0.1.16-dev"
+version: "0.1.17-dev"
 tagline: BC2 node + solo pool
 description: >-
   BETA RELEASE (DEV CHANNEL)
@@ -43,22 +43,11 @@ path: ""
 defaultUsername: ""
 defaultPassword: ""
 releaseNotes: >-
-  Adds current routed miner hash rate from 5tratMux, with its source and age
-  shown separately from the pool's accepted-share estimates. Worker cards
-  follow the active app route, include miners before their first share, and
-  fall back to pool estimates when MUX telemetry is unavailable or stale.
-  SHA-256 and Scrypt measurements remain separate; renamed workers are
-  counted once. Accepted-share history, wallets and mining settings are
-  preserved.
-
-  Aligns the app and store version and pins the app image to a verified
-  AMD64/ARM64 build. Node and pool images are unchanged.
-
-  Retains the 5tratumOS 0.7.12 minimum and Core 31 migration safeguards. An
-  existing chain without a verified migration completion record still requires
-  its one-time full reindex; completed migrations do not repeat it. Payout
-  settings and blockchain data are preserved, and support telemetry remains
-  disabled by default.
+  Current miner hash rate from 5tratMux appears separately from accepted-share
+  estimates, with stale or unavailable telemetry handled explicitly. Block
+  history checks the full block hash against the correct chain and refreshes
+  confirmation and reorganisation status before showing a confirmed find.
+  Unverified reports remain distinguishable from confirmed pool blocks.
 widgets:
   - id: "sync"
     type: "text-with-progress"

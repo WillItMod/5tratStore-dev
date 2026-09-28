@@ -9,22 +9,31 @@ import unittest
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
-RELEASE = json.loads((ROOT / 'UMBREL-COMPATIBILITY-2026-09-24.json').read_text())['apps']
+CONTRACT = json.loads((ROOT / 'UMBREL-CONTRACTS-2026-09-28.json').read_text())
+RELEASE = CONTRACT['apps']
 
 
 class UmbrelCrossVersionTests(unittest.TestCase):
-    def test_only_reviewed_startup_fixes_change_the_compose_contract(self):
+    def test_historical_live_acceptance_evidence_is_preserved(self):
+        previous = ROOT / CONTRACT['historical_evidence']
+        self.assertEqual(hashlib.sha256(previous.read_bytes()).hexdigest(),
+                         CONTRACT['historical_evidence_sha256'])
+
+    def test_only_reviewed_changes_reach_the_current_compose_contract(self):
         for app_id, release in RELEASE.items():
             with self.subTest(app=app_id):
                 compose = yaml.safe_load((ROOT / app_id / 'docker-compose.yml').read_text())
                 host = compose['services']['app_proxy']['environment']['APP_HOST']
-                self.assertEqual(compose['services']['app'].pop('hostname'), host)
+                if app_id == 'willitmod-dev-bc2':
+                    for network in ('default', 'umbrel_main_network'):
+                        self.assertIn(host, compose['services']['app']['networks'][network]['aliases'])
+                else:
+                    self.assertEqual(compose['services']['app']['hostname'], host)
                 if app_id == 'willitmod-dev-fracattack':
                     self.assertNotIn('ports', compose['services']['app'])
-                    compose['services']['app']['ports'] = ['21225:3000/tcp']
                 if app_id == 'willitmod-dev-powpow':
                     for node in ['litecoin', 'dogecoin']:
-                        self.assertEqual(compose['services'][node].pop('user'), '1000:1000')
+                        self.assertEqual(compose['services'][node]['user'], '1000:1000')
                 digest = hashlib.sha256(json.dumps(compose, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
                 self.assertEqual(digest, release['compose_contract_sha256'])
                 self.assertEqual(yaml.safe_load((ROOT / app_id / 'umbrel-app.yml').read_text())['version'], release['package_version'])

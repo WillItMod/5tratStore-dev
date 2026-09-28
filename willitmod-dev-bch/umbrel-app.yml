@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-bch
 category: bitcoin
 name: AxeBCH
-version: "0.9.20-dev"
+version: "0.9.21-dev"
 tagline: BCH node + solo pool
 description: >-
   RC1 RELEASE (DEV CHANNEL)
@@ -70,16 +70,11 @@ path: ""
 defaultUsername: ""
 defaultPassword: ""
 releaseNotes: >-
-  Adds current routed miner hash rate from 5tratMux, with its source and age
-  shown separately from the pool's accepted-share estimates. Worker cards
-  follow the active app route, include miners before their first share, and
-  fall back to pool estimates when MUX telemetry is unavailable or stale.
-  SHA-256 and Scrypt measurements remain separate; renamed workers are
-  counted once. Accepted-share history, wallets and mining settings are
-  preserved.
-
-  Aligns the app and store version and pins the app image to a verified
-  AMD64/ARM64 build. Node and pool images are unchanged.
+  Current miner hash rate from 5tratMux appears separately from accepted-share
+  estimates, with stale or unavailable telemetry handled explicitly. Block
+  history checks the full block hash against the correct chain and refreshes
+  confirmation and reorganisation status before showing a confirmed find.
+  Unverified reports remain distinguishable from confirmed pool blocks.
 widgets:
   - id: "sync"
     type: "text-with-progress"

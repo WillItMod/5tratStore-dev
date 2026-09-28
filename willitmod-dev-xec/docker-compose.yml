@@ -218,7 +218,7 @@ services:
 
   app:
     hostname: axexec-app
-    image: ghcr.io/willitmod/axexec-app-umbrel-dev:0.1.19-mux.07d32b8a3a4a@sha256:aed2c55017cee72372ea5c8b67659efbb36eb2e42987957bc5544bee244ca46b
+    image: ghcr.io/willitmod/axexec-app-umbrel-dev:0.1.20-mux.ab5b1884ccdd@sha256:d02b560c814e870e0871ff0b38fac57f29b9b2cf241a178713947201af62715b
     user: "1000:1000"
     restart: on-failure
     stop_grace_period: 30s

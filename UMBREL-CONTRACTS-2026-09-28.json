@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "scope": "Static packaging regression contracts; this is not new live Umbrel acceptance evidence. Candidate node acceptance is recorded separately.",
+  "reviewed_store_base": "c2725343dcd4d41bd1fc19b4f29152170fa02d2a",
+  "historical_evidence": "UMBREL-COMPATIBILITY-2026-09-24.json",
+  "historical_evidence_sha256": "def19c680b39769c58a31a832ef8092438180ef5d6a141fc3c3afa27901e06b8",
+  "apps": {
+    "willitmod-dev-5tratsmack": {
+      "package_version": "0.11.15",
+      "compose_contract_sha256": "ce305d67a8e94bfb9ee5ac10b3c199918f4b1d538309ac394b63b309352469c1"
+    },
+    "willitmod-dev-axebch2": {
+      "package_version": "0.2.0.7-dev",
+      "compose_contract_sha256": "8f914f7aafd2342fefb12c3ae9d1efa461109bbf3bdd6074497093dbdb2565fe"
+    },
+    "willitmod-dev-bc2": {
+      "package_version": "0.1.17-dev",
+      "compose_contract_sha256": "70b23bb108ffb31489ce4e25082a14a2ab9da4a18c35310fe5465387d1a6b5f4"
+    },
+    "willitmod-dev-bch": {
+      "package_version": "0.9.21-dev",
+      "compose_contract_sha256": "46278caac226511ed41d9e60ce8edf9fb137206eb83d5c53c8fa699e3b6203f7"
+    },
+    "willitmod-dev-btc": {
+      "package_version": "0.7.82.13-dev",
+      "compose_contract_sha256": "ea8e368653eb59b711d75705742994e81808768c9d3b383e0dc3020f7c4bcff5"
+    },
+    "willitmod-dev-dgb": {
+      "package_version": "0.9.184-dev",
+      "compose_contract_sha256": "a8fc6086b24b4c9ee51b118fe60bce3c312194ebb01d900439d7d18cde3104ac"
+    },
+    "willitmod-dev-fracattack": {
+      "package_version": "0.1.7",
+      "compose_contract_sha256": "b9e979729384607c678b70d9c5788a8a320fa51202f8a17125c6e3e3f5640e69"
+    },
+    "willitmod-dev-powpow": {
+      "package_version": "0.2.35-dev",
+      "compose_contract_sha256": "eb188cd8e15ba20a565198113b6c536949d0845d77d6dbf649a723d161e616de"
+    },
+    "willitmod-dev-ppc": {
+      "package_version": "0.2.34-dev",
+      "compose_contract_sha256": "5c192ef1d232631e3ca7f494024c715995509f404c811a48cd226323170bdfa1"
+    },
+    "willitmod-dev-xec": {
+      "package_version": "0.1.20-dev",
+      "compose_contract_sha256": "bbbb64a3a4a13c178c4aa36afd0bbaf0036cd68289b7a82a079a654f8adf04b8"
+    }
+  }
+}
