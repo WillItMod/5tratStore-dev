@@ -89,7 +89,7 @@ services:
 
         needs_ckpool_regen=0
         if [ -f /data/pool/config/ckpool.conf ]; then
-          if ! grep -qE '"btcd"[[:space:]]*:[[:space:]]*\\[' /data/pool/config/ckpool.conf; then
+          if ! grep -qE '"btcd"[[:space:]]*:[[:space:]]*[[]' /data/pool/config/ckpool.conf; then
             needs_ckpool_regen=1
           fi
           if ! grep -q '"zmqblock"' /data/pool/config/ckpool.conf; then
@@ -100,7 +100,7 @@ services:
         fi
 
         if [ "$$needs_ckpool_regen" -eq 1 ]; then
-          existing_addr="$$(grep -oE '\\\"btcaddress\\\"[[:space:]]*:[[:space:]]*\\\"[^\\\"]*\\\"' /data/pool/config/ckpool.conf 2>/dev/null | head -n 1 | sed -E 's/.*\\\"btcaddress\\\"[[:space:]]*:[[:space:]]*\\\"([^\\\"]*)\\\".*/\\1/' || true)"
+          existing_addr="$$(grep -oE '"btcaddress"[[:space:]]*:[[:space:]]*"[^"]*"' /data/pool/config/ckpool.conf 2>/dev/null | head -n 1 | sed -E 's/.*"btcaddress"[[:space:]]*:[[:space:]]*"([^"]*)".*/\1/' || true)"
           if [ -f /data/pool/config/ckpool.conf ]; then
             mv /data/pool/config/ckpool.conf "/data/pool/config/ckpool.conf.bak.invalid.$$(date +%s 2>/dev/null || echo 0)" || true
           fi
