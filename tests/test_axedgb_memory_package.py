@@ -32,11 +32,14 @@ class AxeDgbPackageTests(unittest.TestCase):
         self.assertIn("--single-transaction", self.init)
         self.assertIn("axedgb-init:", self.services["init"]["image"])
 
-    def test_packaging_revision_preserves_accepted_application_images(self):
+    def test_mux_update_preserves_accepted_memory_supervisor_images(self):
         release = json.loads((ROOT.parent / "UMBREL-COMPATIBILITY-2026-09-24.json").read_text())["apps"][ROOT.name]
         version = release["previous_package_version"]
-        self.assertEqual(yaml.safe_load((ROOT / "umbrel-app.yml").read_text())["version"], release["package_version"])
-        for service in ["app", "init", "dgbd"]:
+        mux = json.loads((ROOT.parent / "MUX-HASHRATE-2026-09-28.json").read_text())["apps"][ROOT.name]
+        self.assertEqual(yaml.safe_load((ROOT / "umbrel-app.yml").read_text())["version"], mux["version"])
+        self.assertEqual(self.services["app"]["image"], mux["imageRef"])
+        self.assertEqual(self.services["app"]["environment"]["MUX_IDENTITY_URL"], "http://172.17.0.1:21222/api/integrations/workers")
+        for service in ["init", "dgbd"]:
             self.assertTrue(self.services[service]["image"].endswith(":" + version), service)
         self.assertEqual(self.services["app"]["environment"]["DGB_IMAGE"], self.services["dgbd"]["image"])
         self.assertEqual(self.services["dgbd"]["stop_grace_period"], "15m30s")

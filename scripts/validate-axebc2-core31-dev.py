@@ -76,6 +76,11 @@ require(
     all("name" not in definition for definition in current_recipe.get("volumes", {}).values()),
     "DEV local bind volumes must remain scoped to the Compose project",
 )
+require(
+    current_recipe["services"]["app"]["environment"].pop("MUX_IDENTITY_URL", None)
+    == "http://172.17.0.1:21222/api/integrations/workers",
+    "MUX telemetry must use the approved local read-only endpoint",
+)
 for recipe in (accepted_recipe, current_recipe):
     recipe.pop("volumes", None)
     recipe.pop("configs", None)
@@ -85,11 +90,11 @@ for recipe in (accepted_recipe, current_recipe):
     recipe["services"]["app"]["image"] = "application-release-image"
 require(
     current_recipe == accepted_recipe,
-    "DEV runtime differs from its accepted baseline beyond mount notation and the app release image",
+    "DEV runtime differs from its accepted baseline beyond mount notation, the app image and its approved MUX endpoint",
 )
 
 # BETA release; the historical Core 31 baseline evidence below remains 0.1.11-dev.
-require('version: "0.1.15-dev"' in manifest, "manifest must be 0.1.15-dev")
+require('version: "0.1.16-dev"' in manifest, "manifest must be 0.1.16-dev")
 require(evidence.get("app_version") == "0.1.11-dev", "evidence must name the 0.1.11 DEV app version")
 require(
     evidence.get("app_image")
