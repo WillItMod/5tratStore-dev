@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-5tratsmack
 category: altcoin
 name: 5tratSmack
-version: "0.11.14"
+version: "0.11.15"
 tagline: Home-miner 5TRAT node, wallet, solo pool and atomic trade lab
 description: >-
   Install and synchronize a complete 5TRAT node, create or restore an encrypted
@@ -37,22 +37,20 @@ path: ""
 defaultUsername: ""
 defaultPassword: ""
 releaseNotes: >-
-  Umbrel compatibility package update. Fixes installation and authenticated
-  dashboard access on Umbrel 2.0 while retaining Umbrel 1.x support. Existing
-  application, node and pool images and persistent data paths are unchanged.
+  Trade now starts with clear Buy and Sell choices and guides one step at a time
+  through Amount, Prepare funds, Review and Follow progress. Send and Receive
+  have focused forms with expandable Gleec wallet instructions. Trade Pulse
+  retains Global Trades, My Trades and Compare, while activity and wallet tools
+  have their own pages.
 
-  Quarterly recovery checks help protect the main and trading wallets: test your
-  saved wallet password, read back a saved recovery file, and download a fresh
-  backup. Encryption with a separate backup passphrase is recommended and selected
-  by default. Optional unencrypted files require an explicit warning because
-  anyone with the file can spend the coins; store them securely offline. Both
-  recovery formats can restore with a new wallet password. Native .dat backups
-  still require their original wallet password. Checks never move funds or replace
-  a wallet, and downloading alone does not complete a quarterly check. A seven-day
-  reminder option is available. Portable recovery now preserves older private keys,
-  full address ranges and indices above 1,000. The cryptography dependency is
-  updated to 50.0.1 and backup download tokens are redacted from logs. Existing
-  wallet, chain, mining and trading data persist; only the application image changes.
+  Offer minimums require an explicit choice. Confirming deposits do not prompt
+  duplicate funding, and trade progress stays accessible while a swap waits.
+  Native transfers validate the recipient and exact reviewed amount, protect
+  open-order funds and recover uncertain broadcasts without signing a second
+  payment. Wallet backup and final transaction approval remain required.
+
+  The application and trading backend update together. Existing wallet, chain
+  and mining data paths remain unchanged. Package and app versions now agree.
 widgets:
   - id: sync
     type: text-with-progress

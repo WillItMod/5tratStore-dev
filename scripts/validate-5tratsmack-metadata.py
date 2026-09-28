@@ -1,141 +1,49 @@
 #!/usr/bin/env python3
+"""Ensure the exact tested app/backend pair and store versions agree."""
 from pathlib import Path
 import re
+ROOT = Path(__file__).resolve().parents[1]
+APP = ROOT / "willitmod-dev-5tratsmack"
+VERSION = '0.11.15'
+REVISION = '167a136540c8a678c628679b189a2d7aa7d9a730'
+APP_REF = 'ghcr.io/willitmod/5tratsmack-app:0.11.15-rc.167a136540c8@sha256:70bb133975340767796fb4f5395c10bb1598f08574b3a432d8b3c8a6356c48ee'
+KDF_REF = 'ghcr.io/willitmod/5tratsmack-kdf:0.11.15-rc.167a136540c8@sha256:37b3222184efa72f16c41a1544665a6ef001463c258c90e2c9ba2d709fc1b294'
+CKPOOL_REF = 'ghcr.io/willitmod/5tratsmack-ckpool:0.11.3-rc.a992f40e96d4@sha256:95a1a5f343d579206a0f8bb3c961cafa7500b5d487211a0cfb7b989cf34b895e'
+CHANNEL = 'dev'
 
-
-REPO_ROOT = Path(__file__).resolve().parents[1]
-APP_DIR = REPO_ROOT / "willitmod-dev-5tratsmack"
-
-EXPECTED_VERSION = "0.11.13"
-# The Umbrel integration revision changes packaging, not the pinned app binary.
-EXPECTED_PACKAGE_VERSION = "0.11.14"
-EXPECTED_PHASE = "RC1"
-EXPECTED_SOURCE_REVISION = "53f0415e517952a98d21f02b11009976a16a1d20"
-EXPECTED_APP_REF = (
-    "ghcr.io/willitmod/5tratsmack-app:0.11.13-rc.53f0415e5179@"
-    "sha256:70d007cf7a65fcdbee82d50c70d48aacb63af66b4cd9985e919bd99387401a42"
-)
-EXPECTED_CKPOOL_REF = (
-    "ghcr.io/willitmod/5tratsmack-ckpool:0.11.3-rc.a992f40e96d4@"
-    "sha256:95a1a5f343d579206a0f8bb3c961cafa7500b5d487211a0cfb7b989cf34b895e"
+PROTECTED_IMAGE_LINES = (
+    "    image: alpine:3.22.1@sha256:4bcff63911fcb4448bd4fdacec207030997caf25e9bea4045fa6c8c44de311d1",
+    "    image: ghcr.io/willitmod/5tratsmack-upnp:0.11.1@sha256:c85d527b8a12007be2565b200b99dfe46781ddaa773831852414d2cc5ad041d0",
+    "    image: ghcr.io/willitmod/5tratsmack-core:0.11.2@sha256:7bf02513144c7a157965fb8e9ad5865f5e84fa679afa7cb61fc0a8e140a40070",
+    "      BCH2_NODE_IMAGE: ghcr.io/willitmod/5tratsmack-core:0.11.2@sha256:7bf02513144c7a157965fb8e9ad5865f5e84fa679afa7cb61fc0a8e140a40070",
 )
 
-primary = APP_DIR / "5tratstore-app.yml"
-compatibility = APP_DIR / "umbrel-app.yml"
-compose = APP_DIR / "docker-compose.yml"
-readme = REPO_ROOT / "README.md"
-
-for path in (primary, compatibility, compose, readme):
-    if not path.is_file() or not path.stat().st_size:
-        raise SystemExit(f"missing required store file: {path}")
-
-primary_bytes = primary.read_bytes()
-compatibility_bytes = compatibility.read_bytes()
-if primary_bytes != compatibility_bytes:
-    raise SystemExit("5tratstore-app.yml and umbrel-app.yml must remain byte-identical")
-
-manifest_text = primary_bytes.decode("utf-8")
-compose_text = compose.read_text(encoding="utf-8")
-readme_text = readme.read_text(encoding="utf-8")
-
-
-def one(pattern: str, text: str, label: str) -> str:
-    matches = re.findall(pattern, text, flags=re.MULTILINE)
-    if len(matches) != 1:
-        raise SystemExit(f"expected one {label}, found {len(matches)}")
-    return matches[0]
-
-
-manifest_version = one(
-    r'^version:\s*["\']?([^"\'\s]+)', manifest_text, "manifest version"
-)
-manifest_id = one(r"^id:\s*([^\s]+)", manifest_text, "manifest id")
-source_revision = one(
-    r"^# Release source revision:\s*([0-9a-f]{40})$",
-    compose_text,
-    "release source revision",
-)
-app_version = one(
-    r'^\s{6}APP_VERSION:\s*["\']?([^"\'\s]+)', compose_text, "APP_VERSION"
-)
-release_phase = one(
-    r'^\s{6}APP_RELEASE_PHASE:\s*["\']?([^"\'\s]+)',
-    compose_text,
-    "APP_RELEASE_PHASE",
-)
-release_tag = one(
-    r'^\s{6}FIVETRAT_RELEASE_TAG:\s*["\']?([^"\'\s]+)',
-    compose_text,
-    "FIVETRAT_RELEASE_TAG",
-)
-app_revision = one(
-    r"^\s{6}APP_REVISION:\s*([0-9a-f]{40})$", compose_text, "APP_REVISION"
-)
-
-if manifest_id != "willitmod-dev-5tratsmack":
-    raise SystemExit(f"unexpected manifest id: {manifest_id}")
-if manifest_version != EXPECTED_PACKAGE_VERSION or {app_version, release_tag} != {EXPECTED_VERSION}:
-    raise SystemExit(
-        "store version mismatch: "
-        f"manifest={manifest_version}, APP_VERSION={app_version}, "
-        f"FIVETRAT_RELEASE_TAG={release_tag}, expected app={EXPECTED_VERSION}, "
-        f"expected package={EXPECTED_PACKAGE_VERSION}"
-    )
-if release_phase != EXPECTED_PHASE:
-    raise SystemExit(
-        f"unexpected APP_RELEASE_PHASE: {release_phase}, expected {EXPECTED_PHASE}"
-    )
-if source_revision != EXPECTED_SOURCE_REVISION or app_revision != EXPECTED_SOURCE_REVISION:
-    raise SystemExit(
-        "source revision mismatch: "
-        f"comment={source_revision}, APP_REVISION={app_revision}, "
-        f"expected={EXPECTED_SOURCE_REVISION}"
-    )
-
-app_refs = re.findall(
-    r"^\s+(?:image|APP_IMAGE):\s*(ghcr\.io/willitmod/5tratsmack-app:\S+)$",
-    compose_text,
-    flags=re.MULTILINE,
-)
-if app_refs != [EXPECTED_APP_REF, EXPECTED_APP_REF]:
-    raise SystemExit(f"app image references are not the tested candidate: {app_refs}")
-
-ckpool_refs = re.findall(
-    r"^\s+(?:image|CKPOOL_IMAGE):\s*(ghcr\.io/willitmod/5tratsmack-ckpool:\S+)$",
-    compose_text,
-    flags=re.MULTILINE,
-)
-if ckpool_refs != [EXPECTED_CKPOOL_REF, EXPECTED_CKPOOL_REF]:
-    raise SystemExit(f"CKPool references changed during the app-only release: {ckpool_refs}")
-
-required_compose_lines = (
-    "      APP_CHANNEL: DEV",
-    "      FIVETRAT_STORE_UPDATE_CHANNEL: dev",
-    '      FIVETRAT_UPDATER_ENABLED: "0"',
-)
-for line in required_compose_lines:
-    if compose_text.count(line) != 1:
-        raise SystemExit(f"expected one exact compose line: {line}")
-
-expected_readme_line = (
-    "- **5tratSmack** (`willitmod-dev-5tratsmack`) - `0.11.14`"
-)
-if readme_text.count(expected_readme_line) != 1:
-    raise SystemExit("README current-version entry is not exactly 0.11.14")
-
-for release_note_fragment in (
-    "Quarterly recovery checks",
-    "test your",
-    "Optional unencrypted files require an explicit warning",
-    "downloading alone does not complete a quarterly check",
-    "cryptography dependency is",
-    "only the application image changes.",
-):
-    if release_note_fragment not in manifest_text:
-        raise SystemExit(f"release notes missing: {release_note_fragment}")
-
-print(
-    "5tratSmack DEV metadata verified: "
-    f"package={EXPECTED_PACKAGE_VERSION} app={EXPECTED_VERSION} source={EXPECTED_SOURCE_REVISION} "
-    "app candidate pinned; CKPool unchanged"
-)
+primary = (APP / "5tratstore-app.yml").read_bytes()
+assert primary == (APP / "umbrel-app.yml").read_bytes(), "compatibility manifests differ"
+manifest = primary.decode()
+compose = (APP / "docker-compose.yml").read_text()
+for line in PROTECTED_IMAGE_LINES:
+    assert compose.splitlines().count(line) == 1, "protected core/helper image changed or duplicated"
+def one(pattern, text):
+    result = re.findall(pattern, text, re.M)
+    assert len(result) == 1, (pattern, len(result))
+    return result[0]
+assert one(r'^id: (\S+)$', manifest) == 'willitmod-dev-5tratsmack'
+assert one(r'^version: "([^"\n]+)"$', manifest) == VERSION
+for key in ('APP_VERSION', 'FIVETRAT_RELEASE_TAG'):
+    assert one(r'^      ' + key + r': (\S+)$', compose) == VERSION
+assert one(r'^# Release source revision: (\S+)$', compose) == REVISION
+assert one(r'^      APP_REVISION: (\S+)$', compose) == REVISION
+assert one(r'^      APP_CHANNEL: (\S+)$', compose) == CHANNEL.upper()
+assert one(r'^      FIVETRAT_STORE_UPDATE_CHANNEL: (\S+)$', compose) == CHANNEL
+assert one(r'^      APP_RELEASE_PHASE: (\S+)$', compose) == ('RC1' if CHANNEL == 'dev' else 'STABLE')
+for component, expected, count in [('app', APP_REF, 2), ('kdf', KDF_REF, 1), ('ckpool', CKPOOL_REF, 2)]:
+    refs = re.findall(r'^\s+(?:image|APP_IMAGE|CKPOOL_IMAGE): (ghcr\.io/willitmod/5tratsmack-' + component + r':\S+)$', compose, re.M)
+    assert refs == [expected] * count, (component, 'unexpected image reference')
+    assert re.search(r'@sha256:[0-9a-f]{64}$', expected), 'unpinned image'
+assert '${APP_DATA_DIR}' in compose and '${APP_PASSWORD}' in compose
+assert compose.count('      FIVETRAT_UPDATER_ENABLED: "0"') == 1
+assert f'- **5tratSmack** (`willitmod-dev-5tratsmack`) - `{VERSION}`' in (ROOT/'README.md').read_text()
+for phrase in ('Trade Pulse', 'Gleec', 'final transaction approval', 'application and trading backend'):
+    assert phrase in manifest, phrase
+print(f'5tratSmack {CHANNEL.upper()} {VERSION}: app/KDF pair pinned; versions aligned; core, CKPool and helpers unchanged')
