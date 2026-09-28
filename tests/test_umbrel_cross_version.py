@@ -19,6 +19,30 @@ class UmbrelCrossVersionTests(unittest.TestCase):
         self.assertEqual(hashlib.sha256(previous.read_bytes()).hexdigest(),
                          CONTRACT['historical_evidence_sha256'])
 
+    def test_python_stop_policy_is_app_only_and_retains_every_other_field(self):
+        migration = CONTRACT['python_app_stop_policy']
+        expected = {'willitmod-dev-' + name for name in
+                    ('btc', 'bch', 'axebch2', 'dgb', 'xec', 'ppc', 'powpow', 'fracattack')}
+        self.assertEqual(set(migration['baseline_compose_contract_sha256']), expected)
+        self.assertEqual(migration['baseline_store_commit'],
+                         'cf72507651d46b7f432d75d0e5626e792c40a723')
+        self.assertEqual(migration['service'], 'app')
+        self.assertEqual(migration['stop_signal'], 'SIGINT')
+        for app_id in expected:
+            with self.subTest(app=app_id):
+                compose = yaml.safe_load((ROOT / app_id / 'docker-compose.yml').read_text())
+                self.assertEqual(compose['services']['app'].pop('stop_signal'), 'SIGINT')
+                # Comparing the entire preceding contract also protects every
+                # Core/pool/Redis field, image, mount, secret interpolation and
+                # existing grace period; no unrelated lifecycle change slips in.
+                digest = hashlib.sha256(json.dumps(compose, sort_keys=True,
+                                                   separators=(',', ':')).encode()).hexdigest()
+                self.assertEqual(digest, migration['baseline_compose_contract_sha256'][app_id])
+        # BC2 already installs its own TERM handler; retain its existing policy.
+        for filename in ('docker-compose.yml', 'docker-compose.yml.template'):
+            compose = yaml.safe_load((ROOT / 'willitmod-dev-bc2' / filename).read_text())
+            self.assertNotIn('stop_signal', compose['services']['app'])
+
     def test_only_reviewed_changes_reach_the_current_compose_contract(self):
         for app_id, release in RELEASE.items():
             with self.subTest(app=app_id):

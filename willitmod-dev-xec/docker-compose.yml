@@ -217,6 +217,7 @@ services:
       - ${APP_DATA_DIR}/data/pool/www:/www
 
   app:
+    stop_signal: SIGINT
     hostname: axexec-app
     image: ghcr.io/willitmod/axexec-app-umbrel-dev:0.1.20-mux.ab5b1884ccdd@sha256:d02b560c814e870e0871ff0b38fac57f29b9b2cf241a178713947201af62715b
     user: "1000:1000"

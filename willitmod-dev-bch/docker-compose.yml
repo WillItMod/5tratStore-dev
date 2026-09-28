@@ -217,6 +217,7 @@ services:
       - ${APP_DATA_DIR}/data/pool/www:/www
 
   app:
+    stop_signal: SIGINT
     hostname: axebch-app
     image: ghcr.io/willitmod/axebch-app-umbrel-dev:0.9.21-mux.5d551863e059@sha256:c26b6a691c5b14557436a0db1c168c70ec868190f79727f0bce4fe89fd3e1ff6
     user: "1000:1000"

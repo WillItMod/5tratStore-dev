@@ -26,6 +26,7 @@ services:
         chmod -R ug+rwX /data/ui /data/pool || true
 
   app:
+    stop_signal: SIGINT
     hostname: axebch2-app
     image: ghcr.io/willitmod/axebch2-app:0.2.0.7-mux.8d8882c243ab@sha256:13539c61643abb8039d0fbb538b58ec18643c6c41b519503cf78de71e4701fde
     user: "1000:1000"

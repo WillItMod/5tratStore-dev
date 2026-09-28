@@ -25,6 +25,7 @@ services:
         chmod 700 /data/postgres || true
 
   app:
+    stop_signal: SIGINT
     hostname: powpow-app
     image: ghcr.io/willitmod/powpow-app:0.2.35-mux.34f15532986c@sha256:0502e188cdd00ed3253b133c80757c295d4604ab8f44fa14c5429d9fb38333eb
     user: "1000:1000"
