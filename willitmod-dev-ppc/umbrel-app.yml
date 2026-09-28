@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-ppc
 category: altcoin
 name: AxePPC
-version: "0.2.32-dev"
+version: "0.2.33-dev"
 tagline: PPC node + solo pool
 description: >-
   ALPHA RELEASE (DEV CHANNEL)
@@ -40,14 +40,16 @@ path: ""
 defaultUsername: ""
 defaultPassword: ""
 releaseNotes: >-
-  Umbrel compatibility package update. Fixes installation and authenticated
-  dashboard access on Umbrel 2.0 while retaining Umbrel 1.x support. Existing
-  application, node and pool images and persistent data paths are unchanged.
+  Adds current routed miner hash rate from 5tratMux, with its source and age
+  shown separately from the pool's accepted-share estimates. Worker cards
+  follow the active app route, include miners before their first share, and
+  fall back to pool estimates when MUX telemetry is unavailable or stale.
+  SHA-256 and Scrypt measurements remain separate; renamed workers are
+  counted once. Accepted-share history, wallets and mining settings are
+  preserved.
 
-  Workers using either coin-prefixed or prefixless payout usernames now appear
-  as one combined worker entry in the app and Fleet Dashboard APIs. Hashrate,
-  shares and best-share data are merged without double-counting duplicate
-  worker names.
+  Aligns the app and store version and pins the app image to a verified
+  AMD64/ARM64 build. Node and pool images are unchanged.
 widgets:
   - id: "sync"
     type: "text-with-progress"

@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-dgb
 category: altcoin
 name: AxeDGB
-version: "0.9.182-dev"
+version: "0.9.183-dev"
 tagline: DGB node + solo pool
 description: >-
   RC6 RELEASE (DEV CHANNEL)
@@ -103,6 +103,13 @@ backupIgnore:
 submitter: WillItMod
 
 releaseNotes: >-
-  Umbrel compatibility package update. Fixes installation and authenticated
-  dashboard access on Umbrel 2.0 while retaining Umbrel 1.x support. Existing
-  application, node and pool images and persistent data paths are unchanged.
+  Adds current routed miner hash rate from 5tratMux, with its source and age
+  shown separately from the pool's accepted-share estimates. Worker cards
+  follow the active app route, include miners before their first share, and
+  fall back to pool estimates when MUX telemetry is unavailable or stale.
+  SHA-256 and Scrypt measurements remain separate; renamed workers are
+  counted once. Accepted-share history, wallets and mining settings are
+  preserved.
+
+  Aligns the app and store version and pins the app image to a verified
+  AMD64/ARM64 build. Node and pool images are unchanged.

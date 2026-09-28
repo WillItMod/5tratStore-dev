@@ -25,7 +25,7 @@ services:
 
   app:
     hostname: axebch2-app
-    image: ghcr.io/willitmod/axebch2-app:0.2.0.3-dev
+    image: ghcr.io/willitmod/axebch2-app:0.2.0.5-mux.b061946dced2@sha256:85f7c374efca05d608ba860ba338ea51f51e1540bcb56ae4a49e83dd8df07446
     user: "1000:1000"
     restart: unless-stopped
     depends_on:
@@ -44,8 +44,9 @@ services:
       - ${APP_DATA_DIR}/data:/data
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
+      MUX_IDENTITY_URL: "http://172.17.0.1:21222/api/integrations/workers"
       APP_ID: "willitmod-dev-axebch2"
-      APP_VERSION: "0.2.0.3-dev"
+      APP_VERSION: "0.2.0.5-dev"
       APP_CHANNEL: "DEV"
       APP_RELEASE_PHASE: "ALPHA"
       APP_SELF_RESTART_ENABLED: "1"

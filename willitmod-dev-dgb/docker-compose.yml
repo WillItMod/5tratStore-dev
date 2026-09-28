@@ -1066,7 +1066,7 @@ services:
 
   app:
     hostname: axedgb-app
-    image: ghcr.io/willitmod/axedgb-app:0.9.181-dev
+    image: ghcr.io/willitmod/axedgb-app:0.9.183-mux.45aff375d7c4@sha256:1aae549c039e10cdaff5bd25b2682f85d44d81f4ec149f88d667bf8e762648fa
     user: "1000:1000"
     restart: on-failure
     stop_grace_period: 30s
@@ -1084,6 +1084,7 @@ services:
     volumes:
       - ${APP_DATA_DIR}/data:/data
     environment:
+      MUX_IDENTITY_URL: "http://172.17.0.1:21222/api/integrations/workers"
       DGB_RPC_HOST: "dgbd"
       DGB_RPC_PORT: "14022"
       DGB_RPC_USER: "dgb"

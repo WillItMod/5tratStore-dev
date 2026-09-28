@@ -179,7 +179,7 @@ services:
 
   app:
     hostname: axebtc-app
-    image: ghcr.io/willitmod/axebtc-app-umbrel-dev:0.7.82.9-dev
+    image: ghcr.io/willitmod/axebtc-app-umbrel-dev:0.7.82.11-mux.6dda25d37652@sha256:a2f95a163e070a9e05aa2bc126877df9de68f711d04b1cfc95010b59abb4bcee
     user: "1000:1000"
     restart: on-failure
     stop_grace_period: 30s
@@ -196,6 +196,7 @@ services:
     volumes:
       - ${APP_DATA_DIR}/data:/data
     environment:
+      MUX_IDENTITY_URL: "http://172.17.0.1:21222/api/integrations/workers"
       BTC_RPC_HOST: "bitcoind"
       BTC_RPC_PORT: "28332"
       BTC_RPC_USER: "btc"

@@ -233,7 +233,7 @@ services:
 
   app:
     hostname: axeppc-app
-    image: ghcr.io/willitmod/axeppc-app-umbrel-dev:0.2.31
+    image: ghcr.io/willitmod/axeppc-app-umbrel-dev:0.2.33-mux.148f9619e547@sha256:c7d214f957629e24fa967cc52afc9bf149f1b8e22e94b30482b9de4674f62a8c
     user: "1000:1000"
     restart: unless-stopped
     stop_grace_period: 30s
@@ -247,6 +247,7 @@ services:
     volumes:
       - ${APP_DATA_DIR}/data:/data
     environment:
+      MUX_IDENTITY_URL: "http://172.17.0.1:21222/api/integrations/workers"
       NETWORK_IP: "${NETWORK_IP}"
       STATIC_DIR: "/app/static"
       APP_CHANNEL: "ALPHA"

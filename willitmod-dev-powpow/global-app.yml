@@ -2,12 +2,18 @@ manifestVersion: 1
 id: willitmod-dev-powpow
 category: altcoin
 name: "PowPow"
-version: "0.2.32-dev"
+version: "0.2.34-dev"
 releaseNotes: >-
-  Upgrades the bundled Litecoin node from Litecoin Core 0.21.4 to 0.21.5.8,
-  including upstream security, MWEB validation, and mining fixes for the
-  consensus rule activated at block 3,172,640. AMD64 and ARM64 release archives are
-  verified against pinned SHA-256 checksums. Existing chain data is retained.
+  Adds current routed miner hash rate from 5tratMux, with its source and age
+  shown separately from the pool's accepted-share estimates. Worker cards
+  follow the active app route, include miners before their first share, and
+  fall back to pool estimates when MUX telemetry is unavailable or stale.
+  SHA-256 and Scrypt measurements remain separate; renamed workers are
+  counted once. Accepted-share history, wallets and mining settings are
+  preserved.
+
+  Aligns the app and store version and pins the app image to a verified
+  AMD64/ARM64 build. Node and pool images are unchanged.
 tagline: LTC + DOGE merged mining (alpha dev)
 description: >-
   ALPHA RELEASE (DEV CHANNEL)
@@ -23,6 +29,7 @@ description: >-
     - URL: `stratum+tcp://<your-5tratumos-host-ip>:9555`
     - Username: `solo.workername`
     - Password: anything
+
 developer: WillItMod
 website: https://github.com/WillItMod/PowPow
 repo: https://github.com/WillItMod/PowPow
@@ -33,7 +40,6 @@ icon: https://raw.githubusercontent.com/WillItMod/5tratStore-dev/main/willitmod-
 gallery:
   - https://raw.githubusercontent.com/WillItMod/5tratStore-dev/main/willitmod-dev-powpow/images/1.png
   - https://raw.githubusercontent.com/WillItMod/5tratStore-dev/main/willitmod-dev-powpow/images/2.png
-  - https://raw.githubusercontent.com/WillItMod/5tratStore-dev/main/willitmod-dev-powpow/images/3.png
 path: ""
 defaultUsername: ""
 defaultPassword: ""

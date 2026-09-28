@@ -26,7 +26,7 @@ services:
 
   app:
     hostname: powpow-app
-    image: ghcr.io/willitmod/powpow-app:0.2.31-dev
+    image: ghcr.io/willitmod/powpow-app:0.2.34-mux.6c3a733093a2@sha256:81e454f3e838b2c7fe227d228e9cc2ef20f695c7d8f5b7c5459774185e6f1505
     user: "1000:1000"
     restart: unless-stopped
     depends_on:
@@ -42,7 +42,8 @@ services:
     volumes:
       - ${APP_DATA_DIR}/data:/data
     environment:
-      APP_VERSION: "0.2.32-dev"
+      MUX_IDENTITY_URL: "http://172.17.0.1:21222/api/integrations/workers"
+      APP_VERSION: "0.2.34-dev"
       APP_CHANNEL: "ALPHA"
       NETWORK_HOST_HINT: "${NETWORK_IP}"
       POOL_API_URL: "http://pool:8001"
