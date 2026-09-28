@@ -40,6 +40,9 @@ path: ""
 defaultUsername: ""
 defaultPassword: ""
 releaseNotes: >-
+  Preserves valid pool configuration during updates and retains the saved
+  payout address when an older configuration needs repair.
+
   Adds current routed miner hash rate from 5tratMux, with its source and age
   shown separately from the pool's accepted-share estimates. Worker cards
   follow the active app route, include miners before their first share, and

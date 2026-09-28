@@ -3,10 +3,10 @@
   "description": "Verified app-only MUX images; Core/pool baselines and their historical acceptance evidence are retained.",
   "apps": {
     "willitmod-dev-btc": {
-      "version": "0.7.82.11-dev",
-      "sourceRevision": "6dda25d37652a00156a7a25d92a0c262c603f1f9",
-      "imageRef": "ghcr.io/willitmod/axebtc-app-umbrel-dev:0.7.82.11-mux.6dda25d37652@sha256:a2f95a163e070a9e05aa2bc126877df9de68f711d04b1cfc95010b59abb4bcee",
-      "buildRun": "https://github.com/WillItMod/AxeBTC_Build/actions/runs/36432071577",
+      "version": "0.7.82.12-dev",
+      "sourceRevision": "ae5362f1c757ace34fb809d01e49462d47ca2eb1",
+      "imageRef": "ghcr.io/willitmod/axebtc-app-umbrel-dev:0.7.82.12-mux.ae5362f1c757@sha256:a9959becd86bacd74462c345be4726225a4d4bb5890daeeaceeb874565b700a5",
+      "buildRun": "https://github.com/WillItMod/AxeBTC_Build/actions/runs/36437997020",
       "platforms": [
         "linux/amd64",
         "linux/arm64"

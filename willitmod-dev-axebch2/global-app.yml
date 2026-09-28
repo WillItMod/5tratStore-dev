@@ -33,6 +33,9 @@ path: ""
 defaultUsername: ""
 defaultPassword: ""
 releaseNotes: >-
+  Preserves the running BCH2 node database ownership during app updates,
+  preventing permission errors and delayed Core restarts.
+
   Adds current routed miner hash rate from 5tratMux, with its source and age
   shown separately from the pool's accepted-share estimates. Worker cards
   follow the active app route, include miners before their first share, and

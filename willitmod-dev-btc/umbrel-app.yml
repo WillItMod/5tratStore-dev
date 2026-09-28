@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-btc
 category: bitcoin
 name: AxeBTC
-version: "0.7.82.11-dev"
+version: "0.7.82.12-dev"
 tagline: BTC node + solo pool
 description: >-
   BETA RELEASE (DEV CHANNEL)
@@ -47,6 +47,9 @@ path: ""
 defaultUsername: ""
 defaultPassword: ""
 releaseNotes: >-
+  Reads the configured pool status file directly, avoiding long statistics
+  warm-up delays on installations with large worker-history directories.
+
   Adds current routed miner hash rate from 5tratMux, with its source and age
   shown separately from the pool's accepted-share estimates. Worker cards
   follow the active app route, include miners before their first share, and
