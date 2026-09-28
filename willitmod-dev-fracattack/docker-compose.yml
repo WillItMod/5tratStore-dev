@@ -244,7 +244,7 @@ services:
       CKPOOL_STRATUM_PORT: "3333"
       APP_VERSION: "0.1.5"
       APP_CHANNEL: "DEV"
-      APP_VERSION_SUFFIX: "-dev"
+      APP_VERSION_SUFFIX: "-dev.1"
       FRACTAL_IMAGE: "ghcr.io/willitmod/fracattack-fractald:0.4.0-dev"
       CKPOOL_IMAGE: "ghcr.io/willitmod/docker-ckpool-solo:590fb2a"
       STATIC_DIR: "/app/static"
