@@ -7,7 +7,7 @@
   "apps": {
     "willitmod-dev-5tratsmack": {
       "package_version": "0.11.16",
-      "compose_contract_sha256": "be4b2b752c9fbc19725797eb97085b1df1d37982108340dbb5acfa668208c7d5"
+      "compose_contract_sha256": "fbc6a56d89d78da342087ddf7863f9354e8ce3e28c9f540049060eaa34ba8f2c"
     },
     "willitmod-dev-axebch2": {
       "package_version": "0.2.0.8-dev",
