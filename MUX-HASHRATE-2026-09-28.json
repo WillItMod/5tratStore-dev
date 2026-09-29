@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "description": "Verified MUX telemetry, canonical block-detection and browser-local queued-alert images. PowPow app and pool are paired; accepted Core and shutdown policies are retained. Node/package acceptance is pending.",
+  "apps": {
+    "willitmod-dev-btc": {
+      "sourceRevision": "a76b6e0a04301761ea118bc4624af58d6bf7fccd",
+      "imageRef": "ghcr.io/willitmod/axebtc-app-umbrel-dev:0.7.82.14-mux.a76b6e0a0430@sha256:2fb283f4c542346beecc4c479172ac7b1f4a5d165d7f9043a05578f65b479153",
+      "version": "0.7.82.14-dev",
+      "buildRun": "https://github.com/WillItMod/AxeBTC_Build/actions/runs/36553714081",
+      "platforms": [
+        "linux/amd64",
+        "linux/arm64"
+      ],
+      "registryEvidenceSha256": "667316eca4ca6777350e33cbec2db5a0ec2ce2a1cfdf2e86f1929e2db7290cd2"
+    },
+    "willitmod-dev-bch": {
+      "sourceRevision": "945d7637027e56875eb4509552f174f57fc62820",
+      "imageRef": "ghcr.io/willitmod/axebch-app-umbrel-dev:0.9.22-mux.945d7637027e@sha256:9b4b105a010a1facdcc554fa1717b6ab98cadd1726df2173857d66638a1418c9",
+      "version": "0.9.22-dev",
+      "buildRun": "https://github.com/WillItMod/AxeBCH_Build/actions/runs/36553722382",
+      "platforms": [
+        "linux/amd64",
+        "linux/arm64"
+      ],
+      "registryEvidenceSha256": "ec75b2c6fb5b0691a7c86b01e0dd4f4cb7e8fb43aed1d5484ae1a83e373c6759"
+    },
+    "willitmod-dev-bc2": {
+      "sourceRevision": "7f9013ca6750e40d7b082141fc96df453e5e175c",
+      "imageRef": "ghcr.io/willitmod/axebc2-app-umbrel-dev:0.1.18-mux.7f9013ca6750@sha256:c9ccd9e9d309397eeeeb1d31199076943fa9772710dd28c17cdf6a40c30ccda8",
+      "version": "0.1.18-dev",
+      "buildRun": "https://github.com/WillItMod/AxeBC2_Build/actions/runs/36553731866",
+      "platforms": [
+        "linux/amd64",
+        "linux/arm64"
+      ],
+      "registryEvidenceSha256": "bf2a09e7454440daf60e1fbca9b1fecfecac06d163ec4d2bd31875130af8dd21"
+    },
+    "willitmod-dev-axebch2": {
+      "sourceRevision": "7f020cef5b1ee148276bd7f59e53dfb074373aa7",
+      "imageRef": "ghcr.io/willitmod/axebch2-app:0.2.0.8-mux.7f020cef5b1e@sha256:ee139d5fd31d20ba736fdab46b0657a0c699cb63f500648a1c817837231f6f21",
+      "version": "0.2.0.8-dev",
+      "buildRun": "https://github.com/WillItMod/AxeBCH2_Build/actions/runs/36553740061",
+      "platforms": [
+        "linux/amd64",
+        "linux/arm64"
+      ],
+      "registryEvidenceSha256": "26ec100a02896c2d8f7524d578045f25e939b365316384b85fcc64b34abe907c"
+    },
+    "willitmod-dev-dgb": {
+      "sourceRevision": "fec28c019d9909412e6e3dfae5ea8263e95bbad1",
+      "imageRef": "ghcr.io/willitmod/axedgb-app:0.9.185-mux.fec28c019d99@sha256:baaacf6c09bef7ceb31e043288ff3f63cb5f609cdbf0cfc84bffb52ff2398e0f",
+      "version": "0.9.185-dev",
+      "buildRun": "https://github.com/WillItMod/AxeDGB_Build/actions/runs/36553767027",
+      "platforms": [
+        "linux/amd64",
+        "linux/arm64"
+      ],
+      "registryEvidenceSha256": "ea827821a1e3273729f02d3f0b68c251259cb4a18f347ba354aeec88bd241345"
+    },
+    "willitmod-dev-xec": {
+      "sourceRevision": "f8b03d21de93554aa09c6729bee17bd492e0a18c",
+      "imageRef": "ghcr.io/willitmod/axexec-app-umbrel-dev:0.1.21-mux.f8b03d21de93@sha256:b8c6a56802bc675929e2295e91690702a8eef4a36e4e80c0897a0ac15b9478ae",
+      "version": "0.1.21-dev",
+      "buildRun": "https://github.com/WillItMod/AxeXEC_Build/actions/runs/36553748187",
+      "platforms": [
+        "linux/amd64",
+        "linux/arm64"
+      ],
+      "registryEvidenceSha256": "f90e5beb12697a4d789de5f8b78bdc7c5f1db76ea65af186f8753a4da7e10a62"
+    },
+    "willitmod-dev-ppc": {
+      "sourceRevision": "98c9deef9d4305e6b5f788fc6392c867aedc2578",
+      "imageRef": "ghcr.io/willitmod/axeppc-app-umbrel-dev:0.2.35-mux.98c9deef9d43@sha256:b709c37910825c5229b12bb57763b104cd422924baa35211f171d7740d7ee604",
+      "version": "0.2.35-dev",
+      "buildRun": "https://github.com/WillItMod/AxePPC_Build/actions/runs/36553757585",
+      "platforms": [
+        "linux/amd64",
+        "linux/arm64"
+      ],
+      "registryEvidenceSha256": "31c5474a7b63d2dc4beb21d3d7b5e5f10df3ae5c5e65cdf8b6d88957f634f903"
+    },
+    "willitmod-dev-powpow": {
+      "sourceRevision": "867a7294a60106e6cb32537e84ea9f90894e777f",
+      "imageRef": "ghcr.io/willitmod/powpow-app:0.2.36-mux.867a7294a601@sha256:2e56b6c178b978a976354120ffe60c46ebf6aeccce8cc2c07cdc6870f16827ce",
+      "version": "0.2.36-dev",
+      "buildRun": "https://github.com/WillItMod/PowPow_Build/actions/runs/36553783741",
+      "platforms": [
+        "linux/amd64",
+        "linux/arm64"
+      ],
+      "poolImageRef": "ghcr.io/willitmod/powpow-pool:0.2.36-mux.867a7294a601@sha256:5fa727bfd72a0049fea14fa35f76c98025d69ff74e7cd8da8cb48011e4db3c60",
+      "poolSourceRevision": "867a7294a60106e6cb32537e84ea9f90894e777f",
+      "successorEvidence": {
+        "supersedesSourceRevision": "a1cc15f97ffe375a558d1eda5901df470c6cb59f",
+        "candidateReceiptSha256": "0df7571ce05d0b2506c119f414bcef2014aebf69ac70ddce71b7a9e3cb361cfc",
+        "registryVerified": true,
+        "nodeAcceptance": "pending",
+        "releasePublication": "pending",
+        "coreStopPolicyConsumer": "requires separately reviewed OS consumer; raw Compose Core services unchanged"
+      },
+      "registryEvidenceSha256": "a464e30b0a6d452bea873aeb574659c3f3cff12f7b4cb4855e89566ebd20d3c7",
+      "poolRegistryEvidenceSha256": "f60e9f6cb238258004f3ebb27a967d14f8c8c74e93e7115523d15079ef3abc56"
+    },
+    "willitmod-dev-fracattack": {
+      "sourceRevision": "3fcafaccedcf3177984be8cdb057072f6909d12a",
+      "imageRef": "ghcr.io/willitmod/fracattack-app-umbrel-dev:0.1.8-mux.3fcafaccedcf@sha256:b7b64f61cc00316e423d5fda7f007f382602c31612411e0104691e451e4c2c6f",
+      "version": "0.1.8",
+      "buildRun": "https://github.com/WillItMod/FracAttack_Build/actions/runs/36553775514",
+      "platforms": [
+        "linux/amd64",
+        "linux/arm64"
+      ],
+      "registryEvidenceSha256": "c7c18e6be50a645066384443eca9d7a5ad2a69655105799704c0a76789673425"
+    }
+  },
+  "imageEvidenceSha256": "5cf7fecc45162bf80a55b0d0acd57b1b8abfb3b7a0972f8a9bb1ea83396787f2",
+  "candidateImageEvidenceSha256": "0df7571ce05d0b2506c119f414bcef2014aebf69ac70ddce71b7a9e3cb361cfc"
+}

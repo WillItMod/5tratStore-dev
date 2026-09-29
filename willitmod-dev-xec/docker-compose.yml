@@ -217,8 +217,9 @@ services:
       - ${APP_DATA_DIR}/data/pool/www:/www
 
   app:
+    stop_signal: SIGINT
     hostname: axexec-app
-    image: ghcr.io/willitmod/axexec-app-umbrel-dev:0.1.17-dev
+    image: ghcr.io/willitmod/axexec-app-umbrel-dev:0.1.21-mux.f8b03d21de93@sha256:b8c6a56802bc675929e2295e91690702a8eef4a36e4e80c0897a0ac15b9478ae
     user: "1000:1000"
     restart: on-failure
     stop_grace_period: 30s
@@ -235,6 +236,7 @@ services:
     volumes:
       - ${APP_DATA_DIR}/data:/data
     environment:
+      MUX_IDENTITY_URL: "http://172.17.0.1:21222/api/integrations/workers"
       NETWORK_IP: "${NETWORK_IP}"
       XEC_RPC_HOST: "xecd"
       XEC_RPC_PORT: "28337"

@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-bc2
 category: bitcoin
 name: AxeBC2
-version: "0.1.15-dev"
+version: "0.1.18-dev"
 tagline: BC2 node + solo pool
 description: >-
   BETA RELEASE (DEV CHANNEL)
@@ -43,45 +43,16 @@ path: ""
 defaultUsername: ""
 defaultPassword: ""
 releaseNotes: >-
-  Fixes AxeBC2 installation, startup and updates on Umbrel 1.7.4. The package
-  now works with its storage parser and preserves the container names Umbrel
-  uses to track app health. Existing blockchain data, payout settings and
-  Core 31 migration records are preserved. Required files and directories
-  still fail closed when missing, and 5tratumOS retains its host version check.
-  The dashboard now displays 0.1.15-dev; BitcoinII Core and CKPool are unchanged.
+  Current miner hash rate from 5tratMux appears separately from accepted-share
+  estimates, with stale or unavailable telemetry handled explicitly. Block
+  history checks the full block hash against the correct chain and refreshes
+  confirmation and reorganisation status before showing a confirmed find.
+  Unverified reports remain distinguishable from confirmed pool blocks.
 
-  Included changes from 0.1.14-dev:
-  Fixes AxeBC2 installation failing near completion on Umbrel 2. The app now
-  starts correctly when Umbrel uses its new built-in authentication gateway,
-  while preserving authentication support for older Umbrel releases. Its unique
-  gateway hostname is declared explicitly so Umbrel 2 can register port 21219.
-  Existing blockchain data, payout settings, and Core 31 migration safeguards
-  are preserved. BitcoinII Core and CKPool versions are unchanged. An existing
-  chain without a verified Core 31 completion record still runs the required
-  one-time reindex; completed migrations do not repeat it.
-
-  Included changes from 0.1.13:
-  Aligns the application image and store package at version 0.1.13 across DEV
-  and MAIN. Includes the BETA presentation update and removal of the general
-  ALPHA/BETA warning banner.
-  Fixes Umbrel installation by removing its dependency on the 5tratumOS host
-  build.json file. 5tratumOS retains its native startup checks. The update
-  preserves Core 31 migration checks, payout settings, and existing blockchain
-  and pool data.
-
-  Included fixes from 0.1.11:
-  Corrects payout-address validation: BitcoinII Core-accepted mainnet addresses
-  beginning with 1, 3, or bc1 are supported, while invalid or wrong-network
-  addresses are rejected without changing the saved pool configuration. Settings
-  are also left untouched while Core is unavailable, and payout checks left
-  pending by an older release are retried at a bounded interval. It also removes
-  the misleading payout warning from MAIN builds and performs a one-time,
-  conditional CKPool /www ownership repair so existing sharelogs remain writable.
-  This app-only update retains the accepted BitcoinII Core 31.1 image, existing
-  blockchain and pool data, and the configured payout address; it does not
-  trigger another blockchain reindex. On 5tratumOS, version 0.7.12 or newer is required.
-  Stratum remains on TCP port 2345, telemetry remains disabled by default, and
-  no public P2P port or NAT-PMP mapping is enabled.
+  Block alerts in this browser is a separate local preference. Recent verified
+  blocks queue across app tabs, with browser-only Close acknowledgements.
+  Reorgs or unavailable proof retract the alert without acknowledging it.
+  OS and MUX delivery and acknowledgements remain independently managed.
 widgets:
   - id: "sync"
     type: "text-with-progress"

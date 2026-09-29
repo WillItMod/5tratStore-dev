@@ -25,8 +25,9 @@ services:
         chmod 700 /data/postgres || true
 
   app:
+    stop_signal: SIGINT
     hostname: powpow-app
-    image: ghcr.io/willitmod/powpow-app:0.2.31-dev
+    image: ghcr.io/willitmod/powpow-app:0.2.36-mux.867a7294a601@sha256:2e56b6c178b978a976354120ffe60c46ebf6aeccce8cc2c07cdc6870f16827ce
     user: "1000:1000"
     restart: unless-stopped
     depends_on:
@@ -42,7 +43,8 @@ services:
     volumes:
       - ${APP_DATA_DIR}/data:/data
     environment:
-      APP_VERSION: "0.2.32-dev"
+      MUX_IDENTITY_URL: "http://172.17.0.1:21222/api/integrations/workers"
+      APP_VERSION: "0.2.36-dev"
       APP_CHANNEL: "ALPHA"
       NETWORK_HOST_HINT: "${NETWORK_IP}"
       POOL_API_URL: "http://pool:8001"
@@ -87,7 +89,7 @@ services:
       start_period: 3m
 
   pool:
-    image: ghcr.io/willitmod/powpow-pool:0.2.31-dev
+    image: ghcr.io/willitmod/powpow-pool:0.2.36-mux.867a7294a601@sha256:5fa727bfd72a0049fea14fa35f76c98025d69ff74e7cd8da8cb48011e4db3c60
     restart: unless-stopped
     depends_on:
       init_permissions:
@@ -123,3 +125,15 @@ networks:
   umbrel_main_network:
     external: true
     name: umbrel_main_network
+
+x-5tratumos-stop-policy:
+  version: 1
+  services:
+    litecoin:
+      stop_signal: SIGTERM
+      stop_grace_period: 15m30s
+      user: 1000:1000
+    dogecoin:
+      stop_signal: SIGTERM
+      stop_grace_period: 15m30s
+      user: 1000:1000

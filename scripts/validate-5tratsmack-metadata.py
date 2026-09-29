@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-"""Ensure the exact tested app/backend pair and store versions agree."""
+"""Ensure the exact candidate app/backend pair and store versions agree."""
 from pathlib import Path
 import re
 ROOT = Path(__file__).resolve().parents[1]
 APP = ROOT / "willitmod-dev-5tratsmack"
-VERSION = '0.11.15'
-REVISION = '167a136540c8a678c628679b189a2d7aa7d9a730'
-APP_REF = 'ghcr.io/willitmod/5tratsmack-app:0.11.15-rc.167a136540c8@sha256:70bb133975340767796fb4f5395c10bb1598f08574b3a432d8b3c8a6356c48ee'
-KDF_REF = 'ghcr.io/willitmod/5tratsmack-kdf:0.11.15-rc.167a136540c8@sha256:37b3222184efa72f16c41a1544665a6ef001463c258c90e2c9ba2d709fc1b294'
+VERSION = '0.11.16'
+REVISION = 'd6acc291b446bc9aa667fd0174fa01810d2e360b'
+APP_REF = 'ghcr.io/willitmod/5tratsmack-app:0.11.16-rc.d6acc291b446@sha256:734a3aaf7a3b1e5642ff1d98eba703c598306ad10075a006c898df02541a9c24'
+KDF_REF = 'ghcr.io/willitmod/5tratsmack-kdf:0.11.16-rc.d6acc291b446@sha256:9246803000ded61f5bfbdae42407794d3f5894f702aac7e314f45e3a7310bcaf'
 CKPOOL_REF = 'ghcr.io/willitmod/5tratsmack-ckpool:0.11.3-rc.a992f40e96d4@sha256:95a1a5f343d579206a0f8bb3c961cafa7500b5d487211a0cfb7b989cf34b895e'
 CHANNEL = 'dev'
 
@@ -41,9 +41,12 @@ for component, expected, count in [('app', APP_REF, 2), ('kdf', KDF_REF, 1), ('c
     refs = re.findall(r'^\s+(?:image|APP_IMAGE|CKPOOL_IMAGE): (ghcr\.io/willitmod/5tratsmack-' + component + r':\S+)$', compose, re.M)
     assert refs == [expected] * count, (component, 'unexpected image reference')
     assert re.search(r'@sha256:[0-9a-f]{64}$', expected), 'unpinned image'
+assert compose.count('    stop_signal: SIGINT') == 1
+assert compose.count('    hostname: 5tratsmack-app') == 1
+assert 'has completed public-chain' not in manifest
 assert '${APP_DATA_DIR}' in compose and '${APP_PASSWORD}' in compose
 assert compose.count('      FIVETRAT_UPDATER_ENABLED: "0"') == 1
 assert f'- **5tratSmack** (`willitmod-dev-5tratsmack`) - `{VERSION}`' in (ROOT/'README.md').read_text()
-for phrase in ('Trade Pulse', 'Gleec', 'final transaction approval', 'application and trading backend'):
+for phrase in ('Trade Pulse', 'Gleec', 'final transaction approval', 'application and trading backend', 'Block alerts in this browser', 'coinbase output zero'):
     assert phrase in manifest, phrase
 print(f'5tratSmack {CHANNEL.upper()} {VERSION}: app/KDF pair pinned; versions aligned; core, CKPool and helpers unchanged')

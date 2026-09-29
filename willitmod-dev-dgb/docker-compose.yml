@@ -1065,8 +1065,9 @@ services:
       - ${APP_DATA_DIR}/data/pool/config/coins.json:/app/coins.json:ro
 
   app:
+    stop_signal: SIGINT
     hostname: axedgb-app
-    image: ghcr.io/willitmod/axedgb-app:0.9.181-dev
+    image: ghcr.io/willitmod/axedgb-app:0.9.185-mux.fec28c019d99@sha256:baaacf6c09bef7ceb31e043288ff3f63cb5f609cdbf0cfc84bffb52ff2398e0f
     user: "1000:1000"
     restart: on-failure
     stop_grace_period: 30s
@@ -1084,6 +1085,7 @@ services:
     volumes:
       - ${APP_DATA_DIR}/data:/data
     environment:
+      MUX_IDENTITY_URL: "http://172.17.0.1:21222/api/integrations/workers"
       DGB_RPC_HOST: "dgbd"
       DGB_RPC_PORT: "14022"
       DGB_RPC_USER: "dgb"

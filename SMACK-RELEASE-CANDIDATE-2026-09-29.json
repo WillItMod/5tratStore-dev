@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "kind": "smack-store-release-candidate",
+  "appId": "willitmod-dev-5tratsmack",
+  "channel": "dev",
+  "version": "0.11.16",
+  "sourceRevision": "d6acc291b446bc9aa667fd0174fa01810d2e360b",
+  "appImageRef": "ghcr.io/willitmod/5tratsmack-app:0.11.16-rc.d6acc291b446@sha256:734a3aaf7a3b1e5642ff1d98eba703c598306ad10075a006c898df02541a9c24",
+  "kdfImageRef": "ghcr.io/willitmod/5tratsmack-kdf:0.11.16-rc.d6acc291b446@sha256:9246803000ded61f5bfbdae42407794d3f5894f702aac7e314f45e3a7310bcaf",
+  "buildRun": "https://github.com/WillItMod/5tratSmack-private/actions/runs/36554210464",
+  "registryEvidenceSha256": "5788b03a8a70cf7208e2369d121182c10f098c09235e736ab58b8f13fac1b79f",
+  "platforms": [
+    "linux/amd64",
+    "linux/arm64"
+  ],
+  "baselineCommit": "98903055ab5c7bd50fcc9fa8fb29b29796863a44",
+  "baselineComposeSha256": "ce305d67a8e94bfb9ee5ac10b3c199918f4b1d538309ac394b63b309352469c1",
+  "approvedRuntimeChanges": [
+    {
+      "path": [
+        "services",
+        "app",
+        "environment",
+        "APP_IMAGE"
+      ],
+      "before": "ghcr.io/willitmod/5tratsmack-app:0.11.15-rc.167a136540c8@sha256:70bb133975340767796fb4f5395c10bb1598f08574b3a432d8b3c8a6356c48ee",
+      "after": "ghcr.io/willitmod/5tratsmack-app:0.11.16-rc.d6acc291b446@sha256:734a3aaf7a3b1e5642ff1d98eba703c598306ad10075a006c898df02541a9c24",
+      "existed": true
+    },
+    {
+      "path": [
+        "services",
+        "app",
+        "environment",
+        "APP_REVISION"
+      ],
+      "before": "167a136540c8a678c628679b189a2d7aa7d9a730",
+      "after": "d6acc291b446bc9aa667fd0174fa01810d2e360b",
+      "existed": true
+    },
+    {
+      "path": [
+        "services",
+        "app",
+        "environment",
+        "APP_VERSION"
+      ],
+      "before": "0.11.15",
+      "after": "0.11.16",
+      "existed": true
+    },
+    {
+      "path": [
+        "services",
+        "app",
+        "environment",
+        "FIVETRAT_RELEASE_TAG"
+      ],
+      "before": "0.11.15",
+      "after": "0.11.16",
+      "existed": true
+    },
+    {
+      "path": [
+        "services",
+        "app",
+        "image"
+      ],
+      "before": "ghcr.io/willitmod/5tratsmack-app:0.11.15-rc.167a136540c8@sha256:70bb133975340767796fb4f5395c10bb1598f08574b3a432d8b3c8a6356c48ee",
+      "after": "ghcr.io/willitmod/5tratsmack-app:0.11.16-rc.d6acc291b446@sha256:734a3aaf7a3b1e5642ff1d98eba703c598306ad10075a006c898df02541a9c24",
+      "existed": true
+    },
+    {
+      "path": [
+        "services",
+        "app",
+        "stop_signal"
+      ],
+      "before": null,
+      "after": "SIGINT",
+      "existed": false
+    },
+    {
+      "path": [
+        "services",
+        "swap",
+        "image"
+      ],
+      "before": "ghcr.io/willitmod/5tratsmack-kdf:0.11.15-rc.167a136540c8@sha256:37b3222184efa72f16c41a1544665a6ef001463c258c90e2c9ba2d709fc1b294",
+      "after": "ghcr.io/willitmod/5tratsmack-kdf:0.11.16-rc.d6acc291b446@sha256:9246803000ded61f5bfbdae42407794d3f5894f702aac7e314f45e3a7310bcaf",
+      "existed": true
+    }
+  ],
+  "nodeAcceptancePassed": false,
+  "independentPackageInstallPassed": false,
+  "publicPromotion": false,
+  "stopPolicy": "App-only SIGINT; legacy Python PID1 migration requires reviewed normal OS updater. Core, CKPool, UPnP, init and all data/port fields are unchanged."
+}

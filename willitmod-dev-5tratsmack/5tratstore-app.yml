@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-5tratsmack
 category: altcoin
 name: 5tratSmack
-version: "0.11.15"
+version: "0.11.16"
 tagline: Home-miner 5TRAT node, wallet, solo pool and atomic trade lab
 description: >-
   Install and synchronize a complete 5TRAT node, create or restore an encrypted
@@ -37,7 +37,13 @@ path: ""
 defaultUsername: ""
 defaultPassword: ""
 releaseNotes: >-
-  Trade now starts with clear Buy and Sell choices and guides one step at a time
+  Block alerts now require a fresh active-chain proof for the exact 5TRAT block
+  and the pool payout in coinbase output zero. Orphaned or unavailable proof
+  withdraws an alert while retained Blocks history stays visible. Settings
+  includes Block alerts in this browser; its queue and acknowledgements are
+  local to that browser. OS and MUX notification acknowledgements remain separate.
+
+  Trade starts with clear Buy and Sell choices and guides one step at a time
   through Amount, Prepare funds, Review and Follow progress. Send and Receive
   have focused forms with expandable Gleec wallet instructions. Trade Pulse
   retains Global Trades, My Trades and Compare, while activity and wallet tools
@@ -50,7 +56,7 @@ releaseNotes: >-
   payment. Wallet backup and final transaction approval remain required.
 
   The application and trading backend update together. Existing wallet, chain
-  and mining data paths remain unchanged. Package and app versions now agree.
+  and mining data paths remain unchanged. Package and app versions agree.
 widgets:
   - id: sync
     type: text-with-progress

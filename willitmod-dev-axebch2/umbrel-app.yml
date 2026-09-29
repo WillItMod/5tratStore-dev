@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-axebch2
 category: altcoin
 name: "AxeBCH2"
-version: "0.2.0.4-dev"
+version: "0.2.0.8-dev"
 tagline: BCH2 node + solo pool (alpha)
 description: >-
   ALPHA RELEASE (DEV CHANNEL)
@@ -33,13 +33,19 @@ path: ""
 defaultUsername: ""
 defaultPassword: ""
 releaseNotes: >-
-  Umbrel compatibility package update. Fixes installation and authenticated
-  dashboard access on Umbrel 2.0 while retaining Umbrel 1.x support. Existing
-  application, node and pool images and persistent data paths are unchanged.
+  Current miner hash rate from 5tratMux appears separately from accepted-share
+  estimates, with stale or unavailable telemetry handled explicitly. Block
+  history checks the full block hash against the correct chain and refreshes
+  confirmation and reorganisation status before showing a confirmed find.
+  Unverified reports remain distinguishable from confirmed pool blocks.
 
-  Corrects stale version metadata from 0.2.0.2-dev so the store, image, app UI,
-  API and support check-in now consistently report 0.2.0.3-dev. Includes the
-  worker identity compatibility fix from the previous release.
+  Block alerts in this browser is a separate local preference. Recent verified
+  blocks queue across app tabs, with browser-only Close acknowledgements.
+  Reorgs or unavailable proof retract the alert without acknowledging it.
+  OS and MUX delivery and acknowledgements remain independently managed.
+
+  Settings saves preserve existing file ownership and report permission errors accurately.
+  Existing Core data ownership and mining configuration are retained.
 widgets:
   - id: "sync"
     type: "text-with-progress"

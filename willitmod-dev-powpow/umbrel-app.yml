@@ -2,17 +2,21 @@ manifestVersion: 1
 id: willitmod-dev-powpow
 category: altcoin
 name: "PowPow"
-version: "0.2.33-dev"
+version: "0.2.36-dev"
 releaseNotes: >-
-  Umbrel compatibility package update. Fixes installation and authenticated
-  dashboard access on Umbrel 2.0 while retaining Umbrel 1.x support. Existing
-  application, node and pool images and persistent data paths are unchanged.
-  Runs the Litecoin and Dogecoin containers with the dashboard UID to prevent root-owned node configuration files from blocking fresh startup.
+  Current miner hash rate from 5tratMux appears separately from accepted-share
+  estimates, with stale or unavailable telemetry handled explicitly. Block
+  history checks the full block hash against the correct chain and refreshes
+  confirmation and reorganisation status before showing a confirmed find.
+  Unverified reports remain distinguishable from confirmed pool blocks.
 
-  Upgrades the bundled Litecoin node from Litecoin Core 0.21.4 to 0.21.5.8,
-  including upstream security, MWEB validation, and mining fixes for the
-  consensus rule activated at block 3,172,640. AMD64 and ARM64 release archives are
-  verified against pinned SHA-256 checksums. Existing chain data is retained.
+  Block alerts in this browser is a separate local preference. Recent verified
+  blocks queue across app tabs, with browser-only Close acknowledgements.
+  Reorgs or unavailable proof retract the alert without acknowledging it.
+  OS and MUX delivery and acknowledgements remain independently managed.
+
+  The app and pool are updated together. Litecoin and Dogecoin events retain
+  separate chain identities; rejected RPC submissions are not counted as accepted.
 tagline: LTC + DOGE merged mining (alpha dev)
 description: >-
   ALPHA RELEASE (DEV CHANNEL)

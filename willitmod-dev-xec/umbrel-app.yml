@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-xec
 category: bitcoin
 name: AxeXEC
-version: "0.1.18-dev"
+version: "0.1.21-dev"
 tagline: XEC node + solo pool
 description: >-
   ALPHA RELEASE (DEV CHANNEL)
@@ -67,14 +67,16 @@ path: ""
 defaultUsername: ""
 defaultPassword: ""
 releaseNotes: >-
-  Umbrel compatibility package update. Fixes installation and authenticated
-  dashboard access on Umbrel 2.0 while retaining Umbrel 1.x support. Existing
-  application, node and pool images and persistent data paths are unchanged.
+  Current miner hash rate from 5tratMux appears separately from accepted-share
+  estimates, with stale or unavailable telemetry handled explicitly. Block
+  history checks the full block hash against the correct chain and refreshes
+  confirmation and reorganisation status before showing a confirmed find.
+  Unverified reports remain distinguishable from confirmed pool blocks.
 
-  Fixes AxeXEC repeatedly restarting on Raspberry Pi and other ARM64 systems
-  using non-4K memory pages. The Bitcoin ABC 0.33.4 node is now compiled
-  without jemalloc for both AMD64 and ARM64. Existing blockchain data is
-  preserved and does not need to be downloaded again.
+  Block alerts in this browser is a separate local preference. Recent verified
+  blocks queue across app tabs, with browser-only Close acknowledgements.
+  Reorgs or unavailable proof retract the alert without acknowledging it.
+  OS and MUX delivery and acknowledgements remain independently managed.
 widgets:
   - id: "sync"
     type: "text-with-progress"
