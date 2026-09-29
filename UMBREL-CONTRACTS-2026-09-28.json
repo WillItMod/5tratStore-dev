@@ -7,43 +7,43 @@
   "apps": {
     "willitmod-dev-5tratsmack": {
       "package_version": "0.11.16",
-      "compose_contract_sha256": "2eea4fbfbd6513fd09f1b2b82ec4a1d76845cf7bb9086db603a404360c121710"
+      "compose_contract_sha256": "6ca2d5728b0221243ac892f78f3978a25f55c0623014e7744cab3980d92506ed"
     },
     "willitmod-dev-axebch2": {
       "package_version": "0.2.0.8-dev",
-      "compose_contract_sha256": "53332810f245d9f6ab9e8a7954d42214487cd8e5f58c2e854625ccebda7106af"
+      "compose_contract_sha256": "8eff18d8debe37df81a6ade8c6db99684a60e9f05626f600129962b29dbcb2a3"
     },
     "willitmod-dev-bc2": {
       "package_version": "0.1.18-dev",
-      "compose_contract_sha256": "4ebc6b9ba65e88320ca50284a11c2a774ddd425edff92670121364720fa4bc34"
+      "compose_contract_sha256": "5b7936e0ed0f09940b64dc5a757bc70242ce003f847c5c8dcdd89c309bb8febd"
     },
     "willitmod-dev-bch": {
       "package_version": "0.9.22-dev",
-      "compose_contract_sha256": "87df2426053891bb91e3bec6c1acc77856b3f666c9f250e8ea643e6a1b865618"
+      "compose_contract_sha256": "b96d91e952aaea5e7e47c629842fc18e12dab5608594e8e287b5a0523851acba"
     },
     "willitmod-dev-btc": {
       "package_version": "0.7.82.14-dev",
-      "compose_contract_sha256": "032eb59f81a18e1357de5da95dfce2947131949b4f6dc6020315de039cfd5581"
+      "compose_contract_sha256": "b77b708b4ca7986cd5c25b221b15c1919fada023b316ff70fc246b8f8f7a8c86"
     },
     "willitmod-dev-dgb": {
       "package_version": "0.9.185-dev",
-      "compose_contract_sha256": "d87e37b09ea346197dc296c1f56eb0d8512dabd616d5d5793723a213401ad891"
+      "compose_contract_sha256": "3f2287faa5c197d69c2fdc4f8abe845fb3065c5843ac0bba15bca2aade7b60cc"
     },
     "willitmod-dev-fracattack": {
       "package_version": "0.1.8",
-      "compose_contract_sha256": "d947f2010c606100ee98bd17da0698cb301689b472ae6f0bc8ec57ae37d7ae12"
+      "compose_contract_sha256": "e68988f9f81342aa913cc36a0001929dcc27814124bdbcd090022671b0cb704b"
     },
     "willitmod-dev-powpow": {
       "package_version": "0.2.36-dev",
-      "compose_contract_sha256": "a2bbdbd0279e3ad0948355edbf7a2eea1973029f7a42b0032ae965b7102af0e8"
+      "compose_contract_sha256": "fab14b1a227fc7b7110bb1f4144758ff1524e990ddf6b458986fe73a7dbeffa7"
     },
     "willitmod-dev-ppc": {
       "package_version": "0.2.35-dev",
-      "compose_contract_sha256": "8b98a4af7b44da3c7da77daa5639d4b0ca4d1d45fd02dd96cee7db1649134208"
+      "compose_contract_sha256": "10e436b66dfebfe4258783a558d7c1b1cae763e12f80ae5f608613326defbe7c"
     },
     "willitmod-dev-xec": {
       "package_version": "0.1.21-dev",
-      "compose_contract_sha256": "51ed7375c4c3590d5b75abeb412b37979d6f2a744c383f7d9f68257d9ce8df97"
+      "compose_contract_sha256": "097726fe15df6ce60f527c136b8e9043a5691079319ec55b1792f54006caf871"
     }
   },
   "python_app_stop_policy": {

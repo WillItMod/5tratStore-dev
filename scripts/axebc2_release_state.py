@@ -1,7 +1,7 @@
 from pathlib import Path
 
-APP_TAG = "ghcr.io/willitmod/axebc2-app-umbrel-dev:0.1.18-mux.8164f42cc1ab"
-APP_DIGEST = "sha256:df461e0c507d8d863256d96d8653c9f49585a39aed6f83e8ad3976c6c42fea4d"
+APP_TAG = "ghcr.io/willitmod/axebc2-app-umbrel-dev:0.1.18-mux.7f9013ca6750"
+APP_DIGEST = "sha256:c9ccd9e9d309397eeeeb1d31199076943fa9772710dd28c17cdf6a40c30ccda8"
 CORE_TAG = "ghcr.io/willitmod/bitcoinii-core:31.1.0-rc.cdf44542dde2"
 CORE_DIGEST = "sha256:8875917ece57668fe9925d40a256ce8d429a3071511bb555d4ace1fa4370afc6"
 

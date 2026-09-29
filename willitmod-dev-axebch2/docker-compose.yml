@@ -28,7 +28,7 @@ services:
   app:
     stop_signal: SIGINT
     hostname: axebch2-app
-    image: ghcr.io/willitmod/axebch2-app:0.2.0.8-mux.b9f51d5375d3@sha256:83d7286346399dbd13a0827728f511a95ae640061ba7e2cd2708a0359cc98c86
+    image: ghcr.io/willitmod/axebch2-app:0.2.0.8-mux.7f020cef5b1e@sha256:ee139d5fd31d20ba736fdab46b0657a0c699cb63f500648a1c817837231f6f21
     user: "1000:1000"
     restart: unless-stopped
     depends_on:

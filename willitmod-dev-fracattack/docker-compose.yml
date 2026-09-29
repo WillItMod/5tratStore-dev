@@ -218,7 +218,7 @@ services:
   app:
     stop_signal: SIGINT
     hostname: fracattack-app
-    image: ghcr.io/willitmod/fracattack-app-umbrel-dev:0.1.8-mux.a91064381fcd@sha256:27fbe21e4ecd3cab20344def44d059c4a2d3206bae44f1288287ecebb7eb7130
+    image: ghcr.io/willitmod/fracattack-app-umbrel-dev:0.1.8-mux.3fcafaccedcf@sha256:b7b64f61cc00316e423d5fda7f007f382602c31612411e0104691e451e4c2c6f
     user: "1000:1000"
     restart: on-failure
     stop_grace_period: 30s

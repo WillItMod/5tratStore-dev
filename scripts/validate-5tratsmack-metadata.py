@@ -5,9 +5,9 @@ import re
 ROOT = Path(__file__).resolve().parents[1]
 APP = ROOT / "willitmod-dev-5tratsmack"
 VERSION = '0.11.16'
-REVISION = '7f9f73add608a75a3a6e2fc0c6e3d45017262414'
-APP_REF = 'ghcr.io/willitmod/5tratsmack-app:0.11.16-rc.7f9f73add608@sha256:b66cb81c5ae8f4a985caec89c4cfcc289aa201233dd6bea99499479f2a695ef3'
-KDF_REF = 'ghcr.io/willitmod/5tratsmack-kdf:0.11.16-rc.7f9f73add608@sha256:8d71a9e39fef936998dfd91feb9f8dbacf01a1d65e4334e168cc166f83848ee1'
+REVISION = 'd6acc291b446bc9aa667fd0174fa01810d2e360b'
+APP_REF = 'ghcr.io/willitmod/5tratsmack-app:0.11.16-rc.d6acc291b446@sha256:734a3aaf7a3b1e5642ff1d98eba703c598306ad10075a006c898df02541a9c24'
+KDF_REF = 'ghcr.io/willitmod/5tratsmack-kdf:0.11.16-rc.d6acc291b446@sha256:9246803000ded61f5bfbdae42407794d3f5894f702aac7e314f45e3a7310bcaf'
 CKPOOL_REF = 'ghcr.io/willitmod/5tratsmack-ckpool:0.11.3-rc.a992f40e96d4@sha256:95a1a5f343d579206a0f8bb3c961cafa7500b5d487211a0cfb7b989cf34b895e'
 CHANNEL = 'dev'
 
