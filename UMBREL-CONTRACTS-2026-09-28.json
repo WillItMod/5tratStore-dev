@@ -6,8 +6,8 @@
   "historical_evidence_sha256": "def19c680b39769c58a31a832ef8092438180ef5d6a141fc3c3afa27901e06b8",
   "apps": {
     "willitmod-dev-5tratsmack": {
-      "package_version": "0.11.15",
-      "compose_contract_sha256": "ce305d67a8e94bfb9ee5ac10b3c199918f4b1d538309ac394b63b309352469c1"
+      "package_version": "0.11.16",
+      "compose_contract_sha256": "be4b2b752c9fbc19725797eb97085b1df1d37982108340dbb5acfa668208c7d5"
     },
     "willitmod-dev-axebch2": {
       "package_version": "0.2.0.8-dev",
