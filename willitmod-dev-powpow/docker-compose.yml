@@ -27,7 +27,7 @@ services:
   app:
     stop_signal: SIGINT
     hostname: powpow-app
-    image: ghcr.io/willitmod/powpow-app:0.2.37-mux.a8d93c695027@sha256:31efc831d92203ea08d0f5ef609c296faee00ce99c99d8736b765d304e997a82
+    image: ghcr.io/willitmod/powpow-app:0.2.37-mux.88f8fc0af57e@sha256:59994fb26f1b9b1daf2bf25bf528d190d3beda89acd65d80bd674b49696bed8d
     user: "1000:1000"
     restart: unless-stopped
     depends_on:
@@ -89,7 +89,7 @@ services:
       start_period: 3m
 
   pool:
-    image: ghcr.io/willitmod/powpow-pool:0.2.37-mux.a8d93c695027@sha256:2883eed246f62dcd68c2c5fbe1612f12d0c369d66709ec6e9d709669da693063
+    image: ghcr.io/willitmod/powpow-pool:0.2.37-mux.88f8fc0af57e@sha256:fdedad44cc7c7700eb3043884979785a02d9915bf5a70c5b50d2f52f6ba758d8
     restart: unless-stopped
     depends_on:
       init_permissions:

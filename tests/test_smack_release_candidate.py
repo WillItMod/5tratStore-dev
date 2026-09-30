@@ -47,7 +47,7 @@ class SmackCandidateTests(unittest.TestCase):
         self.assertEqual(model['services']['app']['environment']['APP_REVISION'], RECORD['sourceRevision'])
         self.assertEqual(RECORD['version'], '0.11.17')
         self.assertEqual(RECORD['platforms'], ['linux/amd64', 'linux/arm64'])
-        self.assertEqual(RECORD['registryEvidenceSha256'], 'c4ccacaf550305ba84a5dba0cee2318f6585b02da91726375e11d93281d8f505')
+        self.assertEqual(RECORD['registryEvidenceSha256'], 'f137c728ce040c7cb18bbe6b0fedcdaf1810b09f4c66e35a700af574500c06b1')
 
     def test_all_other_runtime_fields_are_exact_channel_baseline(self):
         current = yaml.safe_load((ROOT / NAME / 'docker-compose.yml').read_text())

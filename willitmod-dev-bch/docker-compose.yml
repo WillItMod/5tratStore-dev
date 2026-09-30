@@ -219,7 +219,7 @@ services:
   app:
     stop_signal: SIGINT
     hostname: axebch-app
-    image: ghcr.io/willitmod/axebch-app-umbrel-dev:0.9.23-mux.858ba9e59beb@sha256:106961806f2eddbfe5b801eb44a3a84b63328a9ab152ac55ec56c8debcb893b5
+    image: ghcr.io/willitmod/axebch-app-umbrel-dev:0.9.23-mux.f8878466e295@sha256:3cf3b2a2c1cefb9f3609166e35ae71964ceb18f5a64e8575fe28763f2985a820
     user: "1000:1000"
     restart: on-failure
     stop_grace_period: 30s

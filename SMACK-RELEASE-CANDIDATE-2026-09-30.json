@@ -4,11 +4,11 @@
   "appId": "willitmod-dev-5tratsmack",
   "channel": "dev",
   "version": "0.11.17",
-  "sourceRevision": "106803969b2c17edd77b192398c15d28a152d964",
-  "appImageRef": "ghcr.io/willitmod/5tratsmack-app:0.11.17-rc.106803969b2c@sha256:b839ea896e86daae0edde3b34c37656fd4ef1c50328716a964344a49af12e332",
-  "kdfImageRef": "ghcr.io/willitmod/5tratsmack-kdf:0.11.17-rc.106803969b2c@sha256:aa8f45f7e36bfed663f221fee74ceb6dd631e0c05bfc29248bbda7432b6095f8",
-  "buildRun": "https://github.com/WillItMod/5tratSmack-private/actions/runs/36704164891",
-  "registryEvidenceSha256": "c4ccacaf550305ba84a5dba0cee2318f6585b02da91726375e11d93281d8f505",
+  "sourceRevision": "99a34a0ef5f56db92d7dc798c5b648109611f0ab",
+  "appImageRef": "ghcr.io/willitmod/5tratsmack-app:0.11.17-rc.99a34a0ef5f5@sha256:1c4cc7c034abaf324359cf3440f177a2b6fff712bd947c8d086c02412a1a03d7",
+  "kdfImageRef": "ghcr.io/willitmod/5tratsmack-kdf:0.11.17-rc.99a34a0ef5f5@sha256:c3ce7e638bdf55710fbfb607145d76c7d6e00b81a35e4c843645d9815f862087",
+  "buildRun": "https://github.com/WillItMod/5tratSmack-private/actions/runs/36706295159",
+  "registryEvidenceSha256": "f137c728ce040c7cb18bbe6b0fedcdaf1810b09f4c66e35a700af574500c06b1",
   "platforms": [
     "linux/amd64",
     "linux/arm64"
@@ -24,7 +24,7 @@
         "APP_IMAGE"
       ],
       "before": "ghcr.io/willitmod/5tratsmack-app:0.11.15-rc.167a136540c8@sha256:70bb133975340767796fb4f5395c10bb1598f08574b3a432d8b3c8a6356c48ee",
-      "after": "ghcr.io/willitmod/5tratsmack-app:0.11.17-rc.106803969b2c@sha256:b839ea896e86daae0edde3b34c37656fd4ef1c50328716a964344a49af12e332",
+      "after": "ghcr.io/willitmod/5tratsmack-app:0.11.17-rc.99a34a0ef5f5@sha256:1c4cc7c034abaf324359cf3440f177a2b6fff712bd947c8d086c02412a1a03d7",
       "existed": true
     },
     {
@@ -35,7 +35,7 @@
         "APP_REVISION"
       ],
       "before": "167a136540c8a678c628679b189a2d7aa7d9a730",
-      "after": "106803969b2c17edd77b192398c15d28a152d964",
+      "after": "99a34a0ef5f56db92d7dc798c5b648109611f0ab",
       "existed": true
     },
     {
@@ -67,7 +67,7 @@
         "image"
       ],
       "before": "ghcr.io/willitmod/5tratsmack-app:0.11.15-rc.167a136540c8@sha256:70bb133975340767796fb4f5395c10bb1598f08574b3a432d8b3c8a6356c48ee",
-      "after": "ghcr.io/willitmod/5tratsmack-app:0.11.17-rc.106803969b2c@sha256:b839ea896e86daae0edde3b34c37656fd4ef1c50328716a964344a49af12e332",
+      "after": "ghcr.io/willitmod/5tratsmack-app:0.11.17-rc.99a34a0ef5f5@sha256:1c4cc7c034abaf324359cf3440f177a2b6fff712bd947c8d086c02412a1a03d7",
       "existed": true
     },
     {
@@ -87,7 +87,7 @@
         "image"
       ],
       "before": "ghcr.io/willitmod/5tratsmack-kdf:0.11.15-rc.167a136540c8@sha256:37b3222184efa72f16c41a1544665a6ef001463c258c90e2c9ba2d709fc1b294",
-      "after": "ghcr.io/willitmod/5tratsmack-kdf:0.11.17-rc.106803969b2c@sha256:aa8f45f7e36bfed663f221fee74ceb6dd631e0c05bfc29248bbda7432b6095f8",
+      "after": "ghcr.io/willitmod/5tratsmack-kdf:0.11.17-rc.99a34a0ef5f5@sha256:c3ce7e638bdf55710fbfb607145d76c7d6e00b81a35e4c843645d9815f862087",
       "existed": true
     }
   ],
@@ -96,14 +96,14 @@
   "publicPromotion": false,
   "stopPolicy": "App-only SIGINT; legacy Python PID1 migration requires reviewed normal OS updater. Core, CKPool, UPnP, init and all data/port fields are unchanged.",
   "platformDigests": {
-    "amd64": "sha256:1d554ca2f1cc8461ff67d6ba7c7c7327c5b97effa873034be91426dbbf2de428",
-    "arm64": "sha256:ce6883e84ee71f7f67ddf8943c5b8d8dd8a5a0758711417d2c0e288c95290281"
+    "amd64": "sha256:0ba21ac310b3ce172ff76dcabaeef28b8d4e1a68df7e4b5c0b0c9e2caa55c216",
+    "arm64": "sha256:b2eb123dc4b1f4c58fc1e0f3c91cb16abf40b4f6276e036292702c61ee535ef2"
   },
   "provenanceVerified": true,
   "sbomVerified": true,
   "nativeRuntimeTests": true,
   "repository": "5tratSmack-private",
-  "kdfRegistryEvidenceSha256": "202a4335a544aaed6f9d68c1c71b39b2b47b7893714ac16e1e93486f4576ccf2",
+  "kdfRegistryEvidenceSha256": "698921a9f5ca2bd2ceac938bed4d7d410f2ac7dea1d57181af5b1925ff64e914",
   "runtimeTestsPassed": true,
   "supersedes": "SMACK-RELEASE-CANDIDATE-2026-09-29.json"
 }

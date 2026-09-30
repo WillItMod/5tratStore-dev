@@ -25,6 +25,7 @@ class DirectHashrateReleaseTests(unittest.TestCase):
                 notes = manifest['releaseNotes']
                 self.assertIn('Direct and mixed miners', notes)
                 self.assertIn('matched worker identities', notes)
+                self.assertIn('reconnects directly', notes)
                 if app_id in release['apps']:
                     record = release['apps'][app_id]
                     self.assertNotEqual(record['version'], previous['apps'][app_id]['version'])

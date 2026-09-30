@@ -1067,7 +1067,7 @@ services:
   app:
     stop_signal: SIGINT
     hostname: axedgb-app
-    image: ghcr.io/willitmod/axedgb-app:0.9.186-mux.ee59ee34ad5f@sha256:cb5c8abda83c14aade4b68c442ff43c701f9c887d23ce1e9a1d9d6f8a9d3a380
+    image: ghcr.io/willitmod/axedgb-app:0.9.186-mux.ea679e21bd33@sha256:ae678ce5cf808401c945127ad35df8dc08a9389210baccd8f6a728b2918c8c00
     user: "1000:1000"
     restart: on-failure
     stop_grace_period: 30s
