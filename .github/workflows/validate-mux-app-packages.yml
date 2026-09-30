@@ -2,28 +2,30 @@ name: Validate MUX app packages
 on:
   pull_request:
     paths:
-      - "MUX-HASHRATE-2026-09-28.json"
-      - "UMBREL-CONTRACTS-2026-09-28.json"
+      - "DIRECT-HASHRATE-2026-09-30.json"
+      - "UMBREL-CONTRACTS-2026-09-30.json"
       - "willitmod-dev-*/docker-compose.yml*"
       - "willitmod-dev-*/umbrel-app.yml"
       - "willitmod-dev-*/global-app.yml"
       - "tests/test_mux_app_packages.py"
+      - "tests/test_direct_hashrate_release.py"
       - "tests/test_smack_release_candidate.py"
-      - "SMACK-RELEASE-CANDIDATE-2026-09-29.json"
+      - "SMACK-RELEASE-CANDIDATE-2026-09-30.json"
       - "tests/test_ppc_pool_lifecycle.py"
       - "tests/test_umbrel_cross_version.py"
       - ".github/workflows/validate-mux-app-packages.yml"
   push:
     branches: [main]
     paths:
-      - "MUX-HASHRATE-2026-09-28.json"
-      - "UMBREL-CONTRACTS-2026-09-28.json"
+      - "DIRECT-HASHRATE-2026-09-30.json"
+      - "UMBREL-CONTRACTS-2026-09-30.json"
       - "willitmod-dev-*/docker-compose.yml*"
       - "willitmod-dev-*/umbrel-app.yml"
       - "willitmod-dev-*/global-app.yml"
       - "tests/test_mux_app_packages.py"
+      - "tests/test_direct_hashrate_release.py"
       - "tests/test_smack_release_candidate.py"
-      - "SMACK-RELEASE-CANDIDATE-2026-09-29.json"
+      - "SMACK-RELEASE-CANDIDATE-2026-09-30.json"
       - "tests/test_ppc_pool_lifecycle.py"
       - "tests/test_umbrel_cross_version.py"
       - ".github/workflows/validate-mux-app-packages.yml"

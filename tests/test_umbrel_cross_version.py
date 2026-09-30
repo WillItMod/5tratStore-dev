@@ -9,7 +9,7 @@ import unittest
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
-CONTRACT = json.loads((ROOT / 'UMBREL-CONTRACTS-2026-09-28.json').read_text())
+CONTRACT = json.loads((ROOT / 'UMBREL-CONTRACTS-2026-09-30.json').read_text())
 RELEASE = CONTRACT['apps']
 
 

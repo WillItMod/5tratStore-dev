@@ -218,7 +218,7 @@ services:
   app:
     stop_signal: SIGINT
     hostname: fracattack-app
-    image: ghcr.io/willitmod/fracattack-app-umbrel-dev:0.1.8-mux.3fcafaccedcf@sha256:b7b64f61cc00316e423d5fda7f007f382602c31612411e0104691e451e4c2c6f
+    image: ghcr.io/willitmod/fracattack-app-umbrel-dev:0.1.9-mux.ee4a4e37009e@sha256:9431319f70c7caeb0f51c84064c3dcea13b72c62af18cd3ef823f58cee887df0
     user: "1000:1000"
     restart: on-failure
     stop_grace_period: 30s
@@ -243,7 +243,7 @@ services:
       CKPOOL_STATUS_DIR: "/data/pool/www/pool"
       CKPOOL_STRATUM_HOST: "ckpool"
       CKPOOL_STRATUM_PORT: "3333"
-      APP_VERSION: "0.1.8"
+      APP_VERSION: "0.1.9"
       MUX_IDENTITY_URL: "http://172.17.0.1:21222/api/integrations/workers"
       APP_CHANNEL: "DEV"
       APP_VERSION_SUFFIX: ""

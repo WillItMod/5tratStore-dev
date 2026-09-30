@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-5tratsmack
 category: altcoin
 name: 5tratSmack
-version: "0.11.16"
+version: "0.11.17"
 tagline: Home-miner 5TRAT node, wallet, solo pool and atomic trade lab
 description: >-
   Install and synchronize a complete 5TRAT node, create or restore an encrypted
@@ -37,6 +37,13 @@ path: ""
 defaultUsername: ""
 defaultPassword: ""
 releaseNotes: >-
+  Direct and mixed miners now keep their accepted-share hashrate visible
+  when MUX is empty, offline, or routing other miners elsewhere. MUX-only
+  headlines require matched worker identities; pool estimates and routed
+  telemetry remain separately labelled. Worker cards also retain pool estimates
+  when a previously MUX-connected miner reconnects directly. Accepted shares
+  and history are unchanged.
+
   Block alerts now require a fresh active-chain proof for the exact 5TRAT block
   and the pool payout in coinbase output zero. Orphaned or unavailable proof
   withdraws an alert while retained Blocks history stays visible. Settings

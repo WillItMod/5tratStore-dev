@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-bc2
 category: bitcoin
 name: AxeBC2
-version: "0.1.18-dev"
+version: "0.1.19-dev"
 tagline: BC2 node + solo pool
 description: >-
   BETA RELEASE (DEV CHANNEL)
@@ -43,6 +43,13 @@ path: ""
 defaultUsername: ""
 defaultPassword: ""
 releaseNotes: >-
+  Direct and mixed miners now keep their accepted-share hashrate visible
+  when MUX is empty, offline, or routing other miners elsewhere. MUX-only
+  headlines require matched worker identities; pool estimates and routed
+  telemetry remain separately labelled. Worker cards also retain pool estimates
+  when a previously MUX-connected miner reconnects directly. Accepted shares
+  and history are unchanged.
+
   Current miner hash rate from 5tratMux appears separately from accepted-share
   estimates, with stale or unavailable telemetry handled explicitly. Block
   history checks the full block hash against the correct chain and refreshes

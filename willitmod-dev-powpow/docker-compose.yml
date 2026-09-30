@@ -27,7 +27,7 @@ services:
   app:
     stop_signal: SIGINT
     hostname: powpow-app
-    image: ghcr.io/willitmod/powpow-app:0.2.36-mux.867a7294a601@sha256:2e56b6c178b978a976354120ffe60c46ebf6aeccce8cc2c07cdc6870f16827ce
+    image: ghcr.io/willitmod/powpow-app:0.2.37-mux.88f8fc0af57e@sha256:59994fb26f1b9b1daf2bf25bf528d190d3beda89acd65d80bd674b49696bed8d
     user: "1000:1000"
     restart: unless-stopped
     depends_on:
@@ -44,7 +44,7 @@ services:
       - ${APP_DATA_DIR}/data:/data
     environment:
       MUX_IDENTITY_URL: "http://172.17.0.1:21222/api/integrations/workers"
-      APP_VERSION: "0.2.36-dev"
+      APP_VERSION: "0.2.37-dev"
       APP_CHANNEL: "ALPHA"
       NETWORK_HOST_HINT: "${NETWORK_IP}"
       POOL_API_URL: "http://pool:8001"
@@ -89,7 +89,7 @@ services:
       start_period: 3m
 
   pool:
-    image: ghcr.io/willitmod/powpow-pool:0.2.36-mux.867a7294a601@sha256:5fa727bfd72a0049fea14fa35f76c98025d69ff74e7cd8da8cb48011e4db3c60
+    image: ghcr.io/willitmod/powpow-pool:0.2.37-mux.88f8fc0af57e@sha256:fdedad44cc7c7700eb3043884979785a02d9915bf5a70c5b50d2f52f6ba758d8
     restart: unless-stopped
     depends_on:
       init_permissions:

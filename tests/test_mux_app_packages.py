@@ -136,7 +136,7 @@ class InitShellTests(unittest.TestCase):
 
 class MuxPackageTests(unittest.TestCase):
     def test_verified_images_and_versions_reach_every_install_surface(self):
-        release = json.loads((ROOT / "MUX-HASHRATE-2026-09-28.json").read_text())
+        release = json.loads((ROOT / "DIRECT-HASHRATE-2026-09-30.json").read_text())
         self.assertEqual(release["schemaVersion"], 1)
         expected = {"willitmod-dev-" + name for name in
                     ("btc", "bch", "bc2", "axebch2", "dgb", "xec", "ppc", "powpow", "fracattack")}
@@ -171,7 +171,7 @@ class MuxPackageTests(unittest.TestCase):
                         self.assertEqual(environment["APP_VERSION"], record["version"])
 
     def test_powpow_app_and_pool_bind_to_the_same_verified_source(self):
-        release = json.loads((ROOT / "MUX-HASHRATE-2026-09-28.json").read_text())
+        release = json.loads((ROOT / "DIRECT-HASHRATE-2026-09-30.json").read_text())
         record = release["apps"]["willitmod-dev-powpow"]
         compose = yaml.safe_load((ROOT / "willitmod-dev-powpow/docker-compose.yml").read_text())
         self.assertEqual(compose["services"]["pool"]["image"], record["poolImageRef"])
