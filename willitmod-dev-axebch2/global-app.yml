@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-axebch2
 category: altcoin
 name: "AxeBCH2"
-version: "0.2.0.9-dev"
+version: "0.2.0.10-dev"
 tagline: BCH2 node + solo pool (alpha)
 description: >-
   ALPHA RELEASE (DEV CHANNEL)
@@ -33,6 +33,11 @@ path: ""
 defaultUsername: ""
 defaultPassword: ""
 releaseNotes: >-
+  Best-share records now retain complete pool-log entries that arrive across
+  separate reads. BCH and BCH2 also start their best-share tracker reliably.
+  Existing records and direct/MUX hashrate support are retained; node and
+  pool images, mining configuration and payouts are unchanged.
+
   Direct and mixed miners now keep their accepted-share hashrate visible
   when MUX is empty, offline, or routing other miners elsewhere. MUX-only
   headlines require matched worker identities; pool estimates and routed

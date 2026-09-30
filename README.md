@@ -24,15 +24,15 @@ Development/test app store for WillItMod apps.
 
 ### Node + solo pool / mining apps
 
-- **AxeBTC** (`willitmod-dev-btc`) - `0.7.82.15-dev`
-- **AxeBCH** (`willitmod-dev-bch`) - `0.9.23-dev`
-- **AxeBCH2** (`willitmod-dev-axebch2`) - `0.2.0.9-dev`
-- **AxeBC2** (`willitmod-dev-bc2`) - `0.1.19-dev`
+- **AxeBTC** (`willitmod-dev-btc`) - `0.7.82.16-dev`
+- **AxeBCH** (`willitmod-dev-bch`) - `0.9.24-dev`
+- **AxeBCH2** (`willitmod-dev-axebch2`) - `0.2.0.10-dev`
+- **AxeBC2** (`willitmod-dev-bc2`) - `0.1.21-dev`
 - **AxeDGB** (`willitmod-dev-dgb`) - `0.9.186-dev`
-- **AxePPC** (`willitmod-dev-ppc`) - `0.2.36-dev`
-- **AxeXEC** (`willitmod-dev-xec`) - `0.1.22-dev`
+- **AxePPC** (`willitmod-dev-ppc`) - `0.2.37-dev`
+- **AxeXEC** (`willitmod-dev-xec`) - `0.1.23-dev`
 - **5tratSmack** (`willitmod-dev-5tratsmack`) - `0.11.17`
-- **FracAttack** (`willitmod-dev-fracattack`) - `0.1.9`
+- **FracAttack** (`willitmod-dev-fracattack`) - `0.1.10`
 - **PowPow** (`willitmod-dev-powpow`) - `0.2.37-dev`
 
 Use the app manifest in each app directory as the current source of truth for the store-visible version number.

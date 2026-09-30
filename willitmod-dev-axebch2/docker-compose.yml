@@ -28,7 +28,7 @@ services:
   app:
     stop_signal: SIGINT
     hostname: axebch2-app
-    image: ghcr.io/willitmod/axebch2-app:0.2.0.9-mux.079490bb16ba@sha256:259086327c0f874d4c144557f63bef5baf764c51f641635fb6e2a044ef7b7b8d
+    image: ghcr.io/willitmod/axebch2-app:0.2.0.10-mux.4ba03dd80d32@sha256:f619d66f381c6f6e57f2484e01d1c18781b77a3f9fd0629b48411449d0df5dc7
     user: "1000:1000"
     restart: unless-stopped
     depends_on:
@@ -49,7 +49,7 @@ services:
     environment:
       MUX_IDENTITY_URL: "http://172.17.0.1:21222/api/integrations/workers"
       APP_ID: "willitmod-dev-axebch2"
-      APP_VERSION: "0.2.0.9-dev"
+      APP_VERSION: "0.2.0.10-dev"
       APP_CHANNEL: "DEV"
       APP_RELEASE_PHASE: "ALPHA"
       APP_SELF_RESTART_ENABLED: "1"

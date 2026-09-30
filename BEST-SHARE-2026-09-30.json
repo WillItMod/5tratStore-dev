@@ -1,0 +1,366 @@
+{
+  "schemaVersion": 1,
+  "kind": "best-share-tracker-and-complete-log-entry-fix",
+  "storeBase": "f58388fcb6a0bb743ded10aa35ff452fcde06b2b",
+  "scope": "Seven DEV app-only candidates; static packaging and registry evidence, not live acceptance.",
+  "baselineFile": "BEST-SHARE-2026-09-30-BASELINE.json",
+  "baselineSha256": "1257bd7d2e041f590931675b0990941b83be12ffe1c71c5a663c5c2fb602b3aa",
+  "verifiedEvidenceSha256": "94172955a8dfb5ecc2422fc201c45403d3889e507ba12e85d4322341cfdc2282",
+  "apps": {
+    "willitmod-dev-bch": {
+      "platforms": [
+        "linux/amd64",
+        "linux/arm64"
+      ],
+      "platformDigests": {
+        "amd64": "sha256:5cf3c8f419f4afad0ef8bab428a337c00b7c707fcc3a9dc7b5de7281ee2ebe9e",
+        "arm64": "sha256:eddab03298b0c7d6e4e2df4f5fe3f70a997881a8a6ee549a4d4009d8297a03e6"
+      },
+      "registryEvidenceSha256": "6cf5a79f4cef8b7284cb738a14e96950cf90717dbd4af285846835856b3103ef",
+      "provenanceVerified": true,
+      "sbomVerified": true,
+      "imageRef": "ghcr.io/willitmod/axebch-app-umbrel-dev:0.9.24-mux.d94ba396836f@sha256:98ba43746f57265c9d88a536ee4ca32ff79314a839b0363ff907d4e878a464db",
+      "buildRun": "https://github.com/WillItMod/AxeBCH_Build/actions/runs/36755324732",
+      "nativeRuntimeTests": true,
+      "architectureExecution": {
+        "amd64": "native",
+        "arm64": "native"
+      },
+      "sourceRevision": "d94ba396836f4741a2277bd113ac120c8825c504",
+      "repository": "AxeBCH_Build",
+      "version": "0.9.24-dev",
+      "runtimeTestsPassed": true
+    },
+    "willitmod-dev-axebch2": {
+      "platforms": [
+        "linux/amd64",
+        "linux/arm64"
+      ],
+      "platformDigests": {
+        "amd64": "sha256:d77d162274a4992638ea40c18505a1a479c59eb7b949a750e542a6eb00f1a19c",
+        "arm64": "sha256:ced913de3a9247ec7c4ecbfacbb4818d3a4858a106d7eb536b04def08248c6d1"
+      },
+      "registryEvidenceSha256": "cacbbb546e4787d09224f0dbde4170ff69b479215fbf9f69d4661a4d35b72f0e",
+      "provenanceVerified": true,
+      "sbomVerified": true,
+      "imageRef": "ghcr.io/willitmod/axebch2-app:0.2.0.10-mux.4ba03dd80d32@sha256:f619d66f381c6f6e57f2484e01d1c18781b77a3f9fd0629b48411449d0df5dc7",
+      "buildRun": "https://github.com/WillItMod/AxeBCH2_Build/actions/runs/36755331330",
+      "nativeRuntimeTests": true,
+      "architectureExecution": {
+        "amd64": "native",
+        "arm64": "native"
+      },
+      "sourceRevision": "4ba03dd80d328a67f069029c46c44662035a355d",
+      "repository": "AxeBCH2_Build",
+      "version": "0.2.0.10-dev",
+      "runtimeTestsPassed": true
+    },
+    "willitmod-dev-btc": {
+      "platforms": [
+        "linux/amd64",
+        "linux/arm64"
+      ],
+      "platformDigests": {
+        "amd64": "sha256:994460c0f909c4345b19ad6f208cb7e0742644449e5f8c275cc1649cb32b4cf8",
+        "arm64": "sha256:a1f4c1d2de0f8d41006d52d351258f60bedc78a6d5fab37c69bb053b93776758"
+      },
+      "registryEvidenceSha256": "5e9a238e57fc8509197ad54ae5f573783d44f8badd40614c4a791afd0a068817",
+      "provenanceVerified": true,
+      "sbomVerified": true,
+      "imageRef": "ghcr.io/willitmod/axebtc-app-umbrel-dev:0.7.82.16-mux.7a08b8888f24@sha256:b8692dd53feaf59a9f2f9b1acd047e580408c1b7d736e64fe9d8c8f5ef11952c",
+      "buildRun": "https://github.com/WillItMod/AxeBTC_Build/actions/runs/36755516635",
+      "nativeRuntimeTests": true,
+      "architectureExecution": {
+        "amd64": "native",
+        "arm64": "native"
+      },
+      "sourceRevision": "7a08b8888f24586dedcfc402baf7420770a32b6c",
+      "repository": "AxeBTC_Build",
+      "version": "0.7.82.16-dev",
+      "runtimeTestsPassed": true
+    },
+    "willitmod-dev-fracattack": {
+      "platforms": [
+        "linux/amd64",
+        "linux/arm64"
+      ],
+      "platformDigests": {
+        "amd64": "sha256:359d925e5474304090ff40b1524f977ec9880715fdbe41315b3870f0f9d85da3",
+        "arm64": "sha256:9dc399369b357468826020bbf720df4f08af3d5db183165fbdd6614de47a23f2"
+      },
+      "registryEvidenceSha256": "5b932b85aa8c05ec78f993958050d28563deb05ecc72b69b96776e2261fa9862",
+      "provenanceVerified": true,
+      "sbomVerified": true,
+      "imageRef": "ghcr.io/willitmod/fracattack-app-umbrel-dev:0.1.10-mux.a6f088f89071@sha256:f6bdd5fbef37e6ad07284377fe9c736dd910b6913a441d6e20779b8daf1c4ec3",
+      "buildRun": "https://github.com/WillItMod/FracAttack_Build/actions/runs/36755521504",
+      "nativeRuntimeTests": true,
+      "architectureExecution": {
+        "amd64": "native",
+        "arm64": "native"
+      },
+      "sourceRevision": "a6f088f890710669f83356a26b30a16976551979",
+      "repository": "FracAttack_Build",
+      "version": "0.1.10",
+      "runtimeTestsPassed": true
+    },
+    "willitmod-dev-bc2": {
+      "platforms": [
+        "linux/amd64",
+        "linux/arm64"
+      ],
+      "platformDigests": {
+        "amd64": "sha256:ca79fa20dafc819eab41df7b6011edef2af55c9e1e813e939bfee5c5b155a322",
+        "arm64": "sha256:fbd7f29741f6ad0ca71c694c813d491524342179a603ba09788609e4a8bd5202"
+      },
+      "registryEvidenceSha256": "68f626cee3eadf26f73c2a2a3a3b8d5e6a34abf2467ae239d2b30ed63f32ee5e",
+      "provenanceVerified": true,
+      "sbomVerified": true,
+      "imageRef": "ghcr.io/willitmod/axebc2-app-umbrel-dev:0.1.21-mux.9f4584a01e9a@sha256:75b29114862cd669ba864bc4e8af17e4c5f5dbbf79dcbc7dd73f0a4b64c3ea0c",
+      "buildMethod": "direct Forge builder 10.10.10.185 / forge-multiarch",
+      "nativeRuntimeTests": false,
+      "architectureExecution": {
+        "amd64": "native",
+        "arm64": "QEMU emulated"
+      },
+      "forgeReceiptSha256": "46bd6c67f245ef6088e0f38b74c05a57c9c09214cc8765835f3ad100c11038eb",
+      "runtimeTestEvidence": {
+        "amd64": {
+          "testsRun": 139,
+          "skips": [
+            [
+              "test_receiver_and_real_headline_selector (test_direct_hashrate.DirectHashrateTests.test_receiver_and_real_headline_selector)",
+              "Node UI integration runs in source CI; runtime image is Python-only"
+            ]
+          ],
+          "bakedFileHashesChecked": 15,
+          "version": "0.1.21"
+        },
+        "arm64": {
+          "testsRun": 139,
+          "skips": [
+            [
+              "test_receiver_and_real_headline_selector (test_direct_hashrate.DirectHashrateTests.test_receiver_and_real_headline_selector)",
+              "Node UI integration runs in source CI; runtime image is Python-only"
+            ]
+          ],
+          "bakedFileHashesChecked": 15,
+          "version": "0.1.21"
+        }
+      },
+      "actualStoreUserSmoke": {
+        "user": "1000:1000",
+        "amd64": true,
+        "arm64": true,
+        "restrictiveSourceUmask": "0077"
+      },
+      "sourceRevision": "9f4584a01e9a5182e4cbd0d033103f5f9d5d0a0d",
+      "repository": "AxeBC2_Build",
+      "version": "0.1.21-dev",
+      "runtimeTestsPassed": true
+    },
+    "willitmod-dev-xec": {
+      "platforms": [
+        "linux/amd64",
+        "linux/arm64"
+      ],
+      "platformDigests": {
+        "amd64": "sha256:bf802f038827b9e58310bf8a098c1dfbdca59e1240684f18b5bed76b038d8677",
+        "arm64": "sha256:9059be939996763caa9e148d0f329c5394903c2c69e4064e1b83e8466cdb0fad"
+      },
+      "registryEvidenceSha256": "9b746939a94b4dae2cc27d2ebace1db8b930ba137f962864473ea69a19a7cca5",
+      "provenanceVerified": true,
+      "sbomVerified": true,
+      "imageRef": "ghcr.io/willitmod/axexec-app-umbrel-dev:0.1.23-mux.4732da6753a0@sha256:7e2cc67bd4c5bf16c96cb634eee484b46c6cfb6e052be497c66f41546c5270f4",
+      "buildRun": "https://github.com/WillItMod/AxeXEC_Build/actions/runs/36755461276",
+      "nativeRuntimeTests": true,
+      "architectureExecution": {
+        "amd64": "native",
+        "arm64": "native"
+      },
+      "sourceRevision": "4732da6753a0b62fce968e74df632fc91b750cc4",
+      "repository": "AxeXEC_Build",
+      "version": "0.1.23-dev",
+      "runtimeTestsPassed": true
+    },
+    "willitmod-dev-ppc": {
+      "platforms": [
+        "linux/amd64",
+        "linux/arm64"
+      ],
+      "platformDigests": {
+        "amd64": "sha256:abde78c77e57243e9b71a695ea0a5d9a4baa304f8e858797267fad81b1b14960",
+        "arm64": "sha256:b5644709f2455525f7facb82ac910ecf55de6d7ace5732c6d743341588070b1a"
+      },
+      "registryEvidenceSha256": "e76da836aa3fed278af0fb2a52e6605441eda95e27b9485241f58db79ef8db56",
+      "provenanceVerified": true,
+      "sbomVerified": true,
+      "imageRef": "ghcr.io/willitmod/axeppc-app-umbrel-dev:0.2.37-mux.d59c9d2e2501@sha256:2b48e067bb72a243f5f12b8ff4fc1ba9bb2a8e84949d569fc71c92b00f853a0f",
+      "buildRun": "https://github.com/WillItMod/AxePPC_Build/actions/runs/36755462935",
+      "nativeRuntimeTests": true,
+      "architectureExecution": {
+        "amd64": "native",
+        "arm64": "native"
+      },
+      "sourceRevision": "d59c9d2e25016abc5127bd633a5945f15eaa7b75",
+      "repository": "AxePPC_Build",
+      "version": "0.2.37-dev",
+      "runtimeTestsPassed": true
+    }
+  },
+  "runtimeContracts": {
+    "willitmod-dev-bch": {
+      "docker-compose.yml": {
+        "baselineComposeSha256": "792fca3fc56a79c71143b43812c4fe739408e45e1f0f8cf7f226c774998cdd38",
+        "afterComposeSha256": "5e6948606ec3ceaf43e52f856068c7d0dcee71958ae51e70a051682d6a6cd2f7",
+        "changes": [
+          {
+            "path": [
+              "services",
+              "app",
+              "image"
+            ],
+            "before": "ghcr.io/willitmod/axebch-app-umbrel-dev:0.9.23-mux.f8878466e295@sha256:3cf3b2a2c1cefb9f3609166e35ae71964ceb18f5a64e8575fe28763f2985a820",
+            "after": "ghcr.io/willitmod/axebch-app-umbrel-dev:0.9.24-mux.d94ba396836f@sha256:98ba43746f57265c9d88a536ee4ca32ff79314a839b0363ff907d4e878a464db"
+          }
+        ]
+      }
+    },
+    "willitmod-dev-axebch2": {
+      "docker-compose.yml": {
+        "baselineComposeSha256": "a259e2f8e88ba75563061426b1bc18bf2b077981111933b7b97677e4a98c3e7d",
+        "afterComposeSha256": "cd497a0a71df3c1b99f7c8b3dc8507ccca1f943c1cd40137b28eb187d8a33438",
+        "changes": [
+          {
+            "path": [
+              "services",
+              "app",
+              "image"
+            ],
+            "before": "ghcr.io/willitmod/axebch2-app:0.2.0.9-mux.079490bb16ba@sha256:259086327c0f874d4c144557f63bef5baf764c51f641635fb6e2a044ef7b7b8d",
+            "after": "ghcr.io/willitmod/axebch2-app:0.2.0.10-mux.4ba03dd80d32@sha256:f619d66f381c6f6e57f2484e01d1c18781b77a3f9fd0629b48411449d0df5dc7"
+          },
+          {
+            "path": [
+              "services",
+              "app",
+              "environment",
+              "APP_VERSION"
+            ],
+            "before": "0.2.0.9-dev",
+            "after": "0.2.0.10-dev"
+          }
+        ]
+      }
+    },
+    "willitmod-dev-btc": {
+      "docker-compose.yml": {
+        "baselineComposeSha256": "2d2b60a9a1c10fb9b0bcd5877059c0de889c6b37fb0014ca561576ac6911970e",
+        "afterComposeSha256": "8f676738e13a0e4ec171b639105c633b4f1437e07e425e83b5a9de8f7b80fc50",
+        "changes": [
+          {
+            "path": [
+              "services",
+              "app",
+              "image"
+            ],
+            "before": "ghcr.io/willitmod/axebtc-app-umbrel-dev:0.7.82.15-mux.17594fb1c86c@sha256:0fd6dccb1c14f64893ef57ad26182f041e419c2902a77b501cb107a5ff302462",
+            "after": "ghcr.io/willitmod/axebtc-app-umbrel-dev:0.7.82.16-mux.7a08b8888f24@sha256:b8692dd53feaf59a9f2f9b1acd047e580408c1b7d736e64fe9d8c8f5ef11952c"
+          }
+        ]
+      }
+    },
+    "willitmod-dev-fracattack": {
+      "docker-compose.yml": {
+        "baselineComposeSha256": "f3e6c0ca2f980f26333e48252e698fdc699fb73a1b263ce3441f11cfca08afe8",
+        "afterComposeSha256": "36ad3140895f03d347588df1bba36b13ba652238f8c20fcc098082cc5b2c1473",
+        "changes": [
+          {
+            "path": [
+              "services",
+              "app",
+              "image"
+            ],
+            "before": "ghcr.io/willitmod/fracattack-app-umbrel-dev:0.1.9-mux.ee4a4e37009e@sha256:9431319f70c7caeb0f51c84064c3dcea13b72c62af18cd3ef823f58cee887df0",
+            "after": "ghcr.io/willitmod/fracattack-app-umbrel-dev:0.1.10-mux.a6f088f89071@sha256:f6bdd5fbef37e6ad07284377fe9c736dd910b6913a441d6e20779b8daf1c4ec3"
+          },
+          {
+            "path": [
+              "services",
+              "app",
+              "environment",
+              "APP_VERSION"
+            ],
+            "before": "0.1.9",
+            "after": "0.1.10"
+          }
+        ]
+      }
+    },
+    "willitmod-dev-bc2": {
+      "docker-compose.yml": {
+        "baselineComposeSha256": "d281840c11d858085161a57227f7535a847b577b6483024c50c609760ee68ce6",
+        "afterComposeSha256": "8314c1667649428021f49f4e966adf3546016e17b2057eaf9ea9537500bf1ab5",
+        "changes": [
+          {
+            "path": [
+              "services",
+              "app",
+              "image"
+            ],
+            "before": "ghcr.io/willitmod/axebc2-app-umbrel-dev:0.1.19-mux.963ebb696115@sha256:e54d250c30893316acf46fa5535ecc4017b1c0bac182c02316b719dedc99ebf5",
+            "after": "ghcr.io/willitmod/axebc2-app-umbrel-dev:0.1.21-mux.9f4584a01e9a@sha256:75b29114862cd669ba864bc4e8af17e4c5f5dbbf79dcbc7dd73f0a4b64c3ea0c"
+          }
+        ]
+      },
+      "docker-compose.yml.template": {
+        "baselineComposeSha256": "036fc4d18f914a00200fabe85f70139b8fa9619fc84a3cfa8d3ae19ff637e625",
+        "afterComposeSha256": "238b3cbb135548421399232fc12e61c1a61d779d47d10207c4c0e30f290191e0",
+        "changes": [
+          {
+            "path": [
+              "services",
+              "app",
+              "image"
+            ],
+            "before": "ghcr.io/willitmod/axebc2-app-umbrel-dev:0.1.19-mux.963ebb696115@sha256:e54d250c30893316acf46fa5535ecc4017b1c0bac182c02316b719dedc99ebf5",
+            "after": "ghcr.io/willitmod/axebc2-app-umbrel-dev:0.1.21-mux.9f4584a01e9a@sha256:75b29114862cd669ba864bc4e8af17e4c5f5dbbf79dcbc7dd73f0a4b64c3ea0c"
+          }
+        ]
+      }
+    },
+    "willitmod-dev-xec": {
+      "docker-compose.yml": {
+        "baselineComposeSha256": "8ca8d1a3896761446b416ebbbbf4e84249f31d69a3f6c49d3f7d236312cefa6f",
+        "afterComposeSha256": "a25ae39d3a2845fb68751c5b21c4ee23642f6af4a9589e93b65de255a3a021b5",
+        "changes": [
+          {
+            "path": [
+              "services",
+              "app",
+              "image"
+            ],
+            "before": "ghcr.io/willitmod/axexec-app-umbrel-dev:0.1.22-mux.85af53734c42@sha256:f556a7700ac2ba0bf62b15cd714ec69f4dde183007a77a1f2d22bef33d220f17",
+            "after": "ghcr.io/willitmod/axexec-app-umbrel-dev:0.1.23-mux.4732da6753a0@sha256:7e2cc67bd4c5bf16c96cb634eee484b46c6cfb6e052be497c66f41546c5270f4"
+          }
+        ]
+      }
+    },
+    "willitmod-dev-ppc": {
+      "docker-compose.yml": {
+        "baselineComposeSha256": "dba095b7ea8faa35dd3e780c16cf9022ed8c0c7b1f8ac1a53ecc8d7f0cae8594",
+        "afterComposeSha256": "aa972f0c38e18eaf2f4ca1b89ad3479600a66d27bd37e22a91f9f1765e1b58fa",
+        "changes": [
+          {
+            "path": [
+              "services",
+              "app",
+              "image"
+            ],
+            "before": "ghcr.io/willitmod/axeppc-app-umbrel-dev:0.2.36-mux.8c4afc3f9a3a@sha256:fd301d0292b7422375a5f063d5ceb9938d7e23c6a0904edae2303f5b5532979e",
+            "after": "ghcr.io/willitmod/axeppc-app-umbrel-dev:0.2.37-mux.d59c9d2e2501@sha256:2b48e067bb72a243f5f12b8ff4fc1ba9bb2a8e84949d569fc71c92b00f853a0f"
+          }
+        ]
+      }
+    }
+  }
+}

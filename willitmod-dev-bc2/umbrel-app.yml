@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-bc2
 category: bitcoin
 name: AxeBC2
-version: "0.1.19-dev"
+version: "0.1.21-dev"
 tagline: BC2 node + solo pool
 description: >-
   BETA RELEASE (DEV CHANNEL)
@@ -43,6 +43,14 @@ path: ""
 defaultUsername: ""
 defaultPassword: ""
 releaseNotes: >-
+  Best-share records now use verified payout/worker identities and supported
+  worker aliases. Fixes record/cache resets. Incomplete pool-log entries
+  are retained until complete. Existing unqualified records remain
+  pool-wide only; verified personal records start with fresh shares
+  after this update. The card explains partial history until the next
+  block or global record reset. Direct/MUX hashrate support, node and
+  pool images, mining configuration and payouts are unchanged.
+
   Direct and mixed miners now keep their accepted-share hashrate visible
   when MUX is empty, offline, or routing other miners elsewhere. MUX-only
   headlines require matched worker identities; pool estimates and routed
