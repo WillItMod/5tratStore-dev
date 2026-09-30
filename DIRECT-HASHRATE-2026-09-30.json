@@ -169,19 +169,19 @@
       "runtimeTestsPassed": true
     },
     "willitmod-dev-bc2": {
-      "imageRef": "ghcr.io/willitmod/axebc2-app-umbrel-dev:0.1.19-mux.d24282076299@sha256:585a305f5004415d17dc70eca1fc9c8f36e0d49a06e7a6719a81c9406bb08539",
+      "imageRef": "ghcr.io/willitmod/axebc2-app-umbrel-dev:0.1.19-mux.963ebb696115@sha256:e54d250c30893316acf46fa5535ecc4017b1c0bac182c02316b719dedc99ebf5",
       "platforms": [
         "linux/amd64",
         "linux/arm64"
       ],
-      "registryEvidenceSha256": "e9ea3507db72eb1ed73db979931dd84d235cc1ec8553a64ebadee89a9b052359",
+      "registryEvidenceSha256": "9399c539b649957c073732562760e758d7e1825ff0ef111816077b4682335eda",
       "platformDigests": {
-        "amd64": "sha256:a010b648065a133201d7ce1bcdacca084da4990488f0306010fb1490d43a1d65",
-        "arm64": "sha256:f2d01639e86a817a98f5e3faf4af65b3a00901dcef625a68b7d191553469aacc"
+        "amd64": "sha256:82a486284d75ac2267ea3e97225038deebed16aac6a8e210dc7d86e3438d4d64",
+        "arm64": "sha256:ae590e415c65cf2ab83da33ebb056abde11ff30fedad32103cf96e6b7deee6e9"
       },
       "provenanceVerified": true,
       "sbomVerified": true,
-      "sourceRevision": "d24282076299562195ce3a27a7483d19ca85055a",
+      "sourceRevision": "963ebb69611537b9c717406536b8631f98da79ce",
       "version": "0.1.19-dev",
       "repository": "AxeBC2_Build",
       "nativeRuntimeTests": false,
@@ -191,7 +191,13 @@
         "amd64": "native",
         "arm64": "QEMU emulated"
       },
-      "runtimeEvidence": "/Users/johnmurray/VSC/output/direct-miner-hashrate-20260930/axebc2-d24282076299/evidence/release.json"
+      "runtimeEvidence": "/Users/johnmurray/VSC/output/direct-miner-hashrate-20260930/axebc2-963ebb696115/evidence/release.json",
+      "actualStoreUserSmoke": {
+        "user": "1000:1000",
+        "amd64": true,
+        "arm64": true,
+        "restrictiveSourceUmask": "0077"
+      }
     }
   },
   "runtimeContracts": {
@@ -233,7 +239,7 @@
             "image"
           ],
           "before": "ghcr.io/willitmod/axebc2-app-umbrel-dev:0.1.18-mux.7f9013ca6750@sha256:c9ccd9e9d309397eeeeb1d31199076943fa9772710dd28c17cdf6a40c30ccda8",
-          "after": "ghcr.io/willitmod/axebc2-app-umbrel-dev:0.1.19-mux.d24282076299@sha256:585a305f5004415d17dc70eca1fc9c8f36e0d49a06e7a6719a81c9406bb08539"
+          "after": "ghcr.io/willitmod/axebc2-app-umbrel-dev:0.1.19-mux.963ebb696115@sha256:e54d250c30893316acf46fa5535ecc4017b1c0bac182c02316b719dedc99ebf5"
         }
       ]
     },

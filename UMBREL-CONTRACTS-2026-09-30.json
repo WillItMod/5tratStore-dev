@@ -15,7 +15,7 @@
     },
     "willitmod-dev-bc2": {
       "package_version": "0.1.19-dev",
-      "compose_contract_sha256": "c23b63d1e7e5ecb3c1306544bf5c0e805082ab48b39e683f953a97a5454fbf5b"
+      "compose_contract_sha256": "d281840c11d858085161a57227f7535a847b577b6483024c50c609760ee68ce6"
     },
     "willitmod-dev-bch": {
       "package_version": "0.9.23-dev",
