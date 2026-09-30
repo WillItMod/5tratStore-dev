@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "scope": "Static packaging regression contracts; this is not new live Umbrel acceptance evidence. Candidate node acceptance is recorded separately.",
+  "reviewed_store_base": "268ae4b42d85b299f61b9db559b8970b75592e58",
+  "historical_evidence": "UMBREL-COMPATIBILITY-2026-09-24.json",
+  "historical_evidence_sha256": "def19c680b39769c58a31a832ef8092438180ef5d6a141fc3c3afa27901e06b8",
+  "apps": {
+    "willitmod-dev-5tratsmack": {
+      "package_version": "0.11.17",
+      "compose_contract_sha256": "04d198768dc6d91d7d448a5b83c6791a74657530f209112398d62806a2145416"
+    },
+    "willitmod-dev-axebch2": {
+      "package_version": "0.2.0.9-dev",
+      "compose_contract_sha256": "01fb375215d2acf4b02002c9814e6c81c5352363f8962da88d82025983525183"
+    },
+    "willitmod-dev-bc2": {
+      "package_version": "0.1.19-dev",
+      "compose_contract_sha256": "aaba840c9349ee937c80bc6303ae03435e69b3a3e59305ac5d9a8bd1c8c09669"
+    },
+    "willitmod-dev-bch": {
+      "package_version": "0.9.23-dev",
+      "compose_contract_sha256": "7bbd7a55eb9994ecf80bfa40b5ade5056dc30f44ae3e009829190c5f4db732bb"
+    },
+    "willitmod-dev-btc": {
+      "package_version": "0.7.82.15-dev",
+      "compose_contract_sha256": "fe7d683f13fd9768419aaae3ba24ed4c4c9ad1de529bca726601b9061da117e7"
+    },
+    "willitmod-dev-dgb": {
+      "package_version": "0.9.186-dev",
+      "compose_contract_sha256": "f77f1c577a6e732c9b135917a09d6ac2fea3549308ff7aa0a7b875f86da3dbf9"
+    },
+    "willitmod-dev-fracattack": {
+      "package_version": "0.1.9",
+      "compose_contract_sha256": "2fe126be71633e3df1e462017d218d721ec778018735e1afd5b48bd1a326f3a2"
+    },
+    "willitmod-dev-powpow": {
+      "package_version": "0.2.37-dev",
+      "compose_contract_sha256": "9c03eec6b550d45d2381480d2f7ef7bc8f4373eec10f3797c9c83ba5166059c5"
+    },
+    "willitmod-dev-ppc": {
+      "package_version": "0.2.36-dev",
+      "compose_contract_sha256": "325b14a2d04a8fc87a139a3a1b2ebe1d9580ca03f5003fcc3b8fa587dbe7a70c"
+    },
+    "willitmod-dev-xec": {
+      "package_version": "0.1.22-dev",
+      "compose_contract_sha256": "e67d863a24546ef70da90eb84ec57342220c0079793eaa3284572a8c7107fa20"
+    }
+  },
+  "python_app_stop_policy": {
+    "baseline_store_commit": "cf72507651d46b7f432d75d0e5626e792c40a723",
+    "scope": "Eight Python app services retain SIGINT and original grace periods. Candidate image/version updates are normalized to the exact original image baseline for full-model comparison; all other fields retain that baseline. Initial legacy PID1 migration requires the reviewed OS normal updater; no live shutdown acceptance is claimed.",
+    "service": "app",
+    "stop_signal": "SIGINT",
+    "baseline_compose_contract_sha256": {
+      "willitmod-dev-btc": "ea8e368653eb59b711d75705742994e81808768c9d3b383e0dc3020f7c4bcff5",
+      "willitmod-dev-bch": "46278caac226511ed41d9e60ce8edf9fb137206eb83d5c53c8fa699e3b6203f7",
+      "willitmod-dev-axebch2": "8f914f7aafd2342fefb12c3ae9d1efa461109bbf3bdd6074497093dbdb2565fe",
+      "willitmod-dev-dgb": "a8fc6086b24b4c9ee51b118fe60bce3c312194ebb01d900439d7d18cde3104ac",
+      "willitmod-dev-xec": "bbbb64a3a4a13c178c4aa36afd0bbaf0036cd68289b7a82a079a654f8adf04b8",
+      "willitmod-dev-ppc": "5c192ef1d232631e3ca7f494024c715995509f404c811a48cd226323170bdfa1",
+      "willitmod-dev-powpow": "eb188cd8e15ba20a565198113b6c536949d0845d77d6dbf649a723d161e616de",
+      "willitmod-dev-fracattack": "b9e979729384607c678b70d9c5788a8a320fa51202f8a17125c6e3e3f5640e69"
+    },
+    "baseline_image_versions": {
+      "willitmod-dev-btc": {
+        "app_image": "ghcr.io/willitmod/axebtc-app-umbrel-dev:0.7.82.13-mux.acb758599434@sha256:34c342dd742ceb6e7db07535ab006e5b7688f871558c4fdbc03313d6a306280f"
+      },
+      "willitmod-dev-bch": {
+        "app_image": "ghcr.io/willitmod/axebch-app-umbrel-dev:0.9.21-mux.5d551863e059@sha256:c26b6a691c5b14557436a0db1c168c70ec868190f79727f0bce4fe89fd3e1ff6"
+      },
+      "willitmod-dev-axebch2": {
+        "app_image": "ghcr.io/willitmod/axebch2-app:0.2.0.7-mux.8d8882c243ab@sha256:13539c61643abb8039d0fbb538b58ec18643c6c41b519503cf78de71e4701fde",
+        "app_version": "0.2.0.7-dev"
+      },
+      "willitmod-dev-dgb": {
+        "app_image": "ghcr.io/willitmod/axedgb-app:0.9.184-mux.cadecd86e872@sha256:7096803fb3c11c2a05251c0b5b591f02cd097e91dae41bcf7e1f44b7f563d430"
+      },
+      "willitmod-dev-xec": {
+        "app_image": "ghcr.io/willitmod/axexec-app-umbrel-dev:0.1.20-mux.ab5b1884ccdd@sha256:d02b560c814e870e0871ff0b38fac57f29b9b2cf241a178713947201af62715b"
+      },
+      "willitmod-dev-ppc": {
+        "app_image": "ghcr.io/willitmod/axeppc-app-umbrel-dev:0.2.34-mux.ca95e432c83c@sha256:967713adf6277b1e54289edcb203ad28e9c6ee87b18a39b8966c21fdd5953679"
+      },
+      "willitmod-dev-powpow": {
+        "app_image": "ghcr.io/willitmod/powpow-app:0.2.35-mux.34f15532986c@sha256:0502e188cdd00ed3253b133c80757c295d4604ab8f44fa14c5429d9fb38333eb",
+        "app_version": "0.2.35-dev",
+        "pool_image": "ghcr.io/willitmod/powpow-pool:0.2.35-mux.34f15532986c@sha256:6602e1bdb932fc76617113896959a83372fa52ef85870280208feb96d789b08c"
+      },
+      "willitmod-dev-fracattack": {
+        "app_image": "ghcr.io/willitmod/fracattack-app-umbrel-dev:0.1.7-mux.a180312e1091@sha256:d4e82ffc370dda03fb8a605b6c1de7785979b97ab82fc44590eb9abc4cecd38b",
+        "app_version": "0.1.7"
+      }
+    }
+  },
+  "supersedes": "UMBREL-CONTRACTS-2026-09-28.json"
+}

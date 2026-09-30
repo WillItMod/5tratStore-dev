@@ -11,7 +11,7 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 NAME = 'willitmod-dev-5tratsmack'
-RECORD = json.loads((ROOT / 'SMACK-RELEASE-CANDIDATE-2026-09-29.json').read_text())
+RECORD = json.loads((ROOT / 'SMACK-RELEASE-CANDIDATE-2026-09-30.json').read_text())
 
 
 def validate_model(current):
@@ -45,9 +45,9 @@ class SmackCandidateTests(unittest.TestCase):
         self.assertEqual(model['services']['app']['image'], RECORD['appImageRef'])
         self.assertEqual(model['services']['swap']['image'], RECORD['kdfImageRef'])
         self.assertEqual(model['services']['app']['environment']['APP_REVISION'], RECORD['sourceRevision'])
-        self.assertEqual(RECORD['version'], '0.11.16')
+        self.assertEqual(RECORD['version'], '0.11.17')
         self.assertEqual(RECORD['platforms'], ['linux/amd64', 'linux/arm64'])
-        self.assertEqual(RECORD['registryEvidenceSha256'], '5788b03a8a70cf7208e2369d121182c10f098c09235e736ab58b8f13fac1b79f')
+        self.assertEqual(RECORD['registryEvidenceSha256'], 'c4ccacaf550305ba84a5dba0cee2318f6585b02da91726375e11d93281d8f505')
 
     def test_all_other_runtime_fields_are_exact_channel_baseline(self):
         current = yaml.safe_load((ROOT / NAME / 'docker-compose.yml').read_text())
@@ -75,7 +75,7 @@ class SmackCandidateTests(unittest.TestCase):
                 (root / name).write_bytes((ROOT / name).read_bytes())
             original = (ROOT / NAME / 'docker-compose.yml').read_text()
             for before, after in [
-                ('      APP_VERSION: 0.11.16', '      APP_VERSION: 0.11.15'),
+                ('      APP_VERSION: 0.11.17', '      APP_VERSION: 0.11.15'),
                 (RECORD['sourceRevision'], '0' * 40),
                 (RECORD['kdfImageRef'], RECORD['kdfImageRef'].replace('@sha256:', '@sha256:0')),
                 ('    stop_signal: SIGINT', '    stop_signal: SIGTERM')]:

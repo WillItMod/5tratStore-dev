@@ -2,8 +2,13 @@ manifestVersion: 1
 id: willitmod-dev-powpow
 category: altcoin
 name: "PowPow"
-version: "0.2.36-dev"
+version: "0.2.37-dev"
 releaseNotes: >-
+  Direct and mixed miners now keep their accepted-share hashrate visible
+  when MUX is empty, offline, or routing other miners elsewhere. MUX-only
+  headlines require matched worker identities; pool estimates and routed
+  telemetry remain separately labelled. Accepted shares and history are unchanged.
+
   Current miner hash rate from 5tratMux appears separately from accepted-share
   estimates, with stale or unavailable telemetry handled explicitly. Block
   history checks the full block hash against the correct chain and refreshes
