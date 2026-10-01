@@ -6,6 +6,7 @@ from pathlib import Path
 import unittest
 
 import yaml
+from test_smack_release_candidate import validate_model as previous_smack_model
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -38,6 +39,10 @@ class DirectHashrateReleaseTests(unittest.TestCase):
         for app_id, contract in release['runtimeContracts'].items():
             with self.subTest(app=app_id):
                 model = yaml.safe_load((ROOT / app_id / 'docker-compose.yml').read_text())
+                if app_id == 'willitmod-dev-5tratsmack':
+                    # Validate the complete new release delta before walking
+                    # back through the immutable September release contract.
+                    model = previous_smack_model(model)
                 restored = copy.deepcopy(model)
                 allowed = {('services', 'app', 'image'),
                            ('services', 'app', 'environment', 'APP_VERSION')}
