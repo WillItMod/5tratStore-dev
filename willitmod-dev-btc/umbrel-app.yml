@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-btc
 category: bitcoin
 name: AxeBTC
-version: "0.7.82.16-dev"
+version: "0.7.82.17-dev"
 tagline: BTC node + solo pool
 description: >-
   BETA RELEASE (DEV CHANNEL)
@@ -47,6 +47,8 @@ path: ""
 defaultUsername: ""
 defaultPassword: ""
 releaseNotes: >-
+  Adds safe pool log retention with 5tratumOS 0.8.23. Complete block and pool accounting records are saved before old raw log bytes are retired. The active log uses a 20 MiB rolling target with two recent archives. Unread or unresolved evidence is retained, and the app reports backlog or blockers. Existing mining, wallet and chain data are preserved.
+
   Best-share records now retain complete pool-log entries that arrive across
   separate reads. BCH and BCH2 also start their best-share tracker reliably.
   Existing records and direct/MUX hashrate support are retained; node and

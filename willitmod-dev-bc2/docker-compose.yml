@@ -95,7 +95,7 @@ services:
         fi
 
   app:
-    image: ghcr.io/willitmod/axebc2-app-umbrel-dev:0.1.21-mux.9f4584a01e9a@sha256:75b29114862cd669ba864bc4e8af17e4c5f5dbbf79dcbc7dd73f0a4b64c3ea0c
+    image: ghcr.io/willitmod/axebc2-app-umbrel-dev:0.1.22@sha256:bfb899d13f063b46d95e6aa70ea5edb8596b61a8e3d2967b0dad2499627cbdb0
     user: "1000:1000"
     restart: on-failure
     stop_grace_period: 30s
@@ -113,6 +113,7 @@ services:
     volumes:
       - "axebc2_data:/data:nocopy"
     environment:
+      APP_REVISION: 3e1c2d3cfa57dcf007a8c2d20add094dbe8eb16a
       MUX_IDENTITY_URL: "http://172.17.0.1:21222/api/integrations/workers"
       NETWORK_IP: "${NETWORK_IP}"
       STATIC_DIR: "/app/static"

@@ -1,0 +1,455 @@
+{
+  "apps": {
+    "willitmod-dev-5tratsmack": {
+      "appId": "5tratsmack",
+      "baseVersion": "0.11.19",
+      "imageRef": "ghcr.io/willitmod/5tratsmack-app:0.11.19@sha256:6858a23c2bcee1431a8c725dd3d8e3e9641aca6c7415e7381b38142bc649c9e2",
+      "images": {
+        "amd64": {
+          "configDigest": "sha256:6fbe27b1d62b841d0f13840830a2fbc7bcaf013d9cb0b12d626fa8a862fcdc59",
+          "manifestDigest": "sha256:da54ec70541de15ae411d335b59c817dfe822f15e0e856c1270ccac6f5dde339"
+        },
+        "arm64": {
+          "configDigest": "sha256:108aade82e8476911fd6c8d5fbb9e857bbea8060565b3a2e37298e20f2b7ff45",
+          "manifestDigest": "sha256:7c4c8b99c19e0ab25f85d6acb5642adba93cc4870a268323d392c3f2ee330da7"
+        }
+      },
+      "manifests": [
+        "umbrel-app.yml",
+        "5tratstore-app.yml"
+      ],
+      "sourceRevision": "770de88ba7e41f0633671ae95967a178d8246c2a",
+      "version": "0.11.19"
+    },
+    "willitmod-dev-axebch2": {
+      "appId": "axebch2",
+      "baseVersion": "0.2.0.11",
+      "imageRef": "ghcr.io/willitmod/axebch2-app:0.2.0.11@sha256:ec45d7191eb6eb378d71b84f30aaf9133911e53045c0272afba2161a2b45f2ad",
+      "images": {
+        "amd64": {
+          "configDigest": "sha256:166b8fb1a8c049fc447d40c9eef950d741c0d1080b689fb2d13c19586d013ef4",
+          "manifestDigest": "sha256:3a728588f80391783dfd694217944cf6888eef486ee60a495ca026732d9b7d9d"
+        },
+        "arm64": {
+          "configDigest": "sha256:8676069e7602d78c285efd160f12d775d56443cfbf96b783358627edbac7dddd",
+          "manifestDigest": "sha256:f4197533ce1429f1bc1e8d3e97d7d2965eca71c7bc2df969e5b6b63eecd5c5ea"
+        }
+      },
+      "manifests": [
+        "umbrel-app.yml",
+        "global-app.yml"
+      ],
+      "sourceRevision": "9019e3cdb32bd78b1cd85d8a8c5394302e1a9beb",
+      "version": "0.2.0.11-dev"
+    },
+    "willitmod-dev-bc2": {
+      "appId": "axebc2",
+      "baseVersion": "0.1.22",
+      "imageRef": "ghcr.io/willitmod/axebc2-app-umbrel-dev:0.1.22@sha256:bfb899d13f063b46d95e6aa70ea5edb8596b61a8e3d2967b0dad2499627cbdb0",
+      "images": {
+        "amd64": {
+          "configDigest": "sha256:34154cc3e72be074933b43853b46b53cb2366c17bebd28eea3772334f2bc611c",
+          "manifestDigest": "sha256:b1339e3e5c0a26ae912a92c53b3943503221528baf29760c4e359dd074ce83b5"
+        },
+        "arm64": {
+          "configDigest": "sha256:14d6db8c8742518e358d92cb0f76f0202ae373c64b81765ae92b19dfcf1f3638",
+          "manifestDigest": "sha256:d911c819c0d666671c7ffa7b194dc43dc7c81b4da7df6e2b27676d06a13beeb3"
+        }
+      },
+      "manifests": [
+        "umbrel-app.yml"
+      ],
+      "sourceRevision": "3e1c2d3cfa57dcf007a8c2d20add094dbe8eb16a",
+      "version": "0.1.22-dev"
+    },
+    "willitmod-dev-bch": {
+      "appId": "axebch",
+      "baseVersion": "0.9.26",
+      "imageRef": "ghcr.io/willitmod/axebch-app-umbrel-dev:0.9.26@sha256:394297a80226096657253df460c69f5945c270a56c01aa39f57c98dde3ef3824",
+      "images": {
+        "amd64": {
+          "configDigest": "sha256:2a15642d7e6288157295e9b681eb3506b9bf89b42d1d1f73da1a03b52e4539fc",
+          "manifestDigest": "sha256:142b3ef012a51d48d9905f6e3433c54e7383feb4e431bc3e7fe5676c808faede"
+        },
+        "arm64": {
+          "configDigest": "sha256:cfa55a03b894105ffc0e5f6878611b89c0f46e23bfe77c82ac051c1ddc4cac51",
+          "manifestDigest": "sha256:e0f064ae47a7ad15f8bc3d67e54d741ef38e7da834291d2650caf34c5583462b"
+        }
+      },
+      "manifests": [
+        "umbrel-app.yml",
+        "global-app.yml"
+      ],
+      "sourceRevision": "2d80da8af2549b4a67da7692c6d3806348fa8f11",
+      "version": "0.9.26-dev"
+    },
+    "willitmod-dev-btc": {
+      "appId": "axebtc",
+      "baseVersion": "0.7.82.17",
+      "imageRef": "ghcr.io/willitmod/axebtc-app-umbrel-dev:0.7.82.17@sha256:21334b67d803987a3ae4e79242ba2d74da0415d22e786783c73723a460d9c174",
+      "images": {
+        "amd64": {
+          "configDigest": "sha256:a5bae25f2c10bfb3f947bfacd8af8f2e07240cdb1274261dfd86cd170d5b0e89",
+          "manifestDigest": "sha256:be42b0b0b3447975e04c61ec2c3fe1c4d248748e90d60dc144804f542cddd22a"
+        },
+        "arm64": {
+          "configDigest": "sha256:ea13c3b03de25b9486b2cd6e0f31ceb659da7ddfdeed7a66e9a965eadd179c57",
+          "manifestDigest": "sha256:321c9653f37efc8261f277e69e2625dec896ccd18ea79f4b05f50a50fd10df71"
+        }
+      },
+      "manifests": [
+        "umbrel-app.yml"
+      ],
+      "sourceRevision": "27734d195a01149dba1f5ce9837dd00e2afc049a",
+      "version": "0.7.82.17-dev"
+    },
+    "willitmod-dev-fracattack": {
+      "appId": "axefracattack",
+      "baseVersion": "0.1.11",
+      "imageRef": "ghcr.io/willitmod/fracattack-app-umbrel-dev:0.1.11@sha256:fffd78f12ca68f6f5a2565e6c4ca3f2657c7b916b0cbdffa60261c64d85b6830",
+      "images": {
+        "amd64": {
+          "configDigest": "sha256:4743d50976cbabebbe62f463bd531d3441ec0c7db2cdf20d2931db9730cf7cf5",
+          "manifestDigest": "sha256:e9d722a35e682f91f5df61c9a30693bb4cd3308177e823364f64a79206019824"
+        },
+        "arm64": {
+          "configDigest": "sha256:93f53733ffd27ec9d09796700ead8c74d2d49ee0d3882f130399cf33cf922fde",
+          "manifestDigest": "sha256:fd0d09e4dccaf0b8c0b6f42ade2483ec9480a2f189180d75e6483b84737aa340"
+        }
+      },
+      "manifests": [
+        "umbrel-app.yml",
+        "global-app.yml"
+      ],
+      "sourceRevision": "7c08e3e4d4585386eb764e91ed2ba73b40c351f3",
+      "version": "0.1.11"
+    },
+    "willitmod-dev-xec": {
+      "appId": "axexec",
+      "baseVersion": "0.1.24",
+      "imageRef": "ghcr.io/willitmod/axexec-app-umbrel-dev:0.1.24@sha256:ae783ceb68f7768314b0eb8864ce1b22b188eb29e706d32e6f87575df9b58b7f",
+      "images": {
+        "amd64": {
+          "configDigest": "sha256:1cf5b429e9f3215f6de9551d922db19a3ed16c1f1dfe17cb10265f74cb9c762b",
+          "manifestDigest": "sha256:81d76c471abbcd4fc3790cbe4cc529f12edb905e12be51cb4b9aa0048172a601"
+        },
+        "arm64": {
+          "configDigest": "sha256:a3053ee132d39e5e73c5e6fdfdc743e016529756f3949ee5b8e9f015270ff010",
+          "manifestDigest": "sha256:1cb2ff90fcb83fcc9fc3b19a29a5c5f1bcef491e5996a983ab80038497f98d1f"
+        }
+      },
+      "manifests": [
+        "umbrel-app.yml"
+      ],
+      "sourceRevision": "ebf6e6f8970f490fe72750f4e0a705edc54de677",
+      "version": "0.1.24-dev"
+    }
+  },
+  "baselineCommit": "26bba898734b7bfac05b136a60055cfdda8deb45",
+  "channel": "DEV",
+  "publishedReceiptSHA256": "baf49f3ef629802386ec3460df5631930bdcb87336215fb6f7c9ea11c825b98c",
+  "runtimeContracts": {
+    "willitmod-dev-5tratsmack": {
+      "docker-compose.yml": {
+        "afterFileSHA256": "d73a20faeaedeeae295bb14eeeb12e3d8b84a3bc3849cb246fdbdd0d4b53e1a2",
+        "afterModelSHA256": "59f74e5fbfae0ef867586138973498828112e348308e6535ef89c5baad4ac41d",
+        "beforeFileSHA256": "e6fbcada5c77864e1da411534d15f6792898f2494a0bf6c89132cc147603d3a9",
+        "beforeModelSHA256": "428b064b2890fce3e05e7e387fdb1361f368b563d84d27cd3a0adfbb2ba93d0b",
+        "changes": [
+          {
+            "after": "ghcr.io/willitmod/5tratsmack-app:0.11.19@sha256:6858a23c2bcee1431a8c725dd3d8e3e9641aca6c7415e7381b38142bc649c9e2",
+            "before": "ghcr.io/willitmod/5tratsmack-app:0.11.18@sha256:afc841745d33b2cf72b0ed2c03fec2ab6ba48db0474e7983e16a39edd0be22d6",
+            "existed": true,
+            "path": [
+              "services",
+              "app",
+              "image"
+            ]
+          },
+          {
+            "after": "770de88ba7e41f0633671ae95967a178d8246c2a",
+            "before": "fa08d11623b51159f78c47ac2e2a93cab639cb71",
+            "existed": true,
+            "path": [
+              "services",
+              "app",
+              "environment",
+              "APP_REVISION"
+            ]
+          },
+          {
+            "after": "0.11.19",
+            "before": "0.11.18",
+            "existed": true,
+            "path": [
+              "services",
+              "app",
+              "environment",
+              "APP_VERSION"
+            ]
+          },
+          {
+            "after": "ghcr.io/willitmod/5tratsmack-app:0.11.19@sha256:6858a23c2bcee1431a8c725dd3d8e3e9641aca6c7415e7381b38142bc649c9e2",
+            "before": "ghcr.io/willitmod/5tratsmack-app:0.11.18@sha256:afc841745d33b2cf72b0ed2c03fec2ab6ba48db0474e7983e16a39edd0be22d6",
+            "existed": true,
+            "path": [
+              "services",
+              "app",
+              "environment",
+              "APP_IMAGE"
+            ]
+          },
+          {
+            "after": "0.11.19",
+            "before": "0.11.18",
+            "existed": true,
+            "path": [
+              "services",
+              "app",
+              "environment",
+              "FIVETRAT_RELEASE_TAG"
+            ]
+          }
+        ]
+      }
+    },
+    "willitmod-dev-axebch2": {
+      "docker-compose.yml": {
+        "afterFileSHA256": "9db6177af3da69289ec1ccf446fbb3b3e1d5a359373b9762c3388cfc8fa4bc7f",
+        "afterModelSHA256": "648999be23804b9dc285f305af3a8f72fb0d00d5eb5129dc902577d09eac0d93",
+        "beforeFileSHA256": "f1acd45f80cdb8de7e7e3a511f800fdd183f42ee99c68ae4eb22c6e74a02e14d",
+        "beforeModelSHA256": "cd497a0a71df3c1b99f7c8b3dc8507ccca1f943c1cd40137b28eb187d8a33438",
+        "changes": [
+          {
+            "after": "ghcr.io/willitmod/axebch2-app:0.2.0.11@sha256:ec45d7191eb6eb378d71b84f30aaf9133911e53045c0272afba2161a2b45f2ad",
+            "before": "ghcr.io/willitmod/axebch2-app:0.2.0.10-mux.4ba03dd80d32@sha256:f619d66f381c6f6e57f2484e01d1c18781b77a3f9fd0629b48411449d0df5dc7",
+            "existed": true,
+            "path": [
+              "services",
+              "app",
+              "image"
+            ]
+          },
+          {
+            "after": "9019e3cdb32bd78b1cd85d8a8c5394302e1a9beb",
+            "before": null,
+            "existed": false,
+            "path": [
+              "services",
+              "app",
+              "environment",
+              "APP_REVISION"
+            ]
+          },
+          {
+            "after": "0.2.0.11-dev",
+            "before": "0.2.0.10-dev",
+            "existed": true,
+            "path": [
+              "services",
+              "app",
+              "environment",
+              "APP_VERSION"
+            ]
+          }
+        ]
+      }
+    },
+    "willitmod-dev-bc2": {
+      "docker-compose.yml": {
+        "afterFileSHA256": "0b5c434dc5d4f345ba517073ce2625002f2a1c842412c74b319f3d30672dad65",
+        "afterModelSHA256": "6bfc22540f6d75ed418787db54e96a1b9ab0fddb64810b12a9a511f77b3458ce",
+        "beforeFileSHA256": "7e47e6167a7502319d962a02c4efe743f2ef4abde9b163a51c70f3704777ed90",
+        "beforeModelSHA256": "8314c1667649428021f49f4e966adf3546016e17b2057eaf9ea9537500bf1ab5",
+        "changes": [
+          {
+            "after": "ghcr.io/willitmod/axebc2-app-umbrel-dev:0.1.22@sha256:bfb899d13f063b46d95e6aa70ea5edb8596b61a8e3d2967b0dad2499627cbdb0",
+            "before": "ghcr.io/willitmod/axebc2-app-umbrel-dev:0.1.21-mux.9f4584a01e9a@sha256:75b29114862cd669ba864bc4e8af17e4c5f5dbbf79dcbc7dd73f0a4b64c3ea0c",
+            "existed": true,
+            "path": [
+              "services",
+              "app",
+              "image"
+            ]
+          },
+          {
+            "after": "3e1c2d3cfa57dcf007a8c2d20add094dbe8eb16a",
+            "before": null,
+            "existed": false,
+            "path": [
+              "services",
+              "app",
+              "environment",
+              "APP_REVISION"
+            ]
+          }
+        ]
+      },
+      "docker-compose.yml.template": {
+        "afterFileSHA256": "9d27db6d52a03fdf614aaf2701ee8ecb079eafc357e2730b4374ea15d351b26b",
+        "afterModelSHA256": "9dd05b7a36d5a8c10ab825af2bd84453edd14b11189c2f32e89b160bffec735a",
+        "beforeFileSHA256": "843e266958d7165c3c6b0330ddfa52e92ce42e96e89b3a65574dff8914bb0944",
+        "beforeModelSHA256": "238b3cbb135548421399232fc12e61c1a61d779d47d10207c4c0e30f290191e0",
+        "changes": [
+          {
+            "after": "ghcr.io/willitmod/axebc2-app-umbrel-dev:0.1.22@sha256:bfb899d13f063b46d95e6aa70ea5edb8596b61a8e3d2967b0dad2499627cbdb0",
+            "before": "ghcr.io/willitmod/axebc2-app-umbrel-dev:0.1.21-mux.9f4584a01e9a@sha256:75b29114862cd669ba864bc4e8af17e4c5f5dbbf79dcbc7dd73f0a4b64c3ea0c",
+            "existed": true,
+            "path": [
+              "services",
+              "app",
+              "image"
+            ]
+          },
+          {
+            "after": "3e1c2d3cfa57dcf007a8c2d20add094dbe8eb16a",
+            "before": null,
+            "existed": false,
+            "path": [
+              "services",
+              "app",
+              "environment",
+              "APP_REVISION"
+            ]
+          }
+        ]
+      }
+    },
+    "willitmod-dev-bch": {
+      "docker-compose.yml": {
+        "afterFileSHA256": "1a4845708ec4ccd61da507f370ffeaf7a5754e19452ea26704974b583be881f5",
+        "afterModelSHA256": "2afada0d27fb42fad0133e3cbfe61b5e59ee72a4e6562e1e0bebc24e1d266edc",
+        "beforeFileSHA256": "bf9001d5d908474b24155377a1cc75162098549b57038d5889c2f0e43ade3104",
+        "beforeModelSHA256": "5e6948606ec3ceaf43e52f856068c7d0dcee71958ae51e70a051682d6a6cd2f7",
+        "changes": [
+          {
+            "after": "ghcr.io/willitmod/axebch-app-umbrel-dev:0.9.26@sha256:394297a80226096657253df460c69f5945c270a56c01aa39f57c98dde3ef3824",
+            "before": "ghcr.io/willitmod/axebch-app-umbrel-dev:0.9.24-mux.d94ba396836f@sha256:98ba43746f57265c9d88a536ee4ca32ff79314a839b0363ff907d4e878a464db",
+            "existed": true,
+            "path": [
+              "services",
+              "app",
+              "image"
+            ]
+          },
+          {
+            "after": "2d80da8af2549b4a67da7692c6d3806348fa8f11",
+            "before": null,
+            "existed": false,
+            "path": [
+              "services",
+              "app",
+              "environment",
+              "APP_REVISION"
+            ]
+          }
+        ]
+      }
+    },
+    "willitmod-dev-btc": {
+      "docker-compose.yml": {
+        "afterFileSHA256": "ed3bdc8253109cbcc45b8f9f76a387c95b5470c6c3766a9126e05ba9869c491d",
+        "afterModelSHA256": "a386f8e64aea8a05c4fa8e7430ba31e02488e0927df9365c60a897b57dc0fe81",
+        "beforeFileSHA256": "8ae2839a74818302c723dadc20e7dca5484549b1851b66d851f60b125ad4a034",
+        "beforeModelSHA256": "8f676738e13a0e4ec171b639105c633b4f1437e07e425e83b5a9de8f7b80fc50",
+        "changes": [
+          {
+            "after": "ghcr.io/willitmod/axebtc-app-umbrel-dev:0.7.82.17@sha256:21334b67d803987a3ae4e79242ba2d74da0415d22e786783c73723a460d9c174",
+            "before": "ghcr.io/willitmod/axebtc-app-umbrel-dev:0.7.82.16-mux.7a08b8888f24@sha256:b8692dd53feaf59a9f2f9b1acd047e580408c1b7d736e64fe9d8c8f5ef11952c",
+            "existed": true,
+            "path": [
+              "services",
+              "app",
+              "image"
+            ]
+          },
+          {
+            "after": "27734d195a01149dba1f5ce9837dd00e2afc049a",
+            "before": null,
+            "existed": false,
+            "path": [
+              "services",
+              "app",
+              "environment",
+              "APP_REVISION"
+            ]
+          }
+        ]
+      }
+    },
+    "willitmod-dev-fracattack": {
+      "docker-compose.yml": {
+        "afterFileSHA256": "c8ac0f61552a998125c8eb5722553b5b9a45df3571758e4e914bd02f7fcda63e",
+        "afterModelSHA256": "ec4ad8dcf7f9faa6ad0cf9d3ea153b3658ab54cdc7adc8925234cb76470ece57",
+        "beforeFileSHA256": "613e0c5430307756d293443909a92dc18658a2a9b5acfe1a3582f5687d3fc64d",
+        "beforeModelSHA256": "36ad3140895f03d347588df1bba36b13ba652238f8c20fcc098082cc5b2c1473",
+        "changes": [
+          {
+            "after": "ghcr.io/willitmod/fracattack-app-umbrel-dev:0.1.11@sha256:fffd78f12ca68f6f5a2565e6c4ca3f2657c7b916b0cbdffa60261c64d85b6830",
+            "before": "ghcr.io/willitmod/fracattack-app-umbrel-dev:0.1.10-mux.a6f088f89071@sha256:f6bdd5fbef37e6ad07284377fe9c736dd910b6913a441d6e20779b8daf1c4ec3",
+            "existed": true,
+            "path": [
+              "services",
+              "app",
+              "image"
+            ]
+          },
+          {
+            "after": "7c08e3e4d4585386eb764e91ed2ba73b40c351f3",
+            "before": null,
+            "existed": false,
+            "path": [
+              "services",
+              "app",
+              "environment",
+              "APP_REVISION"
+            ]
+          },
+          {
+            "after": "0.1.11",
+            "before": "0.1.10",
+            "existed": true,
+            "path": [
+              "services",
+              "app",
+              "environment",
+              "APP_VERSION"
+            ]
+          }
+        ]
+      }
+    },
+    "willitmod-dev-xec": {
+      "docker-compose.yml": {
+        "afterFileSHA256": "cc44b717d832ca1389dc76087bb67c47e8a1a0a14a60a7f0ab473319d89ceabc",
+        "afterModelSHA256": "3bed876b9940a904af9cf438524b50770c02a3cc5a5634af7f5fabdbb5d6833f",
+        "beforeFileSHA256": "9a5186bff252792bf288d4e974f7cb235b71f9e26cbf459c91cb82fe103ee84c",
+        "beforeModelSHA256": "a25ae39d3a2845fb68751c5b21c4ee23642f6af4a9589e93b65de255a3a021b5",
+        "changes": [
+          {
+            "after": "ghcr.io/willitmod/axexec-app-umbrel-dev:0.1.24@sha256:ae783ceb68f7768314b0eb8864ce1b22b188eb29e706d32e6f87575df9b58b7f",
+            "before": "ghcr.io/willitmod/axexec-app-umbrel-dev:0.1.23-mux.4732da6753a0@sha256:7e2cc67bd4c5bf16c96cb634eee484b46c6cfb6e052be497c66f41546c5270f4",
+            "existed": true,
+            "path": [
+              "services",
+              "app",
+              "image"
+            ]
+          },
+          {
+            "after": "ebf6e6f8970f490fe72750f4e0a705edc54de677",
+            "before": null,
+            "existed": false,
+            "path": [
+              "services",
+              "app",
+              "environment",
+              "APP_REVISION"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "schemaVersion": 1
+}

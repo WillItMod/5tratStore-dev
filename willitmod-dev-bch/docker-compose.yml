@@ -219,7 +219,7 @@ services:
   app:
     stop_signal: SIGINT
     hostname: axebch-app
-    image: ghcr.io/willitmod/axebch-app-umbrel-dev:0.9.24-mux.d94ba396836f@sha256:98ba43746f57265c9d88a536ee4ca32ff79314a839b0363ff907d4e878a464db
+    image: ghcr.io/willitmod/axebch-app-umbrel-dev:0.9.26@sha256:394297a80226096657253df460c69f5945c270a56c01aa39f57c98dde3ef3824
     user: "1000:1000"
     restart: on-failure
     stop_grace_period: 30s
@@ -236,6 +236,7 @@ services:
     volumes:
       - ${APP_DATA_DIR}/data:/data
     environment:
+      APP_REVISION: 2d80da8af2549b4a67da7692c6d3806348fa8f11
       MUX_IDENTITY_URL: "http://172.17.0.1:21222/api/integrations/workers"
       NETWORK_IP: "${NETWORK_IP}"
       BCH_RPC_HOST: "bchn"

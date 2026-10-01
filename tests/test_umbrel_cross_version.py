@@ -7,6 +7,8 @@ import subprocess
 import unittest
 
 import yaml
+from test_pool_retention_release import APPS, previous_model
+from test_smack_release_candidate import RECORD as SMACK_RELEASE, validate_model as previous_smack_model
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT = json.loads((ROOT / 'UMBREL-CONTRACTS-2026-09-30.json').read_text())
@@ -32,6 +34,7 @@ class UmbrelCrossVersionTests(unittest.TestCase):
         for app_id in expected:
             with self.subTest(app=app_id):
                 compose = yaml.safe_load((ROOT / app_id / 'docker-compose.yml').read_text())
+                compose = previous_model(app_id,compose)
                 if app_id == 'willitmod-dev-powpow':
                     # A versioned OS extension is inert to legacy Compose.
                     # Check its entire shape before removing it from this
@@ -77,9 +80,18 @@ class UmbrelCrossVersionTests(unittest.TestCase):
                 if app_id == 'willitmod-dev-powpow':
                     for node in ['litecoin', 'dogecoin']:
                         self.assertEqual(compose['services'][node]['user'], '1000:1000')
+                version = yaml.safe_load((ROOT / app_id / 'umbrel-app.yml').read_text())['version']
+                if app_id == 'willitmod-dev-5tratsmack':
+                    self.assertEqual(version, APPS[app_id]['version'])
+                    compose = previous_smack_model(compose)
+                    version = compose['services']['app']['environment']['APP_VERSION']
+                elif app_id in APPS:
+                    self.assertEqual(version,APPS[app_id]['version'])
+                    compose=previous_model(app_id,compose)
+                    version=release['package_version']
                 digest = hashlib.sha256(json.dumps(compose, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
                 self.assertEqual(digest, release['compose_contract_sha256'])
-                self.assertEqual(yaml.safe_load((ROOT / app_id / 'umbrel-app.yml').read_text())['version'], release['package_version'])
+                self.assertEqual(version, release['package_version'])
 
     def test_umbrel_174_parser_accepts_install_and_repeated_start(self):
         fixture = ROOT / 'tests/fixtures/umbrel_1_7_4_patch_compose.cjs'

@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-5tratsmack
 category: altcoin
 name: 5tratSmack
-version: "0.11.17"
+version: "0.11.19"
 tagline: Home-miner 5TRAT node, wallet, solo pool and atomic trade lab
 description: >-
   Install and synchronize a complete 5TRAT node, create or restore an encrypted
@@ -37,33 +37,19 @@ path: ""
 defaultUsername: ""
 defaultPassword: ""
 releaseNotes: >-
-  Direct and mixed miners now keep their accepted-share hashrate visible
-  when MUX is empty, offline, or routing other miners elsewhere. MUX-only
-  headlines require matched worker identities; pool estimates and routed
-  telemetry remain separately labelled. Worker cards also retain pool estimates
-  when a previously MUX-connected miner reconnects directly. Accepted shares
-  and history are unchanged.
+  Adds safe pool log retention with 5tratumOS 0.8.23. Complete block and pool accounting records are saved before old raw log bytes are retired. The active log uses a 20 MiB rolling target with two recent archives. Unread or unresolved evidence is retained, and the app reports backlog or blockers. Existing mining, wallet and chain data are preserved.
 
-  Block alerts now require a fresh active-chain proof for the exact 5TRAT block
-  and the pool payout in coinbase output zero. Orphaned or unavailable proof
-  withdraws an alert while retained Blocks history stays visible. Settings
-  includes Block alerts in this browser; its queue and acknowledgements are
-  local to that browser. OS and MUX notification acknowledgements remain separate.
+  Block status stays current during normal MUX polling. Large retained block histories now have a bounded recent feed for MUX, while the complete Blocks history remains visible in the app. Fresh proof of the exact active-chain block and the pool payout in coinbase output zero is still required. Unavailable or orphaned proof withdraws a verified claim without deleting history.
 
-  Trade starts with clear Buy and Sell choices and guides one step at a time
-  through Amount, Prepare funds, Review and Follow progress. Send and Receive
-  have focused forms with expandable Gleec wallet instructions. Trade Pulse
-  retains Global Trades, My Trades and Compare, while activity and wallet tools
-  have their own pages.
+  Direct and mixed miners keep accepted-share hashrate visible when MUX is empty, offline, or routing other miners elsewhere. MUX headlines require matched worker identities; pool estimates and routed telemetry remain separately labelled. Worker cards retain pool estimates when a previously MUX-connected miner reconnects directly.
 
-  Offer minimums require an explicit choice. Confirming deposits do not prompt
-  duplicate funding, and trade progress stays accessible while a swap waits.
-  Native transfers validate the recipient and exact reviewed amount, protect
-  open-order funds and recover uncertain broadcasts without signing a second
-  payment. Wallet backup and final transaction approval remain required.
+  Settings includes Block alerts in this browser. Its queue and acknowledgements are local to that browser. OS and MUX notification acknowledgements remain separate.
 
-  The application and trading backend update together. Existing wallet, chain
-  and mining data paths remain unchanged. Package and app versions agree.
+  Trade guides Buy and Sell through Amount, Prepare funds, Review and Follow progress. Send and Receive use focused forms with expandable Gleec wallet instructions. Trade Pulse retains Global Trades, My Trades and Compare. Native transfers validate the recipient and reviewed amount, protect open-order funds, and recover uncertain broadcasts without signing a second payment. Wallet backup and final transaction approval remain required.
+
+  Existing wallet, chain and mining data paths remain unchanged.
+
+  The tested trading backend image is reused unchanged.
 widgets:
   - id: sync
     type: text-with-progress

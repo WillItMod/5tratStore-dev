@@ -1,6 +1,6 @@
 version: "3.7"
 
-# Release source revision: 99a34a0ef5f56db92d7dc798c5b648109611f0ab
+# Release source revision: 770de88ba7e41f0633671ae95967a178d8246c2a
 
 x-node-environment: &node-environment
   FIVETRAT_NETWORK: main
@@ -199,7 +199,7 @@ services:
   app:
     stop_signal: SIGINT
     hostname: 5tratsmack-app
-    image: ghcr.io/willitmod/5tratsmack-app:0.11.17-rc.99a34a0ef5f5@sha256:1c4cc7c034abaf324359cf3440f177a2b6fff712bd947c8d086c02412a1a03d7
+    image: ghcr.io/willitmod/5tratsmack-app:0.11.19@sha256:6858a23c2bcee1431a8c725dd3d8e3e9641aca6c7415e7381b38142bc649c9e2
     restart: unless-stopped
     depends_on:
       init_permissions:
@@ -208,7 +208,7 @@ services:
         condition: service_started
     environment:
       APP_ID: 5tratsmack
-      APP_VERSION: 0.11.17
+      APP_VERSION: "0.11.19"
       APP_CHANNEL: DEV
       APP_RELEASE_PHASE: RC1
       APP_PLATFORM: 5TRATUMOS
@@ -217,9 +217,9 @@ services:
       FIVETRAT_STORE_UPDATE_APP_ID: 5tratsmack
       FIVETRAT_STORE_UPDATE_CHANNEL: dev
       FIVETRAT_INSTALL_REVISION: dev-store
-      FIVETRAT_RELEASE_TAG: 0.11.17
-      APP_IMAGE: ghcr.io/willitmod/5tratsmack-app:0.11.17-rc.99a34a0ef5f5@sha256:1c4cc7c034abaf324359cf3440f177a2b6fff712bd947c8d086c02412a1a03d7
-      APP_REVISION: 99a34a0ef5f56db92d7dc798c5b648109611f0ab
+      FIVETRAT_RELEASE_TAG: "0.11.19"
+      APP_IMAGE: "ghcr.io/willitmod/5tratsmack-app:0.11.19@sha256:6858a23c2bcee1431a8c725dd3d8e3e9641aca6c7415e7381b38142bc649c9e2"
+      APP_REVISION: 770de88ba7e41f0633671ae95967a178d8246c2a
       BCH2_NODE_IMAGE: ghcr.io/willitmod/5tratsmack-core:0.11.2@sha256:7bf02513144c7a157965fb8e9ad5865f5e84fa679afa7cb61fc0a8e140a40070
       CKPOOL_IMAGE: ghcr.io/willitmod/5tratsmack-ckpool:0.11.3-rc.a992f40e96d4@sha256:95a1a5f343d579206a0f8bb3c961cafa7500b5d487211a0cfb7b989cf34b895e
       FIVETRAT_MUX_IDENTITY_URL: http://172.17.0.1:21222/api/integrations/workers
@@ -261,9 +261,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     healthcheck:
-      test:
-        - CMD-SHELL
-        - python -c "import sys, urllib.request; r=urllib.request.urlopen('http://127.0.0.1:3000/api/about', timeout=3); sys.exit(0 if r.status == 200 else 1)"
+      test: ["CMD", "curl", "--fail", "--silent", "--max-time", "3", "http://127.0.0.1:3000/api/about"]
       interval: 15s
       timeout: 5s
       retries: 20
