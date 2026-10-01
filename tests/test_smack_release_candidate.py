@@ -8,13 +8,14 @@ import sys
 import tempfile
 import unittest
 import yaml
+from test_pool_retention_release import APPS, previous_model
 
 ROOT = Path(__file__).resolve().parents[1]
 NAME = 'willitmod-dev-5tratsmack'
 RECORD = json.loads((ROOT / 'SMACK-RELEASE-2026-10-01.json').read_text())
 
 def validate_model(current):
-    restored = copy.deepcopy(current)
+    restored = previous_model(NAME,current)
     allowed = {('services', 'app', 'image'), ('services', 'app', 'healthcheck', 'test')}
     allowed.update(('services', 'app', 'environment', key) for key in
                    ('APP_IMAGE', 'APP_VERSION', 'APP_REVISION', 'FIVETRAT_RELEASE_TAG'))
@@ -66,16 +67,17 @@ class SmackReleaseTests(unittest.TestCase):
             (root / NAME).mkdir()
             for name in ['scripts/validate-5tratsmack-metadata.py', 'README.md',
                          'SMACK-RELEASE-2026-10-01.json', 'SMACK-PUBLISHED-IMAGES-2026-10-01.json',
+                         'POOL-RETENTION-2026-10-01.json',
                          NAME + '/umbrel-app.yml', NAME + '/5tratstore-app.yml']:
                 (root / name).write_bytes((ROOT / name).read_bytes())
             original = (ROOT / NAME / 'docker-compose.yml').read_text()
             for before, after in [
-                ('      APP_VERSION: 0.11.18', '      APP_VERSION: 0.11.17'),
-                (RECORD['sourceRevision'], '0' * 40),
+                ('      APP_VERSION: '+json.dumps(APPS[NAME]['version']), '      APP_VERSION: 0.11.18'),
+                (APPS[NAME]['sourceRevision'], '0' * 40),
                 (RECORD['kdfImageRef'], RECORD['kdfImageRef'].replace('@sha256:', '@sha256:0')),
                 ('    stop_signal: SIGINT', '    stop_signal: SIGTERM'),
                 ('"CMD", "curl"', '"CMD", "python3"'),
-                (RECORD['appImageRef'], RECORD['appImageRef'].replace('@sha256:', '@sha256:0'))]:
+                (APPS[NAME]['imageRef'], APPS[NAME]['imageRef'].replace('@sha256:', '@sha256:0'))]:
                 with self.subTest(before=before):
                     (root / NAME / 'docker-compose.yml').write_text(original.replace(before, after))
                     result = subprocess.run([sys.executable, str(root / 'scripts/validate-5tratsmack-metadata.py')],

@@ -9,6 +9,7 @@ import tempfile
 import unittest
 
 import yaml
+from test_pool_retention_release import previous_model
 
 ROOT = Path(__file__).resolve().parents[1]
 APP = ROOT / "willitmod-dev-bc2"
@@ -53,7 +54,7 @@ class UmbrelPackagingTests(unittest.TestCase):
 
     def test_native_container_contract_preserves_the_accepted_recipe(self):
         baseline = yaml.safe_load((ROOT / "tests/fixtures/axebc2_0_1_14_native.yml").read_text())
-        current = yaml.safe_load((APP / "docker-compose.yml").read_text())
+        current = previous_model("willitmod-dev-bc2",yaml.safe_load((APP / "docker-compose.yml").read_text()))
         self.assertEqual(effective_mounts(current), effective_mounts(baseline))
         self.assertEqual(len(effective_mounts(current)), 9)
         self.assertTrue(all("name" not in definition for definition in current["volumes"].values()))

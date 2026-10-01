@@ -6,6 +6,7 @@ from pathlib import Path
 import unittest
 
 import yaml
+from test_pool_retention_release import previous_model
 from test_smack_release_candidate import validate_model as previous_smack_model
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -43,6 +44,8 @@ class DirectHashrateReleaseTests(unittest.TestCase):
                     # Validate the complete new release delta before walking
                     # back through the immutable September release contract.
                     model = previous_smack_model(model)
+                else:
+                    model = previous_model(app_id,model)
                 restored = copy.deepcopy(model)
                 allowed = {('services', 'app', 'image'),
                            ('services', 'app', 'environment', 'APP_VERSION')}

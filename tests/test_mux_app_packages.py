@@ -11,6 +11,8 @@ import unittest
 
 import yaml
 
+from test_pool_retention_release import APPS
+
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -143,6 +145,7 @@ class MuxPackageTests(unittest.TestCase):
         self.assertEqual(set(release["apps"]), expected)
         for name, record in release["apps"].items():
             with self.subTest(app=name):
+                current = APPS.get(name,record)
                 app = ROOT / name
                 self.assertRegex(record["sourceRevision"], r"^[0-9a-f]{40}$")
                 self.assertEqual(record["platforms"], ["linux/amd64", "linux/arm64"])
@@ -154,7 +157,7 @@ class MuxPackageTests(unittest.TestCase):
                     if path.exists():
                         manifest = yaml.safe_load(path.read_text())
                         self.assertEqual(manifest["id"], name)
-                        self.assertEqual(manifest["version"], record["version"])
+                        self.assertEqual(manifest["version"], current["version"])
                         self.assertIn("Block alerts in this browser", manifest["releaseNotes"])
                         self.assertIn("browser-only Close", manifest["releaseNotes"])
                         self.assertIn("OS and MUX", manifest["releaseNotes"])
@@ -163,12 +166,12 @@ class MuxPackageTests(unittest.TestCase):
                     if not path.exists():
                         continue
                     service = yaml.safe_load(path.read_text())["services"]["app"]
-                    self.assertEqual(service["image"], record["imageRef"])
+                    self.assertEqual(service["image"], current["imageRef"])
                     environment = service["environment"]
                     self.assertEqual(environment["MUX_IDENTITY_URL"],
                                      "http://172.17.0.1:21222/api/integrations/workers")
                     if "APP_VERSION" in environment:
-                        self.assertEqual(environment["APP_VERSION"], record["version"])
+                        self.assertEqual(environment["APP_VERSION"], current["version"])
 
     def test_powpow_app_and_pool_bind_to_the_same_verified_source(self):
         release = json.loads((ROOT / "DIRECT-HASHRATE-2026-09-30.json").read_text())

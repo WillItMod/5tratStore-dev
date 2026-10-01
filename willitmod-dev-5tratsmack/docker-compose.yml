@@ -1,6 +1,6 @@
 version: "3.7"
 
-# Release source revision: fa08d11623b51159f78c47ac2e2a93cab639cb71
+# Release source revision: 770de88ba7e41f0633671ae95967a178d8246c2a
 
 x-node-environment: &node-environment
   FIVETRAT_NETWORK: main
@@ -199,7 +199,7 @@ services:
   app:
     stop_signal: SIGINT
     hostname: 5tratsmack-app
-    image: ghcr.io/willitmod/5tratsmack-app:0.11.18@sha256:afc841745d33b2cf72b0ed2c03fec2ab6ba48db0474e7983e16a39edd0be22d6
+    image: ghcr.io/willitmod/5tratsmack-app:0.11.19@sha256:6858a23c2bcee1431a8c725dd3d8e3e9641aca6c7415e7381b38142bc649c9e2
     restart: unless-stopped
     depends_on:
       init_permissions:
@@ -208,7 +208,7 @@ services:
         condition: service_started
     environment:
       APP_ID: 5tratsmack
-      APP_VERSION: 0.11.18
+      APP_VERSION: "0.11.19"
       APP_CHANNEL: DEV
       APP_RELEASE_PHASE: RC1
       APP_PLATFORM: 5TRATUMOS
@@ -217,9 +217,9 @@ services:
       FIVETRAT_STORE_UPDATE_APP_ID: 5tratsmack
       FIVETRAT_STORE_UPDATE_CHANNEL: dev
       FIVETRAT_INSTALL_REVISION: dev-store
-      FIVETRAT_RELEASE_TAG: 0.11.18
-      APP_IMAGE: ghcr.io/willitmod/5tratsmack-app:0.11.18@sha256:afc841745d33b2cf72b0ed2c03fec2ab6ba48db0474e7983e16a39edd0be22d6
-      APP_REVISION: fa08d11623b51159f78c47ac2e2a93cab639cb71
+      FIVETRAT_RELEASE_TAG: "0.11.19"
+      APP_IMAGE: "ghcr.io/willitmod/5tratsmack-app:0.11.19@sha256:6858a23c2bcee1431a8c725dd3d8e3e9641aca6c7415e7381b38142bc649c9e2"
+      APP_REVISION: 770de88ba7e41f0633671ae95967a178d8246c2a
       BCH2_NODE_IMAGE: ghcr.io/willitmod/5tratsmack-core:0.11.2@sha256:7bf02513144c7a157965fb8e9ad5865f5e84fa679afa7cb61fc0a8e140a40070
       CKPOOL_IMAGE: ghcr.io/willitmod/5tratsmack-ckpool:0.11.3-rc.a992f40e96d4@sha256:95a1a5f343d579206a0f8bb3c961cafa7500b5d487211a0cfb7b989cf34b895e
       FIVETRAT_MUX_IDENTITY_URL: http://172.17.0.1:21222/api/integrations/workers

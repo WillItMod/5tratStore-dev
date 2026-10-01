@@ -54,6 +54,8 @@ require('APP_CHANNEL: "BETA"' in finalized_compose, "DEV stage must be BETA")
 accepted_compose = (ROOT / "tests/fixtures/axebc2_0_1_14_native.yml").read_text()
 accepted_recipe = yaml.safe_load(accepted_compose)
 current_recipe = yaml.safe_load(finalized_compose)
+current_release=json.loads((ROOT/"POOL-RETENTION-2026-10-01.json").read_text())["apps"]["willitmod-dev-bc2"]
+require(current_recipe["services"]["app"]["environment"].pop("APP_REVISION")==current_release["sourceRevision"],"current app source metadata changed")
 baseline_compose = accepted_compose.replace(
     accepted_recipe["services"]["app"]["image"],
     "ghcr.io/willitmod/axebc2-app-umbrel-dev:0.1.11-candidate.ecf6e2c8cfd0@" + APP_DIGEST,
@@ -94,7 +96,7 @@ require(
 )
 
 # BETA release; the historical Core 31 baseline evidence below remains 0.1.11-dev.
-require('version: "0.1.21-dev"' in manifest, "manifest must be 0.1.21-dev")
+require('version: "0.1.22-dev"' in manifest, "manifest must be 0.1.22-dev")
 require(evidence.get("app_version") == "0.1.11-dev", "evidence must name the 0.1.11 DEV app version")
 require(
     evidence.get("app_image")

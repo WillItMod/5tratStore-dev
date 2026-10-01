@@ -30,6 +30,16 @@ assert EVIDENCE['validation']['liveProofAcrossTwoCacheExpiries'] is True
 assert EVIDENCE['validation']['retainedHistoryPreserved'] is True
 assert EVIDENCE['validation']['walletAndTradeMutationPerformed'] is False
 
+# Historical proof-refresh release receipts remain immutable above.
+CURRENT=json.loads((ROOT/'POOL-RETENTION-2026-10-01.json').read_text())['apps']['willitmod-dev-5tratsmack']
+VERSION='0.11.19'
+REVISION='770de88ba7e41f0633671ae95967a178d8246c2a'
+assert CURRENT['version']==CURRENT['baseVersion']==VERSION and CURRENT['sourceRevision']==REVISION
+APP_REF=CURRENT['imageRef']
+assert re.fullmatch(r'ghcr.io/willitmod/5tratsmack-app:0\.11\.19@sha256:[0-9a-f]{64}',APP_REF)
+
+def scalar(value):return json.loads(value) if value.startswith('"') else value
+
 def one(pattern, text):
     matches = re.findall(pattern, text, re.M)
     assert len(matches) == 1, (pattern, len(matches))
@@ -42,14 +52,15 @@ compose = (APP / 'docker-compose.yml').read_text()
 assert one(r'^id: (\S+)$', manifest) == 'willitmod-dev-5tratsmack'
 assert one(r'^version: "([^"\n]+)"$', manifest) == VERSION
 for key in ('APP_VERSION', 'FIVETRAT_RELEASE_TAG'):
-    assert one(r'^      ' + key + r': (\S+)$', compose) == VERSION
+    assert scalar(one(r'^      ' + key + r': (\S+)$', compose)) == VERSION
 assert one(r'^# Release source revision: (\S+)$', compose) == REVISION
 assert one(r'^      APP_REVISION: (\S+)$', compose) == REVISION
 assert one(r'^      APP_CHANNEL: (\S+)$', compose) == CHANNEL.upper()
 assert one(r'^      FIVETRAT_STORE_UPDATE_CHANNEL: (\S+)$', compose) == CHANNEL
 assert one(r'^      APP_RELEASE_PHASE: (\S+)$', compose) == ('RC1' if CHANNEL == 'dev' else 'STABLE')
 for component, expected, count in [('app', APP_REF, 2), ('kdf', KDF_REF, 1), ('ckpool', CKPOOL_REF, 2)]:
-    refs = re.findall(r'^\s+(?:image|APP_IMAGE|CKPOOL_IMAGE): (ghcr\.io/willitmod/5tratsmack-' + component + r':\S+)$', compose, re.M)
+    refs = [scalar(v) for v in re.findall(r'^\s+(?:image|APP_IMAGE|CKPOOL_IMAGE): (\S+)$',compose,re.M)]
+    refs = [v for v in refs if v.startswith('ghcr.io/willitmod/5tratsmack-'+component+':')]
     assert refs == [expected] * count, (component, 'unexpected image reference')
 for line in (
     '    image: alpine:3.22.1@sha256:4bcff63911fcb4448bd4fdacec207030997caf25e9bea4045fa6c8c44de311d1',

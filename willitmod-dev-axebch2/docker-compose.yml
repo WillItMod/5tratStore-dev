@@ -28,7 +28,7 @@ services:
   app:
     stop_signal: SIGINT
     hostname: axebch2-app
-    image: ghcr.io/willitmod/axebch2-app:0.2.0.10-mux.4ba03dd80d32@sha256:f619d66f381c6f6e57f2484e01d1c18781b77a3f9fd0629b48411449d0df5dc7
+    image: ghcr.io/willitmod/axebch2-app:0.2.0.11@sha256:ec45d7191eb6eb378d71b84f30aaf9133911e53045c0272afba2161a2b45f2ad
     user: "1000:1000"
     restart: unless-stopped
     depends_on:
@@ -47,9 +47,10 @@ services:
       - ${APP_DATA_DIR}/data:/data
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
+      APP_REVISION: 9019e3cdb32bd78b1cd85d8a8c5394302e1a9beb
       MUX_IDENTITY_URL: "http://172.17.0.1:21222/api/integrations/workers"
       APP_ID: "willitmod-dev-axebch2"
-      APP_VERSION: "0.2.0.10-dev"
+      APP_VERSION: "0.2.0.11-dev"
       APP_CHANNEL: "DEV"
       APP_RELEASE_PHASE: "ALPHA"
       APP_SELF_RESTART_ENABLED: "1"

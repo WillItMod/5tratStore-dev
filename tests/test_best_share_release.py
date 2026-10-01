@@ -7,6 +7,7 @@ import re
 import unittest
 
 import yaml
+from test_pool_retention_release import APPS, previous_model
 
 ROOT = Path(__file__).resolve().parents[1]
 APP_IDS = {"willitmod-dev-" + suffix for suffix in ("bch", "axebch2", "btc", "fracattack", "bc2", "xec", "ppc")}
@@ -53,7 +54,7 @@ class BestShareReleaseTests(unittest.TestCase):
                 manifest_path = ROOT / app_id / filename
                 if manifest_path.exists():
                     manifest = yaml.safe_load(manifest_path.read_text())
-                    self.assertEqual(manifest["version"], fresh["version"])
+                    self.assertEqual(manifest["version"], APPS.get(app_id,fresh)["version"])
                     self.assertIn("Best-share records", manifest["releaseNotes"])
                     self.assertIn("Direct and mixed miners", manifest["releaseNotes"])
         self.assertEqual(self.current, expected, "Other apps or historical receipt fields changed")
@@ -65,6 +66,7 @@ class BestShareReleaseTests(unittest.TestCase):
             for filename, contract in surfaces.items():
                 with self.subTest(app=app_id, file=filename):
                     current = yaml.safe_load((ROOT / app_id / filename).read_text())
+                    current = previous_model(app_id,current,filename)
                     restored = copy.deepcopy(current)
                     allowed = {("services", "app", "image"), ("services", "app", "environment", "APP_VERSION")}
                     self.assertEqual(digest(current), contract["afterComposeSha256"])

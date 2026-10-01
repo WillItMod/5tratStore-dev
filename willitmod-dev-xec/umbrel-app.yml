@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-xec
 category: bitcoin
 name: AxeXEC
-version: "0.1.23-dev"
+version: "0.1.24-dev"
 tagline: XEC node + solo pool
 description: >-
   ALPHA RELEASE (DEV CHANNEL)
@@ -67,6 +67,8 @@ path: ""
 defaultUsername: ""
 defaultPassword: ""
 releaseNotes: >-
+  Adds safe pool log retention with 5tratumOS 0.8.23. Complete block and pool accounting records are saved before old raw log bytes are retired. The active log uses a 20 MiB rolling target with two recent archives. Unread or unresolved evidence is retained, and the app reports backlog or blockers. Existing mining, wallet and chain data are preserved.
+
   Best-share records now retain complete pool-log entries that arrive across
   separate reads. BCH and BCH2 also start their best-share tracker reliably.
   Existing records and direct/MUX hashrate support are retained; node and
