@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-dgb
 category: altcoin
 name: AxeDGB
-version: "0.9.186-dev"
+version: "0.9.187-dev"
 tagline: DGB node + solo pool
 description: >-
   RC6 RELEASE (DEV CHANNEL)
@@ -12,7 +12,7 @@ description: >-
   actual Core RAM and swap measurements, conservative database-cache sizing, and
   a configurable memory guard that shuts Core down cleanly and holds it paused
   until resumed. Setup tools are bundled so installation no longer depends on
-  Alpine package mirrors at startup. Core remains at 9.26.5. Version 0.9.181 fixes status-cache compatibility with the new Core supervisor image, avoiding intermittent dashboard 503 errors during concurrent status requests.
+  Alpine package mirrors at startup. Core is updated to 9.26.6. Version 0.9.181 fixes status-cache compatibility with the new Core supervisor image, avoiding intermittent dashboard 503 errors during concurrent status requests.
 
   Verify payout addresses before mining and send helpful feedback if anything
   behaves oddly.
@@ -103,6 +103,23 @@ backupIgnore:
 submitter: WillItMod
 
 releaseNotes: >-
+  DigiByte Core is updated to 9.26.6 using verified official amd64 and arm64
+  binaries. The dashboard stays at 0.9.186. Miningcore, initialization tools,
+  memory controls, wallet data and pruning settings are unchanged.
+
+  All full nodes and miners must upgrade before mainnet block 24,490,000.
+  Required DigiDollar history begins at block 23,627,520, so a small prune
+  target is not a hard limit on total disk use. Allow Core to finish normal
+  shutdown and startup. This update does not request a reindex or delete data.
+  If required block or undo history is missing, inspect the startup error
+  before taking recovery action. After activation, an older Core is not a
+  safe recovery path. Upstream notes:
+  https://github.com/DigiByte-Core/digibyte/releases/tag/v9.26.6
+
+  Native 9.26.5-to-9.26.6 regtest upgrades preserved chains, descriptor wallets
+  and configuration, and both mining algorithms passed template checks. These
+  tests do not prove that every mainnet installation has the required history.
+
   Direct and mixed miners now keep their accepted-share hashrate visible
   when MUX is empty, offline, or routing other miners elsewhere. MUX-only
   headlines require matched worker identities; pool estimates and routed

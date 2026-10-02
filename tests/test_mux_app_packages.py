@@ -157,7 +157,9 @@ class MuxPackageTests(unittest.TestCase):
                     if path.exists():
                         manifest = yaml.safe_load(path.read_text())
                         self.assertEqual(manifest["id"], name)
-                        self.assertEqual(manifest["version"], current["version"])
+                        self.assertEqual(manifest["version"],
+                                         json.loads((ROOT / "DGB-CORE-2026-10-02.json").read_text())["version"]
+                                         if name == "willitmod-dev-dgb" else current["version"])
                         self.assertIn("Block alerts in this browser", manifest["releaseNotes"])
                         self.assertIn("browser-only Close", manifest["releaseNotes"])
                         self.assertIn("OS and MUX", manifest["releaseNotes"])
