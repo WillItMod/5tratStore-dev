@@ -5,7 +5,7 @@ services:
       APP_PORT: 3000
 
   app:
-    image: ghcr.io/willitmod/5tratumos-diagnostics:0.1.7@sha256:99621754c982e07132b4282f4839375c15642fac458ff7dd092d59e4cf2d63c8
+    image: ghcr.io/willitmod/5tratumos-diagnostics:0.1.8@sha256:2d1d1bd59a7706257ac13dd6c3733aac8ef3cd798fa18ce8f1b44fdc2245e48f
     restart: unless-stopped
     depends_on:
       - support-relay
@@ -15,7 +15,8 @@ services:
     tmpfs:
       - /tmp
     environment:
-      APP_VERSION: "0.1.7"
+      APP_VERSION: "0.1.8"
+      APP_REVISION: 1331bfc6d6968ec251e82412c25c2d0c1143d175
       SUPPORT_RELAY_SOCKET: /run/5tratdiag-support/relay.sock
       EXPORT_DIR: /data/exports
       TARGET_DATA_DIR: /target-app-data
@@ -32,6 +33,7 @@ services:
       - ${FIVETRAT_TARGET_APP_ROOT_PATH:-/opt/5tratumos/apps/5tratsmack}:/target-app-root:ro
       - ${FIVETRAT_TARGET_APP_DATA_ROOT_PATH:-/var/lib/5tratumos/apps}:/target-app-data-root:ro
       - ${FIVETRAT_TARGET_APPS_ROOT_PATH:-/opt/5tratumos/apps}:/target-apps:ro
+      - /var/lib/5tratumos/diagnostics/mux:/host/mux-evidence:ro
       - support-receipt:/mux-state:ro
       - support-socket:/run/5tratdiag-support:ro
       - /var/lib/5tratumos/support/install_id.txt:/host/support/install_id.txt:ro

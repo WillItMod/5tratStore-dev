@@ -1,0 +1,187 @@
+{
+  "schemaVersion": 1,
+  "channel": "DEV",
+  "baselineCommit": "8ab5aeae19b5148f27ed561b62d43aa2569afabf",
+  "apps": {
+    "willitmod-dev-5tratsmack": {
+      "version": "0.11.20",
+      "baseVersion": "0.11.20",
+      "sourceRevision": "25cb1e900fc22fa6123d0916e7610bd4e4d56f2f",
+      "imageRef": "ghcr.io/willitmod/5tratsmack-app:0.11.20@sha256:a5e66106dbc48d9c70e869ec8baed190913e26075de2b331da8316d3695bc5ae",
+      "images": {
+        "amd64": {
+          "configDigest": "sha256:706b9d439760cecbfb3826f5128dbc09756418e8eb3e0cbe30410562a4bb74b0",
+          "manifestDigest": "sha256:2bb987e2ad3469928fac90fa2aea20a8a58e8843af6086cc13eb1bd6aae26fab"
+        },
+        "arm64": {
+          "configDigest": "sha256:b3fa7416b40341951813e1df944bf10e62e48c884d8072cb85e6f0f6a7892980",
+          "manifestDigest": "sha256:158dfba8b769d434a48c7c138f45ad7a0a0f0927202c27f87349db34f997f9a4"
+        }
+      },
+      "manifests": [
+        "5tratstore-app.yml",
+        "umbrel-app.yml"
+      ]
+    },
+    "willitmod-dev-5tratumos-diagnostics": {
+      "version": "0.1.8",
+      "baseVersion": "0.1.8",
+      "sourceRevision": "1331bfc6d6968ec251e82412c25c2d0c1143d175",
+      "imageRef": "ghcr.io/willitmod/5tratumos-diagnostics:0.1.8@sha256:2d1d1bd59a7706257ac13dd6c3733aac8ef3cd798fa18ce8f1b44fdc2245e48f",
+      "images": {
+        "amd64": {
+          "configDigest": "sha256:c6b3ad83a45e6acccb3d7f5242c54662e2f5ec948217bc0486b192ef3523ead0",
+          "manifestDigest": "sha256:651f18e238db4d97aca3def59df89942aed3e89240884abb8cc3f264b7bbe7d8"
+        },
+        "arm64": {
+          "configDigest": "sha256:3b1e60933d12dd71060e7d63301314349f42de9659268fbc50d2dfe0a5937e23",
+          "manifestDigest": "sha256:78971e9269371ec04fe08449e7b21349877f8fa6fae8e4e7cf1919fdafa2d542"
+        }
+      },
+      "manifests": [
+        "global-app.yml"
+      ]
+    }
+  },
+  "runtimeContracts": {
+    "willitmod-dev-5tratsmack": {
+      "docker-compose.yml": {
+        "beforeModelSHA256": "59f74e5fbfae0ef867586138973498828112e348308e6535ef89c5baad4ac41d",
+        "afterModelSHA256": "7970c78f53291907c95151dcc024e47eda0709d91d3ff6bfc899bde97f00ea2c",
+        "changes": [
+          {
+            "path": [
+              "services",
+              "app",
+              "environment",
+              "APP_IMAGE"
+            ],
+            "existed": true,
+            "before": "ghcr.io/willitmod/5tratsmack-app:0.11.19@sha256:6858a23c2bcee1431a8c725dd3d8e3e9641aca6c7415e7381b38142bc649c9e2",
+            "after": "ghcr.io/willitmod/5tratsmack-app:0.11.20@sha256:a5e66106dbc48d9c70e869ec8baed190913e26075de2b331da8316d3695bc5ae"
+          },
+          {
+            "path": [
+              "services",
+              "app",
+              "environment",
+              "APP_REVISION"
+            ],
+            "existed": true,
+            "before": "770de88ba7e41f0633671ae95967a178d8246c2a",
+            "after": "25cb1e900fc22fa6123d0916e7610bd4e4d56f2f"
+          },
+          {
+            "path": [
+              "services",
+              "app",
+              "environment",
+              "APP_VERSION"
+            ],
+            "existed": true,
+            "before": "0.11.19",
+            "after": "0.11.20"
+          },
+          {
+            "path": [
+              "services",
+              "app",
+              "environment",
+              "FIVETRAT_RELEASE_TAG"
+            ],
+            "existed": true,
+            "before": "0.11.19",
+            "after": "0.11.20"
+          },
+          {
+            "path": [
+              "services",
+              "app",
+              "image"
+            ],
+            "existed": true,
+            "before": "ghcr.io/willitmod/5tratsmack-app:0.11.19@sha256:6858a23c2bcee1431a8c725dd3d8e3e9641aca6c7415e7381b38142bc649c9e2",
+            "after": "ghcr.io/willitmod/5tratsmack-app:0.11.20@sha256:a5e66106dbc48d9c70e869ec8baed190913e26075de2b331da8316d3695bc5ae"
+          }
+        ]
+      }
+    },
+    "willitmod-dev-5tratumos-diagnostics": {
+      "docker-compose.yml": {
+        "beforeModelSHA256": "849c279816c5a9342a19dc43902fc4575bfe528da83d01853cbc1d1f77af4099",
+        "afterModelSHA256": "35668a87f1f8edb19eb676ef2f7e0d033f0aab7ea3db89e663a71e915cc8eb2d",
+        "changes": [
+          {
+            "path": [
+              "services",
+              "app",
+              "environment",
+              "APP_REVISION"
+            ],
+            "existed": false,
+            "before": null,
+            "after": "1331bfc6d6968ec251e82412c25c2d0c1143d175"
+          },
+          {
+            "path": [
+              "services",
+              "app",
+              "environment",
+              "APP_VERSION"
+            ],
+            "existed": true,
+            "before": "0.1.7",
+            "after": "0.1.8"
+          },
+          {
+            "path": [
+              "services",
+              "app",
+              "image"
+            ],
+            "existed": true,
+            "before": "ghcr.io/willitmod/5tratumos-diagnostics:0.1.7@sha256:99621754c982e07132b4282f4839375c15642fac458ff7dd092d59e4cf2d63c8",
+            "after": "ghcr.io/willitmod/5tratumos-diagnostics:0.1.8@sha256:2d1d1bd59a7706257ac13dd6c3733aac8ef3cd798fa18ce8f1b44fdc2245e48f"
+          },
+          {
+            "path": [
+              "services",
+              "app",
+              "volumes"
+            ],
+            "existed": true,
+            "before": [
+              "${APP_DATA_DIR}/data:/data",
+              "${FIVETRAT_TARGET_APP_DATA_PATH:-/var/lib/5tratumos/apps/5tratsmack}:/target-app-data:ro",
+              "${FIVETRAT_TARGET_APP_ROOT_PATH:-/opt/5tratumos/apps/5tratsmack}:/target-app-root:ro",
+              "${FIVETRAT_TARGET_APP_DATA_ROOT_PATH:-/var/lib/5tratumos/apps}:/target-app-data-root:ro",
+              "${FIVETRAT_TARGET_APPS_ROOT_PATH:-/opt/5tratumos/apps}:/target-apps:ro",
+              "support-receipt:/mux-state:ro",
+              "support-socket:/run/5tratdiag-support:ro",
+              "/var/lib/5tratumos/support/install_id.txt:/host/support/install_id.txt:ro",
+              "/proc:/host/proc:ro",
+              "/var/log:/host/var-log:ro",
+              "/var/lib/docker/containers:/host/docker-containers:ro",
+              "/var/log/journal:/host/var-log-journal:ro"
+            ],
+            "after": [
+              "${APP_DATA_DIR}/data:/data",
+              "${FIVETRAT_TARGET_APP_DATA_PATH:-/var/lib/5tratumos/apps/5tratsmack}:/target-app-data:ro",
+              "${FIVETRAT_TARGET_APP_ROOT_PATH:-/opt/5tratumos/apps/5tratsmack}:/target-app-root:ro",
+              "${FIVETRAT_TARGET_APP_DATA_ROOT_PATH:-/var/lib/5tratumos/apps}:/target-app-data-root:ro",
+              "${FIVETRAT_TARGET_APPS_ROOT_PATH:-/opt/5tratumos/apps}:/target-apps:ro",
+              "/var/lib/5tratumos/diagnostics/mux:/host/mux-evidence:ro",
+              "support-receipt:/mux-state:ro",
+              "support-socket:/run/5tratdiag-support:ro",
+              "/var/lib/5tratumos/support/install_id.txt:/host/support/install_id.txt:ro",
+              "/proc:/host/proc:ro",
+              "/var/log:/host/var-log:ro",
+              "/var/lib/docker/containers:/host/docker-containers:ro",
+              "/var/log/journal:/host/var-log-journal:ro"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

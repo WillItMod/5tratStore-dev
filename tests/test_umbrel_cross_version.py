@@ -8,6 +8,7 @@ import unittest
 
 import yaml
 from test_pool_retention_release import APPS, previous_model
+from test_recovery_release import APPS as RECOVERY_APPS
 from test_smack_release_candidate import RECORD as SMACK_RELEASE, validate_model as previous_smack_model
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -82,7 +83,7 @@ class UmbrelCrossVersionTests(unittest.TestCase):
                         self.assertEqual(compose['services'][node]['user'], '1000:1000')
                 version = yaml.safe_load((ROOT / app_id / 'umbrel-app.yml').read_text())['version']
                 if app_id == 'willitmod-dev-5tratsmack':
-                    self.assertEqual(version, APPS[app_id]['version'])
+                    self.assertEqual(version, RECOVERY_APPS.get(app_id, APPS[app_id])['version'])
                     compose = previous_smack_model(compose)
                     version = compose['services']['app']['environment']['APP_VERSION']
                 elif app_id in APPS:

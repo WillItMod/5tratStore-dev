@@ -6,6 +6,7 @@ from pathlib import Path
 import re
 import unittest
 import yaml
+from test_recovery_release import APPS as RECOVERY_APPS, previous_recovery_model
 
 ROOT=Path(__file__).resolve().parents[1]
 RELEASE=json.loads((ROOT/'POOL-RETENTION-2026-10-01.json').read_text())
@@ -14,6 +15,7 @@ APPS=RELEASE['apps']
 def digest(value):return hashlib.sha256(json.dumps(value,sort_keys=True,separators=(',',':')).encode()).hexdigest()
 
 def previous_model(app_id,current,filename='docker-compose.yml'):
+    current=previous_recovery_model(app_id,current,filename)
     if app_id not in APPS:return copy.deepcopy(current)
     record=APPS[app_id];contract=RELEASE['runtimeContracts'][app_id][filename]
     assert digest(current)==contract['afterModelSHA256']
@@ -51,7 +53,7 @@ class PoolRetentionReleaseTests(unittest.TestCase):
                 with self.assertRaises(AssertionError):previous_model(aid,current,filename)
             for filename in record['manifests']:
                 manifest=yaml.safe_load((ROOT/aid/filename).read_text())
-                assert manifest['version']==record['version'] and 'Complete block and pool accounting records' in manifest['releaseNotes']
+                assert manifest['version']==RECOVERY_APPS.get(aid,record)['version'] and 'Complete block and pool accounting records' in manifest['releaseNotes']
 
     def test_public_identity_record_has_no_private_host_material(self):
         data=(ROOT/'POOL-RETENTION-2026-10-01.json').read_text()
