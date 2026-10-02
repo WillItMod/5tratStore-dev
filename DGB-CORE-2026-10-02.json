@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "channel": "DEV",
+  "appId": "willitmod-dev-dgb",
+  "version": "0.9.187-dev",
+  "coreVersion": "9.26.6",
+  "upstreamRevision": "92330d952625e20aef2ee40671a179ef03872ac1",
+  "upstreamRelease": "https://github.com/DigiByte-Core/digibyte/releases/tag/v9.26.6",
+  "wrapperSourceRevision": "67bea1beafda9a08265e1aeadca26d1a217ff3d4",
+  "baseImageRef": "ghcr.io/willitmod/digibyte:9.26.6@sha256:beadb06295b64cf950f42380b9f29bcf2627c2ed2a2a0dc66cb95a751e9630d4",
+  "coreImageRef": "ghcr.io/willitmod/axedgb-core:9.26.6-dev.1@sha256:b10bb332316286348a6f0e52bc4da961135fe617ed9e1c4e415550c431f0a126",
+  "images": {
+    "amd64": {
+      "configDigest": "sha256:341281eca0ec667ee52631a1698257396f16ca73c6146924b155dbfb06002f24",
+      "manifestDigest": "sha256:d33f392795248c7a213894347c9a12b011d78675c767cb523c5679e2b71efb86"
+    },
+    "arm64": {
+      "configDigest": "sha256:6ed34575f8edc035cb360999755400025f1daafbe8fd5701659e2b269b725552",
+      "manifestDigest": "sha256:79653de7cab80bf00407c0a3f8b8de704f2380a8a749030043e43043976a746f"
+    }
+  },
+  "baselineCommit": "c99e9ad296d897b5975f752876a9124fa688c1e9",
+  "runtimeContract": {
+    "beforeModelSHA256": "e682e8e9f0f19fc8b4027ca18b5b35910aa624b568e7dfd6b4aebfb97b1a2b23",
+    "afterModelSHA256": "d3c261ca3ba174f257119cdc830d3d92bd87650d93ec71fbdeebf23368303199",
+    "changes": [
+      {
+        "path": [
+          "services",
+          "dgbd",
+          "image"
+        ],
+        "before": "ghcr.io/willitmod/axedgb-core:0.9.181-dev",
+        "after": "ghcr.io/willitmod/axedgb-core:9.26.6-dev.1@sha256:b10bb332316286348a6f0e52bc4da961135fe617ed9e1c4e415550c431f0a126"
+      },
+      {
+        "path": [
+          "services",
+          "app",
+          "environment",
+          "DGB_IMAGE"
+        ],
+        "before": "ghcr.io/willitmod/axedgb-core:0.9.181-dev",
+        "after": "ghcr.io/willitmod/axedgb-core:9.26.6-dev.1@sha256:b10bb332316286348a6f0e52bc4da961135fe617ed9e1c4e415550c431f0a126"
+      }
+    ]
+  },
+  "validation": {
+    "nativeArchitectures": [
+      "amd64",
+      "arm64"
+    ],
+    "previousCoreVersion": "9.26.5",
+    "persistedRegtestChainWalletConfigPreserved": true,
+    "pruneMiB": 2000,
+    "sha256dAndScryptTemplates": true,
+    "supervisedRestart": true,
+    "mainnetHistoryCompletenessTested": false
+  }
+}

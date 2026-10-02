@@ -86,6 +86,10 @@ class UmbrelCrossVersionTests(unittest.TestCase):
                     self.assertEqual(version, RECOVERY_APPS.get(app_id, APPS[app_id])['version'])
                     compose = previous_smack_model(compose)
                     version = compose['services']['app']['environment']['APP_VERSION']
+                elif app_id == 'willitmod-dev-dgb':
+                    self.assertEqual(version,json.loads((ROOT/'DGB-CORE-2026-10-02.json').read_text())['version'])
+                    compose=previous_model(app_id,compose)
+                    version=release['package_version']
                 elif app_id in APPS:
                     self.assertEqual(version,APPS[app_id]['version'])
                     compose=previous_model(app_id,compose)
