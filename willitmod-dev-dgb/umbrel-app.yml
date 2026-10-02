@@ -2,16 +2,17 @@ manifestVersion: 1
 id: willitmod-dev-dgb
 category: altcoin
 name: AxeDGB
-version: "0.9.187-dev"
+version: "0.9.188-dev"
 tagline: DGB node + solo pool
 description: >-
   RC6 RELEASE (DEV CHANNEL)
 
   AxeDGB is functional and has successfully found blocks. This build remains on
   the dev channel for final soak testing and pool/node tuning. This update adds
-  actual Core RAM and swap measurements, conservative database-cache sizing, and
-  a configurable memory guard that shuts Core down cleanly and holds it paused
-  until resumed. Setup tools are bundled so installation no longer depends on
+  actual Core RAM and swap measurements, database-cache sizing, and an optional
+  memory watchdog. The watchdog defaults to Off when no valid choice has been
+  saved. Existing Auto, manual and Off choices are preserved. Setup tools are
+  bundled so installation no longer depends on
   Alpine package mirrors at startup. Core is updated to 9.26.6. Version 0.9.181 fixes status-cache compatibility with the new Core supervisor image, avoiding intermittent dashboard 503 errors during concurrent status requests.
 
   Verify payout addresses before mining and send helpful feedback if anything
@@ -39,8 +40,8 @@ description: >-
     - Payout address must be a legacy/base58 DigiByte address (starts with `D`/`S`). `dgb1...` payout is not supported yet.
     - Initial sync can take a long time and a lot of bandwidth/storage (the node downloads and validates the chain).
     - Like most chains, transactions may include arbitrary data; use at your own risk and comply with local laws.
-    - Mainnet startup is heavy on RAM and disk. A September 2026 test of the 24-million-block index peaked near 9 GiB of Core RAM with only 128 MiB of database cache. An 8 GiB Core budget did not complete startup. Use a 16 GB or larger host with enough RAM available for Core and the operating system; other node apps may need to be stopped. SSD/NVMe storage is strongly recommended.
-    - The memory budget is a soft shutdown guard, not a way to shrink the block index. Low budgets pause Core and require an explicit resume. Allow headroom above the observed Core usage; the requirement can grow with the chain.
+    - Mainnet startup can use substantial RAM and disk for the block index and oracle history. The dashboard separates total resident memory, swap and the amount charged to the optional watchdog. A watchdog pause is not proof that the machine cannot run Core. Keep headroom for the operating system and other apps; SSD/NVMe storage is strongly recommended.
+    - The optional memory watchdog is a soft shutdown guard, not a way to shrink the block index. Its budget excludes resident file-backed cache and counts other resident memory plus swap. Off disables watchdog shutdowns, while operating-system and Docker memory limits remain. A memory pause can be cleared with Turn off watchdog & resume Core; an update never clears it automatically.
     - Solo mining is extremely unlikely to find blocks without significant hashrate.
 
 
@@ -103,6 +104,23 @@ backupIgnore:
 submitter: WillItMod
 
 releaseNotes: >-
+  The memory watchdog now defaults to Off when no valid preference has been
+  saved. Existing Auto, manual and Off choices, plus database-cache settings,
+  are preserved. Enabled watchdog budgets exclude resident file-backed cache
+  instead of treating it as private memory; missing measurements retain the
+  conservative fallback.
+
+  For a fresh memory-pressure pause, Home and Settings offer Turn off watchdog
+  & resume Core. The action saves Off before requesting a resume. Updating
+  alone does not clear a pause. Unexpected exits and unclean shutdowns still
+  require explicit recovery.
+
+  Both native architectures passed the real dashboard recovery flow, clean
+  Core restart, and persisted wallet, chain, pruning and configuration checks.
+  DigiByte Core remains 9.26.6. Miningcore, initialization tools and pool
+  configuration are unchanged. The app and Core supervisor update together.
+
+  Previous 0.9.187 Core update:
   DigiByte Core is updated to 9.26.6 using verified official amd64 and arm64
   binaries. The dashboard stays at 0.9.186. Miningcore, initialization tools,
   memory controls, wallet data and pruning settings are unchanged.

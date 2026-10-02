@@ -5,12 +5,14 @@ import json
 from pathlib import Path
 import unittest
 import yaml
+from test_dgb_watchdog_release import previous_watchdog_model, record as watchdog_record
 ROOT=Path(__file__).resolve().parents[1]
 APP='willitmod-dev-dgb'
 def digest(value):return hashlib.sha256(json.dumps(value,sort_keys=True,separators=(',',':')).encode()).hexdigest()
 def record():return json.loads((ROOT/'DGB-CORE-2026-10-02.json').read_text())
 def previous_dgb_model(app_id,current):
     if app_id!=APP:return copy.deepcopy(current)
+    current=previous_watchdog_model(app_id,current)
     release=record();contract=release['runtimeContract'];restored=copy.deepcopy(current)
     expected={('services','dgbd','image'),('services','app','environment','DGB_IMAGE')}
     assert len(contract['changes'])==2 and {tuple(r['path']) for r in contract['changes']}==expected
@@ -30,10 +32,10 @@ class DigiByteCoreReleaseTests(unittest.TestCase):
         self.assertEqual(r['coreVersion'],'9.26.6');self.assertEqual(r['upstreamRevision'],'92330d952625e20aef2ee40671a179ef03872ac1')
         self.assertRegex(r['coreImageRef'],r'^ghcr.io/willitmod/axedgb-core:9\.26\.6-dev\.1@sha256:[a-f0-9]{64}$')
         current=yaml.safe_load((ROOT/APP/'docker-compose.yml').read_text());previous_dgb_model(APP,current)
-        manifest=yaml.safe_load((ROOT/APP/'umbrel-app.yml').read_text());self.assertEqual(manifest['version'],r['version'])
+        manifest=yaml.safe_load((ROOT/APP/'umbrel-app.yml').read_text());self.assertEqual(manifest['version'],watchdog_record()['version'])
         for value in ('9.26.6','24,490,000','23,627,520','Direct and mixed miners'):self.assertIn(value,manifest['releaseNotes'])
         old=json.loads((ROOT/'DIRECT-HASHRATE-2026-09-30.json').read_text())['apps'][APP]
-        self.assertEqual(current['services']['app']['image'],old['imageRef'])
+        self.assertEqual(previous_watchdog_model(APP,current)['services']['app']['image'],old['imageRef'])
     def test_unrelated_runtime_and_configuration_changes_fail(self):
         current=yaml.safe_load((ROOT/APP/'docker-compose.yml').read_text())
         for service,key,value in [('app','image','changed'),('init','image','changed'),('dgbd','volumes',[]),('dgbd','stop_grace_period','1s'),('miningcore','image','changed')]:

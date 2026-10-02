@@ -1009,7 +1009,7 @@ services:
         init_status ready
 
   dgbd:
-    image: ghcr.io/willitmod/axedgb-core:9.26.6-dev.1@sha256:b10bb332316286348a6f0e52bc4da961135fe617ed9e1c4e415550c431f0a126
+    image: ghcr.io/willitmod/axedgb-core:9.26.6-dev.2@sha256:fb46ff018e701accf6630b65c4b33a7d9d24b5fa248c31122d2daa2503677039
     user: "1000:1000"
     restart: unless-stopped
     stop_grace_period: 15m30s
@@ -1067,7 +1067,7 @@ services:
   app:
     stop_signal: SIGINT
     hostname: axedgb-app
-    image: ghcr.io/willitmod/axedgb-app:0.9.186-mux.ea679e21bd33@sha256:ae678ce5cf808401c945127ad35df8dc08a9389210baccd8f6a728b2918c8c00
+    image: ghcr.io/willitmod/axedgb-app:0.9.188-dev@sha256:35104873d5f23ee97a7024e71c3e1bba54a11a80050dde8e3422997b9157c26b
     user: "1000:1000"
     restart: on-failure
     stop_grace_period: 30s
@@ -1106,7 +1106,7 @@ services:
       WORKER_ACTIVE_SECONDS: "300"
       APP_CHANNEL: "RC6"
       APP_VERSION_SUFFIX: "-dev"
-      DGB_IMAGE: "ghcr.io/willitmod/axedgb-core:9.26.6-dev.1@sha256:b10bb332316286348a6f0e52bc4da961135fe617ed9e1c4e415550c431f0a126"
+      DGB_IMAGE: "ghcr.io/willitmod/axedgb-core:9.26.6-dev.2@sha256:fb46ff018e701accf6630b65c4b33a7d9d24b5fa248c31122d2daa2503677039"
       MININGCORE_IMAGE: "ghcr.io/willitmod/axedgb-miningcore:axedgb-0.8.10-r26"
       POSTGRES_IMAGE: "postgres:16-alpine"
       STATIC_DIR: "/app/static"

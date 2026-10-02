@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "channel": "DEV",
+  "appId": "willitmod-dev-dgb",
+  "version": "0.9.188-dev",
+  "coreVersion": "9.26.6",
+  "sourceRevision": "de7a02cdc07ca43bc23eaa74f80f34535fd3c393",
+  "sourceMerge": "8128005f17792b8a3dfa92cfb48d46615c794a76",
+  "sourcePullRequest": "https://github.com/WillItMod/AxeDGB_Build/pull/9",
+  "shippedUIBaseline": "ea679e21bd33685a1afa52cecc38ded816ec6214",
+  "imageRef": "ghcr.io/willitmod/axedgb-app:0.9.188-dev@sha256:35104873d5f23ee97a7024e71c3e1bba54a11a80050dde8e3422997b9157c26b",
+  "coreImageRef": "ghcr.io/willitmod/axedgb-core:9.26.6-dev.2@sha256:fb46ff018e701accf6630b65c4b33a7d9d24b5fa248c31122d2daa2503677039",
+  "appImages": {
+    "amd64": {
+      "configDigest": "sha256:70dad56e4b8ee5ac25715cfbad4fb8b387836744b5c393e4f879c68ad9c554a1",
+      "manifestDigest": "sha256:13734654d5e528762b5464b05b178c2b1cc4f2a1ec902fd639c60494a6f8dee5"
+    },
+    "arm64": {
+      "configDigest": "sha256:7a97fd3507fe3ef7045394aed5746584bae56e86b3ca2a36327b165142f80b6a",
+      "manifestDigest": "sha256:b09cbb47aa20fa8bb6095697932247ac4424668c583cbdbc23f8f974d2915186"
+    }
+  },
+  "coreImages": {
+    "amd64": {
+      "configDigest": "sha256:9984e991a6288274d9572c9d37e5fd2f77db3d6b4469b9d8b50edfcaacd8620d",
+      "manifestDigest": "sha256:f9766569e206fed30cda34408d2171ec285bdd1bd49d0bd08bd9bc91fb09fce5"
+    },
+    "arm64": {
+      "configDigest": "sha256:e02cd0bd46a84139b128a468aa934e8fc7468c2628e0b623a3cefbe8e1714877",
+      "manifestDigest": "sha256:9f6411a1c91892efcb89f2e81233c03303a455faa964ef48916e4724261a9e52"
+    }
+  },
+  "baselineCommit": "f2f25122a772d96ee0d233d37f12b69c2229d86b",
+  "runtimeContract": {
+    "beforeModelSHA256": "d3c261ca3ba174f257119cdc830d3d92bd87650d93ec71fbdeebf23368303199",
+    "afterModelSHA256": "222258bf18c2221a85f1905c3374076f7904921167317222509253ef6919058b",
+    "changes": [
+      {
+        "path": [
+          "services",
+          "app",
+          "image"
+        ],
+        "before": "ghcr.io/willitmod/axedgb-app:0.9.186-mux.ea679e21bd33@sha256:ae678ce5cf808401c945127ad35df8dc08a9389210baccd8f6a728b2918c8c00",
+        "after": "ghcr.io/willitmod/axedgb-app:0.9.188-dev@sha256:35104873d5f23ee97a7024e71c3e1bba54a11a80050dde8e3422997b9157c26b"
+      },
+      {
+        "path": [
+          "services",
+          "dgbd",
+          "image"
+        ],
+        "before": "ghcr.io/willitmod/axedgb-core:9.26.6-dev.1@sha256:b10bb332316286348a6f0e52bc4da961135fe617ed9e1c4e415550c431f0a126",
+        "after": "ghcr.io/willitmod/axedgb-core:9.26.6-dev.2@sha256:fb46ff018e701accf6630b65c4b33a7d9d24b5fa248c31122d2daa2503677039"
+      },
+      {
+        "path": [
+          "services",
+          "app",
+          "environment",
+          "DGB_IMAGE"
+        ],
+        "before": "ghcr.io/willitmod/axedgb-core:9.26.6-dev.1@sha256:b10bb332316286348a6f0e52bc4da961135fe617ed9e1c4e415550c431f0a126",
+        "after": "ghcr.io/willitmod/axedgb-core:9.26.6-dev.2@sha256:fb46ff018e701accf6630b65c4b33a7d9d24b5fa248c31122d2daa2503677039"
+      }
+    ]
+  },
+  "validation": {
+    "nativeArchitectures": [
+      "amd64",
+      "arm64"
+    ],
+    "unchangedCore9266Binary": true,
+    "actualHttpDisableAndResume": true,
+    "persistedWalletChainPruneAndCachePreserved": true,
+    "offPersistsAcrossCleanRestart": true,
+    "nativeMappedMemoryAndOptInPolicy": true,
+    "pruneMiB": 2000,
+    "isolatedNoHostDataOrPorts": true,
+    "liveMainnetNodeStarted": false
+  }
+}
