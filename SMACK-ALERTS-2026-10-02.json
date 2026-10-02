@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "channel": "DEV",
+  "baselineCommit": "15ad08a65e4f85c2d558c4dce096b14a446ecd18",
+  "version": "0.11.21",
+  "sourceRevision": "f41e154a74afbd54f67545d0b95d18506a336fa1",
+  "imageRef": "ghcr.io/willitmod/5tratsmack-app:0.11.21@sha256:09f3dc1eea85942781e4127b6d8836c32c7fa61a0a45cbffb99b40509c38e3bb",
+  "images": {
+    "amd64": {
+      "configDigest": "sha256:04b251e563f59e4ff18218cda0641a78375c14bc796ce41d5d4a977e044312a0",
+      "manifestDigest": "sha256:a269af6e1b12c48a3f60d1018bc10ea558f5062fbfe12b882250f907222bea82"
+    },
+    "arm64": {
+      "configDigest": "sha256:1b2cd6a0874bbf0b3b465deca881b9d4a8a1bbf00a953ce7dc1eb959caa3903e",
+      "manifestDigest": "sha256:90b8f93cff93b7e57104602177b44aa9e051abead8aa06aa227337b0d9fd67e9"
+    }
+  },
+  "runtimeContract": {
+    "beforeModelSHA256": "7970c78f53291907c95151dcc024e47eda0709d91d3ff6bfc899bde97f00ea2c",
+    "afterModelSHA256": "980e962be3a30020d9dcf4902067c5ed71b74abd38b4511921e1035570b7c157",
+    "changes": [
+      {
+        "path": [
+          "services",
+          "app",
+          "image"
+        ],
+        "before": "ghcr.io/willitmod/5tratsmack-app:0.11.20@sha256:a5e66106dbc48d9c70e869ec8baed190913e26075de2b331da8316d3695bc5ae",
+        "after": "ghcr.io/willitmod/5tratsmack-app:0.11.21@sha256:09f3dc1eea85942781e4127b6d8836c32c7fa61a0a45cbffb99b40509c38e3bb"
+      },
+      {
+        "path": [
+          "services",
+          "app",
+          "environment",
+          "APP_IMAGE"
+        ],
+        "before": "ghcr.io/willitmod/5tratsmack-app:0.11.20@sha256:a5e66106dbc48d9c70e869ec8baed190913e26075de2b331da8316d3695bc5ae",
+        "after": "ghcr.io/willitmod/5tratsmack-app:0.11.21@sha256:09f3dc1eea85942781e4127b6d8836c32c7fa61a0a45cbffb99b40509c38e3bb"
+      },
+      {
+        "path": [
+          "services",
+          "app",
+          "environment",
+          "APP_VERSION"
+        ],
+        "before": "0.11.20",
+        "after": "0.11.21"
+      },
+      {
+        "path": [
+          "services",
+          "app",
+          "environment",
+          "FIVETRAT_RELEASE_TAG"
+        ],
+        "before": "0.11.20",
+        "after": "0.11.21"
+      },
+      {
+        "path": [
+          "services",
+          "app",
+          "environment",
+          "APP_REVISION"
+        ],
+        "before": "25cb1e900fc22fa6123d0916e7610bd4e4d56f2f",
+        "after": "f41e154a74afbd54f67545d0b95d18506a336fa1"
+      }
+    ]
+  }
+}

@@ -8,7 +8,7 @@ import unittest
 
 import yaml
 from test_pool_retention_release import APPS, previous_model
-from test_recovery_release import APPS as RECOVERY_APPS
+from test_recovery_release import CURRENT_APPS as RECOVERY_APPS
 from test_smack_release_candidate import RECORD as SMACK_RELEASE, validate_model as previous_smack_model
 
 ROOT = Path(__file__).resolve().parents[1]
