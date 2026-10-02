@@ -145,7 +145,8 @@ class MuxPackageTests(unittest.TestCase):
         self.assertEqual(set(release["apps"]), expected)
         for name, record in release["apps"].items():
             with self.subTest(app=name):
-                current = APPS.get(name,record)
+                current = (json.loads((ROOT / "DGB-WATCHDOG-2026-10-02.json").read_text())
+                           if name == "willitmod-dev-dgb" else APPS.get(name,record))
                 app = ROOT / name
                 self.assertRegex(record["sourceRevision"], r"^[0-9a-f]{40}$")
                 self.assertEqual(record["platforms"], ["linux/amd64", "linux/arm64"])
@@ -158,7 +159,7 @@ class MuxPackageTests(unittest.TestCase):
                         manifest = yaml.safe_load(path.read_text())
                         self.assertEqual(manifest["id"], name)
                         self.assertEqual(manifest["version"],
-                                         json.loads((ROOT / "DGB-CORE-2026-10-02.json").read_text())["version"]
+                                         json.loads((ROOT / "DGB-WATCHDOG-2026-10-02.json").read_text())["version"]
                                          if name == "willitmod-dev-dgb" else current["version"])
                         self.assertIn("Block alerts in this browser", manifest["releaseNotes"])
                         self.assertIn("browser-only Close", manifest["releaseNotes"])
