@@ -6,10 +6,12 @@ from pathlib import Path
 import re
 import unittest
 import yaml
+from test_smack_alert_release import record as alert_record, previous_alert_model
 
 ROOT = Path(__file__).resolve().parents[1]
 RELEASE = json.loads((ROOT / 'RECOVERY-2026-10-02.json').read_text())
 APPS = RELEASE['apps']
+CURRENT_APPS = {**APPS, 'willitmod-dev-5tratsmack': alert_record()}
 SMACK = 'willitmod-dev-5tratsmack'
 DIAG = 'willitmod-dev-5tratumos-diagnostics'
 EVIDENCE_MOUNT = '/var/lib/5tratumos/diagnostics/mux:/host/mux-evidence:ro'
@@ -28,6 +30,7 @@ def digest(value):
     return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
 
 def previous_recovery_model(app_id, current, filename='docker-compose.yml'):
+    current = previous_alert_model(app_id, current)
     if app_id not in APPS:
         return copy.deepcopy(current)
     record = APPS[app_id]
@@ -75,7 +78,7 @@ class RecoveryReleaseTests(unittest.TestCase):
             current = yaml.safe_load((ROOT / aid / 'docker-compose.yml').read_text())
             previous_recovery_model(aid, current)
             for filename in record['manifests']:
-                self.assertEqual(yaml.safe_load((ROOT / aid / filename).read_text())['version'], record['version'])
+                self.assertEqual(yaml.safe_load((ROOT / aid / filename).read_text())['version'], CURRENT_APPS[aid]['version'])
 
     def test_diag_other_runtime_and_privilege_changes_are_rejected(self):
         current = yaml.safe_load((ROOT / DIAG / 'docker-compose.yml').read_text())

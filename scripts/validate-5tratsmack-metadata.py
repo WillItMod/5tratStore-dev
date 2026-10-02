@@ -47,6 +47,14 @@ APP_REF=CURRENT['imageRef']
 assert APP_REF=='ghcr.io/willitmod/5tratsmack-app:0.11.20@sha256:a5e66106dbc48d9c70e869ec8baed190913e26075de2b331da8316d3695bc5ae'
 
 
+# The restored rich alert uses the same guarded queue and unchanged backend images.
+CURRENT=json.loads((ROOT/'SMACK-ALERTS-2026-10-02.json').read_text())
+VERSION='0.11.21'
+REVISION='f41e154a74afbd54f67545d0b95d18506a336fa1'
+assert CURRENT['version']==VERSION and CURRENT['sourceRevision']==REVISION
+APP_REF=CURRENT['imageRef']
+assert re.fullmatch(r'ghcr.io/willitmod/5tratsmack-app:0\.11\.21@sha256:[0-9a-f]{64}',APP_REF)
+
 def scalar(value):return json.loads(value) if value.startswith('"') else value
 
 def one(pattern, text):

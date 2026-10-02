@@ -6,7 +6,7 @@ from pathlib import Path
 import re
 import unittest
 import yaml
-from test_recovery_release import APPS as RECOVERY_APPS, previous_recovery_model
+from test_recovery_release import CURRENT_APPS as RECOVERY_APPS, previous_recovery_model
 from test_dgb_core_release import previous_dgb_model
 
 ROOT=Path(__file__).resolve().parents[1]

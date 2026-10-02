@@ -9,7 +9,7 @@ import tempfile
 import unittest
 import yaml
 from test_pool_retention_release import previous_model
-from test_recovery_release import APPS
+from test_recovery_release import CURRENT_APPS as APPS
 
 ROOT = Path(__file__).resolve().parents[1]
 NAME = 'willitmod-dev-5tratsmack'
@@ -68,7 +68,7 @@ class SmackReleaseTests(unittest.TestCase):
             (root / NAME).mkdir()
             for name in ['scripts/validate-5tratsmack-metadata.py', 'README.md',
                          'SMACK-RELEASE-2026-10-01.json', 'SMACK-PUBLISHED-IMAGES-2026-10-01.json',
-                         'POOL-RETENTION-2026-10-01.json', 'RECOVERY-2026-10-02.json',
+                         'POOL-RETENTION-2026-10-01.json', 'RECOVERY-2026-10-02.json', 'SMACK-ALERTS-2026-10-02.json',
                          NAME + '/umbrel-app.yml', NAME + '/5tratstore-app.yml']:
                 (root / name).write_bytes((ROOT / name).read_bytes())
             original = (ROOT / NAME / 'docker-compose.yml').read_text()

@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-5tratsmack
 category: altcoin
 name: 5tratSmack
-version: "0.11.20"
+version: "0.11.21"
 tagline: Home-miner 5TRAT node, wallet, solo pool and atomic trade lab
 description: >-
   Install and synchronize a complete 5TRAT node, create or restore an encrypted
@@ -37,6 +37,8 @@ path: ""
 defaultUsername: ""
 defaultPassword: ""
 releaseNotes: >-
+  Restores the detailed block-found celebration for automatic alerts on every app tab, including the recorded miner, hit, target, proof tier and scheduled reward. Alerts still require fresh active-chain and pool-payout proof. Closing is remembered only in this browser; unavailable proof withdraws the alert without deleting block history. Missing recorded details remain unknown. Update to 5tratumOS 0.8.25 to keep pool log retention active for this image.
+
   Fresh, identity-matched mining through MUX remains visible when a miner's hardware API cannot be reached. The card reports unavailable hardware telemetry separately, without marking accepted mining offline or inventing a hardware last-seen time.
 
   Adds safe pool log retention with 5tratumOS 0.8.23. Complete block and pool accounting records are saved before old raw log bytes are retired. The active log uses a 20 MiB rolling target with two recent archives. Unread or unresolved evidence is retained, and the app reports backlog or blockers. Existing mining, wallet and chain data are preserved.
