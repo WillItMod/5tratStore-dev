@@ -18,6 +18,8 @@ Development/test app store for WillItMod apps.
 
 ### Hosted / utility apps
 
+- **5tratDiag** (`willitmod-dev-axediagnostics`) - `0.1.8`
+
 - **AxeBench (Dev)** (`willitmod-dev-axebench`) - `4.0.28-dev`
 - **AxeLive (Dev)** (`willitmod-dev-axelive`) - `1.4.2-dev`
 - **AxeMIG** (`willitmod-dev-axemig`) - `0.1.21-dev`
@@ -31,7 +33,7 @@ Development/test app store for WillItMod apps.
 - **AxeDGB** (`willitmod-dev-dgb`) - `0.9.186-dev`
 - **AxePPC** (`willitmod-dev-ppc`) - `0.2.37-dev`
 - **AxeXEC** (`willitmod-dev-xec`) - `0.1.24-dev`
-- **5tratSmack** (`willitmod-dev-5tratsmack`) - `0.11.19`
+- **5tratSmack** (`willitmod-dev-5tratsmack`) - `0.11.20`
 - **FracAttack** (`willitmod-dev-fracattack`) - `0.1.11`
 - **PowPow** (`willitmod-dev-powpow`) - `0.2.37-dev`
 

@@ -38,6 +38,15 @@ assert CURRENT['version']==CURRENT['baseVersion']==VERSION and CURRENT['sourceRe
 APP_REF=CURRENT['imageRef']
 assert re.fullmatch(r'ghcr.io/willitmod/5tratsmack-app:0\.11\.19@sha256:[0-9a-f]{64}',APP_REF)
 
+# Apply the current release only after validating both historical identities.
+CURRENT=json.loads((ROOT/'RECOVERY-2026-10-02.json').read_text())['apps']['willitmod-dev-5tratsmack']
+VERSION='0.11.20'
+REVISION='25cb1e900fc22fa6123d0916e7610bd4e4d56f2f'
+assert CURRENT['version']==CURRENT['baseVersion']==VERSION and CURRENT['sourceRevision']==REVISION
+APP_REF=CURRENT['imageRef']
+assert APP_REF=='ghcr.io/willitmod/5tratsmack-app:0.11.20@sha256:a5e66106dbc48d9c70e869ec8baed190913e26075de2b331da8316d3695bc5ae'
+
+
 def scalar(value):return json.loads(value) if value.startswith('"') else value
 
 def one(pattern, text):

@@ -2,6 +2,9 @@ name: Validate MUX app packages
 on:
   pull_request:
     paths:
+      - "RECOVERY-2026-10-02.json"
+      - "tests/test_recovery_release.py"
+      - "tests/test_pool_retention_release.py"
       - "DIRECT-HASHRATE-2026-09-30.json"
       - "UMBREL-CONTRACTS-2026-09-30.json"
       - "willitmod-dev-*/docker-compose.yml*"
@@ -20,6 +23,9 @@ on:
   push:
     branches: [main]
     paths:
+      - "RECOVERY-2026-10-02.json"
+      - "tests/test_recovery_release.py"
+      - "tests/test_pool_retention_release.py"
       - "DIRECT-HASHRATE-2026-09-30.json"
       - "UMBREL-CONTRACTS-2026-09-30.json"
       - "willitmod-dev-*/docker-compose.yml*"

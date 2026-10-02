@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - "README.md"
+      - "RECOVERY-2026-10-02.json"
       - "willitmod-dev-5tratsmack/**"
       - "scripts/validate-5tratsmack-metadata.py"
       - ".github/workflows/validate-5tratsmack-metadata.yml"
@@ -11,6 +12,7 @@ on:
     branches: [main]
     paths:
       - "README.md"
+      - "RECOVERY-2026-10-02.json"
       - "willitmod-dev-5tratsmack/**"
       - "scripts/validate-5tratsmack-metadata.py"
       - ".github/workflows/validate-5tratsmack-metadata.yml"
