@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "channel": "DEV",
+  "appId": "willitmod-dev-dgb",
+  "version": "0.9.189-dev",
+  "sourceRevision": "4a050ea08c48dcf1200b573eb508aecac22cfa8f",
+  "sourceMerge": "5f1a11ee7d15e6fcdcf9793bf39b1f2eb230f1be",
+  "sourcePullRequest": "https://github.com/WillItMod/AxeDGB_Build/pull/10",
+  "imageRef": "ghcr.io/willitmod/axedgb-app:0.9.189-dev@sha256:7ccaced7437bcb50b245a4cc65e3a3a22f7570c00e0a267d22e14e789e2e4416",
+  "appImages": {
+    "amd64": {
+      "configDigest": "sha256:e018fda70ccda639aee9c7a98a9f03ba8f6df752e55f2fa93d92ffc07f6fb667",
+      "manifestDigest": "sha256:ec736a8e5578a91e800301dfcba09b42f2f201b56460d87b55e082d38d4abbb2"
+    },
+    "arm64": {
+      "configDigest": "sha256:14d67b369e8a340fc0afca5d7b738c6f61c65269cfa36008a9dcfdcb9be7ecb7",
+      "manifestDigest": "sha256:234af8ed0c0c4e32e5733108b1690aa6d0df63bac32fd80761d7d8a6c1cbb510"
+    }
+  },
+  "coreImageRef": "ghcr.io/willitmod/axedgb-core:9.26.6-dev.2@sha256:fb46ff018e701accf6630b65c4b33a7d9d24b5fa248c31122d2daa2503677039",
+  "baselineCommit": "ddb1a1ff1323657d47dbf56478cec88c1e801942",
+  "runtimeContract": {
+    "beforeModelSHA256": "222258bf18c2221a85f1905c3374076f7904921167317222509253ef6919058b",
+    "afterModelSHA256": "080c5d26853c04954a854e157456d6213034f949daf3137abac6df28b53c94e0",
+    "changes": [
+      {
+        "path": [
+          "services",
+          "app",
+          "image"
+        ],
+        "before": "ghcr.io/willitmod/axedgb-app:0.9.188-dev@sha256:35104873d5f23ee97a7024e71c3e1bba54a11a80050dde8e3422997b9157c26b",
+        "after": "ghcr.io/willitmod/axedgb-app:0.9.189-dev@sha256:7ccaced7437bcb50b245a4cc65e3a3a22f7570c00e0a267d22e14e789e2e4416"
+      }
+    ]
+  },
+  "validation": {
+    "nativeArchitectures": [
+      "amd64",
+      "arm64"
+    ],
+    "bakedHttpAndServedUI": true,
+    "freshSnapshotSeparateFromRoute": true,
+    "acceptedPoolHistoryPreserved": true,
+    "coreInitMiningcoreUnchanged": true,
+    "isolatedAppFixtureOnly": true,
+    "productionDgbStatePreserved": true
+  }
+}

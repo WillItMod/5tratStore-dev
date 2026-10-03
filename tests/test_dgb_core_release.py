@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 import unittest
 import yaml
-from test_dgb_watchdog_release import previous_watchdog_model, record as watchdog_record
+from test_dgb_watchdog_release import previous_watchdog_model, record as watchdog_record, route_record
 ROOT=Path(__file__).resolve().parents[1]
 APP='willitmod-dev-dgb'
 def digest(value):return hashlib.sha256(json.dumps(value,sort_keys=True,separators=(',',':')).encode()).hexdigest()
@@ -32,7 +32,7 @@ class DigiByteCoreReleaseTests(unittest.TestCase):
         self.assertEqual(r['coreVersion'],'9.26.6');self.assertEqual(r['upstreamRevision'],'92330d952625e20aef2ee40671a179ef03872ac1')
         self.assertRegex(r['coreImageRef'],r'^ghcr.io/willitmod/axedgb-core:9\.26\.6-dev\.1@sha256:[a-f0-9]{64}$')
         current=yaml.safe_load((ROOT/APP/'docker-compose.yml').read_text());previous_dgb_model(APP,current)
-        manifest=yaml.safe_load((ROOT/APP/'umbrel-app.yml').read_text());self.assertEqual(manifest['version'],watchdog_record()['version'])
+        manifest=yaml.safe_load((ROOT/APP/'umbrel-app.yml').read_text());self.assertEqual(manifest['version'],route_record()['version'])
         for value in ('9.26.6','24,490,000','23,627,520','Direct and mixed miners'):self.assertIn(value,manifest['releaseNotes'])
         old=json.loads((ROOT/'DIRECT-HASHRATE-2026-09-30.json').read_text())['apps'][APP]
         self.assertEqual(previous_watchdog_model(APP,current)['services']['app']['image'],old['imageRef'])
