@@ -37,8 +37,9 @@ class AxeDgbPackageTests(unittest.TestCase):
         version = release["previous_package_version"]
         mux = json.loads((ROOT.parent / "DIRECT-HASHRATE-2026-09-30.json").read_text())["apps"][ROOT.name]
         core = json.loads((ROOT.parent / "DGB-WATCHDOG-2026-10-02.json").read_text())
-        self.assertEqual(yaml.safe_load((ROOT / "umbrel-app.yml").read_text())["version"], core["version"])
-        self.assertEqual(self.services["app"]["image"], core["imageRef"])
+        route = json.loads((ROOT.parent / "DGB-ROUTE-EVIDENCE-2026-10-03.json").read_text())
+        self.assertEqual(yaml.safe_load((ROOT / "umbrel-app.yml").read_text())["version"], route["version"])
+        self.assertEqual(self.services["app"]["image"], route["imageRef"])
         self.assertEqual(self.services["app"]["environment"]["MUX_IDENTITY_URL"], "http://172.17.0.1:21222/api/integrations/workers")
         for service in ["init"]:
             self.assertTrue(self.services[service]["image"].endswith(":" + version), service)

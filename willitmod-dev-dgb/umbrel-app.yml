@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-dgb
 category: altcoin
 name: AxeDGB
-version: "0.9.188-dev"
+version: "0.9.189-dev"
 tagline: DGB node + solo pool
 description: >-
   RC6 RELEASE (DEV CHANNEL)
@@ -104,6 +104,16 @@ backupIgnore:
 submitter: WillItMod
 
 releaseNotes: >-
+  A current MUX response with an unconfirmed route now shows Pool estimate ·
+  route unconfirmed. Missing, stale or malformed MUX data is labelled
+  separately. Accepted pool estimates and history remain visible, and stale
+  route estimates are never shown as live. Fresh routing elsewhere still
+  shows zero currently routed here without erasing accepted work.
+
+  This app-only update leaves DigiByte Core 9.26.6, its existing supervisor,
+  Miningcore, initialization tools, wallet data and configuration unchanged.
+
+  Previous 0.9.188 watchdog update:
   The memory watchdog now defaults to Off when no valid preference has been
   saved. Existing Auto, manual and Off choices, plus database-cache settings,
   are preserved. Enabled watchdog budgets exclude resident file-backed cache
