@@ -28,7 +28,7 @@ services:
   app:
     stop_signal: SIGINT
     hostname: axebch2-app
-    image: ghcr.io/willitmod/axebch2-app:0.2.0.11@sha256:ec45d7191eb6eb378d71b84f30aaf9133911e53045c0272afba2161a2b45f2ad
+    image: ghcr.io/willitmod/axebch2-app:0.2.0.12-dev@sha256:65891eb60db568ca9f9ee21e00869769b5bc475a94f2af5f215dfdc55857e2d1
     user: "1000:1000"
     restart: unless-stopped
     depends_on:
@@ -47,17 +47,17 @@ services:
       - ${APP_DATA_DIR}/data:/data
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      APP_REVISION: 9019e3cdb32bd78b1cd85d8a8c5394302e1a9beb
+      APP_REVISION: 5531b5e6e2e4c55353454665af9fc1950f9f0844
       MUX_IDENTITY_URL: "http://172.17.0.1:21222/api/integrations/workers"
       APP_ID: "willitmod-dev-axebch2"
-      APP_VERSION: "0.2.0.11-dev"
+      APP_VERSION: "0.2.0.12-dev"
       APP_CHANNEL: "DEV"
       APP_RELEASE_PHASE: "ALPHA"
       APP_SELF_RESTART_ENABLED: "1"
       APP_COMPOSE_PROJECT: "${COMPOSE_PROJECT_NAME}"
       NETWORK_IP: "${NETWORK_IP}"
       BCH2_NODE_IMAGE: "ghcr.io/willitmod/axebch2-node:0.1.33-dev"
-      CKPOOL_IMAGE: "ghcr.io/willitmod/axebch2-ckpool:0.1.33-dev"
+      CKPOOL_IMAGE: "ghcr.io/willitmod/axebch2-ckpool:0.1.34-dev@sha256:4d2cc3813cd48211ce685e51afeaa62c3a606282bb8e6c8fa8ccc4e43ec75ec3"
       BCH2_RPC_HOST: "bch2"
       BCH2_RPC_PORT: "8342"
       BCH2_RPC_USER: "bch2"
@@ -114,7 +114,7 @@ services:
       start_period: 2m
 
   ckpool:
-    image: ghcr.io/willitmod/axebch2-ckpool:0.1.33-dev
+    image: ghcr.io/willitmod/axebch2-ckpool:0.1.34-dev@sha256:4d2cc3813cd48211ce685e51afeaa62c3a606282bb8e6c8fa8ccc4e43ec75ec3
     restart: unless-stopped
     stop_grace_period: 30s
     depends_on:

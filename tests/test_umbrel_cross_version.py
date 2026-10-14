@@ -11,6 +11,7 @@ from test_powpow_sql_seed import RECORD as POWPOW_SEED
 from test_pool_retention_release import APPS, previous_model
 from test_recovery_release import CURRENT_APPS as RECOVERY_APPS
 from test_smack_release_candidate import RECORD as SMACK_RELEASE, validate_model as previous_smack_model
+from test_bch2_portable_readiness_release import APP as BCH2, record as bch2_record
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT = json.loads((ROOT / 'UMBREL-CONTRACTS-2026-09-30.json').read_text())
@@ -96,7 +97,7 @@ class UmbrelCrossVersionTests(unittest.TestCase):
                     compose = previous_model(app_id, compose)
                     version = release['package_version']
                 elif app_id in APPS:
-                    self.assertEqual(version,APPS[app_id]['version'])
+                    self.assertEqual(version,(bch2_record() if app_id==BCH2 else APPS[app_id])['version'])
                     compose=previous_model(app_id,compose)
                     version=release['package_version']
                 digest = hashlib.sha256(json.dumps(compose, sort_keys=True, separators=(',', ':')).encode()).hexdigest()

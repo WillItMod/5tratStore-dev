@@ -147,7 +147,9 @@ class MuxPackageTests(unittest.TestCase):
         for name, record in release["apps"].items():
             with self.subTest(app=name):
                 current = (json.loads((ROOT / "DGB-ROUTE-EVIDENCE-2026-10-03.json").read_text())
-                           if name == "willitmod-dev-dgb" else APPS.get(name,record))
+                           if name == "willitmod-dev-dgb" else
+                           json.loads((ROOT / "BCH2-PORTABLE-READINESS-2026-10-14.json").read_text())
+                           if name == "willitmod-dev-axebch2" else APPS.get(name,record))
                 app = ROOT / name
                 self.assertRegex(record["sourceRevision"], r"^[0-9a-f]{40}$")
                 self.assertEqual(record["platforms"], ["linux/amd64", "linux/arm64"])
