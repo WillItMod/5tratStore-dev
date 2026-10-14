@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "channel": "DEV",
+  "baselineCommit": "90668db6cb000fdb3391d0d88997773563127370",
+  "apps": {
+    "willitmod-dev-btc": {
+      "packageVersion": "0.7.82.17-dev.1",
+      "beforePackageVersion": "0.7.82.17-dev",
+      "beforeModelSHA256": "a386f8e64aea8a05c4fa8e7430ba31e02488e0927df9365c60a897b57dc0fe81",
+      "afterModelSHA256": "07a53e99f59be1b72a279d7743ad2091d0deeeeeb4f57e00b3b78e34072d49ab",
+      "guardComposeSourceSHA256": "eb08c31089f219cfe65569592f63cf4720d2b72bdb3a292225f24495c79c40ed",
+      "beforeEntrypointSHA256": "656f5dd87ad73ab5a0fe87e41616981a7192bba7802880bd6007f0fb37165850",
+      "afterEntrypointSHA256": "113b01035df42190328e2bc449b4daae5d59ec1dbca09a8199d699da97228f4a",
+      "imagesUnchanged": {
+        "init": "alpine:3.22.1",
+        "bitcoind": "ghcr.io/willitmod/axebtc-bitcoind-switch:0.7.44",
+        "ckpool": "ghcr.io/willitmod/docker-ckpool-solo:590fb2a",
+        "app": "ghcr.io/willitmod/axebtc-app-umbrel-dev:0.7.82.17@sha256:21334b67d803987a3ae4e79242ba2d74da0415d22e786783c73723a460d9c174"
+      },
+      "applicationVersionFieldUnchanged": null,
+      "onlyRuntimeFieldChanged": [
+        "services",
+        "init",
+        "command",
+        2
+      ]
+    },
+    "willitmod-dev-fracattack": {
+      "packageVersion": "0.1.12-dev",
+      "beforePackageVersion": "0.1.11",
+      "beforeModelSHA256": "ec4ad8dcf7f9faa6ad0cf9d3ea153b3658ab54cdc7adc8925234cb76470ece57",
+      "afterModelSHA256": "d8813fea49391634d1b325061cf217e270f15d08e57ac768b38e761de1b2aaba",
+      "guardComposeSourceSHA256": "90f3549a750c0c539c2ef367ab1dd70c45d6d9140758cc27a29dc66265c0c3c7",
+      "beforeEntrypointSHA256": "a17c89602cf108cf11a5106cabf4d2b7a20520ec69b84198006a59ad9b60c7ae",
+      "afterEntrypointSHA256": "6f142ccb5716c160dcfe260425f6a8dbb9a9338149c02c5613961875b573429c",
+      "imagesUnchanged": {
+        "init": "alpine:3.22.1",
+        "fractald": "ghcr.io/willitmod/fracattack-fractald:0.4.0",
+        "ckpool": "ghcr.io/willitmod/docker-ckpool-solo:590fb2a",
+        "app": "ghcr.io/willitmod/fracattack-app-umbrel-dev:0.1.11@sha256:fffd78f12ca68f6f5a2565e6c4ca3f2657c7b916b0cbdffa60261c64d85b6830"
+      },
+      "applicationVersionFieldUnchanged": "0.1.11",
+      "onlyRuntimeFieldChanged": [
+        "services",
+        "init",
+        "command",
+        2
+      ]
+    }
+  },
+  "delivery": "Reviewed migration is carried by replaced Compose init; no reliance on updating persistent data/templates. Only exact known-old regular single-link bounded file is replaced atomically, preserving mode/UID/GID/mtime; exact known-new is unchanged; custom/missing/linked files refuse before existing initializer writes.",
+  "runtime": "TERM/INT handler forwards TERM to direct tracked real child and reaps it. Poll sleep is tracked and interruptible; configuration checksum, CLI arguments and existing automatic-reload behavior remain.",
+  "scope": "Supervisor shutdown and update delivery only; no UI/image/mining policy/chain/wallet/config change or complete mining qualification."
+}
