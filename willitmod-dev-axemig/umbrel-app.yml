@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-axemig
 category: bitcoin
 name: AxeMIG
-version: "0.1.21-dev.1"
+version: "0.1.22-dev"
 tagline: Data-only blockchain migration tool
 description: >-
   ALPHA RELEASE (DEV CHANNEL)
@@ -35,6 +35,8 @@ path: ""
 defaultUsername: ""
 defaultPassword: ""
 releaseNotes: >-
+  v0.1.22-dev: USB discovery and exported folders now retain their host paths, so selected drives can be used by export/import. The UI and existing migration exclusions are unchanged.
+
   v0.1.21-dev.1 (recipe revision): Route the Umbrel proxy to this app's unique container so other utilities cannot intercept its requests.
 
   v0.1.21-dev: Replaces legacy Fractal wording in migration guidance with AxeBTC.

@@ -1,0 +1,61 @@
+{
+  "at": "2026-10-14T20:12:15.910322+00:00",
+  "repository": "willitmod/axemig",
+  "tag": "0.1.22-dev",
+  "digest": "sha256:b87581e4f23b5014499530615b3952a6c630400de51ef55e16ec03352b2ab968",
+  "source": "b140dd20e4e179ddd91b7fe60a404170b4288f1b",
+  "workflow": 38628719724,
+  "anonymous_access": true,
+  "platforms": {
+    "amd64": {
+      "manifest_digest": "sha256:c96e6fdb2fcee0acc9a7c8dda2148400afe87e2e8b85abed903484608dcf3e48",
+      "config_digest": "sha256:a3f9025b4c14248c851722e27b3852ddaa620ffa9afedd4ec164da2f859be8a4",
+      "source_tree": "c0207db4ca91ec079e9395b8b52d8ee316345a85"
+    },
+    "arm64": {
+      "manifest_digest": "sha256:807ea7400cc8f2e55177ec81c6ea5f9fc14efad454f6f0b08bce1840d7ed1edd",
+      "config_digest": "sha256:37f6ad4da53cbcb5f2d26533bcb7f6bd2a0bde89d65e5b34b4e20ab2a3da4a43",
+      "source_tree": "c0207db4ca91ec079e9395b8b52d8ee316345a85"
+    }
+  },
+  "artifact_upload_quota": "optional upload unavailable; mandatory source receipts retained in run logs and summary, source labels verified",
+  "schemaVersion": 1,
+  "channel": "DEV",
+  "appId": "willitmod-dev-axemig",
+  "packageVersion": "0.1.22-dev",
+  "baselineCommit": "d7e73918990070ff69411d6e2f8885e6a7e000c8",
+  "beforeModelSHA256": "78e2415c965a3b71b5d05a45dc3fefbce28049b16f94ea554cd4b069c8320735",
+  "afterModelSHA256": "347f9191b0d49b5e08d1405d54cbad1ec4d9eba11d391226463dfb8a00dd9faa",
+  "changes": [
+    {
+      "path": [
+        "services",
+        "server",
+        "image"
+      ],
+      "before": "ghcr.io/willitmod/axemig:0.1.21-dev",
+      "after": "ghcr.io/willitmod/axemig:0.1.22-dev@sha256:b87581e4f23b5014499530615b3952a6c630400de51ef55e16ec03352b2ab968"
+    },
+    {
+      "path": [
+        "services",
+        "server",
+        "environment",
+        "AXEMIG_HELPER_IMAGE"
+      ],
+      "before": "ghcr.io/willitmod/axemig:0.1.21-dev",
+      "after": "ghcr.io/willitmod/axemig:0.1.22-dev@sha256:b87581e4f23b5014499530615b3952a6c630400de51ef55e16ec03352b2ab968"
+    },
+    {
+      "path": [
+        "services",
+        "server",
+        "environment",
+        "APP_VERSION"
+      ],
+      "before": "0.1.21-dev",
+      "after": "0.1.22-dev"
+    }
+  ],
+  "fullAppQualified": false
+}
