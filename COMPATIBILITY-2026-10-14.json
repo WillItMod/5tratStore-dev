@@ -10049,7 +10049,7 @@
     }
   ],
   "later_owned_lab_observations": {
-    "recorded_at_utc": "2026-10-14T15:27:44.543900+00:00",
+    "recorded_at_utc": "2026-10-14T16:33:24.689887+00:00",
     "snapshot_preserved": true,
     "store_head_observed": "5783f80763610b3b25817af9a85fbbdcb325d84f",
     "utility_candidate_head": "d2babe9340097675a5d51be5b2ae0dc053bc999f",
@@ -10057,7 +10057,7 @@
     "vm_versions": {
       "622": "Umbrel1.7.4",
       "623": "Umbrel2.0.0",
-      "624": "5tratumOSv0.8.31 on Debian13"
+      "624": "5tratumOSv0.8.32 on Debian13, normal update fromv0.8.31"
     },
     "cpu": {
       "model": "x86-64-v2-AES",
@@ -10075,9 +10075,139 @@
     "full_os_qualification": false,
     "main_promoted": false,
     "fumbrel_native": "not installed; N/A Umbrel-only",
-    "native_latest_release_needs_new_qualification": "Mac reports OS0.8.32 and MUX0.9.76 released; v0.8.31 lab results are not inherited",
-    "claude_preservation": "Review UI layouts AND code fixes from .235 recovered runtime/source/backups against merged release before further OS/MUX changes",
+    "native_latest_release_needs_new_qualification": "NormalOSv0.8.32/MUX0.9.76 update acceptance passed; full app qualification remains pending",
+    "claude_preservation": "Authorized Mac read-only comparison reports no meaningful captured recovered fix omitted; root138 installedOSfiles match archive andb91e126 on native624. Remote full report access and oldMUXreview6 provenance limits retained.",
     "artifacts": [
+      {
+        "path": "evidence/claude-preservation-handoff-summary.json",
+        "bytes": 4063,
+        "sha256": "9565f4ebd7384d4523bd4c34b99e938b09bb96066a26da8ae2a601ff34d11403"
+      },
+      {
+        "path": "evidence/cpu/native624-portability.md",
+        "bytes": 2271,
+        "sha256": "1068766ac7135e1971ab9c310365447fae78378f0ebf11d851a1ad0c6f51c0a4"
+      },
+      {
+        "path": "evidence/cpu/native624-portable-candidate-startup.json",
+        "bytes": 2131,
+        "sha256": "db7939076f7d7d3cfff9345506df596680e2e1dab482f0e86cc235c410eb244b"
+      },
+      {
+        "path": "evidence/cpu/native624-published-bch2-0134-offline.json",
+        "bytes": 3260,
+        "sha256": "72367977d600903d430814bdcf597ccc99f374db8652ab2a6d761473bf6f3d64"
+      },
+      {
+        "path": "evidence/current-release-no-full-receipts-gate.json",
+        "bytes": 43145,
+        "sha256": "8e429c7d91497ab7a2920cea091cc8395fe86a847f70bec90d780f5f880aff70"
+      },
+      {
+        "path": "evidence/fumbrel-candidate/amd64/README.md",
+        "bytes": 4987,
+        "sha256": "2c880ed5e157265e1411f7a841e89c87a6ae85b8b68dac026464a9040572a612"
+      },
+      {
+        "path": "evidence/fumbrel-candidate/amd64/artifact-hashes.json",
+        "bytes": 4448,
+        "sha256": "2e8d07b981d2bded38c6fb43ae2b50d5a037c34248e257798eace7974468c2cd"
+      },
+      {
+        "path": "evidence/fumbrel-candidate/amd64/candidate-server-qa-03-report.json",
+        "bytes": 74608,
+        "sha256": "b00c81bc753e4020b7956685827fbf186ca6ad5736166a25517fb89fa01c29ff"
+      },
+      {
+        "path": "evidence/fumbrel-candidate/amd64/cleanup-confirmation.json",
+        "bytes": 698,
+        "sha256": "4b71145517843073c504f0d33fcfbca536834c1f4f049387f90907730a28155f"
+      },
+      {
+        "path": "evidence/fumbrel-candidate/candidate-report.json",
+        "bytes": 54100,
+        "sha256": "4221b3bba2b5412eee36f395e5a9ea55f32cf6f5d0b632c093dca27fdce8c235"
+      },
+      {
+        "path": "evidence/fumbrel-independent-review/review.json",
+        "bytes": 2890,
+        "sha256": "17d3c830e9e8afb4f0919b0aaf7649d9fabed0dfa6c7213932da9eca916d346a"
+      },
+      {
+        "path": "evidence/mac-compatibility-handoff-received.json",
+        "bytes": 2942,
+        "sha256": "c7ab27edcd46236e27e0ae34dcfc96803497f29855066145c1c065490e65d728"
+      },
+      {
+        "path": "evidence/powpow-ordinary-update-suite.log",
+        "bytes": 17869,
+        "sha256": "eed21a22ce96b5cddedf0f5b053a307ea6a302566f84b2cf37a26268f7ffdec7"
+      },
+      {
+        "path": "evidence/runtime-native624/README.md",
+        "bytes": 4414,
+        "sha256": "dfd8c5e69b078d0cd86b0a7c31df8b13181e2c2a5e2f6676ffa0f5b924ef92b5"
+      },
+      {
+        "path": "evidence/runtime-native624/powpow-candidate/README.md",
+        "bytes": 3956,
+        "sha256": "b34249ad8c66a4c133f702e0e9a06e5e76f504621833f0a26c45acc9c73f9695"
+      },
+      {
+        "path": "evidence/runtime-native624/summary.json",
+        "bytes": 1484,
+        "sha256": "742173f160955f9edc07560dbf7a0fec3c6c2f06472c9b1662c6bee4485a2dbc"
+      },
+      {
+        "path": "evidence/runtime-native632-powpow-dev2/README.md",
+        "bytes": 5157,
+        "sha256": "bd30ff351f3457d52a2f0ff5bb72137605e1e95cfc053aadfc6dd9277ef20d60"
+      },
+      {
+        "path": "evidence/runtime-native632-powpow-dev2/summary.json",
+        "bytes": 2110,
+        "sha256": "59c0ab624ea4394c3bd6c9aee7298521911c3ba061e004486784e5f9229963df"
+      },
+      {
+        "path": "evidence/runtime-native632-update/README.md",
+        "bytes": 5054,
+        "sha256": "9f96bfab235b5515c45ebd6bca5f07fa9aea3f814e959189615caa78ea7c4f0d"
+      },
+      {
+        "path": "evidence/runtime-native632-update/summary.json",
+        "bytes": 2144,
+        "sha256": "9c121f95e75d9c3805bae04a791065935bb91194d778d4e2bcb574afa55e8c80"
+      },
+      {
+        "path": "evidence/runtime-native632-utilities-dev1/README.md",
+        "bytes": 3045,
+        "sha256": "32346a3538bddc3ab01d468c24ececa44bf2ff1deb9085ac19fdb07dc863313f"
+      },
+      {
+        "path": "evidence/runtime-native632-utilities-dev1/summary.json",
+        "bytes": 2767,
+        "sha256": "d20b4b6d7d88011bbe760214bfbf79f4bb4998874000fae393622a92c7a9f448"
+      },
+      {
+        "path": "evidence/runtime-powpow-umbrel/README.md",
+        "bytes": 1480,
+        "sha256": "c6818dbfb6929f3594ad9d31c559997f0b5313e5aa3a91a946332a346aad5c95"
+      },
+      {
+        "path": "evidence/runtime-powpow-umbrel/summary.json",
+        "bytes": 3000,
+        "sha256": "81eeebd189ee2b547d11af0fb03d1fcb19748ffa06760a5c2c983f473d811c7c"
+      },
+      {
+        "path": "evidence/runtime-powpow-umbrel/upgrade-1e05267/README.md",
+        "bytes": 2441,
+        "sha256": "e5d84ff4c0615679912a66638c004ddb7cd3eb98a908d0d4857e5639549fce3d"
+      },
+      {
+        "path": "evidence/runtime-powpow-umbrel/upgrade-1e05267/summary.json",
+        "bytes": 6345,
+        "sha256": "7b42dedbffa8d378e3a97bc7886b8d227b51b984b28e644645d730239b0bf720"
+      },
       {
         "path": "evidence/runtime-umbrel174/README.md",
         "bytes": 6546,
@@ -10099,35 +10229,40 @@
         "sha256": "5c6cae0d63f25c24da1fd9e9edf15b912f2db58766c60dfb199b92de382d8be4"
       },
       {
-        "path": "evidence/runtime-native624/README.md",
-        "bytes": 4414,
-        "sha256": "dfd8c5e69b078d0cd86b0a7c31df8b13181e2c2a5e2f6676ffa0f5b924ef92b5"
-      },
-      {
-        "path": "evidence/runtime-native624/summary.json",
-        "bytes": 1484,
-        "sha256": "742173f160955f9edc07560dbf7a0fec3c6c2f06472c9b1662c6bee4485a2dbc"
-      },
-      {
-        "path": "evidence/runtime-native624/powpow-candidate/README.md",
-        "bytes": 3956,
-        "sha256": "b34249ad8c66a4c133f702e0e9a06e5e76f504621833f0a26c45acc9c73f9695"
-      },
-      {
-        "path": "evidence/cpu/native624-portable-candidate-startup.json",
-        "bytes": 2131,
-        "sha256": "db7939076f7d7d3cfff9345506df596680e2e1dab482f0e86cc235c410eb244b"
-      },
-      {
-        "path": "evidence/cpu/native624-portability.md",
-        "bytes": 1552,
-        "sha256": "9d7872c34b20877cd01a48c399dfdefa7830afce70a68677765a6e7e399d67ce"
-      },
-      {
         "path": "evidence/utility-runtime-fix-suite-integrated.log",
         "bytes": 15947,
         "sha256": "f22bc2cdabdd0eaea03f9cf73f39eff080b7ec478e0b9fd1b626c948345aa6a1"
       }
-    ]
+    ],
+    "powpow_candidate": {
+      "head": "1e052671efc1ae49ea32140e41aa6953d2e83039",
+      "version": "0.2.37-dev.2",
+      "pr": "https://github.com/WillItMod/5tratStore-dev/pull/61",
+      "ordinary_upgrade_checks": "passed both Umbrel versions and nativeOS0.8.32; running wallet/node bytes and full wallet identity explicitly unqualified"
+    },
+    "fumbrel_candidate": {
+      "head": "227501e4c2e9d03a2b6ef9c3f103ce0a87b50a03",
+      "version": "0.1.1-dev",
+      "pr": "https://github.com/WillItMod/5tratStore-dev/pull/62",
+      "source_checks": 47,
+      "cross_version_checks": 6,
+      "arm_container_smoke": 7,
+      "amd64_umbrel_server_qa": "passed149 observations on623; authoritative data/recipe exact restore and separate derived regeneration; labelled server removed",
+      "published": false
+    },
+    "utility_candidate_native32": {
+      "versions": [
+        "4.0.28-dev.1",
+        "1.4.2-dev.1",
+        "0.1.21-dev.1"
+      ],
+      "normal_update_restart_gateways": "passed",
+      "original_utility_data_files_preserved": 22,
+      "empty_gitkeep_additions": 2,
+      "actual_images_unchanged": true,
+      "mig_native_upstream": "http://127.0.0.1:12150/",
+      "all_four_apps_final_off": true,
+      "full_qualification": false
+    }
   }
 }
