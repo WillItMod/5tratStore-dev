@@ -47,6 +47,23 @@ services:
       - -ec
       - |-
         set -eu
+        watchdog_pid=""
+        run_watchdog_child() {
+          "$$@" &
+          watchdog_pid="$$!"
+          wait "$$watchdog_pid" 2>/dev/null || true
+          watchdog_pid=""
+        }
+        stop_permission_watchdog() {
+          trap '' TERM INT
+          if [ -n "$$watchdog_pid" ]; then
+            kill -TERM "$$watchdog_pid" 2>/dev/null || true
+            wait "$$watchdog_pid" 2>/dev/null || true
+            watchdog_pid=""
+          fi
+          exit 0
+        }
+        trap stop_permission_watchdog TERM INT
         # Some hosts/app-update flows can clobber Postgres ownership while the stack is running
         # (e.g., blanket chown of the app state dir). Watch for it and self-heal.
         pg_dir="/data/pool/postgres"
@@ -60,9 +77,9 @@ services:
             if [ "$$uid" != "1000" ] || [ "$$gid" != "1000" ]; then
               echo "[axedgb] Fixing $$label ownership (1000:1000)"
               if [ "$$mode" = "top" ]; then
-                chown 1000:1000 "$$dir" 2>/dev/null || true
+                run_watchdog_child chown 1000:1000 "$$dir" 2>/dev/null || true
               else
-                chown -R 1000:1000 "$$dir" 2>/dev/null || true
+                run_watchdog_child chown -R 1000:1000 "$$dir" 2>/dev/null || true
               fi
             fi
           fi
@@ -73,15 +90,15 @@ services:
             gid="$$(stat -c '%g' "$$pg_dir" 2>/dev/null || echo '')"
             if [ "$$uid" != "70" ] || [ "$$gid" != "70" ]; then
               echo "[axedgb] Fixing Postgres datadir ownership (70:70)"
-              chown -R 70:70 "$$pg_dir" 2>/dev/null || true
-              chmod 700 "$$pg_dir" 2>/dev/null || true
+              run_watchdog_child chown -R 70:70 "$$pg_dir" 2>/dev/null || true
+              run_watchdog_child chmod 700 "$$pg_dir" 2>/dev/null || true
             fi
           fi
           check_ui_dir /data/node "node dir" top
           check_ui_dir /data/pool/config "pool config dir"
           check_ui_dir /data/ui/state "UI state dir"
           check_ui_dir /data/templates "templates dir"
-          sleep 5
+          run_watchdog_child sleep 5
         done
 
   init:

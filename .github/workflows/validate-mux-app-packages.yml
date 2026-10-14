@@ -21,6 +21,8 @@ on:
       - "tests/test_ppc_immutable_release.py"
       - "PPC-IMMUTABLE-NODE-2026-10-14.json"
       - "POOL-SUPERVISOR-2026-10-14.json"
+      - "DGB-PERMISSION-SHUTDOWN-2026-10-14.json"
+      - "tests/test_dgb_permission_shutdown.py"
       - "tests/test_pool_supervisor_*.py"
       - "willitmod-dev-btc/data/templates/ckpool-entrypoint.sh"
       - "willitmod-dev-fracattack/data/templates/ckpool-entrypoint.sh"
@@ -54,6 +56,8 @@ on:
       - "tests/test_ppc_immutable_release.py"
       - "PPC-IMMUTABLE-NODE-2026-10-14.json"
       - "POOL-SUPERVISOR-2026-10-14.json"
+      - "DGB-PERMISSION-SHUTDOWN-2026-10-14.json"
+      - "tests/test_dgb_permission_shutdown.py"
       - "tests/test_pool_supervisor_*.py"
       - "willitmod-dev-btc/data/templates/ckpool-entrypoint.sh"
       - "willitmod-dev-fracattack/data/templates/ckpool-entrypoint.sh"
@@ -87,6 +91,8 @@ jobs:
           POOL_SUPERVISOR_DOCKER: '1'
           POOL_SUPERVISOR_REAL_NODE: '1'
           POOL_SUPERVISOR_RECEIPT: ${{ runner.temp }}/pool-supervisor-runtime.json
+          DGB_PERMISSION_DOCKER: '1'
+          DGB_PERMISSION_RECEIPT: ${{ runner.temp }}/dgb-permission-runtime.json
         run: python3 -m unittest discover -s tests -v
       - name: Preserve the bounded public native runtime receipt in logs
         if: always()
@@ -101,4 +107,18 @@ jobs:
           records=json.loads(body)
           print(json.dumps(records,indent=2))
           assert len(records)==10
+          PY
+      - name: Preserve the bounded public native permission helper receipt in logs
+        if: always()
+        env:
+          RECEIPT: ${{ runner.temp }}/dgb-permission-runtime.json
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          body=Path(os.environ['RECEIPT']).read_bytes()
+          assert len(body) <= 65536
+          records=json.loads(body)
+          print(json.dumps(records,indent=2))
+          assert len(records)==11
           PY

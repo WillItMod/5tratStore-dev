@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-dgb
 category: altcoin
 name: AxeDGB
-version: "0.9.189-dev"
+version: "0.9.189-dev.1"
 tagline: DGB node + solo pool
 description: >-
   RC6 RELEASE (DEV CHANNEL)
@@ -104,6 +104,8 @@ backupIgnore:
 submitter: WillItMod
 
 releaseNotes: >-
+  Stops the permission repair helper cleanly during a normal app restart. It signals and reaps its own repair or polling process. Existing ownership repair rules, images, UI, mining settings and chain data are unchanged.
+
   A current MUX response with an unconfirmed route now shows Pool estimate ·
   route unconfirmed. Missing, stale or malformed MUX data is labelled
   separately. Accepted pool estimates and history remain visible, and stale

@@ -5,6 +5,7 @@ import unittest
 from pathlib import Path
 
 import yaml
+from test_dgb_permission_shutdown import package_version
 
 ROOT = Path(__file__).resolve().parents[1] / "willitmod-dev-dgb"
 
@@ -38,7 +39,7 @@ class AxeDgbPackageTests(unittest.TestCase):
         mux = json.loads((ROOT.parent / "DIRECT-HASHRATE-2026-09-30.json").read_text())["apps"][ROOT.name]
         core = json.loads((ROOT.parent / "DGB-WATCHDOG-2026-10-02.json").read_text())
         route = json.loads((ROOT.parent / "DGB-ROUTE-EVIDENCE-2026-10-03.json").read_text())
-        self.assertEqual(yaml.safe_load((ROOT / "umbrel-app.yml").read_text())["version"], route["version"])
+        self.assertEqual(yaml.safe_load((ROOT / "umbrel-app.yml").read_text())["version"], package_version(ROOT.name, route["version"]))
         self.assertEqual(self.services["app"]["image"], route["imageRef"])
         self.assertEqual(self.services["app"]["environment"]["MUX_IDENTITY_URL"], "http://172.17.0.1:21222/api/integrations/workers")
         for service in ["init"]:

@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "channel": "DEV",
+  "appId": "willitmod-dev-dgb",
+  "baselineCommit": "90668db6cb000fdb3391d0d88997773563127370",
+  "beforePackageVersion": "0.9.189-dev",
+  "packageVersion": "0.9.189-dev.1",
+  "beforeModelSHA256": "080c5d26853c04954a854e157456d6213034f949daf3137abac6df28b53c94e0",
+  "afterModelSHA256": "f62342e6c88a0d010a4d9380e1075194961bc041aad97eddead666077b4cb39d",
+  "runtimeFieldChanged": [
+    "services",
+    "perm_watchdog",
+    "command",
+    2
+  ],
+  "beforeCommand": "set -eu\n# Some hosts/app-update flows can clobber Postgres ownership while the stack is running\n# (e.g., blanket chown of the app state dir). Watch for it and self-heal.\npg_dir=\"/data/pool/postgres\"\ncheck_ui_dir() {\n  dir=\"$$1\"\n  label=\"$$2\"\n  mode=\"$${3:-recursive}\"\n  if [ -d \"$$dir\" ]; then\n    uid=\"$$(stat -c '%u' \"$$dir\" 2>/dev/null || echo '')\"\n    gid=\"$$(stat -c '%g' \"$$dir\" 2>/dev/null || echo '')\"\n    if [ \"$$uid\" != \"1000\" ] || [ \"$$gid\" != \"1000\" ]; then\n      echo \"[axedgb] Fixing $$label ownership (1000:1000)\"\n      if [ \"$$mode\" = \"top\" ]; then\n        chown 1000:1000 \"$$dir\" 2>/dev/null || true\n      else\n        chown -R 1000:1000 \"$$dir\" 2>/dev/null || true\n      fi\n    fi\n  fi\n}\nwhile true; do\n  if [ -d \"$$pg_dir\" ]; then\n    uid=\"$$(stat -c '%u' \"$$pg_dir\" 2>/dev/null || echo '')\"\n    gid=\"$$(stat -c '%g' \"$$pg_dir\" 2>/dev/null || echo '')\"\n    if [ \"$$uid\" != \"70\" ] || [ \"$$gid\" != \"70\" ]; then\n      echo \"[axedgb] Fixing Postgres datadir ownership (70:70)\"\n      chown -R 70:70 \"$$pg_dir\" 2>/dev/null || true\n      chmod 700 \"$$pg_dir\" 2>/dev/null || true\n    fi\n  fi\n  check_ui_dir /data/node \"node dir\" top\n  check_ui_dir /data/pool/config \"pool config dir\"\n  check_ui_dir /data/ui/state \"UI state dir\"\n  check_ui_dir /data/templates \"templates dir\"\n  sleep 5\ndone",
+  "afterCommandSHA256": "7fcef5742fc58779cca16fd7391e754afdfbd22a64a8b163eceb3e90f1995f8c",
+  "imagesUnchanged": {
+    "init_permissions": "alpine:3.22.1",
+    "perm_watchdog": "alpine:3.22.1",
+    "init": "ghcr.io/willitmod/axedgb-init:0.9.181-dev",
+    "dgbd": "ghcr.io/willitmod/axedgb-core:9.26.6-dev.2@sha256:fb46ff018e701accf6630b65c4b33a7d9d24b5fa248c31122d2daa2503677039",
+    "postgres": "postgres:16-alpine",
+    "miningcore": "ghcr.io/willitmod/axedgb-miningcore:axedgb-0.8.10-r26",
+    "app": "ghcr.io/willitmod/axedgb-app:0.9.189-dev@sha256:7ccaced7437bcb50b245a4cc65e3a3a22f7570c00e0a267d22e14e789e2e4416"
+  },
+  "applicationVersionFieldUnchanged": null,
+  "scope": "Only the stateless permission repair helper supervision changes. Existing directory ownership tests, UID/GID roles, chmod rules, node-top-only behavior, UI, images, mining policy and application/chain state remain unchanged.",
+  "interruption": "TERM/INT signals and reaps only the tracked active chown/chmod/sleep. Recursive repair can be partial; BusyBox depth-first chown updates the top directory last, retaining the existing wrong-owner retry condition until recursive completion. Actual pinned-image interruption and restart must verify this; no completion markers are created.",
+  "upstreamTraversalReference": "https://sources.debian.org/src/busybox/1:1.37.0-6/coreutils/chown.c/",
+  "fullMiningQualification": false
+}
