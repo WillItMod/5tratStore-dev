@@ -121,6 +121,26 @@ class RecoveryTests(unittest.TestCase):
         self.assertEqual(result['state'], 'stopped')
         self.assertEqual(self.host.calls, [(BTC, 'stop')])
 
+    def test_metadata_only_repair_preserves_restricted_modes_and_ownership(self):
+        folder = self.install()
+        compose_path = folder / 'docker-compose.yml'
+        compose = yaml.safe_load(compose_path.read_text())
+        del compose['services']['app']['hostname']
+        # Custom recipe values may contain credentials. A narrow repair must
+        # not make their file readable by accounts that could not read it before.
+        compose['services']['app'].setdefault('environment', {})['PRIVATE_SETTING'] = 'must-stay-restricted'
+        compose_path.write_text(yaml.safe_dump(compose))
+        compose_path.chmod(0o600)
+        before_owner = (compose_path.stat().st_uid, compose_path.stat().st_gid)
+        untouched = {name: (folder / name).read_bytes() for name in ('data/wallet.dat', '.env', 'settings.yml', 'umbrel-app.yml')}
+        self.host.recover(BTC, 'repair', False)
+        actual = yaml.safe_load(compose_path.read_text())
+        self.assertEqual(actual['services']['app'].pop('hostname'), 'axebtc-app')
+        self.assertEqual(actual, compose)
+        self.assertEqual(stat.S_IMODE(compose_path.stat().st_mode), 0o600)
+        self.assertEqual((compose_path.stat().st_uid, compose_path.stat().st_gid), before_owner)
+        self.assertEqual({name: (folder / name).read_bytes() for name in untouched}, untouched)
+
     def test_legacy_exports_bootstrap_precedes_stop(self):
         folder = self.install()
         legacy = b'set -euo pipefail\nfalse\n'

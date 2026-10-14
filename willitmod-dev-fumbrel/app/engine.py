@@ -422,7 +422,7 @@ class Engine:
             record['phase'] = 'applying-recipe'
             self.save_backup(record)
             self.step(app_id, 'Applying verified package' if mode == 'update' else 'Applying compatibility repairs')
-            self.write_changes(folder, changes, entry)
+            self.write_changes(folder, changes, entry if mode == 'update' else None)
             record['phase'] = 'recipe-applied'
             self.save_backup(record)
             if start:
