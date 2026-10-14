@@ -7,16 +7,16 @@ services:
       APP_PORT: 12150
 
   server:
-    image: ghcr.io/willitmod/axemig:0.1.22-dev@sha256:b87581e4f23b5014499530615b3952a6c630400de51ef55e16ec03352b2ab968
+    image: ghcr.io/willitmod/axemig:0.1.23-dev@sha256:7d9b602b35a02e475055cd1a87d74de7dfc1c83f5af01bd909841d4943a098c0
     restart: on-failure
     stop_grace_period: 30s
     init: true
     environment:
-      APP_VERSION: 0.1.22-dev
+      APP_VERSION: 0.1.23-dev
       AXEMIG_HOME: /data
       AXEMIG_PORT: 12150
       AXEMIG_HOST: 0.0.0.0
-      AXEMIG_HELPER_IMAGE: ghcr.io/willitmod/axemig:0.1.22-dev@sha256:b87581e4f23b5014499530615b3952a6c630400de51ef55e16ec03352b2ab968
+      AXEMIG_HELPER_IMAGE: ghcr.io/willitmod/axemig:0.1.23-dev@sha256:7d9b602b35a02e475055cd1a87d74de7dfc1c83f5af01bd909841d4943a098c0
     volumes:
       - ${APP_DATA_DIR}/data:/data
       - /var/run/docker.sock:/var/run/docker.sock

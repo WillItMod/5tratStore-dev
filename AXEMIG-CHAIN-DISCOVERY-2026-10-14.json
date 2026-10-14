@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "channel": "DEV",
+  "appId": "willitmod-dev-axemig",
+  "packageVersion": "0.1.23-dev",
+  "baselineCommit": "1e002aad1678dc9d1668eb121e78bbfcd37a31d7",
+  "beforeModelSHA256": "347f9191b0d49b5e08d1405d54cbad1ec4d9eba11d391226463dfb8a00dd9faa",
+  "afterModelSHA256": "f1507c19b400d5a305242e495c5f14f4ba6f898a7c4b13590220d3181908d6d5",
+  "changes": [
+    {
+      "path": [
+        "services",
+        "server",
+        "image"
+      ],
+      "before": "ghcr.io/willitmod/axemig:0.1.22-dev@sha256:b87581e4f23b5014499530615b3952a6c630400de51ef55e16ec03352b2ab968",
+      "after": "ghcr.io/willitmod/axemig:0.1.23-dev@sha256:7d9b602b35a02e475055cd1a87d74de7dfc1c83f5af01bd909841d4943a098c0"
+    },
+    {
+      "path": [
+        "services",
+        "server",
+        "environment",
+        "AXEMIG_HELPER_IMAGE"
+      ],
+      "before": "ghcr.io/willitmod/axemig:0.1.22-dev@sha256:b87581e4f23b5014499530615b3952a6c630400de51ef55e16ec03352b2ab968",
+      "after": "ghcr.io/willitmod/axemig:0.1.23-dev@sha256:7d9b602b35a02e475055cd1a87d74de7dfc1c83f5af01bd909841d4943a098c0"
+    },
+    {
+      "path": [
+        "services",
+        "server",
+        "environment",
+        "APP_VERSION"
+      ],
+      "before": "0.1.22-dev",
+      "after": "0.1.23-dev"
+    }
+  ],
+  "image": "ghcr.io/willitmod/axemig:0.1.23-dev@sha256:7d9b602b35a02e475055cd1a87d74de7dfc1c83f5af01bd909841d4943a098c0",
+  "digest": "sha256:7d9b602b35a02e475055cd1a87d74de7dfc1c83f5af01bd909841d4943a098c0",
+  "source": "2e7509b73d54068d1d77b5409b8fbe3ec25887a8",
+  "sourceCandidate": "267ad2af1f949e3ca361fc1de27f63b57fb64278",
+  "workflow": 38634820405,
+  "anonymous_access": true,
+  "platforms": {
+    "amd64": {
+      "manifest_digest": "sha256:9e245869fbd35462f80cc085bb543cd80b5d12cdd2b3fce346e3f95c4cbf510e",
+      "config_digest": "sha256:ac80b4e263da8ffa6f127a1c4c14dcfd47ca884f7888a8785bd7b053d79e547c",
+      "source_tree": "55fd66de3f83d35c2e66b147ecf61662140bd444"
+    },
+    "arm64": {
+      "manifest_digest": "sha256:0ff75d665e46aa942baa997a5cf7c86e9415703fd561f68e4b98e4c5ea9cbd5d",
+      "config_digest": "sha256:7730aaa7b0c49bba3e51c2e7f05be2cccffff8ae87d374a723611105be2b8f86",
+      "source_tree": "55fd66de3f83d35c2e66b147ecf61662140bd444"
+    }
+  },
+  "sourceTests": 24,
+  "preservedCoreRuntimeEvidence": {
+    "version": "0.1.22-dev",
+    "checksPerPlatform": 48,
+    "platforms": [
+      "Umbrel1.7.4",
+      "Umbrel2.0.0",
+      "5tratumOS0.8.32"
+    ],
+    "scope": "Actual offline Bitcoin databases and a mounted ext4 image; no physical USB or full-chain throughput claim"
+  },
+  "actualNewClassificationRuntimeQualified": false,
+  "fullAppQualified": false
+}
