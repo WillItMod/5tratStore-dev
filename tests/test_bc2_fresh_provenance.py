@@ -4,6 +4,7 @@ These checks exercise initializer admission, not live chain/mining qualification
 The chain fixture represents data retained after a Core31 first boot; no RPC or
 Stratum server is mocked and no validation-completion marker is invented.
 """
+import ast
 import hashlib
 import json
 import os
@@ -163,6 +164,9 @@ class FreshCore31ProvenanceTests(unittest.TestCase):
         self.assertEqual(compose['services']['btc2d']['image'], RECORD['nodeImageUnchanged'])
         self.assertEqual(template['services']['btc2d']['image'], RECORD['nodeImageUnchanged'])
         self.assertEqual(compose['services']['app']['image'], RECORD['appImageUnchanged'])
+        accepted = json.loads((APP / 'DEV-ACCEPTANCE-EVIDENCE.json').read_text())
+        self.assertEqual(RECORD['nodeSourceRevision'], accepted['core_source_revision'])
+        self.assertTrue(RECORD['nodeImageUnchanged'].endswith('@'+accepted['core_digest']))
         manifest = yaml.safe_load((APP / 'umbrel-app.yml').read_text())
         self.assertEqual(manifest['version'], RECORD['packageVersion'])
         subprocess.run([os.sys.executable, str(ROOT / 'scripts/build-axebc2-umbrel.py'), '--check'], check=True)
@@ -172,3 +176,17 @@ class FreshCore31ProvenanceTests(unittest.TestCase):
             self.assertIn('fresh_image="'+RECORD['nodeImageUnchanged']+'"', text)
             self.assertIn('validate_complete_marker', text)
             self.assertIn('000000000000000013ceffe797280c57f75a5b9f1d9e70c3503584058c322576', text)
+
+    def test_metadata_validator_accepts_only_the_exact_current_package_revision(self):
+        source = ast.parse((ROOT / 'scripts/validate-axebc2-core31-dev.py').read_text())
+        functions = [n for n in source.body if isinstance(n, ast.FunctionDef)
+                     and n.name in ['require', 'validate_package_manifest']]
+        self.assertEqual(len(functions), 2)
+        namespace = {'yaml': yaml}
+        exec(compile(ast.Module(body=functions, type_ignores=[]), 'actual-package-validator', 'exec'), namespace)
+        validate = namespace['validate_package_manifest']
+        manifest = yaml.safe_load((APP / 'umbrel-app.yml').read_text())
+        validate(yaml.safe_dump(manifest))
+        for incorrect in ['0.1.22-dev', '0.1.22-dev.2', '0.1.22', '0.1.23-dev.1']:
+            with self.subTest(version=incorrect), self.assertRaises(SystemExit):
+                validate(yaml.safe_dump(dict(manifest, version=incorrect)))

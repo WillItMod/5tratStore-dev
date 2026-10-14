@@ -4,6 +4,8 @@ on:
   pull_request:
     paths:
       - "willitmod-dev-bc2/**"
+      - "BC2-FRESH-PROVENANCE-2026-10-14.json"
+      - "tests/test_bc2_fresh_provenance.py"
       - "tests/test_axebc2_core31_init.py"
       - "tests/test_axebc2_platform_integration.py"
       - "tests/test_axebc2_dev_finalizer.py"
@@ -23,6 +25,8 @@ on:
     branches: [main]
     paths:
       - "willitmod-dev-bc2/**"
+      - "BC2-FRESH-PROVENANCE-2026-10-14.json"
+      - "tests/test_bc2_fresh_provenance.py"
       - "tests/test_axebc2_core31_init.py"
       - "tests/test_axebc2_platform_integration.py"
       - "tests/test_axebc2_dev_finalizer.py"
