@@ -403,6 +403,10 @@
     {
       "evidence_id": "evidence/official/lab-image-source.json",
       "sha256": "c058f5ec5128fe2d73bead5ada43cfb5104dd3fe9f67492797dbba2beed99b2e"
+    },
+    {
+      "evidence_id": "evidence/official/proxmox-image-byte-verification.json",
+      "sha256": "197c09ebcac18736314c1f028641009b550cd4d7ff1ada128c0297ae5e44f16f"
     }
   ],
   "apps": [
@@ -9997,14 +10001,17 @@
           "url": "https://download.umbrel.com/release/1.7.4/umbrelos-amd64.img.xz",
           "published_sha256": "13e9aa857c49a8cf4262adec76c52c7f653166fe350d56f5531170fb3d7113ad",
           "http_status": 200,
-          "image_bytes_downloaded_and_hash_verified": false
+          "image_bytes_downloaded_and_hash_verified": true,
+          "observed_bytes": 1249130688
         },
         {
           "filename": "umbrelos-amd64.img",
           "url": "https://download.umbrel.com/release/1.7.4/umbrelos-amd64.img",
           "published_sha256": "d9eba54d7bc2763bb56752a6e2a43043ec3283198b9e69a50575874f2f1f52cf",
           "http_status": 404,
-          "image_bytes_downloaded_and_hash_verified": false
+          "image_bytes_downloaded_and_hash_verified": true,
+          "observed_bytes": 6505365504,
+          "verification_note": "Verified after decompressing the versioned .img.xz; raw URL remains unavailable"
         }
       ]
     },
@@ -10026,14 +10033,17 @@
           "url": "https://download.umbrel.com/release/2.0.0/umbrelos-amd64.img.xz",
           "published_sha256": "17ebcf8a32ff75e438f49308f7c33d6b74a896ff88245f09cb8ee778e11bf256",
           "http_status": 200,
-          "image_bytes_downloaded_and_hash_verified": false
+          "image_bytes_downloaded_and_hash_verified": true,
+          "observed_bytes": 1523656440
         },
         {
           "filename": "umbrelos-amd64.img",
           "url": "https://download.umbrel.com/release/2.0.0/umbrelos-amd64.img",
           "published_sha256": "bbdeb0af795b0a4bf3c1c22cd416a58866d356e971af9fba5c0ed987ecb1b8da",
           "http_status": 404,
-          "image_bytes_downloaded_and_hash_verified": false
+          "image_bytes_downloaded_and_hash_verified": true,
+          "observed_bytes": 8460959744,
+          "verification_note": "Verified after decompressing the versioned .img.xz; raw URL remains unavailable"
         }
       ]
     }
