@@ -154,7 +154,14 @@ printf '%s' "${JWT_SECRET-unset}"
                         env['JWT_SECRET'] = supplied
                     result = subprocess.run(['bash', '-c', script, 'probe', str(exports)], env=env, text=True, capture_output=True)
                     self.assertEqual(result.returncode, 0, result.stderr)
-                    self.assertEqual(result.stdout, expected)
+                    if app_id == BCH2:
+                        # This newly added export only resolves the declared socket
+                        # group. It must not discover or synthesize auth secrets.
+                        from test_bch2_restart_completion_release import RECORD as completion_record
+                        self.assertEqual(hashlib.sha256(exports.read_bytes()).hexdigest(), completion_record['exportsSHA256'])
+                        self.assertEqual(result.stdout, supplied if supplied else 'unset')
+                    else:
+                        self.assertEqual(result.stdout, expected)
 
 
 if __name__ == '__main__':

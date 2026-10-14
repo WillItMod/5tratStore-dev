@@ -1,0 +1,110 @@
+{
+  "baselineCommit": "d5dc75a03465bb8fc1a488bcf4375abb251ecf6c",
+  "channel": "DEV",
+  "packageVersion": "0.2.0.12-dev.2",
+  "beforeModelSHA256": "7387a836279563571a2f27ad064b3f7a8d102aac74efa9463d964f20af27e9d5",
+  "afterModelSHA256": "ea2ad4c393c7d6f75c43902d4d8c597fe0aa0fba56df9e3849450bd76c88fe22",
+  "changes": [
+    {
+      "path": [
+        "services",
+        "app",
+        "group_add"
+      ],
+      "beforeExists": false,
+      "before": null,
+      "after": [
+        "${AXEBCH2_DOCKER_GID:-1000}"
+      ]
+    },
+    {
+      "path": [
+        "services",
+        "ckpool",
+        "image"
+      ],
+      "beforeExists": true,
+      "before": "ghcr.io/willitmod/axebch2-ckpool:0.1.34-dev@sha256:4d2cc3813cd48211ce685e51afeaa62c3a606282bb8e6c8fa8ccc4e43ec75ec3",
+      "after": "ghcr.io/willitmod/axebch2-ckpool:0.1.34-idle-stop-dev-20261014@sha256:de3dca9f94f73aa9fb46812aa8ef65556e3ffa14b25ef3273bf4523753ea555c"
+    },
+    {
+      "path": [
+        "services",
+        "app",
+        "environment",
+        "CKPOOL_IMAGE"
+      ],
+      "beforeExists": true,
+      "before": "ghcr.io/willitmod/axebch2-ckpool:0.1.34-dev@sha256:4d2cc3813cd48211ce685e51afeaa62c3a606282bb8e6c8fa8ccc4e43ec75ec3",
+      "after": "ghcr.io/willitmod/axebch2-ckpool:0.1.34-idle-stop-dev-20261014@sha256:de3dca9f94f73aa9fb46812aa8ef65556e3ffa14b25ef3273bf4523753ea555c"
+    },
+    {
+      "path": [
+        "services",
+        "app",
+        "environment",
+        "APP_VERSION"
+      ],
+      "beforeExists": true,
+      "before": "0.2.0.12-dev.1",
+      "after": "0.2.0.12-dev.2"
+    }
+  ],
+  "exportsSHA256": "4b1ffe5ed6f521e6425a2a91e846aba614c5ad620e2db30388911e71d4000a9a",
+  "exportsMode": "0o755",
+  "fallbackPrimaryGID": "1000",
+  "applicationImageUnchanged": "ghcr.io/willitmod/axebch2-app:0.2.0.12-dev@sha256:65891eb60db568ca9f9ee21e00869769b5bc475a94f2af5f215dfdc55857e2d1",
+  "applicationSourceRevisionUnchanged": "5531b5e6e2e4c55353454665af9fc1950f9f0844",
+  "nodeImageUnchanged": "ghcr.io/willitmod/axebch2-node:0.1.34-fresh-entrypoint-dev-20261014@sha256:f90cbc4bc844a773b864c6f33300289a362b6ccd48aa014fd738578a608ca697",
+  "poolImageRef": "ghcr.io/willitmod/axebch2-ckpool:0.1.34-idle-stop-dev-20261014@sha256:de3dca9f94f73aa9fb46812aa8ef65556e3ffa14b25ef3273bf4523753ea555c",
+  "poolSourceRevision": "d1a7e6d362feda8485018082cda9ada353986917",
+  "poolSourceTree": "5a358c47c98c67e612e72c9a2464f4f4b0a2feb7",
+  "poolPublicationRun": 38648447565,
+  "poolEntrypointSHA256": "d730058daf999f6735fa943f711616ec9d5dc19d8a2d9f7369d719a12d360589",
+  "poolImages": {
+    "amd64": {
+      "manifestDigest": "sha256:6750fb19ced97c6b3366986ab5566e372d5705550caccd6a353b3dd133bc696e",
+      "configDigest": "sha256:d0af0bdde7e912f3b9daf700df795aa8fe207edad8804cc57e6b9cf01fcb75a4",
+      "binary": {
+        "sha256": "65b1daccb978ab52ee002837a36be2edf800fc9cb670c36322d3d9ae770123a6",
+        "bytes": 2472136,
+        "mode": 493,
+        "uid": 0,
+        "gid": 0
+      }
+    },
+    "arm64": {
+      "manifestDigest": "sha256:aa73f73e73d4565e5bae59d81a3310d8fc3be731879884f02a9165b3c9b2f040",
+      "configDigest": "sha256:8099ba94927370085fe97b14a947a9952432801a5166c258e98dcf32d8601661",
+      "binary": {
+        "sha256": "1960bab6cbabbec3c5c57ff023779fccb676b12d25eee78916a6e0e849eea998",
+        "bytes": 2431200,
+        "mode": 493,
+        "uid": 0,
+        "gid": 0
+      }
+    }
+  },
+  "publicationReceiptSHA256": "b0f3fd53dff99c5176507e7381aa6b4c8d0c844d8440b698641ffae83550e7ee",
+  "validationScope": {
+    "sourceExportsOnActualUmbrel174And200": true,
+    "gidOnlyActualInstalledNativeInstallAndUpdateRendererIdentity": true,
+    "combinedActualNativeRendererIdentity": true,
+    "normalAppManagerUpdateQualified": false,
+    "missingPayoutPoolIdleShutdownNativeAMDAndARM": true,
+    "miningProtocolQualified": false
+  },
+  "nativeSocketPolicy": "The existing native helper independently grants only the group of an existing declared group-writable socket. The default1000 duplicates the already configured primaryGID; it is not a guessed host socket group.",
+  "nativeRendererProof": {
+    "cliSHA256": "caa747717a3a5ba12dbc231ce79987179b3c37b8ca31d8f588baa1c30c715cfc",
+    "generatorSHA256": {
+      "install": "9dc8fd762892a0a4d4492de4348646df87584469eb079a3d9a54d53a7d594578",
+      "update": "0cf6ed5c7955a343ae7c3028c0e5a5b2872f41e8e011f41eabcf3df76f4ccd68"
+    },
+    "helperSHA256": {
+      "/opt/5tratumos/daemon/docker_socket_access.py": "e08271cf0c535aa638d83415b69858bc14c6b583f8bbad5a0f68777658985c87",
+      "/opt/5tratumos/daemon/app_stop_policy.py": "76400e6b4321ec04eaa67df87ba23a180530dcdb357b7b1db79d1ed2a812bdf5"
+    },
+    "receiptSHA256": "d6354e3d9c00c0d0e11ca2eacd80e7da9f6593587fa4a8d7ca03bba12ec61f9f"
+  }
+}
