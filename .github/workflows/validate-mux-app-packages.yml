@@ -19,6 +19,8 @@ on:
       - "SMACK-RELEASE-CANDIDATE-2026-09-30.json"
       - "tests/test_ppc_pool_lifecycle.py"
       - "tests/test_umbrel_cross_version.py"
+      - "tests/test_bench_network_release.py"
+      - "BENCH-NETWORK-2026-10-14.json"
       - ".github/workflows/validate-mux-app-packages.yml"
   push:
     branches: [main]
@@ -40,6 +42,8 @@ on:
       - "SMACK-RELEASE-CANDIDATE-2026-09-30.json"
       - "tests/test_ppc_pool_lifecycle.py"
       - "tests/test_umbrel_cross_version.py"
+      - "tests/test_bench_network_release.py"
+      - "BENCH-NETWORK-2026-10-14.json"
       - ".github/workflows/validate-mux-app-packages.yml"
 permissions:
   contents: read
@@ -48,6 +52,8 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
       - run: python3 -m pip install PyYAML==6.0.2
       - run: sudo apt-get update && sudo apt-get install --yes gettext-base jq
       - run: python3 -m unittest discover -s tests -v
