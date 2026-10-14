@@ -12,6 +12,7 @@ import unittest
 import yaml
 from test_powpow_sql_seed import package_version
 from test_bch2_node_entrypoint_release import package_version as bch2_package_version
+from test_ppc_immutable_release import APP as PPC, RECORD as PPC_RECORD
 
 from test_pool_retention_release import APPS
 
@@ -147,7 +148,8 @@ class MuxPackageTests(unittest.TestCase):
         self.assertEqual(set(release["apps"]), expected)
         for name, record in release["apps"].items():
             with self.subTest(app=name):
-                current = (json.loads((ROOT / "DGB-ROUTE-EVIDENCE-2026-10-03.json").read_text())
+                current = (PPC_RECORD if name == PPC else
+                           json.loads((ROOT / "DGB-ROUTE-EVIDENCE-2026-10-03.json").read_text())
                            if name == "willitmod-dev-dgb" else
                            json.loads((ROOT / "BCH2-PORTABLE-READINESS-2026-10-14.json").read_text())
                            if name == "willitmod-dev-axebch2" else APPS.get(name,record))

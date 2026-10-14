@@ -15,6 +15,7 @@ import yaml
 from test_xec_portable_release import package_version as xec_package_version
 from test_bc2_fresh_provenance import package_version as bc2_package_version
 from test_bch2_node_entrypoint_release import package_version as bch2_package_version
+from test_ppc_immutable_release import package_version as ppc_package_version
 
 ROOT = Path(__file__).resolve().parents[1]
 APP = 'willitmod-dev-powpow'
@@ -38,7 +39,7 @@ def previous_powpow_model(app_id, current):
     return restored
 
 def package_version(app_id, historical):
-    return RECORD['packageVersion'] if app_id == APP else bch2_package_version(app_id,bc2_package_version(app_id, xec_package_version(app_id, historical)))
+    return RECORD['packageVersion'] if app_id == APP else ppc_package_version(app_id,bch2_package_version(app_id,bc2_package_version(app_id, xec_package_version(app_id, historical))))
 
 class PowPowSqlSeedContractTests(unittest.TestCase):
     def test_seed_mount_is_deliverable_without_recipe_directory(self):

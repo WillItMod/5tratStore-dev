@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-ppc
 category: altcoin
 name: AxePPC
-version: "0.2.37-dev"
+version: "0.2.37-dev.1"
 tagline: PPC node + solo pool
 description: >-
   ALPHA RELEASE (DEV CHANNEL)
@@ -40,6 +40,8 @@ path: ""
 defaultUsername: ""
 defaultPassword: ""
 releaseNotes: >-
+  Pins the reviewed payout-validation app and an immutable Peercoin node image. The node retains the same official Peercoin 0.15.1ppc binaries and wrapper, and receives SIGTERM with two minutes for normal database shutdown. Existing chain data, wallets, payouts, pool image, mining configuration and Claude layout are retained.
+
   Best-share records now retain complete pool-log entries that arrive across
   separate reads. BCH and BCH2 also start their best-share tracker reliably.
   Existing records and direct/MUX hashrate support are retained; node and
