@@ -28,6 +28,9 @@ def previous_powpow_model(app_id, current):
     volumes = restored['services']['postgres']['volumes']
     assert volumes.count(RECORD['postgresInitMount']['after']) == 1
     volumes[volumes.index(RECORD['postgresInitMount']['after'])] = RECORD['postgresInitMount']['before']
+    command = restored['services']['init_permissions']['command']
+    assert command == RECORD['initPermissionsCommand']['after']
+    restored['services']['init_permissions']['command'] = copy.deepcopy(RECORD['initPermissionsCommand']['before'])
     assert digest(restored) == RECORD['beforeModelSHA256']
     return restored
 

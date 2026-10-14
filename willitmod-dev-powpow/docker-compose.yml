@@ -19,6 +19,19 @@ services:
       - -ec
       - |-
         set -eu
+        test -d /data
+        test ! -L /data
+        test -d /data/postgres-init
+        test ! -L /data/postgres-init
+        test -f /data/postgres-init/2-schema.sql
+        test ! -L /data/postgres-init/2-schema.sql
+        test "$$(stat -c '%h' /data/postgres-init/2-schema.sql)" = 1
+        test "$$(stat -c '%s' /data/postgres-init/2-schema.sql)" -le 2097152
+        test -f /data/postgres-init/3-multi-pool-partition.sql
+        test ! -L /data/postgres-init/3-multi-pool-partition.sql
+        test "$$(stat -c '%h' /data/postgres-init/3-multi-pool-partition.sql)" = 1
+        test "$$(stat -c '%s' /data/postgres-init/3-multi-pool-partition.sql)" -le 2097152
+        printf '%s\n' 'c9a0e0c871ddb7fe198e154903c053db1a26c614c5062d660af0add0e2fc8427  /data/postgres-init/2-schema.sql' '83a380949be2a2dd7b67a667575fc06133eae7be885ce458e0687803edc2f4bf  /data/postgres-init/3-multi-pool-partition.sql' | sha256sum -c -
         mkdir -p /data/ui/state /data/litecoin /data/dogecoin /data/pool/config /data/postgres
         chown -R 1000:1000 /data/ui /data/litecoin /data/dogecoin /data/pool /data/pool/config || true
         chown -R 70:70 /data/postgres || true
