@@ -33,7 +33,7 @@ path: ""
 defaultUsername: ""
 defaultPassword: ""
 releaseNotes: >-
-  Fresh BCH2 installations retain their synced chain on later normal restarts. The recipe pins a reviewed entrypoint-only node image over the tested node binaries and libraries. Existing explicit migration requests, app and pool images, mining configuration, payouts and data are retained.
+  Fresh installations using this node image retain their synced chain on later normal restarts. The recipe pins a reviewed entrypoint-only node image over the tested node binaries and libraries. App and pool images, wallets, payouts and configuration are retained. The existing required one-time resync/reindex policy remains active for unmarked legacy chain data.
 
   Settings restart status now remains pending until the required backend services provide fresh readiness evidence. Overlapping saves keep the latest pending state. The pool uses portable SHA256 with native amd64 and arm64 images. Existing node data, wallets, pool configuration, accounting history and the app SIGINT stop policy are retained.
 

@@ -72,6 +72,8 @@ class Bch2NodeEntrypointReleaseTests(unittest.TestCase):
             self.assertEqual(current.pop('version'),RECORD['packageVersion']);self.assertEqual(before.pop('version'),'0.2.0.12-dev')
             notes=current.pop('releaseNotes');old_notes=before.pop('releaseNotes')
             self.assertTrue(notes.endswith('\n'+old_notes));self.assertIn('entrypoint-only node image',notes)
+            self.assertIn('Fresh installations using this node image',notes)
+            self.assertIn('one-time resync/reindex policy remains active for unmarked legacy chain data',notes)
             self.assertEqual(current,before)
 
     def test_actual_published_source_and_both_platform_configs_are_immutable(self):
