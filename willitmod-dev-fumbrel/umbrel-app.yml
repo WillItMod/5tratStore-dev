@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-fumbrel
 category: utilities
 name: Fumbrel
-version: "0.1.0-dev"
+version: "0.1.1-dev"
 tagline: Fuck Up on Umbrel? Recover your apps.
 description: >-
   Fumbrel — Fuck Up on Umbrel. For when an OS upgrade leaves your apps having a bad day.
@@ -38,9 +38,12 @@ path: ""
 defaultUsername: ""
 defaultPassword: ""
 releaseNotes: >-
-  Initial DEV preview. Local SSH recovery with host-key verification, installed-app
-  scanning, recipe backups, compatibility repairs, forced package updates,
-  preservation of MAIN app IDs, and recipe restore while stopped.
+  Refresh bundled DEV recovery recipes, including AxeBench and AxeLive's
+  persistent-directory ownership hooks and AxeMIG's dashboard routing fix.
+  Block prerelease downgrades such as dev.1 to dev before creating a backup or
+  stopping an app. Full package recovery applies the bundled executable hook modes.
+  PowPow package recovery verifies that the reviewed SQL seeds were already copied
+  by the normal Umbrel store update; Fumbrel never writes those app-data files.
 submitter: WillItMod
 backupIgnore:
   - data/backups

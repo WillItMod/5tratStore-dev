@@ -21,7 +21,11 @@ DEV-only recovery for installed WillItMod apps on Umbrel 1.x and 2.0.
 
 The review dialog shows the exact installed and target versions. This release
 bundles reviewed snapshots; it does **not** fetch arbitrary latest packages.
-Higher installed numeric versions cannot be downgraded. MAIN IDs and their data
+Higher installed versions cannot be downgraded, including prerelease revisions
+such as `4.0.28-dev.1` compared with `4.0.28-dev`. Numeric components (including
+historical four-part versions) compare first, then SemVer prerelease identifiers;
+a stable release is newer than its prereleases, and build metadata is ignored.
+Unrecognized versions require manual review. MAIN IDs and their data
 directories are retained, including `willitmod-btc` when using the DEV BTC
 package. The MAIN store may continue advertising its older version until that
 store is promoted. Fumbrel does not change store subscriptions.
@@ -65,6 +69,17 @@ Restore requires a stopped app, first backs up its current recipe, restores the
 saved metadata, and leaves it stopped. It does not undo a node database migration;
 review binary/data compatibility before restarting an older restored recipe.
 
+PowPow's bundled `0.2.37-dev.2` recipe requires the two reviewed static SQL seeds
+at `data/postgres-init/2-schema.sql` and `data/postgres-init/3-multi-pool-partition.sql`.
+Fumbrel records only their expected hashes, and verifies the existing regular
+files through a canonical local app-data path before creating a backup, stopping
+the app or changing metadata. Missing, changed, linked or redirected seed files
+disable package recovery and direct you to the normal Umbrel store update, whose
+reviewed seed hook creates missing packaged seeds. Changed or redirected existing
+seeds require manual review. Fumbrel never copies or rewrites these files, reads a
+wallet/configuration as a seed, or supports redirected seed paths. Metadata-only
+compatibility repair remains available without these package-update prerequisites.
+
 Do not concurrently manage the selected apps in Umbrel while recovery runs.
 If an SSH/browser connection fails, scan again and check the saved checkpoint
 before retrying. An already-running host operation may finish after the browser
@@ -96,16 +111,30 @@ Use the same trusted connection to Umbrel that you use for its administrator UI.
 
 The catalog covers 14 app families / 18 known MAIN and DEV installation IDs.
 Thirteen packages come from DEV commit
-`8ce6fcc02b6c5d0cd4ee27f8803a6948e97c3f9e`; MAIN-only AxeSim comes from
+`1e052671efc1ae49ea32140e41aa6953d2e83039`; MAIN-only AxeSim comes from
 `5c68fc868c62eaeff2bb3f930cbf0193ac3931cb`. Each original file has a SHA-256 digest.
 MAIN identity substitutions and explicit gateway hostnames are applied after
 verifying those digests. AxeBC2 uses its Umbrel Compose template, not its native
 5tratumOS definition.
 
-`scripts/fumbrel/build_catalog.py` regenerates the bundle from those reviewed
-snapshots. A maintainer must review new source versions and refresh the snapshots
-before releasing a new Fumbrel package. Recipe files requiring update lifecycle
-hooks need corresponding engine support; they must not be blindly bundled.
+`scripts/fumbrel/build_catalog.py` reads immutable Git blobs and their executable
+modes. Its explicit DEV input is the commit above. Its retained-catalog input is
+`6f8ae3e7949433e64a144c9707432636bafb3e8a`: the complete existing AxeSim entry is reused without changing
+its MAIN source, bytes or modes. It does not read an uncommitted MAIN checkout.
+Fumbrel itself is excluded. A maintainer must review new source versions and
+refresh the snapshots before releasing a new Fumbrel package. Recovery executes
+Umbrel's normal stop/start actions, but does not run update-specific hooks; packages
+requiring those hooks need separate engine support before inclusion.
+
+Reproduce or verify the release bundle from a Git checkout containing the input
+commits:
+
+```sh
+python scripts/fumbrel/build_catalog.py \
+  --dev-ref 1e052671efc1ae49ea32140e41aa6953d2e83039 \
+  --retained-catalog-ref 6f8ae3e7949433e64a144c9707432636bafb3e8a \
+  --release 0.1.1-dev --check
+```
 
 Run:
 
@@ -115,6 +144,15 @@ python -m unittest discover -s tests/fumbrel -v
 python -m unittest discover -s tests -p test_umbrel_cross_version.py -v
 ```
 
-The image workflow builds `linux/amd64` and `linux/arm64`. Store releases pin the
-multi-architecture digest. Live acceptance results are recorded separately in
-`ACCEPTANCE.md`; building ARM does not establish Raspberry Pi hardware recovery.
+The image workflow tests and builds `linux/amd64` and `linux/arm64` on pull requests
+without publishing. Publishing requires an explicit manual run on `main` with
+`publish` enabled and uses the new `0.1.1-dev` tag. These
+publication runs are serialized for that tag, and an authenticated GHCR lookup
+must return HTTP 404 with `MANIFEST_UNKNOWN` before pushing. An existing tag or
+an authentication, network, rate-limit or other inconclusive error blocks the run.
+The workflow never interprets a generic image-inspection failure as absence.
+This candidate is unpublished:
+its Compose image must be pinned to the verified multi-architecture digest before
+release. It does not reuse the `0.1.0-dev` digest. Live acceptance results are
+recorded separately in `ACCEPTANCE.md`; that file describes `0.1.0-dev` only.
+Building ARM does not establish Raspberry Pi hardware recovery.

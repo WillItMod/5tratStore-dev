@@ -21,6 +21,7 @@ import uuid
 
 SELF = 'willitmod-dev-fumbrel'
 MAX_FILE = 2 * 1024 * 1024
+POWPOW_SEEDS = ('data/postgres-init/2-schema.sql', 'data/postgres-init/3-multi-pool-partition.sql')
 
 
 class RecoveryError(Exception):
@@ -102,16 +103,33 @@ def yaml_dump(value):
 
 
 def version_tuple(value):
-    match = re.fullmatch(r'v?(\d+(?:\.\d+)*)(?:[-+][A-Za-z0-9.+-]+)?', str(value))
+    # Keep Umbrel's historical four-part numeric versions, but compare the
+    # prerelease identifiers using SemVer precedence. Build metadata has no
+    # precedence. In particular, dev.1 must never be replaced by older dev.
+    match = re.fullmatch(
+        r'v?([0-9]+(?:\.[0-9]+)*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?'
+        r'(?:\+[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?', str(value))
     if not match:
         raise RecoveryError('Unrecognized version; automatic replacement is disabled.')
-    return tuple(int(part) for part in match.group(1).split('.'))
+    prerelease = match.group(2)
+    if prerelease and any(part.isdigit() and len(part) > 1 and part.startswith('0')
+                          for part in prerelease.split('.')):
+        raise RecoveryError('Unrecognized version; automatic replacement is disabled.')
+    return (tuple(int(part) for part in match.group(1).split('.')),
+            None if prerelease is None else tuple(
+                (0, int(part)) if part.isdigit() else (1, part)
+                for part in prerelease.split('.')))
 
 
 def is_newer(installed, target):
-    a, b = version_tuple(installed), version_tuple(target)
+    (a, a_pre), (b, b_pre) = version_tuple(installed), version_tuple(target)
     count = max(len(a), len(b))
-    return a + (0,) * (count - len(a)) > b + (0,) * (count - len(b))
+    a, b = a + (0,) * (count - len(a)), b + (0,) * (count - len(b))
+    if a != b:
+        return a > b
+    if a_pre is None or b_pre is None:
+        return a_pre is None and b_pre is not None
+    return a_pre > b_pre
 
 
 def fix_compose(value, app_id):
@@ -243,6 +261,51 @@ class Engine:
                     issues.extend(found)
         return changes, list(dict.fromkeys(issues))
 
+    def require_existing_seeds(self, folder, entry):
+        requirements = entry.get('required_existing_files', {})
+        if entry['source_id'] != 'willitmod-dev-powpow' and not requirements:
+            return
+        if (entry['source_id'] != 'willitmod-dev-powpow' or not isinstance(requirements, dict)
+                or set(requirements) != set(POWPOW_SEEDS)):
+            raise RecoveryError('Bundled SQL prerequisite metadata is invalid. No changes were made.')
+        for name in POWPOW_SEEDS:
+            record = requirements[name]
+            if (not isinstance(record, dict) or set(record) != {'sha256'}
+                    or not isinstance(record['sha256'], str) or not re.fullmatch('[0-9a-f]{64}', record['sha256'])):
+                raise RecoveryError('Bundled SQL prerequisite metadata is invalid. No changes were made.')
+            descriptor = None
+            try:
+                path = folder / name
+                if path.resolve(strict=True) != path:
+                    raise ValueError()
+                # Open only these two fixed SQL names, using directory handles
+                # and O_NOFOLLOW so ancestor changes cannot redirect the read.
+                descriptor = os.open(folder, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+                parts = name.split('/')
+                for part in parts[:-1]:
+                    child = os.open(part, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=descriptor)
+                    os.close(descriptor)
+                    descriptor = child
+                child = os.open(parts[-1], os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK, dir_fd=descriptor)
+                os.close(descriptor)
+                descriptor = child
+                info = os.fstat(descriptor)
+                if not stat.S_ISREG(info.st_mode) or info.st_nlink != 1 or info.st_size > MAX_FILE:
+                    raise ValueError()
+                hasher, total = hashlib.sha256(), 0
+                while block := os.read(descriptor, 64 * 1024):
+                    total += len(block)
+                    if total > MAX_FILE:
+                        raise ValueError()
+                    hasher.update(block)
+                if hasher.hexdigest() != record['sha256']:
+                    raise ValueError()
+            except (OSError, ValueError):
+                raise RecoveryError('PowPow SQL seed files are missing, changed or unsafe. Use the normal Umbrel store update before Fumbrel package recovery. Changed or redirected seeds require manual review.') from None
+            finally:
+                if descriptor is not None:
+                    os.close(descriptor)
+
     def scan(self):
         rows = []
         for app_id in sorted(set(self.installed()) & self.catalog['apps'].keys()):
@@ -253,7 +316,8 @@ class Engine:
                 folder = self.appdir(app_id)
                 manifest = yaml_load(read_file(folder, 'umbrel-app.yml'))
                 row['installed'] = str(manifest['version'])
-                row['can_update'] = not is_newer(row['installed'], entry['version'])
+                downgrade = is_newer(row['installed'], entry['version'])
+                row['can_update'] = not downgrade
                 row['main_identity'] = app_id != entry['source_id']
                 try:
                     _, row['issues'] = self.repair_plan(app_id)
@@ -261,8 +325,14 @@ class Engine:
                 except RecoveryError as error:
                     row['issues'] = [str(error)]
                     row['can_repair'] = False
-                if not row['can_update']:
+                if downgrade:
                     row['issues'].append('Installed version is newer than this recovery package; downgrade blocked')
+                else:
+                    try:
+                        self.require_existing_seeds(folder, entry)
+                    except RecoveryError as error:
+                        row['can_update'] = False
+                        row['issues'].append(str(error))
                 row['running'] = bool(self.running(app_id))
             except (RecoveryError, KeyError, TypeError, ValueError):
                 row.update(can_repair=False, can_update=False, issues=['Installed metadata needs manual review'])
@@ -363,7 +433,11 @@ class Engine:
         for name, body in changes.items():
             path = safe_path(folder, name)
             previous = path.stat() if path.exists() else None
-            mode = previous.st_mode & 0o777 if previous else (entry or {}).get('files', {}).get(name, {}).get('mode', 0o644)
+            # A full package update must retain the executable bits from Git,
+            # including when replacing an existing hook with a broken mode.
+            # Metadata-only repairs preserve the installed file's mode.
+            bundled_mode = (entry or {}).get('files', {}).get(name, {}).get('mode')
+            mode = bundled_mode if bundled_mode is not None else (previous.st_mode & 0o777 if previous else 0o644)
             if body is None:
                 if path.exists():
                     path.unlink()
@@ -379,6 +453,7 @@ class Engine:
         if mode == 'update' and is_newer(installed, entry['version']):
             raise RecoveryError('Downgrades are blocked. Install a newer Fumbrel release first.')
         if mode == 'update':
+            self.require_existing_seeds(folder, entry)
             target = self.target(app_id)
             # Only exports is replaced before stop; all other metadata waits
             # until normal Umbrel stop has completed and no nodes are running.
@@ -401,7 +476,7 @@ class Engine:
             record['phase'] = 'applying-recipe'
             self.save_backup(record)
             self.step(app_id, 'Applying verified package' if mode == 'update' else 'Applying compatibility repairs')
-            self.write_changes(folder, changes, entry)
+            self.write_changes(folder, changes, entry if mode == 'update' else None)
             record['phase'] = 'recipe-applied'
             self.save_backup(record)
             if start:
