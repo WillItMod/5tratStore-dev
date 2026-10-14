@@ -1,6 +1,6 @@
 # DEV compatibility matrix, 14 October 2026
 
-All 14 authoritative Umbrel apps are inventoried. No app is fully qualified for MAIN. Actual OS install, update, start, restart, persistent data, UI authentication, networking, application functionality and normal mining share checks remain pending. Static packaging and bounded local container evidence have narrower scope.
+All 14 authoritative Umbrel apps are inventoried. No app is fully qualified for MAIN. Fresh official AMD64 Umbrel guests and a native 5tratumOS guest now supply bounded lifecycle, persistence, authentication and utility evidence. Full browser, physical device, synchronized node and accepted mining share checks remain pending. The original matrix remains a timestamped catalogue snapshot; later observations below do not turn partial checks into full receipts.
 
 DEV baseline: `ab235b3b2dfd0b441a19bd373117d651d2e75d80`. [The detailed JSON matrix](COMPATIBILITY-2026-10-14.json) binds current manifest, Compose and portable package hashes, every declared service image and resolved platform digest, native recipes, source/image provenance and individual OS/architecture checks. Its evidence IDs and SHA256 hashes refer to retained audit artifacts outside this repository.
 
@@ -14,7 +14,23 @@ DEV baseline: `ab235b3b2dfd0b441a19bd373117d651d2e75d80`. [The detailed JSON mat
 - App parser/lifecycle contracts match 1.7.0 through 1.7.4. The 1.7.4 changes concern Tor images. This source comparison does not prove equivalent kernels, Docker, ingress or runtime behavior.
 - Umbrel 1.7 inherits its real app-proxy sidecar from the OS; Umbrel 2 removes that service and uses the in-process gateway. The app registry audit covers declared application images; the inherited platform sidecar still needs actual OS checks.
 
-## Current summary
+## Later owned-lab observations
+
+Task-owned Proxmox VMs 622 and 623 boot the checksum-verified official Umbrel 1.7.4 and 2.0.0 images; VM624 runs the verified public native 5tratumOS v0.8.31 payload on supported Debian13. Their x86-64-v2-AES CPUs have no AVX, AVX2 or BMI2. Router621 isolates the lab from production private networks. Existing VMs110/113 and host10.10.10.235 were preserved by this task.
+
+Both Umbrel versions reproduced root-owned data mounts in AxeBench/AxeLive: profile/licensing errors and preferences lost after restart. Umbrel1.7 also reproduced AxeMIG's shared `server` hostname resolving other utilities. [DEV recipe PR60](https://github.com/WillItMod/5tratStore-dev/pull/60), head `d2babe9340097675a5d51be5b2ae0dc053bc999f`, fixes directory ownership without changing child files and uses AxeMIG's unique container name. Normal updates report revisions `4.0.28-dev.1`, `1.4.2-dev.1` and `0.1.21-dev.1`; original data and image identities survived restart/update on both guests. The integrated suite passed93 tests without skips. Bounded MIG copy/move/Undo, Bench profile operations and scoped Fumbrel repair/restore also passed. Interactive browser, hardware and real database migration qualification remain separate.
+
+Native624's unmodified Bench/Live/MIG recipes passed191 bounded checks with persistent data, normal Off-update behavior and authenticated gateways. Native already creates the Bench/Live mounts as UID1000. Fumbrel was never installed or started there and remains Umbrel-only. The original published Fumbrel0.1.0 recovery bundle can remove the new utility hooks, so utility release awaits a matching reviewed Fumbrel catalogue.
+
+PowPow's original relative `postgres/init` files are omitted by the native importer. A recipe candidate placing unchanged SQL under `data/postgres-init` initialized nine PostgreSQL tables on native624 and both official Umbrel versions; native normal stop retained its database. Review then found that ordinary Umbrel updates omit `data/` too. Fresh-install success therefore does not qualify upgrades. Missing-only seed delivery via update-whitelisted metadata and a startup hash guard is under review; no existing database is rewritten and no PowPow MAIN pass is claimed.
+
+The BCH2 and XEC portable source candidates also built on native624 without AVX/AVX2/BMI2. Actual-source SHA256 vectors and final binary guards passed; both resulting executables returned zero for network-disabled `--help`. This proves the tested local CPU paths, not equivalence to separately published images or mining shares. DEV main later advanced to `5783f80763610b3b25817af9a85fbbdcb325d84f` through [PR59](https://github.com/WillItMod/5tratStore-dev/pull/59), publishing BCH2 `0.2.0.12-dev` / portable pool `0.1.34-dev`; the original matrix versions and CPU blocker entries below describe the earlier snapshot.
+
+The Mac mini chat separately reports OS0.8.32 and MUX0.9.76 releases with recovered layouts retained on10.10.10.235. The user specifically requires preservation of Claude's visual layouts and code fixes. Runtime/source/backups are being compared with the final merged release before further OS/MUX work. Earlier native v0.8.31 lab checks do not automatically qualify v0.8.32.
+
+`later_owned_lab_observations` in the JSON binds these reports to retained artifact hashes. All full-readiness cells remain pending; no application was promoted to MAIN by this task.
+
+## Original catalogue snapshot
 
 | App | Package version | Published image graph | Umbrel 1.7.4 | Umbrel 2.0.0 | Native 0.8.31 | Bounded local ARM64 evidence |
 | --- | --- | --- | --- | --- | --- | --- |

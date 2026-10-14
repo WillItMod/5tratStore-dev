@@ -10047,5 +10047,87 @@
         }
       ]
     }
-  ]
+  ],
+  "later_owned_lab_observations": {
+    "recorded_at_utc": "2026-10-14T15:27:44.543900+00:00",
+    "snapshot_preserved": true,
+    "store_head_observed": "5783f80763610b3b25817af9a85fbbdcb325d84f",
+    "utility_candidate_head": "d2babe9340097675a5d51be5b2ae0dc053bc999f",
+    "utility_pr": "https://github.com/WillItMod/5tratStore-dev/pull/60",
+    "vm_versions": {
+      "622": "Umbrel1.7.4",
+      "623": "Umbrel2.0.0",
+      "624": "5tratumOSv0.8.31 on Debian13"
+    },
+    "cpu": {
+      "model": "x86-64-v2-AES",
+      "avx": false,
+      "avx2": false,
+      "bmi2": false
+    },
+    "confirmed_recipe_findings": [
+      "Bench/Live root-owned data mount on both Umbrel versions",
+      "MIG shared server hostname conflict on Umbrel1.7",
+      "Fumbrel0.1.0 recovery catalogue lacks new utility hooks",
+      "Native PowPow importer omits postgres/init; ordinary Umbrel update also omits data/ seed delivery"
+    ],
+    "bounded_checks_only": true,
+    "full_os_qualification": false,
+    "main_promoted": false,
+    "fumbrel_native": "not installed; N/A Umbrel-only",
+    "native_latest_release_needs_new_qualification": "Mac reports OS0.8.32 and MUX0.9.76 released; v0.8.31 lab results are not inherited",
+    "claude_preservation": "Review UI layouts AND code fixes from .235 recovered runtime/source/backups against merged release before further OS/MUX changes",
+    "artifacts": [
+      {
+        "path": "evidence/runtime-umbrel174/README.md",
+        "bytes": 6546,
+        "sha256": "0911a78fe143f1c7318d48529badd9704a5afd98d02b0af09ee7f110ae90f248"
+      },
+      {
+        "path": "evidence/runtime-umbrel174/metadata-revision-qa.json",
+        "bytes": 6787,
+        "sha256": "04d937cfe78d46cc32cabfa6517c43b308d9b70c57c04b9ec258e3d49234862d"
+      },
+      {
+        "path": "evidence/runtime-umbrel200/README.md",
+        "bytes": 3477,
+        "sha256": "6e820fff1c51f19d19bd63d5311920844ada56632e6e56b742f79952f13fc85a"
+      },
+      {
+        "path": "evidence/runtime-umbrel200/fumbrel-expiry-observed.json",
+        "bytes": 242,
+        "sha256": "5c6cae0d63f25c24da1fd9e9edf15b912f2db58766c60dfb199b92de382d8be4"
+      },
+      {
+        "path": "evidence/runtime-native624/README.md",
+        "bytes": 4414,
+        "sha256": "dfd8c5e69b078d0cd86b0a7c31df8b13181e2c2a5e2f6676ffa0f5b924ef92b5"
+      },
+      {
+        "path": "evidence/runtime-native624/summary.json",
+        "bytes": 1484,
+        "sha256": "742173f160955f9edc07560dbf7a0fec3c6c2f06472c9b1662c6bee4485a2dbc"
+      },
+      {
+        "path": "evidence/runtime-native624/powpow-candidate/README.md",
+        "bytes": 3956,
+        "sha256": "b34249ad8c66a4c133f702e0e9a06e5e76f504621833f0a26c45acc9c73f9695"
+      },
+      {
+        "path": "evidence/cpu/native624-portable-candidate-startup.json",
+        "bytes": 2131,
+        "sha256": "db7939076f7d7d3cfff9345506df596680e2e1dab482f0e86cc235c410eb244b"
+      },
+      {
+        "path": "evidence/cpu/native624-portability.md",
+        "bytes": 1552,
+        "sha256": "9d7872c34b20877cd01a48c399dfdefa7830afce70a68677765a6e7e399d67ce"
+      },
+      {
+        "path": "evidence/utility-runtime-fix-suite-integrated.log",
+        "bytes": 15947,
+        "sha256": "f22bc2cdabdd0eaea03f9cf73f39eff080b7ec478e0b9fd1b626c948345aa6a1"
+      }
+    ]
+  }
 }
