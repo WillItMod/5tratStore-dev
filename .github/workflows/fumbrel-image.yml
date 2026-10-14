@@ -49,6 +49,9 @@ jobs:
     needs: verify
     if: github.event_name == 'workflow_dispatch' && inputs.publish && github.ref == 'refs/heads/main' && github.repository == 'WillItMod/5tratStore-dev'
     runs-on: ubuntu-latest
+    concurrency:
+      group: fumbrel-publish-0.1.1-dev
+      cancel-in-progress: false
     permissions:
       contents: read
       packages: write
@@ -61,6 +64,11 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Refuse an existing tag or an inconclusive registry response
+        env:
+          GHCR_USERNAME: ${{ github.repository_owner }}
+          GHCR_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+        run: python scripts/fumbrel/check_publish_tag.py --repository willitmod/fumbrel --tag 0.1.1-dev
       - name: Publish the explicitly approved DEV candidate
         uses: docker/build-push-action@v6
         with:

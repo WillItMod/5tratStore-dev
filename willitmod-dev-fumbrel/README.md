@@ -135,7 +135,12 @@ python -m unittest discover -s tests -p test_umbrel_cross_version.py -v
 
 The image workflow tests and builds `linux/amd64` and `linux/arm64` on pull requests
 without publishing. Publishing requires an explicit manual run on `main` with
-`publish` enabled and uses the new `0.1.1-dev` tag. This candidate is unpublished:
+`publish` enabled and uses the new `0.1.1-dev` tag. These
+publication runs are serialized for that tag, and an authenticated GHCR lookup
+must return HTTP 404 with `MANIFEST_UNKNOWN` before pushing. An existing tag or
+an authentication, network, rate-limit or other inconclusive error blocks the run.
+The workflow never interprets a generic image-inspection failure as absence.
+This candidate is unpublished:
 its Compose image must be pinned to the verified multi-architecture digest before
 release. It does not reuse the `0.1.0-dev` digest. Live acceptance results are
 recorded separately in `ACCEPTANCE.md`; that file describes `0.1.0-dev` only.

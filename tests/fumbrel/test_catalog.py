@@ -73,6 +73,15 @@ class CatalogTests(unittest.TestCase):
             self.assertIn(required, publish['if'])
         self.assertEqual(publish['needs'], 'verify')
         self.assertEqual(publish['permissions']['packages'], 'write')
+        self.assertEqual(publish['concurrency'], {'group': 'fumbrel-publish-' + builder.RELEASE, 'cancel-in-progress': 'false'})
+        checks = [i for i, step in enumerate(publish['steps']) if 'check_publish_tag.py' in step.get('run', '')]
+        pushes = [i for i, step in enumerate(publish['steps']) if step.get('with', {}).get('push') == 'true']
+        self.assertEqual(len(checks), 1)
+        self.assertEqual(len(pushes), 1)
+        self.assertLess(checks[0], pushes[0])
+        check = publish['steps'][checks[0]]
+        self.assertEqual(check['env']['GHCR_PASSWORD'], '${{ secrets.GITHUB_TOKEN }}')
+        self.assertNotIn('GITHUB_TOKEN', check['run'])
 
 
 if __name__ == '__main__':
