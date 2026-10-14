@@ -102,16 +102,33 @@ def yaml_dump(value):
 
 
 def version_tuple(value):
-    match = re.fullmatch(r'v?(\d+(?:\.\d+)*)(?:[-+][A-Za-z0-9.+-]+)?', str(value))
+    # Keep Umbrel's historical four-part numeric versions, but compare the
+    # prerelease identifiers using SemVer precedence. Build metadata has no
+    # precedence. In particular, dev.1 must never be replaced by older dev.
+    match = re.fullmatch(
+        r'v?([0-9]+(?:\.[0-9]+)*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?'
+        r'(?:\+[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?', str(value))
     if not match:
         raise RecoveryError('Unrecognized version; automatic replacement is disabled.')
-    return tuple(int(part) for part in match.group(1).split('.'))
+    prerelease = match.group(2)
+    if prerelease and any(part.isdigit() and len(part) > 1 and part.startswith('0')
+                          for part in prerelease.split('.')):
+        raise RecoveryError('Unrecognized version; automatic replacement is disabled.')
+    return (tuple(int(part) for part in match.group(1).split('.')),
+            None if prerelease is None else tuple(
+                (0, int(part)) if part.isdigit() else (1, part)
+                for part in prerelease.split('.')))
 
 
 def is_newer(installed, target):
-    a, b = version_tuple(installed), version_tuple(target)
+    (a, a_pre), (b, b_pre) = version_tuple(installed), version_tuple(target)
     count = max(len(a), len(b))
-    return a + (0,) * (count - len(a)) > b + (0,) * (count - len(b))
+    a, b = a + (0,) * (count - len(a)), b + (0,) * (count - len(b))
+    if a != b:
+        return a > b
+    if a_pre is None or b_pre is None:
+        return a_pre is None and b_pre is not None
+    return a_pre > b_pre
 
 
 def fix_compose(value, app_id):
@@ -363,7 +380,11 @@ class Engine:
         for name, body in changes.items():
             path = safe_path(folder, name)
             previous = path.stat() if path.exists() else None
-            mode = previous.st_mode & 0o777 if previous else (entry or {}).get('files', {}).get(name, {}).get('mode', 0o644)
+            # A full package update must retain the executable bits from Git,
+            # including when replacing an existing hook with a broken mode.
+            # Metadata-only repairs preserve the installed file's mode.
+            bundled_mode = (entry or {}).get('files', {}).get(name, {}).get('mode')
+            mode = bundled_mode if bundled_mode is not None else (previous.st_mode & 0o777 if previous else 0o644)
             if body is None:
                 if path.exists():
                     path.unlink()

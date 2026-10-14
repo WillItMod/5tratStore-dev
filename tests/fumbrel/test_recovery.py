@@ -39,6 +39,42 @@ class Host(engine.Engine):
         self.live[app_id] = [{'id': 'container', 'service': 'node'}] if action == 'start' else []
 
 
+class VersionTests(unittest.TestCase):
+    def test_prerelease_precedence_numeric_revisions_and_historical_versions(self):
+        pairs = [
+            ('4.0.28-dev.1', '4.0.28-dev'),
+            ('1.4.2-dev.10', '1.4.2-dev.2'),
+            ('0.1.21-dev.1', '0.1.21-dev'),
+            ('0.2.37-dev.1', '0.2.37-dev'),
+            ('1.0.0-alpha.1', '1.0.0-alpha'),
+            ('1.0.0-beta', '1.0.0-alpha.9'),
+            ('1.0.0-beta.11', '1.0.0-beta.2'),
+            ('1.0.0-dev.1', '1.0.0-beta.11'),
+            ('1.0.0', '1.0.0-dev.99'),
+            ('0.7.82.17-dev.1', '0.7.82.17-dev'),
+            ('0.7.82.18-alpha', '0.7.82.17'),
+            ('0.7.83-dev', '0.7.82.99'),
+            ('1.0.0-alpha.beta', '1.0.0-alpha.1'),
+        ]
+        for newer, older in pairs:
+            with self.subTest(newer=newer, older=older):
+                self.assertTrue(engine.is_newer(newer, older))
+                self.assertFalse(engine.is_newer(older, newer))
+
+    def test_build_metadata_and_zero_padding_have_no_precedence(self):
+        for a, b in [('v1.2.3', '1.2.3.0'), ('1.2.3-dev.1+build.7', '1.2.3-dev.1+other'),
+                     ('1.2.3+build.4', '1.2.3'), ('0.7.82.17-dev', '0.7.82.17-dev')]:
+            with self.subTest(a=a, b=b):
+                self.assertFalse(engine.is_newer(a, b))
+                self.assertFalse(engine.is_newer(b, a))
+
+    def test_unknown_or_ambiguous_versions_fail_closed(self):
+        for value in ('latest', '', '1.2.3-', '1.2.3+', '1.2.3-dev..1', '1.2.3-dev.01',
+                      '1.2.3_dev', '1.2.3+meta..1', '1.2.3\n', ' 1.2.3', '1.2.3-dev/1'):
+            with self.subTest(version=value), self.assertRaises(engine.RecoveryError):
+                engine.is_newer(value, '1.2.3')
+
+
 class RecoveryTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
@@ -131,6 +167,53 @@ class RecoveryTests(unittest.TestCase):
             self.host.recover(BTC, 'update', False)
         self.assertEqual(self.host.calls, [])
         self.assertFalse(self.host.backups.exists())
+
+    def test_old_bundle_cannot_remove_newer_utility_hooks_or_revisions(self):
+        for app_id, installed in [('willitmod-dev-axebench', '4.0.28-dev.1'),
+                                  ('willitmod-dev-axelive', '1.4.2-dev.1'),
+                                  ('willitmod-dev-axemig', '0.1.21-dev.1'),
+                                  ('willitmod-dev-powpow', '0.2.37-dev.1')]:
+            with self.subTest(app=app_id):
+                folder = self.install(app_id)
+                manifest = yaml.safe_load((folder / 'umbrel-app.yml').read_text())
+                manifest['version'] = installed
+                (folder / 'umbrel-app.yml').write_text(yaml.safe_dump(manifest))
+                self.catalog['apps'][app_id]['version'] = installed.rsplit('.', 1)[0]
+                self.catalog['apps'][app_id]['files'].pop('hooks/pre-start', None)
+                before = {p.relative_to(self.root): (p.read_bytes(), stat.S_IMODE(p.stat().st_mode), p.stat().st_mtime_ns)
+                          for p in self.root.rglob('*') if p.is_file()}
+                with patch.object(self.host, 'backup', side_effect=AssertionError('Backup attempted before downgrade rejection')) as backup, \
+                        patch.object(self.host, 'stop') as stop, \
+                        patch.object(self.host, 'write_changes') as write, \
+                        self.assertRaisesRegex(engine.RecoveryError, 'Downgrades'):
+                    self.host.recover(app_id, 'update', True)
+                backup.assert_not_called()
+                stop.assert_not_called()
+                write.assert_not_called()
+                self.assertEqual(self.host.calls, [])
+                self.assertFalse(self.host.backups.exists())
+                row = next(row for row in self.host.scan()['apps'] if row['id'] == app_id)
+                self.assertFalse(row['can_update'])
+                after = {p.relative_to(self.root): (p.read_bytes(), stat.S_IMODE(p.stat().st_mode), p.stat().st_mtime_ns)
+                         for p in self.root.rglob('*') if p.is_file()}
+                self.assertEqual(after, before)
+
+    def test_update_installs_and_repairs_executable_ownership_hook_modes(self):
+        for app_id in ('willitmod-dev-axebench', 'willitmod-dev-axelive'):
+            with self.subTest(app=app_id):
+                folder = self.install(app_id)
+                hook = folder / 'hooks/pre-start'
+                hook.unlink()
+                self.host.recover(app_id, 'update', False)
+                self.assertEqual(stat.S_IMODE(hook.stat().st_mode), 0o755)
+                owner = (hook.stat().st_uid, hook.stat().st_gid)
+                hook.chmod(0o644)
+                self.host.recover(app_id, 'update', False)
+                self.assertEqual(stat.S_IMODE(hook.stat().st_mode), 0o755)
+                self.assertEqual((hook.stat().st_uid, hook.stat().st_gid), owner)
+                self.assertEqual(hook.read_bytes(), base64.b64decode(self.catalog['apps'][app_id]['files']['hooks/pre-start']['body']))
+                self.assertEqual((folder / 'data/wallet.dat').read_bytes(), b'precious-wallet-sentinel')
+                self.assertEqual((folder / '.env').read_text(), 'RPC_PASSWORD=must-stay-private\n')
 
     def test_same_version_reapply_and_idempotent_repair(self):
         self.install()
