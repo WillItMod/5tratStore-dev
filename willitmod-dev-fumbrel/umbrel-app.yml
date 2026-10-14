@@ -42,6 +42,8 @@ releaseNotes: >-
   persistent-directory ownership hooks and AxeMIG's dashboard routing fix.
   Block prerelease downgrades such as dev.1 to dev before creating a backup or
   stopping an app. Full package recovery applies the bundled executable hook modes.
+  PowPow package recovery verifies that the reviewed SQL seeds were already copied
+  by the normal Umbrel store update; Fumbrel never writes those app-data files.
 submitter: WillItMod
 backupIgnore:
   - data/backups

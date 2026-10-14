@@ -21,6 +21,7 @@ import uuid
 
 SELF = 'willitmod-dev-fumbrel'
 MAX_FILE = 2 * 1024 * 1024
+POWPOW_SEEDS = ('data/postgres-init/2-schema.sql', 'data/postgres-init/3-multi-pool-partition.sql')
 
 
 class RecoveryError(Exception):
@@ -260,6 +261,51 @@ class Engine:
                     issues.extend(found)
         return changes, list(dict.fromkeys(issues))
 
+    def require_existing_seeds(self, folder, entry):
+        requirements = entry.get('required_existing_files', {})
+        if entry['source_id'] != 'willitmod-dev-powpow' and not requirements:
+            return
+        if (entry['source_id'] != 'willitmod-dev-powpow' or not isinstance(requirements, dict)
+                or set(requirements) != set(POWPOW_SEEDS)):
+            raise RecoveryError('Bundled SQL prerequisite metadata is invalid. No changes were made.')
+        for name in POWPOW_SEEDS:
+            record = requirements[name]
+            if (not isinstance(record, dict) or set(record) != {'sha256'}
+                    or not isinstance(record['sha256'], str) or not re.fullmatch('[0-9a-f]{64}', record['sha256'])):
+                raise RecoveryError('Bundled SQL prerequisite metadata is invalid. No changes were made.')
+            descriptor = None
+            try:
+                path = folder / name
+                if path.resolve(strict=True) != path:
+                    raise ValueError()
+                # Open only these two fixed SQL names, using directory handles
+                # and O_NOFOLLOW so ancestor changes cannot redirect the read.
+                descriptor = os.open(folder, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+                parts = name.split('/')
+                for part in parts[:-1]:
+                    child = os.open(part, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=descriptor)
+                    os.close(descriptor)
+                    descriptor = child
+                child = os.open(parts[-1], os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK, dir_fd=descriptor)
+                os.close(descriptor)
+                descriptor = child
+                info = os.fstat(descriptor)
+                if not stat.S_ISREG(info.st_mode) or info.st_nlink != 1 or info.st_size > MAX_FILE:
+                    raise ValueError()
+                hasher, total = hashlib.sha256(), 0
+                while block := os.read(descriptor, 64 * 1024):
+                    total += len(block)
+                    if total > MAX_FILE:
+                        raise ValueError()
+                    hasher.update(block)
+                if hasher.hexdigest() != record['sha256']:
+                    raise ValueError()
+            except (OSError, ValueError):
+                raise RecoveryError('PowPow SQL seed files are missing, changed or unsafe. Use the normal Umbrel store update before Fumbrel package recovery. Changed or redirected seeds require manual review.') from None
+            finally:
+                if descriptor is not None:
+                    os.close(descriptor)
+
     def scan(self):
         rows = []
         for app_id in sorted(set(self.installed()) & self.catalog['apps'].keys()):
@@ -270,7 +316,8 @@ class Engine:
                 folder = self.appdir(app_id)
                 manifest = yaml_load(read_file(folder, 'umbrel-app.yml'))
                 row['installed'] = str(manifest['version'])
-                row['can_update'] = not is_newer(row['installed'], entry['version'])
+                downgrade = is_newer(row['installed'], entry['version'])
+                row['can_update'] = not downgrade
                 row['main_identity'] = app_id != entry['source_id']
                 try:
                     _, row['issues'] = self.repair_plan(app_id)
@@ -278,8 +325,14 @@ class Engine:
                 except RecoveryError as error:
                     row['issues'] = [str(error)]
                     row['can_repair'] = False
-                if not row['can_update']:
+                if downgrade:
                     row['issues'].append('Installed version is newer than this recovery package; downgrade blocked')
+                else:
+                    try:
+                        self.require_existing_seeds(folder, entry)
+                    except RecoveryError as error:
+                        row['can_update'] = False
+                        row['issues'].append(str(error))
                 row['running'] = bool(self.running(app_id))
             except (RecoveryError, KeyError, TypeError, ValueError):
                 row.update(can_repair=False, can_update=False, issues=['Installed metadata needs manual review'])
@@ -400,6 +453,7 @@ class Engine:
         if mode == 'update' and is_newer(installed, entry['version']):
             raise RecoveryError('Downgrades are blocked. Install a newer Fumbrel release first.')
         if mode == 'update':
+            self.require_existing_seeds(folder, entry)
             target = self.target(app_id)
             # Only exports is replaced before stop; all other metadata waits
             # until normal Umbrel stop has completed and no nodes are running.

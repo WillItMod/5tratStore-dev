@@ -69,6 +69,17 @@ Restore requires a stopped app, first backs up its current recipe, restores the
 saved metadata, and leaves it stopped. It does not undo a node database migration;
 review binary/data compatibility before restarting an older restored recipe.
 
+PowPow's bundled `0.2.37-dev.2` recipe requires the two reviewed static SQL seeds
+at `data/postgres-init/2-schema.sql` and `data/postgres-init/3-multi-pool-partition.sql`.
+Fumbrel records only their expected hashes, and verifies the existing regular
+files through a canonical local app-data path before creating a backup, stopping
+the app or changing metadata. Missing, changed, linked or redirected seed files
+disable package recovery and direct you to the normal Umbrel store update, whose
+reviewed seed hook creates missing packaged seeds. Changed or redirected existing
+seeds require manual review. Fumbrel never copies or rewrites these files, reads a
+wallet/configuration as a seed, or supports redirected seed paths. Metadata-only
+compatibility repair remains available without these package-update prerequisites.
+
 Do not concurrently manage the selected apps in Umbrel while recovery runs.
 If an SSH/browser connection fails, scan again and check the saved checkpoint
 before retrying. An already-running host operation may finish after the browser
@@ -100,7 +111,7 @@ Use the same trusted connection to Umbrel that you use for its administrator UI.
 
 The catalog covers 14 app families / 18 known MAIN and DEV installation IDs.
 Thirteen packages come from DEV commit
-`6f8ae3e7949433e64a144c9707432636bafb3e8a`; MAIN-only AxeSim comes from
+`1e052671efc1ae49ea32140e41aa6953d2e83039`; MAIN-only AxeSim comes from
 `5c68fc868c62eaeff2bb3f930cbf0193ac3931cb`. Each original file has a SHA-256 digest.
 MAIN identity substitutions and explicit gateway hostnames are applied after
 verifying those digests. AxeBC2 uses its Umbrel Compose template, not its native
@@ -108,7 +119,7 @@ verifying those digests. AxeBC2 uses its Umbrel Compose template, not its native
 
 `scripts/fumbrel/build_catalog.py` reads immutable Git blobs and their executable
 modes. Its explicit DEV input is the commit above. Its retained-catalog input is
-also that commit: the complete existing AxeSim entry is reused without changing
+`6f8ae3e7949433e64a144c9707432636bafb3e8a`: the complete existing AxeSim entry is reused without changing
 its MAIN source, bytes or modes. It does not read an uncommitted MAIN checkout.
 Fumbrel itself is excluded. A maintainer must review new source versions and
 refresh the snapshots before releasing a new Fumbrel package. Recovery executes
@@ -120,7 +131,7 @@ commits:
 
 ```sh
 python scripts/fumbrel/build_catalog.py \
-  --dev-ref 6f8ae3e7949433e64a144c9707432636bafb3e8a \
+  --dev-ref 1e052671efc1ae49ea32140e41aa6953d2e83039 \
   --retained-catalog-ref 6f8ae3e7949433e64a144c9707432636bafb3e8a \
   --release 0.1.1-dev --check
 ```

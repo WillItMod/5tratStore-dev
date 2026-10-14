@@ -41,6 +41,8 @@ class CatalogTests(unittest.TestCase):
         compose = base64.b64decode(CATALOG['apps']['willitmod-dev-axemig']['files']['docker-compose.yml']['body'])
         self.assertEqual(yaml.safe_load(compose)['services']['app_proxy']['environment']['APP_HOST'],
                          'willitmod-dev-axemig_server_1')
+        self.assertEqual(CATALOG['apps']['willitmod-dev-powpow']['version'], '0.2.37-dev.2')
+        self.assertEqual(CATALOG['apps']['willitmod-dev-axebch2']['version'], '0.2.0.12-dev')
 
     def test_main_axesim_entry_is_retained_exactly(self):
         previous = json.loads(builder.git('show', builder.RETAINED_CATALOG_COMMIT + ':' + builder.CATALOG_PATH))
@@ -48,6 +50,22 @@ class CatalogTests(unittest.TestCase):
         self.assertEqual(CATALOG['apps']['willitmod-axesim']['source_commit'], builder.MAIN_COMMIT)
         self.assertEqual(len(CATALOG['apps']), 18)
         self.assertNotIn(builder.SELF, CATALOG['apps'])
+
+    def test_powpow_static_seed_prerequisites_are_hashes_only(self):
+        entry = CATALOG['apps']['willitmod-dev-powpow']
+        self.assertEqual(entry['files']['hooks/pre-start']['mode'], 0o755)
+        for template in ('powpow-2-schema.sql.template', 'powpow-3-multi-pool-partition.sql.template'):
+            self.assertIn(template, entry['files'])
+        self.assertEqual(set(entry['required_existing_files']), set(builder.POWPOW_SEEDS))
+        for name, requirement in entry['required_existing_files'].items():
+            with self.subTest(seed=name):
+                self.assertEqual(set(requirement), {'sha256'})
+                body = builder.git('show', builder.DEV_COMMIT + ':' + entry['source_id'] + '/' + name)
+                self.assertEqual(requirement['sha256'], hashlib.sha256(body).hexdigest())
+                self.assertNotIn(name, entry['files'])
+        for other in CATALOG['apps'].values():
+            if other['source_id'] != entry['source_id']:
+                self.assertNotIn('required_existing_files', other)
 
     def test_mutable_or_abbreviated_refs_are_rejected(self):
         for ref in ('HEAD', 'main', builder.DEV_COMMIT[:8], '--help', builder.DEV_COMMIT.upper()):

@@ -4,7 +4,9 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import shutil
 import stat
+import subprocess
 import sys
 import tempfile
 import time
@@ -105,6 +107,13 @@ class RecoveryTests(unittest.TestCase):
         (folder / '.env').write_text('RPC_PASSWORD=must-stay-private\n')
         (folder / 'settings.yml').write_text('autoStart: false\ncustomEnvironment: []\n')
         return folder
+
+    def seed_powpow(self, folder):
+        entry = self.catalog['apps']['willitmod-dev-powpow']
+        for name in engine.POWPOW_SEEDS:
+            path = folder / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(subprocess.check_output(['git', 'show', entry['source_commit'] + ':' + entry['source_id'] + '/' + name], cwd=ROOT))
 
     def test_repair_preserves_images_identity_and_persistent_state(self):
         folder = self.install()
@@ -234,6 +243,101 @@ class RecoveryTests(unittest.TestCase):
                 self.assertEqual(hook.read_bytes(), base64.b64decode(self.catalog['apps'][app_id]['files']['hooks/pre-start']['body']))
                 self.assertEqual((folder / 'data/wallet.dat').read_bytes(), b'precious-wallet-sentinel')
                 self.assertEqual((folder / '.env').read_text(), 'RPC_PASSWORD=must-stay-private\n')
+
+    def test_powpow_seed_prerequisites_block_before_backup_stop_or_writes(self):
+        app_id = 'willitmod-dev-powpow'
+        for condition in ('missing', 'stale', 'symlink-file', 'symlink-directory', 'hardlink', 'fifo'):
+            with self.subTest(condition=condition):
+                # A failed assertion in one subcase must not contaminate the next.
+                previous = self.root / 'app-data' / app_id
+                if previous.exists():
+                    shutil.rmtree(previous)
+                (self.root / 'umbrel.yaml').write_text('apps: []\n')
+                folder = self.install(app_id)
+                self.seed_powpow(folder)
+                seed = folder / engine.POWPOW_SEEDS[0]
+                outside = self.root / 'untouched-outside.sql'
+                outside.write_bytes(b'outside-private-sentinel')
+                if condition == 'missing':
+                    seed.unlink()
+                elif condition == 'stale':
+                    seed.write_bytes(b'changed-static-seed')
+                elif condition == 'symlink-file':
+                    seed.unlink()
+                    seed.symlink_to(outside)
+                elif condition == 'symlink-directory':
+                    old = seed.parent
+                    preserved = folder / 'seed-directory-before-test'
+                    old.rename(preserved)
+                    old.symlink_to(preserved, target_is_directory=True)
+                elif condition == 'hardlink':
+                    seed.unlink()
+                    os.link(outside, seed)
+                elif condition == 'fifo':
+                    seed.unlink()
+                    os.mkfifo(seed)
+                data_before = {name: (folder / name).read_bytes() for name in ('data/wallet.dat', '.env', 'settings.yml', 'umbrel-app.yml', 'docker-compose.yml')}
+                with patch.object(self.host, 'backup', side_effect=AssertionError('Backup attempted before seed prerequisite rejection')) as backup, \
+                        patch.object(self.host, 'stop') as stop, patch.object(self.host, 'write_changes') as write, \
+                        self.assertRaisesRegex(engine.RecoveryError, 'normal Umbrel store update'):
+                    self.host.recover(app_id, 'update', True)
+                backup.assert_not_called()
+                stop.assert_not_called()
+                write.assert_not_called()
+                self.assertEqual(self.host.calls, [])
+                self.assertFalse(self.host.backups.exists())
+                self.assertEqual({name: (folder / name).read_bytes() for name in data_before}, data_before)
+                self.assertEqual(outside.read_bytes(), b'outside-private-sentinel')
+                row = next(row for row in self.host.scan()['apps'] if row['id'] == app_id)
+                self.assertFalse(row['can_update'])
+                self.assertTrue(row['can_repair'])
+                self.assertTrue(any('normal Umbrel store update' in issue for issue in row['issues']))
+                # Keep each subcase in its own installed-app directory.
+                shutil.rmtree(folder)
+                (self.root / 'umbrel.yaml').write_text('apps: []\n')
+                outside.unlink()
+
+    def test_powpow_exact_existing_seeds_enable_update_without_data_writes(self):
+        app_id = 'willitmod-dev-powpow'
+        folder = self.install(app_id)
+        self.seed_powpow(folder)
+        before = {p.relative_to(folder): (p.read_bytes(), stat.S_IMODE(p.stat().st_mode), p.stat().st_mtime_ns)
+                  for p in (folder / 'data').rglob('*') if p.is_file()}
+        private = {name: (folder / name).read_bytes() for name in ('.env', 'settings.yml')}
+        row = next(row for row in self.host.scan()['apps'] if row['id'] == app_id)
+        self.assertTrue(row['can_update'])
+        result = self.host.recover(app_id, 'update', False)
+        self.assertEqual(result['state'], 'stopped')
+        self.assertEqual(self.host.calls, [(app_id, 'stop')])
+        self.assertEqual({p.relative_to(folder): (p.read_bytes(), stat.S_IMODE(p.stat().st_mode), p.stat().st_mtime_ns)
+                          for p in (folder / 'data').rglob('*') if p.is_file()}, before)
+        self.assertEqual({name: (folder / name).read_bytes() for name in private}, private)
+        compose = yaml.safe_load((folder / 'docker-compose.yml').read_text())
+        self.assertIn('${APP_DATA_DIR}/data/postgres-init:/docker-entrypoint-initdb.d:ro', compose['services']['postgres']['volumes'])
+
+    def test_powpow_metadata_repair_does_not_require_sql_seeds(self):
+        app_id = 'willitmod-dev-powpow'
+        folder = self.install(app_id)
+        compose = yaml.safe_load((folder / 'docker-compose.yml').read_text())
+        compose['services']['litecoin']['user'] = 'root'
+        (folder / 'docker-compose.yml').write_text(yaml.safe_dump(compose))
+        self.host.recover(app_id, 'repair', False)
+        self.assertFalse((folder / 'data/postgres-init').exists())
+        self.assertEqual((folder / 'data/wallet.dat').read_bytes(), b'precious-wallet-sentinel')
+        self.assertEqual(self.host.calls, [(app_id, 'stop')])
+
+    def test_powpow_seed_metadata_cannot_expand_into_other_app_data(self):
+        app_id = 'willitmod-dev-powpow'
+        folder = self.install(app_id)
+        for requirements in ({}, {'data/wallet.dat': {'sha256': '0' * 64}},
+                             {name: {'sha256': 'invalid'} for name in engine.POWPOW_SEEDS}):
+            with self.subTest(requirements=requirements):
+                self.catalog['apps'][app_id]['required_existing_files'] = requirements
+                with patch.object(self.host, 'backup') as backup, self.assertRaisesRegex(engine.RecoveryError, 'prerequisite metadata is invalid'):
+                    self.host.recover(app_id, 'update', False)
+                backup.assert_not_called()
+                self.assertEqual(self.host.calls, [])
+                self.assertEqual((folder / 'data/wallet.dat').read_bytes(), b'precious-wallet-sentinel')
 
     def test_same_version_reapply_and_idempotent_repair(self):
         self.install()

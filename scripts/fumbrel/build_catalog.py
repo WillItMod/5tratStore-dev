@@ -16,12 +16,13 @@ import subprocess
 import yaml
 
 ROOT = Path(__file__).resolve().parents[2]
-DEV_COMMIT = '6f8ae3e7949433e64a144c9707432636bafb3e8a'
+DEV_COMMIT = '1e052671efc1ae49ea32140e41aa6953d2e83039'
 RETAINED_CATALOG_COMMIT = '6f8ae3e7949433e64a144c9707432636bafb3e8a'
 MAIN_COMMIT = '5c68fc868c62eaeff2bb3f930cbf0193ac3931cb'
 RELEASE = '0.1.1-dev'
 CATALOG_PATH = 'willitmod-dev-fumbrel/app/catalog.json'
 SELF = 'willitmod-dev-fumbrel'
+POWPOW_SEEDS = ('data/postgres-init/2-schema.sql', 'data/postgres-init/3-multi-pool-partition.sql')
 LEGACY = [
     '723d296b8548d7d025303f81f811838842a742b7bd628d2e5d7e99d7d3952293',
     '2206ee3269f996409aee62da4dab552f853194a9e8b33505137dba223f6f108e',
@@ -95,6 +96,12 @@ def build(dev_ref=DEV_COMMIT, retained_catalog_ref=RETAINED_CATALOG_COMMIT,
             aliases.append(folder.replace('willitmod-dev-', 'willitmod-'))
         entry = {'name': manifest['name'], 'version': str(manifest['version']), 'source_id': folder,
                  'source_commit': dev_ref, 'channel': 'DEV', 'files': files}
+        if folder == 'willitmod-dev-powpow':
+            # These static seeds are copied by the normal Umbrel store update.
+            # Fumbrel may verify their presence, but must never write app data.
+            entry['required_existing_files'] = {
+                name: {'sha256': hashlib.sha256(git('show', dev_ref + ':' + folder + '/' + name, repo=repo)).hexdigest()}
+                for name in POWPOW_SEEDS}
         for alias in aliases:
             catalog['apps'][alias] = entry
     catalog['apps']['willitmod-axesim'] = retained_main(retained_catalog_ref, repo)
