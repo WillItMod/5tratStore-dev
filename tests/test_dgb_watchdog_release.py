@@ -6,6 +6,7 @@ from pathlib import Path
 import unittest
 import yaml
 from test_dgb_route_release import previous_route_model, record as route_record
+from test_dgb_permission_shutdown import package_version
 ROOT=Path(__file__).resolve().parents[1]
 APP='willitmod-dev-dgb'
 def digest(value):return hashlib.sha256(json.dumps(value,sort_keys=True,separators=(',',':')).encode()).hexdigest()
@@ -34,7 +35,7 @@ class WatchdogReleaseTests(unittest.TestCase):
         self.assertRegex(r['imageRef'],r'^ghcr.io/willitmod/axedgb-app:0\.9\.188-dev@sha256:[a-f0-9]{64}$')
         self.assertRegex(r['coreImageRef'],r'^ghcr.io/willitmod/axedgb-core:9\.26\.6-dev\.2@sha256:[a-f0-9]{64}$')
         current=yaml.safe_load((ROOT/APP/'docker-compose.yml').read_text());previous_watchdog_model(APP,current)
-        manifest=yaml.safe_load((ROOT/APP/'umbrel-app.yml').read_text());self.assertEqual(manifest['version'],route_record()['version'])
+        manifest=yaml.safe_load((ROOT/APP/'umbrel-app.yml').read_text());self.assertEqual(manifest['version'],package_version(APP,route_record()['version']))
         for text in ('defaults to Off','Turn off watchdog','9.26.6','24,490,000','23,627,520','Direct and mixed miners'):self.assertIn(text,manifest['releaseNotes'])
     def test_configuration_or_unpaired_changes_are_rejected(self):
         current=yaml.safe_load((ROOT/APP/'docker-compose.yml').read_text())

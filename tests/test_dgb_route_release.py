@@ -2,12 +2,14 @@
 import copy,hashlib,json,unittest
 from pathlib import Path
 import yaml
+from test_dgb_permission_shutdown import previous_permission_model, package_version
 ROOT=Path(__file__).resolve().parents[1]
 APP='willitmod-dev-dgb'
 def record():return json.loads((ROOT/'DGB-ROUTE-EVIDENCE-2026-10-03.json').read_text())
 def digest(v):return hashlib.sha256(json.dumps(v,sort_keys=True,separators=(',',':')).encode()).hexdigest()
 def previous_route_model(app_id,current):
     if app_id!=APP:return copy.deepcopy(current)
+    current=previous_permission_model(app_id,current)
     r=record();c=r['runtimeContract'];restored=copy.deepcopy(current)
     assert len(c['changes'])==1 and c['changes'][0]['path']==['services','app','image']
     change=c['changes'][0];assert digest(current)==c['afterModelSHA256']
@@ -25,7 +27,7 @@ class DgbRouteReleaseTests(unittest.TestCase):
         current=yaml.safe_load((ROOT/APP/'docker-compose.yml').read_text());previous_route_model(APP,current)
         self.assertEqual(current['services']['dgbd']['image'],r['coreImageRef'])
         self.assertEqual(r['coreImageRef'],'ghcr.io/willitmod/axedgb-core:9.26.6-dev.2@sha256:fb46ff018e701accf6630b65c4b33a7d9d24b5fa248c31122d2daa2503677039')
-        manifest=yaml.safe_load((ROOT/APP/'umbrel-app.yml').read_text());self.assertEqual(manifest['version'],r['version'])
+        manifest=yaml.safe_load((ROOT/APP/'umbrel-app.yml').read_text());self.assertEqual(manifest['version'],package_version(APP,r['version']))
         for text in ('route unconfirmed','Accepted pool estimates','9.26.6','Previous 0.9.188'):
             self.assertIn(text,manifest['releaseNotes'])
     def test_other_service_configuration_change_is_rejected(self):
