@@ -10,6 +10,7 @@ import tempfile
 import unittest
 
 import yaml
+from test_powpow_sql_seed import package_version
 
 from test_pool_retention_release import APPS
 
@@ -161,8 +162,8 @@ class MuxPackageTests(unittest.TestCase):
                         manifest = yaml.safe_load(path.read_text())
                         self.assertEqual(manifest["id"], name)
                         self.assertEqual(manifest["version"],
-                                         json.loads((ROOT / "DGB-ROUTE-EVIDENCE-2026-10-03.json").read_text())["version"]
-                                         if name == "willitmod-dev-dgb" else current["version"])
+                                         package_version(name, json.loads((ROOT / "DGB-ROUTE-EVIDENCE-2026-10-03.json").read_text())["version"]
+                                         if name == "willitmod-dev-dgb" else current["version"]))
                         self.assertIn("Block alerts in this browser", manifest["releaseNotes"])
                         self.assertIn("browser-only Close", manifest["releaseNotes"])
                         self.assertIn("OS and MUX", manifest["releaseNotes"])

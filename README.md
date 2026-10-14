@@ -35,7 +35,7 @@ Development/test app store for WillItMod apps.
 - **AxeXEC** (`willitmod-dev-xec`) - `0.1.24-dev`
 - **5tratSmack** (`willitmod-dev-5tratsmack`) - `0.11.21`
 - **FracAttack** (`willitmod-dev-fracattack`) - `0.1.11`
-- **PowPow** (`willitmod-dev-powpow`) - `0.2.37-dev`
+- **PowPow** (`willitmod-dev-powpow`) - `0.2.37-dev.2`
 
 Use the app manifest in each app directory as the current source of truth for the store-visible version number.
 
@@ -85,3 +85,5 @@ Use a DigiByte address (typically Base58 `D...` / `S...` or Bech32 `dgb1...`).
 - XEC node runs from `ghcr.io/willitmod/axexec-node` (pinned by version tag in `docker-compose.yml`; image is built from official Bitcoin ABC release tarballs).
 - PPC node runs from `ghcr.io/willitmod/peercoin-core` (pinned by version tag in `docker-compose.yml`).
 - This store repo does not patch upstream source code; it only orchestrates upstream components via Docker images (some are built from official release tarballs).
+
+PowPow recipe revision `0.2.37-dev.2` keeps its unchanged PostgreSQL initialization SQL under `data/postgres-init` for native fresh imports. Ordinary Umbrel updates deliver the same SQL through top-level templates and an executable pre-start hook, which validates both sources and creates only missing seeds. Matching existing files retain their bytes, modes and ownership; changed or unsafe paths are rejected. The permissions container verifies both seeds before its existing setup operations, so a swallowed hook failure cannot start PostgreSQL without the reviewed SQL. PostgreSQL applies the scripts only when its database directory is empty. App, pool and node images retain their existing versions.
