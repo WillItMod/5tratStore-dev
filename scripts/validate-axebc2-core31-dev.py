@@ -30,6 +30,11 @@ def require(condition, message):
         raise SystemExit(message)
 
 
+def validate_package_manifest(manifest):
+    require(yaml.safe_load(manifest).get("version") == "0.1.22-dev.1",
+            "manifest must be 0.1.22-dev.1")
+
+
 compose_path = APP / "docker-compose.yml"
 compose_bytes = compose_path.read_bytes()
 compose = compose_bytes.decode("utf-8")
@@ -96,7 +101,7 @@ require(
 )
 
 # BETA release; the historical Core 31 baseline evidence below remains 0.1.11-dev.
-require('version: "0.1.22-dev"' in manifest, "manifest must be 0.1.22-dev")
+validate_package_manifest(manifest)
 require(evidence.get("app_version") == "0.1.11-dev", "evidence must name the 0.1.11 DEV app version")
 require(
     evidence.get("app_image")
@@ -412,6 +417,6 @@ with open(sys.argv[2], 'w', encoding='utf-8') as handle:
 validate_platform_merged_compose()
 
 subprocess.run(["sh", "-n", str(APP / "data/init/init.sh")], check=True)
-suite = unittest.defaultTestLoader.discover(str(ROOT / "tests"), pattern="test_axebc2_*.py")
+suite = unittest.defaultTestLoader.discover(str(ROOT / "tests"), pattern="*bc2*.py")
 result = unittest.TextTestRunner(verbosity=2).run(suite)
 sys.exit(0 if result.wasSuccessful() else 1)

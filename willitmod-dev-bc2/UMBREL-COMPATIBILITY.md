@@ -1,5 +1,27 @@
 # Umbrel packaging
 
+The `0.1.22-dev.1` recipe records fresh Core31 chain provenance at the first
+initialization of an empty chain directory. The record binds the immutable
+Core31 node image and source revision. Subsequent starts retain that chain
+without queuing the historical migration merely because blocks now exist.
+This record has no validated height, checkpoint, chainwork or completion claim.
+
+Historical chain data without valid fresh provenance still queues the existing
+full reindex. Explicit reindex configuration and required migration markers are
+preserved. Malformed records and source/image mismatches reject initialization.
+The existing checkpoint, chainwork, rollback floors and validated completion
+checks are unchanged. The normal initializer generates this record; upgrades
+do not retroactively infer it from an already populated chain directory.
+
+The canonical initializer remains `data/init/init.sh`, and the generator below
+produces the identical admission logic in `hooks/umbrel-init`. Fresh native
+installs receive the canonical initializer through the existing seed contract;
+Umbrel receives the generated hook through its normal update whitelist.
+Application, node, pool images and data paths are unchanged. The regression
+fixtures execute both shipped initializers; live fresh-chain and mining
+qualification remain separate checks recorded in
+`BC2-FRESH-PROVENANCE-2026-10-14.json`.
+
 Umbrel renders the top-level `docker-compose.yml.template` before installation
 and every start. It refreshes top-level templates and `hooks/` on upgrades.
 The generated template uses `hooks/umbrel-init` and `hooks/umbrel-ckpool` as
