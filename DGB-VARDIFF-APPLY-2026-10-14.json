@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "channel": "DEV",
+  "appId": "willitmod-dev-dgb",
+  "baselineCommit": "963baaab9541ad161489aa6294da875d9bf7c91a",
+  "beforePackageVersion": "0.9.189-dev.1",
+  "packageVersion": "0.9.189-dev.2",
+  "beforeModelSHA256": "f62342e6c88a0d010a4d9380e1075194961bc041aad97eddead666077b4cb39d",
+  "afterModelSHA256": "f73f709893ac47b250a255d17948e945ae213ab33c2b6b448c1ee5d9c5e0b8cc",
+  "runtimeFieldChanged": [
+    "services",
+    "init",
+    "command",
+    2
+  ],
+  "beforeCommandSHA256": "c1b9a1a8ffad26c3e4ecf4907058eabfde84a9f491f8ec50d86157fd09b21bf7",
+  "afterCommandSHA256": "d0188e7750fcca38137094298c09e64fe33cd4cf6dc93b0f4ce034a7f3f3d071",
+  "commandReplacements": [
+    {
+      "before": "'^[0-9]+(\\\\.[0-9]+)?$$'",
+      "after": "'^[0-9]+(\\.[0-9]+)?$$'",
+      "count": 6
+    },
+    {
+      "before": "elif (.id==\"dgb-scrypt-1\") then\n               (.enabled = true)\n               | (.address = $$addr)\n               | (.ports |= (if type==\"object\" then with_entries(.value |= (if type==\"object\" then apply_port(.) else . end)) else . end))",
+      "after": "elif (.id==\"dgb-scrypt-1\") then\n               (.enabled = true)\n               | (.address = $$addr)",
+      "count": 1
+    },
+    {
+      "before": "elif (.id==\"dgb-scrypt-1\") then\n             (.enabled = true)\n             | (.address = $$addr)\n             | (.ports |= (if type==\"object\" then with_entries(.value |= (if type==\"object\" then apply_port(.) else . end)) else . end))",
+      "after": "elif (.id==\"dgb-scrypt-1\") then\n             (.enabled = true)\n             | (.address = $$addr)",
+      "count": 1
+    },
+    {
+      "before": "# This ensures the payout address applies to BOTH pools (SHA256 + Scrypt) and survives upgrades.",
+      "after": "# Payout applies to BOTH pools; UI varDiff settings apply only to SHA256. Scrypt keeps its own defaults.",
+      "count": 1
+    }
+  ],
+  "imagesUnchanged": {
+    "init_permissions": "alpine:3.22.1",
+    "perm_watchdog": "alpine:3.22.1",
+    "init": "ghcr.io/willitmod/axedgb-init:0.9.181-dev",
+    "dgbd": "ghcr.io/willitmod/axedgb-core:9.26.6-dev.2@sha256:fb46ff018e701accf6630b65c4b33a7d9d24b5fa248c31122d2daa2503677039",
+    "postgres": "postgres:16-alpine",
+    "miningcore": "ghcr.io/willitmod/axedgb-miningcore:axedgb-0.8.10-r26",
+    "app": "ghcr.io/willitmod/axedgb-app:0.9.189-dev@sha256:7ccaced7437bcb50b245a4cc65e3a3a22f7570c00e0a267d22e14e789e2e4416"
+  },
+  "applicationVersionFieldUnchanged": null,
+  "fixtureImage": "ghcr.io/willitmod/axedgb-init@sha256:62c7558b063cf74d1580cae35df5fe1b10ecf5717aa3c66f88f6ea1b347d97ba",
+  "scope": "Accept UI-persisted decimal numeric values in both existing initializer passes. Apply UI difficulty to SHA256 only while retaining payout updates to SHA256 and Scrypt. All Scrypt ports/difficulty/varDiff values and all other recipe fields remain unchanged by this delta.",
+  "fullMiningQualification": false,
+  "fixturePlatforms": {
+    "amd64": {
+      "manifestDigest": "sha256:9a7b2da190cceaf6e7ce05c645cd528a09e3dc283500dfbaffcb4f3806713094",
+      "configDigest": "sha256:344fea5a52647841287a1b678d56175599386b6a0160d516d5225cb494fbb289"
+    },
+    "arm64": {
+      "manifestDigest": "sha256:643be9259ee7db571dc3d40a7f2700433d00983952942aed3f73c64465fd4252",
+      "configDigest": "sha256:1d85f3c4a2f6a01a083ce16deaab818dd6aa2b4da88ac630358a2abbf0f31830"
+    }
+  },
+  "beforeManifestSHA256": "c3a888d2c797ad00eed0b200f832f3dffafe1d7572b9f17250282c845b5a3600",
+  "releaseNotesPrefix": "Applies saved SHA256 difficulty settings correctly when the UI stores decimal values. Scrypt retains its own difficulty settings, while payout changes still apply to both pools.\n"
+}

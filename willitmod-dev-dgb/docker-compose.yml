@@ -667,7 +667,7 @@ services:
             fi
 
             # Apply user-saved payout address + varDiff settings (saved by the UI into a state file).
-            # This ensures the payout address applies to BOTH pools (SHA256 + Scrypt) and survives upgrades.
+            # Payout applies to BOTH pools; UI varDiff settings apply only to SHA256. Scrypt keeps its own defaults.
             settings="/data/ui/state/pool_settings.json"
             if [ -f "$$settings" ] && jq -e '.' >/dev/null 2>&1 < "$$settings"; then
               desired_addr="$(jq -r '.payoutAddress // empty' "$$settings" | tr -d ' \t\r\n')"
@@ -675,9 +675,9 @@ services:
               desired_startdiff="$(jq -r '.startdiff // empty' "$$settings" | tr -d ' \t\r\n')"
               desired_maxdiff="$(jq -r '.maxdiff // empty' "$$settings" | tr -d ' \t\r\n')"
 
-              if ! echo "$$desired_mindiff" | grep -qE '^[0-9]+(\\.[0-9]+)?$$'; then desired_mindiff=""; fi
-              if ! echo "$$desired_startdiff" | grep -qE '^[0-9]+(\\.[0-9]+)?$$'; then desired_startdiff=""; fi
-              if ! echo "$$desired_maxdiff" | grep -qE '^[0-9]+(\\.[0-9]+)?$$'; then desired_maxdiff=""; fi
+              if ! echo "$$desired_mindiff" | grep -qE '^[0-9]+(\.[0-9]+)?$$'; then desired_mindiff=""; fi
+              if ! echo "$$desired_startdiff" | grep -qE '^[0-9]+(\.[0-9]+)?$$'; then desired_startdiff=""; fi
+              if ! echo "$$desired_maxdiff" | grep -qE '^[0-9]+(\.[0-9]+)?$$'; then desired_maxdiff=""; fi
 
                 # Only accept legacy/base58 payout addresses here. Bech32 (dgb1...) will be rejected by Miningcore.
                 if echo "$$desired_addr" | grep -qE '^[DS][1-9A-HJ-NP-Za-km-z]{25,60}$$'; then
@@ -712,7 +712,6 @@ services:
                      elif (.id=="dgb-scrypt-1") then
                        (.enabled = true)
                        | (.address = $$addr)
-                       | (.ports |= (if type=="object" then with_entries(.value |= (if type=="object" then apply_port(.) else . end)) else . end))
                    else . end
                  ) else . end))
                    ' -s /data/pool/config/miningcore.json > "$$tmp_apply" && mv "$$tmp_apply" /data/pool/config/miningcore.json
@@ -763,9 +762,9 @@ services:
             desired_startdiff="$(jq -r '.startdiff // empty' "$$settings" | tr -d ' \t\r\n')"
             desired_maxdiff="$(jq -r '.maxdiff // empty' "$$settings" | tr -d ' \t\r\n')"
 
-            if ! echo "$$desired_mindiff" | grep -qE '^[0-9]+(\\.[0-9]+)?$$'; then desired_mindiff=""; fi
-            if ! echo "$$desired_startdiff" | grep -qE '^[0-9]+(\\.[0-9]+)?$$'; then desired_startdiff=""; fi
-            if ! echo "$$desired_maxdiff" | grep -qE '^[0-9]+(\\.[0-9]+)?$$'; then desired_maxdiff=""; fi
+            if ! echo "$$desired_mindiff" | grep -qE '^[0-9]+(\.[0-9]+)?$$'; then desired_mindiff=""; fi
+            if ! echo "$$desired_startdiff" | grep -qE '^[0-9]+(\.[0-9]+)?$$'; then desired_startdiff=""; fi
+            if ! echo "$$desired_maxdiff" | grep -qE '^[0-9]+(\.[0-9]+)?$$'; then desired_maxdiff=""; fi
 
               if echo "$$desired_addr" | grep -qE '^[DS][1-9A-HJ-NP-Za-km-z]{25,60}$$'; then
                 echo "[axedgb] Applying payout address + varDiff settings from $$settings (post-repair pass)"
@@ -799,7 +798,6 @@ services:
                    elif (.id=="dgb-scrypt-1") then
                      (.enabled = true)
                      | (.address = $$addr)
-                     | (.ports |= (if type=="object" then with_entries(.value |= (if type=="object" then apply_port(.) else . end)) else . end))
                    else . end
                    ) else . end))
                  ' -s "$$miningcore_conf" > "$$tmp_apply" && mv "$$tmp_apply" "$$miningcore_conf"
