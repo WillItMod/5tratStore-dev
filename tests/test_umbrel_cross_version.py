@@ -7,7 +7,7 @@ import subprocess
 import unittest
 
 import yaml
-from test_powpow_sql_seed import RECORD as POWPOW_SEED
+from test_powpow_sql_seed import RECORD as POWPOW_SEED, package_version
 from test_pool_retention_release import APPS, previous_model
 from test_recovery_release import CURRENT_APPS as RECOVERY_APPS
 from test_smack_release_candidate import RECORD as SMACK_RELEASE, validate_model as previous_smack_model
@@ -97,7 +97,7 @@ class UmbrelCrossVersionTests(unittest.TestCase):
                     compose = previous_model(app_id, compose)
                     version = release['package_version']
                 elif app_id in APPS:
-                    self.assertEqual(version,(bch2_record() if app_id==BCH2 else APPS[app_id])['version'])
+                    self.assertEqual(version,package_version(app_id,(bch2_record() if app_id==BCH2 else APPS[app_id])['version']))
                     compose=previous_model(app_id,compose)
                     version=release['package_version']
                 digest = hashlib.sha256(json.dumps(compose, sort_keys=True, separators=(',', ':')).encode()).hexdigest()

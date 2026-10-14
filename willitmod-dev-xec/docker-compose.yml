@@ -185,7 +185,7 @@ services:
       start_period: 2m
 
   ckpool:
-    image: ghcr.io/willitmod/ecash-ckpool-solo:18b38ad
+    image: ghcr.io/willitmod/ecash-ckpool-solo:18b38ad-portable-dev-20261014@sha256:20069e6ac004af010b20ca9aeb056ebbaf48a8656ad858ad69c8deba7f590d61
     entrypoint: ["/bin/sh"]
     command:
       - -ec
@@ -247,7 +247,7 @@ services:
       APP_CHANNEL: "ALPHA"
       APP_VERSION_SUFFIX: "-dev"
       XECD_IMAGE: "ghcr.io/willitmod/xecd-abc:0.33.4-nojemalloc-r1"
-      CKPOOL_IMAGE: "ghcr.io/willitmod/ecash-ckpool-solo:18b38ad"
+      CKPOOL_IMAGE: "ghcr.io/willitmod/ecash-ckpool-solo:18b38ad-portable-dev-20261014@sha256:20069e6ac004af010b20ca9aeb056ebbaf48a8656ad858ad69c8deba7f590d61"
       STATIC_DIR: "/app/static"
 
 networks:

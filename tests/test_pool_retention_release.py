@@ -8,7 +8,8 @@ import unittest
 import yaml
 from test_recovery_release import CURRENT_APPS as RECOVERY_APPS, previous_recovery_model
 from test_dgb_core_release import previous_dgb_model
-from test_powpow_sql_seed import previous_powpow_model
+from test_powpow_sql_seed import previous_powpow_model, package_version
+from test_xec_portable_release import previous_xec_model
 from test_bch2_portable_readiness_release import APP as BCH2, record as bch2_record, previous_bch2_model
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -18,6 +19,7 @@ APPS=RELEASE['apps']
 def digest(value):return hashlib.sha256(json.dumps(value,sort_keys=True,separators=(',',':')).encode()).hexdigest()
 
 def previous_model(app_id,current,filename='docker-compose.yml'):
+    current=previous_xec_model(app_id,current)
     current=previous_powpow_model(app_id,current)
     current=previous_bch2_model(app_id,current)
     current=previous_dgb_model(app_id,current)
@@ -60,7 +62,7 @@ class PoolRetentionReleaseTests(unittest.TestCase):
             for filename in record['manifests']:
                 manifest=yaml.safe_load((ROOT/aid/filename).read_text())
                 current_record=bch2_record() if aid==BCH2 else RECOVERY_APPS.get(aid,record)
-                assert manifest['version']==current_record['version'] and 'Complete block and pool accounting records' in manifest['releaseNotes']
+                assert manifest['version']==package_version(aid,current_record['version']) and 'Complete block and pool accounting records' in manifest['releaseNotes']
 
     def test_public_identity_record_has_no_private_host_material(self):
         data=(ROOT/'POOL-RETENTION-2026-10-01.json').read_text()
