@@ -7,6 +7,7 @@ import subprocess
 import unittest
 
 import yaml
+from test_bch2_restart_completion_release import previous_bch2_completion_model, package_version as completion_package_version
 
 ROOT=Path(__file__).resolve().parents[1]
 APP='willitmod-dev-axebch2'
@@ -16,9 +17,10 @@ OLD_NODE='ghcr.io/willitmod/axebch2-node:0.1.33-dev'
 
 def digest(model):return hashlib.sha256(json.dumps(model,sort_keys=True,separators=(',',':')).encode()).hexdigest()
 
-def package_version(app_id,historical):return RECORD['packageVersion'] if app_id==APP else historical
+def package_version(app_id,historical):return completion_package_version(app_id,RECORD['packageVersion'] if app_id==APP else historical)
 
 def previous_bch2_node_model(app_id,current):
+    current=previous_bch2_completion_model(app_id,current)
     if app_id!=APP:return copy.deepcopy(current)
     assert RECORD['beforeModelSHA256']==BASELINE
     assert digest(current)==RECORD['afterModelSHA256']
@@ -40,6 +42,7 @@ class Bch2NodeEntrypointReleaseTests(unittest.TestCase):
     def test_only_node_service_helper_and_package_version_change(self):
         current=yaml.safe_load((ROOT/APP/'docker-compose.yml').read_text())
         restored=previous_bch2_node_model(APP,current)
+        current=previous_bch2_completion_model(APP,current)
         baseline=yaml.safe_load(subprocess.check_output(['git','show',RECORD['baselineCommit']+':'+APP+'/docker-compose.yml'],cwd=ROOT,text=True))
         self.assertEqual(restored,baseline)
         self.assertEqual(current['services']['app']['image'],RECORD['applicationImageUnchanged'])
@@ -69,7 +72,7 @@ class Bch2NodeEntrypointReleaseTests(unittest.TestCase):
         for filename in ['global-app.yml','umbrel-app.yml']:
             current=yaml.safe_load((ROOT/APP/filename).read_text())
             before=yaml.safe_load(subprocess.check_output(['git','show',RECORD['baselineCommit']+':'+APP+'/'+filename],cwd=ROOT,text=True))
-            self.assertEqual(current.pop('version'),RECORD['packageVersion']);self.assertEqual(before.pop('version'),'0.2.0.12-dev')
+            self.assertEqual(current.pop('version'),package_version(APP,RECORD['packageVersion']));self.assertEqual(before.pop('version'),'0.2.0.12-dev')
             notes=current.pop('releaseNotes');old_notes=before.pop('releaseNotes')
             self.assertTrue(notes.endswith('\n'+old_notes));self.assertIn('entrypoint-only node image',notes)
             self.assertIn('Fresh installations using this node image',notes)
