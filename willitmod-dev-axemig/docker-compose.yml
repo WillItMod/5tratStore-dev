@@ -3,7 +3,7 @@ version: "3.7"
 services:
   app_proxy:
     environment:
-      APP_HOST: server
+      APP_HOST: willitmod-dev-axemig_server_1
       APP_PORT: 12150
 
   server:

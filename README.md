@@ -20,9 +20,9 @@ Development/test app store for WillItMod apps.
 
 - **5tratDiag** (`willitmod-dev-axediagnostics`) - `0.1.8`
 
-- **AxeBench (Dev)** (`willitmod-dev-axebench`) - `4.0.28-dev`
-- **AxeLive (Dev)** (`willitmod-dev-axelive`) - `1.4.2-dev`
-- **AxeMIG** (`willitmod-dev-axemig`) - `0.1.21-dev`
+- **AxeBench (Dev)** (`willitmod-dev-axebench`) - `4.0.28-dev.1`
+- **AxeLive (Dev)** (`willitmod-dev-axelive`) - `1.4.2-dev.1`
+- **AxeMIG** (`willitmod-dev-axemig`) - `0.1.21-dev.1`
 
 ### Node + solo pool / mining apps
 
