@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "channel": "DEV",
+  "packageVersion": "0.2.0.12-dev.1",
+  "baselineCommit": "f50a7d94c5173a25fbb0ddca37b383db1f0b7121",
+  "nodeSourceRevision": "f901ade0581e85770ad774dfb7366cc1347cfb42",
+  "nodeSourcePR": "https://github.com/WillItMod/AxeBCH2_Build/pull/11",
+  "reviewedEntrypointSource": "23b4baa435ee10146b3dadff87c8fb3ec3789cf1",
+  "entrypointSHA256": "fa54a53f5c415e836f4b505ec5af4fb78a6b4a277a0a81be0d59124c81216591",
+  "testedBaseIndex": "sha256:031df736b6de4607ab26fdd686d51231f1523a9230a04944d3f922dd88fdbfdc",
+  "nodeImageRef": "ghcr.io/willitmod/axebch2-node:0.1.34-fresh-entrypoint-dev-20261014@sha256:f90cbc4bc844a773b864c6f33300289a362b6ccd48aa014fd738578a608ca697",
+  "nodeImages": {
+    "amd64": {
+      "manifestDigest": "sha256:977b8aba62e63aa20176af4ecb5c03dbab04d307147edb9ce7f24ee4d4676499",
+      "configDigest": "sha256:4d89ddae207a40401bd03477d9849ec5277b78ed9aa33396cfa95b0cab895c9c"
+    },
+    "arm64": {
+      "manifestDigest": "sha256:1b61daa5595d53003c1af831986c218a4090880fa1330c171b2f3014221c3fc9",
+      "configDigest": "sha256:a0151a234f8f6b93e8d66c841eaf3903b9f6f6fec34da9ecc033cd3dd74d9040"
+    }
+  },
+  "publicationRun": 38642035379,
+  "publicationReceiptSHA256": "201a9ac5d06b29faeaf0d55eec0d471049ecf5c6a04756db74170840e3674c66",
+  "applicationImageUnchanged": "ghcr.io/willitmod/axebch2-app:0.2.0.12-dev@sha256:65891eb60db568ca9f9ee21e00869769b5bc475a94f2af5f215dfdc55857e2d1",
+  "applicationSourceRevisionUnchanged": "5531b5e6e2e4c55353454665af9fc1950f9f0844",
+  "poolImageUnchanged": "ghcr.io/willitmod/axebch2-ckpool:0.1.34-dev@sha256:4d2cc3813cd48211ce685e51afeaa62c3a606282bb8e6c8fa8ccc4e43ec75ec3",
+  "beforeModelSHA256": "ab8b00ca99666ca6eed7df62eb4d6d0d3d6956f02a2dc7ad942cf41faeed50f6",
+  "afterModelSHA256": "7387a836279563571a2f27ad064b3f7a8d102aac74efa9463d964f20af27e9d5",
+  "changes": [
+    {
+      "path": [
+        "services",
+        "bch2",
+        "image"
+      ],
+      "before": "ghcr.io/willitmod/axebch2-node:0.1.33-dev",
+      "after": "ghcr.io/willitmod/axebch2-node:0.1.34-fresh-entrypoint-dev-20261014@sha256:f90cbc4bc844a773b864c6f33300289a362b6ccd48aa014fd738578a608ca697"
+    },
+    {
+      "path": [
+        "services",
+        "app",
+        "environment",
+        "BCH2_NODE_IMAGE"
+      ],
+      "before": "ghcr.io/willitmod/axebch2-node:0.1.33-dev",
+      "after": "ghcr.io/willitmod/axebch2-node:0.1.34-fresh-entrypoint-dev-20261014@sha256:f90cbc4bc844a773b864c6f33300289a362b6ccd48aa014fd738578a608ca697"
+    },
+    {
+      "path": [
+        "services",
+        "app",
+        "environment",
+        "APP_VERSION"
+      ],
+      "before": "0.2.0.12-dev",
+      "after": "0.2.0.12-dev.1"
+    }
+  ],
+  "validationScope": {
+    "nativeAMD64AndARM64BaseBinaryAndConfigRetention": true,
+    "actualPublishedImmutableIndexRetentionBothArchitectures": true,
+    "entrypointOldAndFreshMarkerRegressionTests": true,
+    "normalAppManagerUpdateQualified": false,
+    "actualNonAVXAppRestartQualified": false,
+    "miningProtocolQualified": false,
+    "actualInstalledNativeInstallAndUpdateRendererIdentity": true
+  },
+  "nativeRendererProof": {
+    "cliSHA256": "caa747717a3a5ba12dbc231ce79987179b3c37b8ca31d8f588baa1c30c715cfc",
+    "generatorSHA256": {
+      "install": "9dc8fd762892a0a4d4492de4348646df87584469eb079a3d9a54d53a7d594578",
+      "update": "0cf6ed5c7955a343ae7c3028c0e5a5b2872f41e8e011f41eabcf3df76f4ccd68"
+    },
+    "policyHelperSHA256": {
+      "docker_socket_access.py": "e08271cf0c535aa638d83415b69858bc14c6b583f8bbad5a0f68777658985c87",
+      "app_stop_policy.py": "76400e6b4321ec04eaa67df87ba23a180530dcdb357b7b1db79d1ed2a812bdf5"
+    },
+    "receiptSHA256": "41f22ae2f4909c603294be84b50b15bcbf87026ea5b3f4100853bcef7ee64e0e"
+  }
+}
