@@ -3,10 +3,10 @@
   "appId": "willitmod-dev-powpow",
   "baselineCommit": "6f8ae3e7949433e64a144c9707432636bafb3e8a",
   "previousPackageVersion": "0.2.37-dev",
-  "packageVersion": "0.2.37-dev.1",
+  "packageVersion": "0.2.37-dev.2",
   "applicationVersionUnchanged": "0.2.37-dev",
   "beforeModelSHA256": "8863d742c9d0689911fe4b104886e3e3913c9a88efd1d21f79e3795639083b8e",
-  "afterModelSHA256": "b8ee85be6bcbce91534340480ca6f54c3c29127dcf4fd029caa2ce1b5600eff0",
+  "afterModelSHA256": "733f1fc1c8f6ea1fe538f4b29cd1db38d9a6c68adff555f342b77f0f8f7fdaab",
   "postgresInitMount": {
     "before": "./postgres/init:/docker-entrypoint-initdb.d:ro",
     "after": "${APP_DATA_DIR}/data/postgres-init:/docker-entrypoint-initdb.d:ro"
@@ -29,5 +29,25 @@
     "pool": "ghcr.io/willitmod/powpow-pool:0.2.37-mux.88f8fc0af57e@sha256:fdedad44cc7c7700eb3043884979785a02d9915bf5a70c5b50d2f52f6ba758d8",
     "postgres": "postgres:16-alpine"
   },
-  "qualification": "Recipe SQL seed delivery and bounded startup only; node IBD, pool and mining shares remain pending."
+  "qualification": "Recipe SQL seed delivery and bounded startup only; node IBD, pool and mining shares remain pending.",
+  "initPermissionsCommand": {
+    "before": [
+      "/bin/sh",
+      "-ec",
+      "set -eu\nmkdir -p /data/ui/state /data/litecoin /data/dogecoin /data/pool/config /data/postgres\nchown -R 1000:1000 /data/ui /data/litecoin /data/dogecoin /data/pool /data/pool/config || true\nchown -R 70:70 /data/postgres || true\nchmod 700 /data/postgres || true"
+    ],
+    "after": [
+      "/bin/sh",
+      "-ec",
+      "set -eu\ntest -d /data\ntest ! -L /data\ntest -d /data/postgres-init\ntest ! -L /data/postgres-init\ntest -f /data/postgres-init/2-schema.sql\ntest ! -L /data/postgres-init/2-schema.sql\ntest \"$$(stat -c '%h' /data/postgres-init/2-schema.sql)\" = 1\ntest \"$$(stat -c '%s' /data/postgres-init/2-schema.sql)\" -le 2097152\ntest -f /data/postgres-init/3-multi-pool-partition.sql\ntest ! -L /data/postgres-init/3-multi-pool-partition.sql\ntest \"$$(stat -c '%h' /data/postgres-init/3-multi-pool-partition.sql)\" = 1\ntest \"$$(stat -c '%s' /data/postgres-init/3-multi-pool-partition.sql)\" -le 2097152\nprintf '%s\\n' 'c9a0e0c871ddb7fe198e154903c053db1a26c614c5062d660af0add0e2fc8427  /data/postgres-init/2-schema.sql' '83a380949be2a2dd7b67a667575fc06133eae7be885ce458e0687803edc2f4bf  /data/postgres-init/3-multi-pool-partition.sql' | sha256sum -c -\nmkdir -p /data/ui/state /data/litecoin /data/dogecoin /data/pool/config /data/postgres\nchown -R 1000:1000 /data/ui /data/litecoin /data/dogecoin /data/pool /data/pool/config || true\nchown -R 70:70 /data/postgres || true\nchmod 700 /data/postgres || true"
+    ]
+  },
+  "ordinaryUmbrelDelivery": {
+    "sourceTemplates": {
+      "2-schema.sql": "powpow-2-schema.sql.template",
+      "3-multi-pool-partition.sql": "powpow-3-multi-pool-partition.sql.template"
+    },
+    "hook": "hooks/pre-start",
+    "scope": "Verify exact immutable template bytes; create only missing static SQL through no-follow descriptors and O_EXCL; preserve existing SQL and all database/wallet/config data. Init permissions rejects missing, unsafe or changed seeds before its existing filesystem operations."
+  }
 }
