@@ -10,6 +10,7 @@ import unittest
 import uuid
 
 import yaml
+from test_dgb_vardiff_apply import previous_vardiff_model, package_version as vardiff_package_version
 
 ROOT = Path(__file__).resolve().parents[1]
 APP = 'willitmod-dev-dgb'
@@ -26,6 +27,7 @@ def digest(model):
 def previous_permission_model(app_id, current):
     if app_id != APP:
         return copy.deepcopy(current)
+    current = previous_vardiff_model(app_id, current)
     assert digest(current) == RECORD['afterModelSHA256']
     restored = copy.deepcopy(current)
     command = restored['services']['perm_watchdog']['command']
@@ -39,7 +41,7 @@ def package_version(app_id, historical):
     if app_id != APP:
         return historical
     assert historical == RECORD['beforePackageVersion']
-    return RECORD['packageVersion']
+    return vardiff_package_version(app_id, RECORD['packageVersion'])
 
 
 def current_command():
@@ -64,7 +66,7 @@ class PermissionShutdownContract(unittest.TestCase):
         self.assertEqual(digest(restored), RECORD['beforeModelSHA256'])
         subprocess.run(['sh', '-n'], input=after.replace('$$', '$'), text=True, check=True)
         manifest = yaml.safe_load((ROOT / APP / 'umbrel-app.yml').read_text())
-        self.assertEqual(manifest['version'], RECORD['packageVersion'])
+        self.assertEqual(manifest['version'], vardiff_package_version(APP, RECORD['packageVersion']))
 
     def test_image_mode_role_interval_and_unrelated_command_changes_are_rejected(self):
         model = yaml.safe_load((ROOT / APP / 'docker-compose.yml').read_text())

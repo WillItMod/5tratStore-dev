@@ -23,6 +23,8 @@ on:
       - "POOL-SUPERVISOR-2026-10-14.json"
       - "DGB-PERMISSION-SHUTDOWN-2026-10-14.json"
       - "tests/test_dgb_permission_shutdown.py"
+      - "DGB-VARDIFF-APPLY-2026-10-14.json"
+      - "tests/test_dgb_vardiff_apply.py"
       - "tests/test_pool_supervisor_*.py"
       - "willitmod-dev-btc/data/templates/ckpool-entrypoint.sh"
       - "willitmod-dev-fracattack/data/templates/ckpool-entrypoint.sh"
@@ -58,6 +60,8 @@ on:
       - "POOL-SUPERVISOR-2026-10-14.json"
       - "DGB-PERMISSION-SHUTDOWN-2026-10-14.json"
       - "tests/test_dgb_permission_shutdown.py"
+      - "DGB-VARDIFF-APPLY-2026-10-14.json"
+      - "tests/test_dgb_vardiff_apply.py"
       - "tests/test_pool_supervisor_*.py"
       - "willitmod-dev-btc/data/templates/ckpool-entrypoint.sh"
       - "willitmod-dev-fracattack/data/templates/ckpool-entrypoint.sh"
@@ -85,6 +89,7 @@ jobs:
           docker pull --platform linux/amd64 alpine@sha256:4bcff63911fcb4448bd4fdacec207030997caf25e9bea4045fa6c8c44de311d1
           docker pull --platform linux/amd64 ghcr.io/willitmod/docker-ckpool-solo@sha256:8a9a7f10c8138d0f55533132ee7710a06715a42a49f75efb39be3350ada4fa6e
           docker pull --platform linux/amd64 ghcr.io/willitmod/axebtc-bitcoind-switch@sha256:a9276924c0fce0d4664ab1515a949d96bead0c43c053319cb4876779928bc2af
+          docker pull --platform linux/amd64 ghcr.io/willitmod/axedgb-init@sha256:62c7558b063cf74d1580cae35df5fe1b10ecf5717aa3c66f88f6ea1b347d97ba
       - name: Run frozen contracts and real offline supervisor checks
         env:
           PYTHONDONTWRITEBYTECODE: '1'
@@ -93,6 +98,8 @@ jobs:
           POOL_SUPERVISOR_RECEIPT: ${{ runner.temp }}/pool-supervisor-runtime.json
           DGB_PERMISSION_DOCKER: '1'
           DGB_PERMISSION_RECEIPT: ${{ runner.temp }}/dgb-permission-runtime.json
+          DGB_VARDIFF_DOCKER: '1'
+          DGB_VARDIFF_RECEIPT: ${{ runner.temp }}/dgb-vardiff-runtime.json
         run: python3 -m unittest discover -s tests -v
       - name: Preserve the bounded public native runtime receipt in logs
         if: always()
@@ -121,4 +128,18 @@ jobs:
           records=json.loads(body)
           print(json.dumps(records,indent=2))
           assert len(records)==11
+          PY
+      - name: Preserve the bounded public native difficulty JSON receipt in logs
+        if: always()
+        env:
+          RECEIPT: ${{ runner.temp }}/dgb-vardiff-runtime.json
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          body=Path(os.environ['RECEIPT']).read_bytes()
+          assert len(body) <= 65536
+          records=json.loads(body)
+          print(json.dumps(records,indent=2))
+          assert len(records)==20
           PY
