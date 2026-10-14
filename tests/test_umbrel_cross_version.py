@@ -7,6 +7,7 @@ import subprocess
 import unittest
 
 import yaml
+from test_powpow_sql_seed import RECORD as POWPOW_SEED
 from test_pool_retention_release import APPS, previous_model
 from test_recovery_release import CURRENT_APPS as RECOVERY_APPS
 from test_smack_release_candidate import RECORD as SMACK_RELEASE, validate_model as previous_smack_model
@@ -90,6 +91,10 @@ class UmbrelCrossVersionTests(unittest.TestCase):
                     self.assertEqual(version,json.loads((ROOT/'DGB-ROUTE-EVIDENCE-2026-10-03.json').read_text())['version'])
                     compose=previous_model(app_id,compose)
                     version=release['package_version']
+                elif app_id == 'willitmod-dev-powpow':
+                    self.assertEqual(version, POWPOW_SEED['packageVersion'])
+                    compose = previous_model(app_id, compose)
+                    version = release['package_version']
                 elif app_id in APPS:
                     self.assertEqual(version,APPS[app_id]['version'])
                     compose=previous_model(app_id,compose)

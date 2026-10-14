@@ -35,7 +35,7 @@ Development/test app store for WillItMod apps.
 - **AxeXEC** (`willitmod-dev-xec`) - `0.1.24-dev`
 - **5tratSmack** (`willitmod-dev-5tratsmack`) - `0.11.21`
 - **FracAttack** (`willitmod-dev-fracattack`) - `0.1.11`
-- **PowPow** (`willitmod-dev-powpow`) - `0.2.37-dev`
+- **PowPow** (`willitmod-dev-powpow`) - `0.2.37-dev.1`
 
 Use the app manifest in each app directory as the current source of truth for the store-visible version number.
 
@@ -85,3 +85,5 @@ Use a DigiByte address (typically Base58 `D...` / `S...` or Bech32 `dgb1...`).
 - XEC node runs from `ghcr.io/willitmod/axexec-node` (pinned by version tag in `docker-compose.yml`; image is built from official Bitcoin ABC release tarballs).
 - PPC node runs from `ghcr.io/willitmod/peercoin-core` (pinned by version tag in `docker-compose.yml`).
 - This store repo does not patch upstream source code; it only orchestrates upstream components via Docker images (some are built from official release tarballs).
+
+PowPow recipe revision `0.2.37-dev.1` places its unchanged PostgreSQL initialization SQL under `data/postgres-init`, using the existing app-data seed path on Umbrel and 5tratumOS. PostgreSQL applies the scripts only when its database directory is empty. App, pool and node images retain their existing versions.

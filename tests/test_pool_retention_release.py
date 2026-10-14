@@ -8,6 +8,7 @@ import unittest
 import yaml
 from test_recovery_release import CURRENT_APPS as RECOVERY_APPS, previous_recovery_model
 from test_dgb_core_release import previous_dgb_model
+from test_powpow_sql_seed import previous_powpow_model
 
 ROOT=Path(__file__).resolve().parents[1]
 RELEASE=json.loads((ROOT/'POOL-RETENTION-2026-10-01.json').read_text())
@@ -16,6 +17,7 @@ APPS=RELEASE['apps']
 def digest(value):return hashlib.sha256(json.dumps(value,sort_keys=True,separators=(',',':')).encode()).hexdigest()
 
 def previous_model(app_id,current,filename='docker-compose.yml'):
+    current=previous_powpow_model(app_id,current)
     current=previous_dgb_model(app_id,current)
     current=previous_recovery_model(app_id,current,filename)
     if app_id not in APPS:return copy.deepcopy(current)

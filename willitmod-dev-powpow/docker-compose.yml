@@ -119,7 +119,7 @@ services:
       POSTGRES_DB: "mergedmining"
     volumes:
       - ${APP_DATA_DIR}/data/postgres:/var/lib/postgresql/data
-      - ./postgres/init:/docker-entrypoint-initdb.d:ro
+      - ${APP_DATA_DIR}/data/postgres-init:/docker-entrypoint-initdb.d:ro
 
 networks:
   umbrel_main_network:
