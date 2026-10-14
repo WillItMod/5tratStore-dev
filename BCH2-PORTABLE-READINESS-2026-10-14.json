@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "channel": "DEV",
+  "version": "0.2.0.12-dev",
+  "baseVersion": "0.2.0.12",
+  "baselineCommit": "ab235b3b2dfd0b441a19bd373117d651d2e75d80",
+  "sourceRevision": "5531b5e6e2e4c55353454665af9fc1950f9f0844",
+  "sourcePullRequest": "https://github.com/WillItMod/AxeBCH2_Build/pull/9",
+  "includedSourcePullRequests": [
+    7,
+    8
+  ],
+  "poolBuildSourceRevision": "c0f61fcf52bd8be6782fc1a8f81ad6ebb681e6a5",
+  "poolBuildInputEquivalence": {
+    "fileCount": 101,
+    "integrationSource": "5531b5e6e2e4c55353454665af9fc1950f9f0844",
+    "nativeBuildSource": "c0f61fcf52bd8be6782fc1a8f81ad6ebb681e6a5",
+    "receiptSHA256": "1f22c140d9a50a059d93557d1cfacfa13aa18c17d31ec275c6489fc947a7fdaf"
+  },
+  "imageRef": "ghcr.io/willitmod/axebch2-app:0.2.0.12-dev@sha256:65891eb60db568ca9f9ee21e00869769b5bc475a94f2af5f215dfdc55857e2d1",
+  "poolImageRef": "ghcr.io/willitmod/axebch2-ckpool:0.1.34-dev@sha256:4d2cc3813cd48211ce685e51afeaa62c3a606282bb8e6c8fa8ccc4e43ec75ec3",
+  "appImages": {
+    "amd64": {
+      "configDigest": "sha256:8f7cc944ad275b116b3779592488f79403f9c990255fca6ae5d882bcbf3307f3",
+      "manifestDigest": "sha256:9c5054e9a3624480df71f073862e73ca942b11d93d8fef558e90bae4144eb9ca"
+    },
+    "arm64": {
+      "configDigest": "sha256:993aed2d87abf23fbfb5adb2465a5b6ec1306eb4a835ff1e1f3baf9c789ec026",
+      "manifestDigest": "sha256:47c0a17111531735428750e9906d679509e21bb615b4e0809489702ebc88a02b"
+    }
+  },
+  "poolImages": {
+    "amd64": {
+      "configDigest": "sha256:a53608b866e2db855ff9dc18aa5a5afa34d38bd8dac504e14751f7f491c1a506",
+      "manifestDigest": "sha256:d7dfb09edc28f56ab5b2146846bd14f9bf87a181527ea999e26051a7d8903ba1"
+    },
+    "arm64": {
+      "configDigest": "sha256:5a2848f6da13f206c7e9644e90301a2b7a0791b28bed117892a795db7585873b",
+      "manifestDigest": "sha256:85575dee3b9903e49379c1f173c6a20aba872425cbfc783552c2af05316e0103"
+    }
+  },
+  "coreImageRef": "ghcr.io/willitmod/axebch2-node:0.1.33-dev",
+  "runtimeContract": {
+    "beforeModelSHA256": "648999be23804b9dc285f305af3a8f72fb0d00d5eb5129dc902577d09eac0d93",
+    "afterModelSHA256": "ab8b00ca99666ca6eed7df62eb4d6d0d3d6956f02a2dc7ad942cf41faeed50f6",
+    "changes": [
+      {
+        "path": [
+          "services",
+          "app",
+          "image"
+        ],
+        "before": "ghcr.io/willitmod/axebch2-app:0.2.0.11@sha256:ec45d7191eb6eb378d71b84f30aaf9133911e53045c0272afba2161a2b45f2ad",
+        "after": "ghcr.io/willitmod/axebch2-app:0.2.0.12-dev@sha256:65891eb60db568ca9f9ee21e00869769b5bc475a94f2af5f215dfdc55857e2d1"
+      },
+      {
+        "path": [
+          "services",
+          "app",
+          "environment",
+          "APP_REVISION"
+        ],
+        "before": "9019e3cdb32bd78b1cd85d8a8c5394302e1a9beb",
+        "after": "5531b5e6e2e4c55353454665af9fc1950f9f0844"
+      },
+      {
+        "path": [
+          "services",
+          "app",
+          "environment",
+          "APP_VERSION"
+        ],
+        "before": "0.2.0.11-dev",
+        "after": "0.2.0.12-dev"
+      },
+      {
+        "path": [
+          "services",
+          "app",
+          "environment",
+          "CKPOOL_IMAGE"
+        ],
+        "before": "ghcr.io/willitmod/axebch2-ckpool:0.1.33-dev",
+        "after": "ghcr.io/willitmod/axebch2-ckpool:0.1.34-dev@sha256:4d2cc3813cd48211ce685e51afeaa62c3a606282bb8e6c8fa8ccc4e43ec75ec3"
+      },
+      {
+        "path": [
+          "services",
+          "ckpool",
+          "image"
+        ],
+        "before": "ghcr.io/willitmod/axebch2-ckpool:0.1.33-dev",
+        "after": "ghcr.io/willitmod/axebch2-ckpool:0.1.34-dev@sha256:4d2cc3813cd48211ce685e51afeaa62c3a606282bb8e6c8fa8ccc4e43ec75ec3"
+      }
+    ]
+  },
+  "validationScope": {
+    "nativeAppHTTPVersionAndBakedReadinessTests": true,
+    "bakedReadinessTestsPerArchitecture": 38,
+    "recipeSigintStopBothArchitectures": true,
+    "fullAppManagerLifecycleQualified": false,
+    "nonAvxRuntimeQualified": false,
+    "miningProtocolQualified": false
+  },
+  "publicationReceiptSHA256": "89c31b3f9da32525744f2327e55e34065d524abff122c1f17a8deda8e9fc9e07"
+}
