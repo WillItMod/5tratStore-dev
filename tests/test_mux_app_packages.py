@@ -11,6 +11,7 @@ import unittest
 
 import yaml
 from test_powpow_sql_seed import package_version
+from test_bch2_node_entrypoint_release import package_version as bch2_package_version
 
 from test_pool_retention_release import APPS
 
@@ -177,7 +178,7 @@ class MuxPackageTests(unittest.TestCase):
                     self.assertEqual(environment["MUX_IDENTITY_URL"],
                                      "http://172.17.0.1:21222/api/integrations/workers")
                     if "APP_VERSION" in environment:
-                        self.assertEqual(environment["APP_VERSION"], current["version"])
+                        self.assertEqual(environment["APP_VERSION"], bch2_package_version(name,current["version"]))
 
     def test_powpow_app_and_pool_bind_to_the_same_verified_source(self):
         release = json.loads((ROOT / "DIRECT-HASHRATE-2026-09-30.json").read_text())

@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import unittest
 import yaml
+from test_bch2_node_entrypoint_release import previous_bch2_node_model, package_version
 
 ROOT = Path(__file__).resolve().parents[1]
 APP = 'willitmod-dev-axebch2'
@@ -21,6 +22,7 @@ def digest(value):
 
 
 def previous_bch2_model(app_id, current):
+    current=previous_bch2_node_model(app_id,current)
     if app_id != APP:
         return copy.deepcopy(current)
     r = record();c = r['runtimeContract']
@@ -57,12 +59,12 @@ class Bch2PortableReadinessTests(unittest.TestCase):
         self.assertEqual(r['includedSourcePullRequests'], [7, 8])
         current = yaml.safe_load((ROOT/APP/'docker-compose.yml').read_text())
         previous_bch2_model(APP, current)
-        self.assertEqual(current['services']['bch2']['image'], r['coreImageRef'])
+        self.assertEqual(previous_bch2_node_model(APP,current)['services']['bch2']['image'], r['coreImageRef'])
         self.assertEqual(r['coreImageRef'], 'ghcr.io/willitmod/axebch2-node:0.1.33-dev')
         self.assertEqual(current['services']['app']['stop_signal'], 'SIGINT')
         for name in ('umbrel-app.yml', 'global-app.yml'):
             manifest = yaml.safe_load((ROOT/APP/name).read_text())
-            self.assertEqual(manifest['version'], r['version'])
+            self.assertEqual(manifest['version'], package_version(APP,r['version']))
             for text in ('fresh readiness evidence', 'portable SHA256',
                          'Complete block and pool accounting records', 'Block alerts in this browser'):
                 self.assertIn(text, manifest['releaseNotes'])
