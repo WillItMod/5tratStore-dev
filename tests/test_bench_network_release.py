@@ -8,6 +8,7 @@ import subprocess
 import unittest
 
 import yaml
+from test_bench_reporting_release import previous_bench_reporting_model, previous_bench_reporting_manifest
 
 ROOT = Path(__file__).resolve().parents[1]
 APP = ROOT / 'willitmod-dev-axebench'
@@ -31,14 +32,14 @@ def previous_compose(model):
 
 class BenchNetworkReleaseTests(unittest.TestCase):
     def test_exact_whole_compose_delta_preserves_all_services_and_runtime_inputs(self):
-        model = yaml.safe_load((APP / 'docker-compose.yml').read_text())
+        model = previous_bench_reporting_model(yaml.safe_load((APP / 'docker-compose.yml').read_text()))
         previous_compose(model)
         self.assertEqual(model['services']['server']['image'], RECORD['unchangedImage'])
         for service in model['services'].values():
             self.assertNotIn('networks', service)
 
     def test_guard_rejects_additional_service_or_network_changes(self):
-        current = yaml.safe_load((APP / 'docker-compose.yml').read_text())
+        current = previous_bench_reporting_model(yaml.safe_load((APP / 'docker-compose.yml').read_text()))
         for mutate in [lambda m: m['services']['server'].update(image='unreviewed:latest'),
                        lambda m: m['services']['server'].update(volumes=[]),
                        lambda m: m.update(networks={'default': {}}),
@@ -49,7 +50,7 @@ class BenchNetworkReleaseTests(unittest.TestCase):
                 previous_compose(candidate)
 
     def test_exact_manifest_delta_is_only_revision_and_new_release_note(self):
-        manifest = yaml.safe_load((APP / 'umbrel-app.yml').read_text())
+        manifest = previous_bench_reporting_manifest(yaml.safe_load((APP / 'umbrel-app.yml').read_text()))
         self.assertEqual(manifest['version'], RECORD['packageVersion'])
         baseline = yaml.safe_load(subprocess.check_output([
             'git', 'show', RECORD['baseStoreCommit'] + ':' + APP.name + '/umbrel-app.yml'], cwd=ROOT, text=True))
@@ -65,13 +66,13 @@ class BenchNetworkReleaseTests(unittest.TestCase):
         healthy = ipaddress.ip_network(RECORD['observedHealthyBCH2Subnet'])
         bench = ipaddress.ip_network(RECORD['observedConflictingBenchSubnet'])
         self.assertTrue(healthy.overlaps(bench))
-        baseline = previous_compose(yaml.safe_load((APP / 'docker-compose.yml').read_text()))
+        baseline = previous_compose(previous_bench_reporting_model(yaml.safe_load((APP / 'docker-compose.yml').read_text())))
         self.assertEqual(baseline['networks']['default']['ipam']['config'], [{'subnet': str(bench)}])
-        self.assertNotIn('networks', yaml.safe_load((APP / 'docker-compose.yml').read_text()))
+        self.assertNotIn('networks', previous_bench_reporting_model(yaml.safe_load((APP / 'docker-compose.yml').read_text())))
 
     def test_umbrel174_parser_accepts_install_and_repeated_start(self):
         fixture = ROOT / 'tests/fixtures/umbrel_1_7_4_patch_compose.cjs'
-        model = yaml.safe_load((APP / 'docker-compose.yml').read_text())
+        model = previous_bench_reporting_model(yaml.safe_load((APP / 'docker-compose.yml').read_text()))
         for _ in range(2):
             p = subprocess.run(['node', str(fixture)], input=json.dumps({'compose': model, 'id': APP.name}),
                                text=True, capture_output=True, check=True)

@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-axebench
 category: bitcoin
 name: AxeBench (Dev)
-version: "4.0.28-dev.2"
+version: "4.0.28-dev.3"
 tagline: Bitaxe fleet benchmarking and management
 icon: https://raw.githubusercontent.com/WillItMod/5tratStore-main/main/willitmod-axebench/icon.png
 description: >-
@@ -37,6 +37,8 @@ path: ""
 defaultUsername: ""
 defaultPassword: ""
 releaseNotes: >-
+  v4.0.28-dev.3 (reporting revision): Count accepted benchmark results without advancing progress during sampling. Show interrupted, empty and failed sessions accurately while preserving saved history, hardware controls and existing layouts.
+
   v4.0.28-dev.2 (recipe revision): Let Docker allocate the app network subnet to avoid overlap with other installed apps.
 
   v4.0.28-dev.1 (recipe revision): Persist profiles, licence identity and UI preferences by preparing the UID 1000 data directory before startup.

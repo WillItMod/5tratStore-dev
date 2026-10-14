@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "channel": "DEV",
+  "baselineCommit": "b5db56c8ff159be7ac160a59126e2294bdf366e5",
+  "app": "willitmod-dev-axebench",
+  "packageVersion": "4.0.28-dev.3",
+  "applicationVersion": "4.0.28",
+  "imageRef": "ghcr.io/willitmod/axebench:v4.0.28-reporting.97091de5e5cc@sha256:edc01e4947f2711394af068451a6df9dce7bf24882fd747f3a4d849b77623c23",
+  "sourceRevision": "97091de5e5cc45ad91b61aca23bdde67b5067135",
+  "publicationRun": 38645247620,
+  "baseIndex": "sha256:e96077e2a1e260bb84258d7629910cc26ec26823148120016e02a6e098769844",
+  "beforeModelSHA256": "6a3a4052d8ecdd48b6a3b7e3fa78289bab5c78a309ec2f5c13a0ed06137197b7",
+  "afterModelSHA256": "e0828cc38dd04dc775fc28ecc392b680c7b3bb58a68a9f1aec0cafd3c29c3224",
+  "beforeManifestSHA256": "c271a930de7e40d212e274803197e5a4a08320c7501534b3c98e016a1fcb438e",
+  "releaseNote": "v4.0.28-dev.3 (reporting revision): Count accepted benchmark results without advancing progress during sampling. Show interrupted, empty and failed sessions accurately while preserving saved history, hardware controls and existing layouts.",
+  "images": {
+    "amd64": {
+      "manifestDigest": "sha256:6a170d2ffbdc151207aa68ff06ff6a3f87f5a21658d903585c18c052e77d8e37",
+      "configDigest": "sha256:2991647eff6d00f42f9495f5cb3d5353c08e9d5687809d7eb96352ae79ac0bf4"
+    },
+    "arm64": {
+      "manifestDigest": "sha256:1a62e19ce7813fefe8d4b57abc5950906474f4745a71317d882c6fc037e9b3cd",
+      "configDigest": "sha256:96a9dc4950c0a109ca1c026852ff9af174ce8b00e037f215f5059e3c7d1bc413"
+    }
+  },
+  "changedRuntimeFiles": [
+    "/app/python/web_interface.py",
+    "/app/python/benchmark_engine.py"
+  ],
+  "reportingSourceSHA256": {
+    "/app/python/web_interface.py": "58667dc41e6a2c3779816d5faf347f2452d795041050a00e6bcf779b577da01a",
+    "/app/python/benchmark_engine.py": "8dbe9888bb9284ead7cbf005794a5e6e8a354de62d5a156cd264903a1eaa8e18"
+  },
+  "nativeBakedTestsPerArchitecture": 41,
+  "frontendControllerLibrariesRuntimeConfigBaseLayersUnchanged": true,
+  "fullHardwareQualification": false,
+  "ordinaryGuestUpdateQualified": false,
+  "savedHistoryIsNotRewritten": true,
+  "publishedNativePreservation": {
+    "amd64": {
+      "preservedRuntimeEntries": 13954,
+      "unchangedBaseDiffIDs": [
+        "sha256:219a998c60509502b47b97f1158067d5dd62640d2d689560d32cfd5594f6bc40",
+        "sha256:ae0096d57d7f18e7861848f1103983488102f78517c11444120d8a938884de54",
+        "sha256:c529e1b2553946dcc9afa2d77e33a75f23d3702e0b4a7911b67e2f1fe45a4939",
+        "sha256:6872606a6b819a8348189e0d99b8e730aa74d558c158d96f1dd2406a7c6baaf7",
+        "sha256:1e27b5b1af052b2aa0f5655ae4ce6cf1cc5ec584b1a85cb30fbc468251ddd022",
+        "sha256:cc3e4dfa435bb7f89ff1d4cf2c92c8c3d32c022f23e4ba0db1375aeb0b4e9f9b",
+        "sha256:ef0050e8fef6a4376dac85067a2b1fcc56eb146100b7788ba57bf33aaafa42e5",
+        "sha256:39f56ec32c571a018d0b3daf39d715f54a01b72cc3916c8fd4ae9c5826a951b6",
+        "sha256:2e12f80d5e8cdeff68535cc577aeceacdbdaf510cd0102b7e0235485a4a38513",
+        "sha256:299759f25d50aee3dcd69825cc44bc9a9da83e56ea9d123666f2a19aae249f30",
+        "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+      ],
+      "overlayDiffID": "sha256:9e6bacbd6f61d1ef90e380e751c093482a6a7f86d942059b1482b5e4549379be"
+    },
+    "arm64": {
+      "preservedRuntimeEntries": 13951,
+      "unchangedBaseDiffIDs": [
+        "sha256:0f0c47d76d9eb2be2ad0e5d15813906c7c4d32fa5a098b4a456208142516bab4",
+        "sha256:81a9194237d91601c077d71384084fd27d0cc2ce5200b2c3f475f52ce5502f58",
+        "sha256:be0e2fd03eaf15caf5e544b43cb51705be634830f8ddb8976a9264dcbdd08ba8",
+        "sha256:72261cf79308d9f35de9f392c3a8cae0fdbb6d68d5decaf2022db5a8a2e18a6c",
+        "sha256:1e27b5b1af052b2aa0f5655ae4ce6cf1cc5ec584b1a85cb30fbc468251ddd022",
+        "sha256:dd434cd1709f3925f67fce48803db68845ee4c1f6bd452c1c727e3e1aee4b62b",
+        "sha256:ef0050e8fef6a4376dac85067a2b1fcc56eb146100b7788ba57bf33aaafa42e5",
+        "sha256:b4dea9ff19d5cfec4d9c8318c5390b2ce42690feb7de9b9008957b97ea4bb9e2",
+        "sha256:2e12f80d5e8cdeff68535cc577aeceacdbdaf510cd0102b7e0235485a4a38513",
+        "sha256:daed5384daf28d8640a5d96f57391f25f6b8bce717d6785fd1709e168383d2a4",
+        "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+      ],
+      "overlayDiffID": "sha256:f6999156e50eec0c588a283ae21914ca947c7df165d918f7b7f485a89fee40b0"
+    }
+  }
+}
