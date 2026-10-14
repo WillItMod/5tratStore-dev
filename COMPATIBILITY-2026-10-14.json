@@ -399,6 +399,10 @@
     {
       "evidence_id": "evidence/store-validation-final.json",
       "sha256": "7e35d050164d0ec3e34e1413e5a09026ce4cf7fb996f131b3f74ffe96fe381c7"
+    },
+    {
+      "evidence_id": "evidence/official/lab-image-source.json",
+      "sha256": "c058f5ec5128fe2d73bead5ada43cfb5104dd3fe9f67492797dbba2beed99b2e"
     }
   ],
   "apps": [
@@ -9973,5 +9977,65 @@
       "scripts/umbrel_catalogue_contract.py": "028e87ca133739785bf55e042ef20227372b659340598388d09fdbab7cbc4b0a",
       "tests/test_umbrel_catalogue_contract.py": "7282adbb2a8da8d2ca075bcc7687d5d1c471973974608c5e323918d6867930e4"
     }
-  }
+  },
+  "official_lab_distributions": [
+    {
+      "version": "1.7.4",
+      "source_ref": "66d817ed00a77cca68a1a8d94dd56fe2b9fffb0d",
+      "release_url": "https://github.com/getumbrel/umbrel/releases/tag/1.7.4",
+      "checksums_url": "https://download.umbrel.com/release/1.7.4/SHA256SUMS",
+      "files": [
+        {
+          "filename": "umbrelos-amd64-usb-installer.iso",
+          "url": "https://download.umbrel.com/release/1.7.4/umbrelos-amd64-usb-installer.iso",
+          "published_sha256": "d30f4e495630b79e946cb6e98cc0f0404a72f69291df5debd7e8908bf106ac40",
+          "http_status": 200,
+          "image_bytes_downloaded_and_hash_verified": false
+        },
+        {
+          "filename": "umbrelos-amd64.img.xz",
+          "url": "https://download.umbrel.com/release/1.7.4/umbrelos-amd64.img.xz",
+          "published_sha256": "13e9aa857c49a8cf4262adec76c52c7f653166fe350d56f5531170fb3d7113ad",
+          "http_status": 200,
+          "image_bytes_downloaded_and_hash_verified": false
+        },
+        {
+          "filename": "umbrelos-amd64.img",
+          "url": "https://download.umbrel.com/release/1.7.4/umbrelos-amd64.img",
+          "published_sha256": "d9eba54d7bc2763bb56752a6e2a43043ec3283198b9e69a50575874f2f1f52cf",
+          "http_status": 404,
+          "image_bytes_downloaded_and_hash_verified": false
+        }
+      ]
+    },
+    {
+      "version": "2.0.0",
+      "source_ref": "9298257b0e904ca8d8270b1702672666343f0b86",
+      "release_url": "https://github.com/getumbrel/umbrel/releases/tag/2.0.0",
+      "checksums_url": "https://download.umbrel.com/release/2.0.0/SHA256SUMS",
+      "files": [
+        {
+          "filename": "umbrelos-amd64-usb-installer.iso",
+          "url": "https://download.umbrel.com/release/2.0.0/umbrelos-amd64-usb-installer.iso",
+          "published_sha256": "c87f62d1fbfb8a14ba60e948d70437a7f8ebd541692b055d0d291c7e220e2f54",
+          "http_status": 200,
+          "image_bytes_downloaded_and_hash_verified": false
+        },
+        {
+          "filename": "umbrelos-amd64.img.xz",
+          "url": "https://download.umbrel.com/release/2.0.0/umbrelos-amd64.img.xz",
+          "published_sha256": "17ebcf8a32ff75e438f49308f7c33d6b74a896ff88245f09cb8ee778e11bf256",
+          "http_status": 200,
+          "image_bytes_downloaded_and_hash_verified": false
+        },
+        {
+          "filename": "umbrelos-amd64.img",
+          "url": "https://download.umbrel.com/release/2.0.0/umbrelos-amd64.img",
+          "published_sha256": "bbdeb0af795b0a4bf3c1c22cd416a58866d356e971af9fba5c0ed987ecb1b8da",
+          "http_status": 404,
+          "image_bytes_downloaded_and_hash_verified": false
+        }
+      ]
+    }
+  ]
 }
