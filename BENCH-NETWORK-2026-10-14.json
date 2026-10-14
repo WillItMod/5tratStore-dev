@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "baseStoreCommit": "1e002aad1678dc9d1668eb121e78bbfcd37a31d7",
+  "packageId": "willitmod-dev-axebench",
+  "previousVersion": "4.0.28-dev.1",
+  "packageVersion": "4.0.28-dev.2",
+  "unchangedImage": "ghcr.io/willitmod/axebench:v4.0.28-dev",
+  "baselineComposeModelSHA256": "7e4f15d5378af578c994eb22a0bcd058c446cec9e4f76b04b56b7ead89e85bc2",
+  "baselineManifestModelSHA256": "4a82adab3945b9159342eb600e294c7f3748cc893ed930b7c7845e1dc028d0fc",
+  "removedDefaultNetwork": {
+    "default": {
+      "ipam": {
+        "config": [
+          {
+            "subnet": "172.31.51.0/24"
+          }
+        ]
+      }
+    }
+  },
+  "observedHealthyBCH2Subnet": "172.31.0.0/16",
+  "observedConflictingBenchSubnet": "172.31.51.0/24",
+  "scope": "Use ordinary per-project Docker subnet allocation; preserve image, services, mounts, ports, pre-start hook and application/UI source. No native OS normalizer or live network modification."
+}
