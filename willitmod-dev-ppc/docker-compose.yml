@@ -198,8 +198,9 @@ services:
         fi
 
   ppcd:
-    build:
-      context: ${APP_DATA_DIR}/data/peercoind
+    image: ghcr.io/willitmod/axeppc-peercoind:0.15.1ppc-node.602518e559df@sha256:41bebfa7003bfc3073cae18345abd55da8831288277b1c4185114e91ef437e75
+    stop_signal: SIGTERM
+    stop_grace_period: 2m
     user: "1000:1000"
     restart: unless-stopped
     depends_on:
@@ -237,7 +238,7 @@ services:
   app:
     stop_signal: SIGINT
     hostname: axeppc-app
-    image: ghcr.io/willitmod/axeppc-app-umbrel-dev:0.2.37-mux.d59c9d2e2501@sha256:2b48e067bb72a243f5f12b8ff4fc1ba9bb2a8e84949d569fc71c92b00f853a0f
+    image: ghcr.io/willitmod/axeppc-app-umbrel-dev:0.2.37-mux.5b0aac96a475@sha256:df22d1f1ba4f607d7422945cbdb0ec4ad348b9ce7ddd578d8179849db45d536d
     user: "1000:1000"
     restart: unless-stopped
     stop_grace_period: 30s
@@ -255,8 +256,8 @@ services:
       NETWORK_IP: "${NETWORK_IP}"
       STATIC_DIR: "/app/static"
       APP_CHANNEL: "ALPHA"
-      APP_VERSION_SUFFIX: "-dev"
-      PPCD_IMAGE: ""
+      APP_VERSION_SUFFIX: "-dev.1"
+      PPCD_IMAGE: "ghcr.io/willitmod/axeppc-peercoind:0.15.1ppc-node.602518e559df@sha256:41bebfa7003bfc3073cae18345abd55da8831288277b1c4185114e91ef437e75"
       PPC_RPC_HOST: "ppcd"
       PPC_RPC_PORT: "9902"
       PPC_RPC_USER: "ppc"

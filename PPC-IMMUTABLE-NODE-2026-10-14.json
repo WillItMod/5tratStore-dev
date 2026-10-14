@@ -1,0 +1,233 @@
+{
+  "schemaVersion": 1,
+  "channel": "DEV",
+  "baselineCommit": "d34158f31ec19c3baaed4a6f19e64ff59231d7a7",
+  "app": "willitmod-dev-ppc",
+  "packageVersion": "0.2.37-dev.1",
+  "version": "0.2.37-dev.1",
+  "applicationVersion": "0.2.37",
+  "imageRef": "ghcr.io/willitmod/axeppc-app-umbrel-dev:0.2.37-mux.5b0aac96a475@sha256:df22d1f1ba4f607d7422945cbdb0ec4ad348b9ce7ddd578d8179849db45d536d",
+  "sourceRevision": "5b0aac96a4757f3d2039560b8a006dc23ba0d5b2",
+  "nodeImageRef": "ghcr.io/willitmod/axeppc-peercoind:0.15.1ppc-node.602518e559df@sha256:41bebfa7003bfc3073cae18345abd55da8831288277b1c4185114e91ef437e75",
+  "nodeSourceRevision": "602518e559dfc7ebeb9a14a3abcf15879fd5e8d7",
+  "nodeSourceTree": "ce0d61f1f380a9506c8cd7a5574563a3209332a6",
+  "nodePublicationRun": 38643836636,
+  "nodeImages": {
+    "amd64": {
+      "manifestDigest": "sha256:6dd4cb80fa42cc6fee9428dd02f98b7ed9b215e1804bed7d48c01cc9800d0044",
+      "configDigest": "sha256:0a940c8b06dd0874bb34e8c959da55099301b6eaa58cf56c424ad405267dab74"
+    },
+    "arm64": {
+      "manifestDigest": "sha256:5149ccc8bdfca8b605a6a3f5ab9ea8a98c2e0b5f13e06e2831d30083bc8a7724",
+      "configDigest": "sha256:f7226464041d4330d789cd377c1a5dfae3a29ef56b7f03ceb506cc6c9a45eeca"
+    }
+  },
+  "applicationImages": {
+    "amd64": {
+      "manifestDigest": "sha256:a1b00625dc3e5925e2d8287de0ebc46ddc749a6042124485a325d26f27f2af26",
+      "configDigest": "sha256:e33f946dfb9920a43b2417774e97937da5aa8845a046bb9b81f0179b3fb1f166"
+    },
+    "arm64": {
+      "manifestDigest": "sha256:ff57e56c861ad5501e3ae691aedb825d0db8c1e025a6ddd2e8fc8a84194114e1",
+      "configDigest": "sha256:39247ac8aa4a434d6b34b3e6207f9f7e9fad001542bbd45a2b22da5778078d2e"
+    }
+  },
+  "nodeBinaryWrapperTiniBindings": {
+    "arm64": {
+      "triplet": "aarch64-linux-gnu",
+      "official_archive_url": "https://github.com/peercoin/peercoin/releases/download/v0.15.1ppc/peercoin-1af7509666a7-aarch64-linux-gnu.tar.gz",
+      "official_archive_sha256": "294ce664783c4903a6182ec54886d9df9cbe2ddcdeb93f5cf506f3901d549088",
+      "files": {
+        "tini": {
+          "path": "/usr/bin/tini",
+          "sha256": "09ff331955a10c5b030f4d0aae3ce9c764437d368a7891fa0e3d8b1cd24e0279",
+          "mode": "0o755",
+          "bytes": 68592,
+          "uid": 0,
+          "gid": 0
+        },
+        "peercoin-cli": {
+          "path": "/opt/peercoin-1af7509666a7/bin/peercoin-cli",
+          "sha256": "667618e071a414439b0fbe29cec97866302976727c578959b3b624f1e88a6bfc",
+          "mode": "0o755",
+          "bytes": 2080792,
+          "uid": 0,
+          "gid": 0
+        },
+        "peercoin-tx": {
+          "path": "/opt/peercoin-1af7509666a7/bin/peercoin-tx",
+          "sha256": "bb11a6331e1b00d8393f6cc3905a448b44ff0152065cf1e8f413bba3806251de",
+          "mode": "0o755",
+          "bytes": 3727432,
+          "uid": 0,
+          "gid": 0
+        },
+        "peercoind": {
+          "path": "/opt/peercoin-1af7509666a7/bin/peercoind",
+          "sha256": "4333c0d1a2334535abe7aa07fd2499d391880067a21e29e239d6530c3aa9dd82",
+          "mode": "0o755",
+          "bytes": 15469760,
+          "uid": 0,
+          "gid": 0
+        },
+        "peercoind-wrapper.sh": {
+          "path": "/usr/local/bin/peercoind-wrapper.sh",
+          "sha256": "dc2ebf05140165e5dd02194fbe0a8f843113dac0c9db362c42b16af92625eab2",
+          "mode": "0o755",
+          "bytes": 289,
+          "uid": 0,
+          "gid": 0
+        }
+      }
+    },
+    "amd64": {
+      "triplet": "x86_64-linux-gnu",
+      "official_archive_url": "https://github.com/peercoin/peercoin/releases/download/v0.15.1ppc/peercoin-1af7509666a7-x86_64-linux-gnu.tar.gz",
+      "official_archive_sha256": "67f5412d2a9eb130c5b0bfc6f057266d931c74d53b969891297eae83b2cc439f",
+      "files": {
+        "tini": {
+          "path": "/usr/bin/tini",
+          "sha256": "3a809bd78682d860096f95718e77db0d3bb6d8e93c38135036d6c5b4e857d275",
+          "mode": "0o755",
+          "bytes": 27792,
+          "uid": 0,
+          "gid": 0
+        },
+        "peercoin-cli": {
+          "path": "/opt/peercoin-1af7509666a7/bin/peercoin-cli",
+          "sha256": "b206096794c8fa51ac538abf8ca31a56128c9a3c28881f1a482fb16029554d7f",
+          "mode": "0o755",
+          "bytes": 2281672,
+          "uid": 0,
+          "gid": 0
+        },
+        "peercoin-tx": {
+          "path": "/opt/peercoin-1af7509666a7/bin/peercoin-tx",
+          "sha256": "235c973a0553c202d189f70129ed767504e12f77042cb754369903b784c12fd0",
+          "mode": "0o755",
+          "bytes": 4043000,
+          "uid": 0,
+          "gid": 0
+        },
+        "peercoind": {
+          "path": "/opt/peercoin-1af7509666a7/bin/peercoind",
+          "sha256": "fc8e7b23da9e1337e1f8d667ffe25e8bdcb4e38a6f2e291d3a45c02f04c0ea92",
+          "mode": "0o755",
+          "bytes": 17477880,
+          "uid": 0,
+          "gid": 0
+        },
+        "peercoind-wrapper.sh": {
+          "path": "/usr/local/bin/peercoind-wrapper.sh",
+          "sha256": "dc2ebf05140165e5dd02194fbe0a8f843113dac0c9db362c42b16af92625eab2",
+          "mode": "0o755",
+          "bytes": 289,
+          "uid": 0,
+          "gid": 0
+        }
+      }
+    }
+  },
+  "poolImageUnchanged": "ghcr.io/willitmod/axeppc-pool:0.2.30",
+  "beforeModelSHA256": "aa972f0c38e18eaf2f4ca1b89ad3479600a66d27bd37e22a91f9f1765e1b58fa",
+  "afterModelSHA256": "c888dc49f6804f5f611706338f43e7dc577396deb37ababfefa36004d7b60dca",
+  "changes": [
+    {
+      "path": [
+        "services",
+        "app",
+        "environment",
+        "APP_VERSION_SUFFIX"
+      ],
+      "beforeExists": true,
+      "afterExists": true,
+      "before": "-dev",
+      "after": "-dev.1"
+    },
+    {
+      "path": [
+        "services",
+        "app",
+        "environment",
+        "PPCD_IMAGE"
+      ],
+      "beforeExists": true,
+      "afterExists": true,
+      "before": "",
+      "after": "ghcr.io/willitmod/axeppc-peercoind:0.15.1ppc-node.602518e559df@sha256:41bebfa7003bfc3073cae18345abd55da8831288277b1c4185114e91ef437e75"
+    },
+    {
+      "path": [
+        "services",
+        "app",
+        "image"
+      ],
+      "beforeExists": true,
+      "afterExists": true,
+      "before": "ghcr.io/willitmod/axeppc-app-umbrel-dev:0.2.37-mux.d59c9d2e2501@sha256:2b48e067bb72a243f5f12b8ff4fc1ba9bb2a8e84949d569fc71c92b00f853a0f",
+      "after": "ghcr.io/willitmod/axeppc-app-umbrel-dev:0.2.37-mux.5b0aac96a475@sha256:df22d1f1ba4f607d7422945cbdb0ec4ad348b9ce7ddd578d8179849db45d536d"
+    },
+    {
+      "path": [
+        "services",
+        "ppcd",
+        "build"
+      ],
+      "beforeExists": true,
+      "afterExists": false,
+      "before": {
+        "context": "${APP_DATA_DIR}/data/peercoind"
+      }
+    },
+    {
+      "path": [
+        "services",
+        "ppcd",
+        "image"
+      ],
+      "beforeExists": false,
+      "afterExists": true,
+      "after": "ghcr.io/willitmod/axeppc-peercoind:0.15.1ppc-node.602518e559df@sha256:41bebfa7003bfc3073cae18345abd55da8831288277b1c4185114e91ef437e75"
+    },
+    {
+      "path": [
+        "services",
+        "ppcd",
+        "stop_grace_period"
+      ],
+      "beforeExists": false,
+      "afterExists": true,
+      "after": "2m"
+    },
+    {
+      "path": [
+        "services",
+        "ppcd",
+        "stop_signal"
+      ],
+      "beforeExists": false,
+      "afterExists": true,
+      "after": "SIGTERM"
+    }
+  ],
+  "validationScope": {
+    "publishedBothNativeNodeBinaryAndRealOfflineTwoBootChecks": true,
+    "actualFullMainnetGracefulStopQualified": false,
+    "ordinaryAppManagerUpdateQualified": false,
+    "miningProtocolQualified": false,
+    "actualInstalledNativeInstallAndUpdateRendererIdentity": true
+  },
+  "nodePublicRegistryReceiptSHA256": "7f59c385db61f7fc191a6c712237c7540cce95e4a9053d6ea920d52969044c82",
+  "nativeRendererProof": {
+    "cliSHA256": "caa747717a3a5ba12dbc231ce79987179b3c37b8ca31d8f588baa1c30c715cfc",
+    "generatorSHA256": {
+      "install": "9dc8fd762892a0a4d4492de4348646df87584469eb079a3d9a54d53a7d594578",
+      "update": "0cf6ed5c7955a343ae7c3028c0e5a5b2872f41e8e011f41eabcf3df76f4ccd68"
+    },
+    "policyHelperSHA256": {
+      "docker_socket_access.py": "e08271cf0c535aa638d83415b69858bc14c6b583f8bbad5a0f68777658985c87",
+      "app_stop_policy.py": "76400e6b4321ec04eaa67df87ba23a180530dcdb357b7b1db79d1ed2a812bdf5"
+    },
+    "receiptSHA256": "34bf624a4fbce97322b0298b36177fc1e84f1f1c80dfb5c6d3cc51583efbe08a"
+  }
+}

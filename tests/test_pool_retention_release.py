@@ -11,6 +11,7 @@ from test_dgb_core_release import previous_dgb_model
 from test_powpow_sql_seed import previous_powpow_model, package_version
 from test_xec_portable_release import previous_xec_model
 from test_bch2_portable_readiness_release import APP as BCH2, record as bch2_record, previous_bch2_model
+from test_ppc_immutable_release import previous_ppc_model
 
 ROOT=Path(__file__).resolve().parents[1]
 RELEASE=json.loads((ROOT/'POOL-RETENTION-2026-10-01.json').read_text())
@@ -19,6 +20,7 @@ APPS=RELEASE['apps']
 def digest(value):return hashlib.sha256(json.dumps(value,sort_keys=True,separators=(',',':')).encode()).hexdigest()
 
 def previous_model(app_id,current,filename='docker-compose.yml'):
+    current=previous_ppc_model(app_id,current)
     current=previous_xec_model(app_id,current)
     current=previous_powpow_model(app_id,current)
     current=previous_bch2_model(app_id,current)

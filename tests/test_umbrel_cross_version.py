@@ -96,6 +96,10 @@ class UmbrelCrossVersionTests(unittest.TestCase):
                     self.assertEqual(version, POWPOW_SEED['packageVersion'])
                     compose = previous_model(app_id, compose)
                     version = release['package_version']
+                elif app_id == 'willitmod-dev-ppc':
+                    self.assertEqual(version, package_version(app_id, release['package_version']))
+                    compose = previous_model(app_id, compose)
+                    version = release['package_version']
                 elif app_id in APPS:
                     self.assertEqual(version,package_version(app_id,(bch2_record() if app_id==BCH2 else APPS[app_id])['version']))
                     compose=previous_model(app_id,compose)
