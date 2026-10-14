@@ -9,6 +9,7 @@ import unittest
 import yaml
 from test_pool_retention_release import APPS, previous_model
 from test_bch2_portable_readiness_release import APP as BCH2, record as bch2_record
+from test_powpow_sql_seed import package_version
 
 ROOT = Path(__file__).resolve().parents[1]
 APP_IDS = {"willitmod-dev-" + suffix for suffix in ("bch", "axebch2", "btc", "fracattack", "bc2", "xec", "ppc")}
@@ -55,7 +56,7 @@ class BestShareReleaseTests(unittest.TestCase):
                 manifest_path = ROOT / app_id / filename
                 if manifest_path.exists():
                     manifest = yaml.safe_load(manifest_path.read_text())
-                    self.assertEqual(manifest["version"], (bch2_record() if app_id==BCH2 else APPS.get(app_id,fresh))["version"])
+                    self.assertEqual(manifest["version"], package_version(app_id, (bch2_record() if app_id==BCH2 else APPS.get(app_id,fresh))["version"]))
                     self.assertIn("Best-share records", manifest["releaseNotes"])
                     self.assertIn("Direct and mixed miners", manifest["releaseNotes"])
         self.assertEqual(self.current, expected, "Other apps or historical receipt fields changed")

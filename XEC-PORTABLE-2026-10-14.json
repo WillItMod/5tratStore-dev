@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "channel": "DEV",
+  "baselineCommit": "4df468b57e93009fabae9e72e80e9b0f0a864e85",
+  "appId": "willitmod-dev-xec",
+  "packageVersion": "0.1.24-dev.1",
+  "applicationImageUnchanged": "ghcr.io/willitmod/axexec-app-umbrel-dev:0.1.24@sha256:ae783ceb68f7768314b0eb8864ce1b22b188eb29e706d32e6f87575df9b58b7f",
+  "nodeImageUnchanged": "ghcr.io/willitmod/xecd-abc:0.33.4-nojemalloc-r1",
+  "poolImageRef": "ghcr.io/willitmod/ecash-ckpool-solo:18b38ad-portable-dev-20261014@sha256:20069e6ac004af010b20ca9aeb056ebbaf48a8656ad858ad69c8deba7f590d61",
+  "poolBuildSourceRevision": "f4c2fffcb407e6dfb126a9be405d750878e00b93",
+  "upstreamSourceRevision": "18b38ad886a4c7a323b5f9bdcf761704c669c223",
+  "publicationRun": 38626482142,
+  "poolImages": {
+    "amd64": {
+      "manifest_digest": "sha256:e927f38b022f5d4fb4f05127b0856611ef79278db2ae21c685305826d9fff310",
+      "config_digest": "sha256:76cf9d530f5671ad866cac116c86c1a65ce209876dd5768c555e3eab25bf9549"
+    },
+    "arm64": {
+      "manifest_digest": "sha256:70164dbc01f7bf283455b4ca3ad8bf14a8ce72ec4456e7b8828e680d91fd8f6d",
+      "config_digest": "sha256:fd33c2716a788510515c5f0c412018460c3731cfd495160c57d33f21a473516c"
+    }
+  },
+  "beforeModelSHA256": "3bed876b9940a904af9cf438524b50770c02a3cc5a5634af7f5fabdbb5d6833f",
+  "afterModelSHA256": "80abd479d292b2a87e1ffab725d01815c1b5c4637f47f568912da67f6403070d",
+  "changes": [
+    {
+      "path": [
+        "services",
+        "ckpool",
+        "image"
+      ],
+      "before": "ghcr.io/willitmod/ecash-ckpool-solo:18b38ad",
+      "after": "ghcr.io/willitmod/ecash-ckpool-solo:18b38ad-portable-dev-20261014@sha256:20069e6ac004af010b20ca9aeb056ebbaf48a8656ad858ad69c8deba7f590d61"
+    },
+    {
+      "path": [
+        "services",
+        "app",
+        "environment",
+        "CKPOOL_IMAGE"
+      ],
+      "before": "ghcr.io/willitmod/ecash-ckpool-solo:18b38ad",
+      "after": "ghcr.io/willitmod/ecash-ckpool-solo:18b38ad-portable-dev-20261014@sha256:20069e6ac004af010b20ca9aeb056ebbaf48a8656ad858ad69c8deba7f590d61"
+    }
+  ],
+  "validationScope": {
+    "portableSourceNativeAMD64ARM64CI": true,
+    "actualNoAVXSourceVectorsAndStartup": true,
+    "publishedNoAVXStartup": false,
+    "fullAppManagerLifecycleQualified": false,
+    "miningProtocolQualified": false
+  }
+}

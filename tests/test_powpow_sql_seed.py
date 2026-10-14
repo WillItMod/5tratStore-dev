@@ -12,6 +12,7 @@ import unittest
 import uuid
 
 import yaml
+from test_xec_portable_release import package_version as xec_package_version
 
 ROOT = Path(__file__).resolve().parents[1]
 APP = 'willitmod-dev-powpow'
@@ -35,7 +36,7 @@ def previous_powpow_model(app_id, current):
     return restored
 
 def package_version(app_id, historical):
-    return RECORD['packageVersion'] if app_id == APP else historical
+    return RECORD['packageVersion'] if app_id == APP else xec_package_version(app_id, historical)
 
 class PowPowSqlSeedContractTests(unittest.TestCase):
     def test_seed_mount_is_deliverable_without_recipe_directory(self):
