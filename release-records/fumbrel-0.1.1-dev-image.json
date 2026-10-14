@@ -1,0 +1,19 @@
+{
+  "at": "2026-10-14T19:45:43.338053+00:00",
+  "repository": "willitmod/fumbrel",
+  "tag": "0.1.1-dev",
+  "digest": "sha256:290a91f5e8f42e51af4b9c715c449bda96071b98eb4c2de0ef97e52d9d4fba7a",
+  "source": "53913a8155fd4374dc7ac2646b319f3d0d9d4535",
+  "workflow": 38625856114,
+  "anonymous_access": true,
+  "platforms": {
+    "amd64": {
+      "manifest_digest": "sha256:691797d33357c5109c8027821a5aaa0e87454927450e5f0640f13270c4dfb1dd",
+      "config_digest": "sha256:53cc6644510a89a959d11dde7e8e2f6218a00ca20a8a9f7db1cc22cc8942321c"
+    },
+    "arm64": {
+      "manifest_digest": "sha256:2a9b6cfb4edd9a071afc4710b9b63f3c0423efcee1348dcf2ae6c4ac2d902a97",
+      "config_digest": "sha256:d5bb83ed8bc8f346005c124cc276a512945c98311f3eb58ee70f5831eada8cde"
+    }
+  }
+}
