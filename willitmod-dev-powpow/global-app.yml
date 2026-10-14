@@ -2,8 +2,13 @@ manifestVersion: 1
 id: willitmod-dev-powpow
 category: altcoin
 name: "PowPow"
-version: "0.2.37-dev"
+version: "0.2.37-dev.1"
 releaseNotes: >-
+  Recipe revision: seeds the existing PostgreSQL initialization SQL through the
+  app data directory so fresh installs also initialize on 5tratumOS. Existing
+  database files are retained; these scripts run only for an empty PostgreSQL
+  data directory. Application, pool and node images are unchanged.
+
   Direct and mixed miners now keep their accepted-share hashrate visible
   when MUX is empty, offline, or routing other miners elsewhere. MUX-only
   headlines require matched worker identities; pool estimates and routed
