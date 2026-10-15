@@ -5,6 +5,7 @@ normal data migrations, remains Umbrel's responsibility. No uninstall/purge.
 """
 import base64
 import copy
+from datetime import datetime
 import fcntl
 import hashlib
 import json
@@ -416,7 +417,107 @@ class Engine:
             raise RecoveryError('Unsupported lifecycle action.')
         command([self.cli, 'client', 'apps.' + action + '.mutate', '--appId', app_id], timeout=1800)
 
+    def stop_legacy_peercoin(self, app_id):
+        """Protect the selected PPC node from its installed short stop grace.
+
+        This changes no container/recipe setting. Docker's negative timeout
+        sends the existing TERM signal and never escalates to SIGKILL, even
+        after our bounded CLI observer has timed out.
+        """
+        if app_id != 'willitmod-dev-ppc':
+            return
+        folder = self.appdir(app_id)
+        entry = self.catalog['apps'][app_id]
+        if entry.get('source_id') != app_id:
+            raise RecoveryError('Peercoin package identity needs manual review before stopping.')
+        ids = command(['docker', 'ps', '-q', '--no-trunc', '--filter',
+                       'label=com.docker.compose.project=' + app_id, '--filter',
+                       'label=com.docker.compose.service=ppcd']).split()
+        if not ids:
+            return
+        if len(ids) != 1 or not re.fullmatch('[0-9a-f]{64}', ids[0]):
+            raise RecoveryError('Peercoin node identity is ambiguous. Inspect Umbrel before retrying.')
+        cid = ids[0]
+        try:
+            record = entry['files']['docker-compose.yml']
+            body = base64.b64decode(record['body'], validate=True)
+            if len(body) > MAX_FILE or digest(body) != record['sha256']:
+                raise ValueError()
+            target = yaml_load(body)['services']['ppcd']
+            # The reviewed bundle promises two minutes. A future policy needs
+            # another explicit review instead of silently expanding this guard.
+            if (target.get('stop_grace_period') not in ('2m', '120s', 120)
+                    or target.get('stop_signal') != 'SIGTERM'):
+                raise ValueError()
+            installed = yaml_load(read_file(folder, 'docker-compose.yml'))['services']['ppcd']
+            image = installed.get('image')
+            if image is None:
+                # The observed pre-immutable recipe built this exact context;
+                # Compose named its local image willitmod-dev-ppc-ppcd.
+                if installed.get('build') != {'context': '${APP_DATA_DIR}/data/peercoind'}:
+                    raise ValueError()
+                image = app_id + '-ppcd'
+            elif (not isinstance(image, str) or 'build' in installed
+                  or not image.startswith(('ghcr.io/willitmod/axeppc-peercoind:',
+                                            'ghcr.io/willitmod/axeppc-peercoind@sha256:'))):
+                raise ValueError()
+            details = json.loads(command(['docker', 'inspect', cid]))
+            if len(details) != 1:
+                raise ValueError()
+            before = details[0]
+            config, state = before['Config'], before['State']
+            labels = config['Labels']
+            if (before['Id'] != cid or config['Image'] != image
+                    or labels.get('com.docker.compose.project') != app_id
+                    or labels.get('com.docker.compose.service') != 'ppcd'
+                    or not state['Running'] or state.get('Paused') or state.get('Restarting')
+                    or config.get('StopSignal') not in (None, '', 'TERM', 'SIGTERM', '15')):
+                raise ValueError()
+            images = json.loads(command(['docker', 'image', 'inspect', image]))
+            if len(images) != 1 or images[0]['Id'] != before['Image']:
+                raise ValueError()
+            grace = config.get('StopTimeout')
+            if grace is None:
+                grace = 10  # Docker's Linux default, not an override.
+            if isinstance(grace, bool) or not isinstance(grace, int):
+                raise ValueError()
+            started_at = datetime.fromisoformat(state['StartedAt'].replace('Z', '+00:00'))
+        except (KeyError, TypeError, ValueError):
+            raise RecoveryError('Peercoin stop policy or container identity needs manual review.') from None
+        if grace < 0 or grace >= 120:
+            return
+        self.step(app_id, 'Waiting for Peercoin to shut down safely')
+        started = time.monotonic()
+        try:
+            result = subprocess.run(['docker', 'stop', '--time', '-1', cid],
+                                    text=True, capture_output=True, timeout=150)
+        except subprocess.TimeoutExpired:
+            raise RecoveryError('Peercoin shutdown is still pending. Fumbrel stopped here; inspect Umbrel and wait for a clean shutdown before retrying.') from None
+        except OSError:
+            raise RecoveryError('Docker is unavailable. Peercoin shutdown cannot be verified; inspect Umbrel before retrying.') from None
+        if result.returncode:
+            raise RecoveryError('Peercoin graceful shutdown could not be verified. Inspect Umbrel before retrying.')
+        try:
+            details = json.loads(command(['docker', 'inspect', cid]))
+            if len(details) != 1:
+                raise ValueError()
+            after = details[0]
+            state = after['State']
+            if (after['Id'] != cid or after['Image'] != before['Image']
+                    or after['Config']['Image'] != image
+                    or after['Config']['Labels'] != before['Config']['Labels']
+                    or state['StartedAt'] != before['State']['StartedAt']
+                    or state['Running'] or state.get('Paused') or state.get('Restarting')
+                    or state['ExitCode'] != 0 or state.get('OOMKilled')
+                    or datetime.fromisoformat(state['FinishedAt'].replace('Z', '+00:00')) <= started_at):
+                raise ValueError()
+        except (KeyError, TypeError, ValueError):
+            raise RecoveryError('Peercoin did not have a verified clean shutdown. Fumbrel stopped here for review.') from None
+        self.step(app_id, 'Peercoin stopped cleanly')
+        return {'container': cid, 'exit': 0, 'seconds': round(time.monotonic() - started, 3)}
+
     def stop(self, app_id):
+        self.stop_legacy_peercoin(app_id)
         self.step(app_id, 'Stopping through Umbrel')
         # A failed normal stop is not permission to replace a live node recipe.
         self.lifecycle(app_id, 'stop')

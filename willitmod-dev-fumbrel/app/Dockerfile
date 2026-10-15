@@ -1,11 +1,9 @@
-FROM python:3.13-slim@sha256:8d9d0b8bcf6506481eae4907c18f5e3e7902e629f5f6d684f9e7c32e85e3ddf0
-ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PIP_NO_CACHE_DIR=1
-WORKDIR /app
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-COPY engine.py server.py catalog.json ./
-COPY static ./static
-USER 1000:1000
-EXPOSE 3000
-HEALTHCHECK --interval=30s --timeout=5s --start-period=15s CMD ["python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:3000/health', timeout=3)"]
-CMD ["gunicorn", "--bind", "0.0.0.0:3000", "--workers", "1", "--threads", "8", "--timeout", "180", "--worker-tmp-dir", "/tmp", "--access-logfile", "/dev/null", "server:app"]
+# Retain the actual tested Python/runtime/UI/auth/dependency blobs. Only the
+# reviewed engine and immutable recipe bundle are added in this release.
+FROM ghcr.io/willitmod/fumbrel:0.1.1-dev@sha256:290a91f5e8f42e51af4b9c715c449bda96071b98eb4c2de0ef97e52d9d4fba7a
+ARG SOURCE_COMMIT
+LABEL org.opencontainers.image.source="https://github.com/WillItMod/5tratStore-dev" \
+      org.opencontainers.image.revision="${SOURCE_COMMIT}" \
+      org.opencontainers.image.version="0.1.2-dev" \
+      org.opencontainers.image.base.digest="sha256:290a91f5e8f42e51af4b9c715c449bda96071b98eb4c2de0ef97e52d9d4fba7a"
+COPY --chown=0:0 --chmod=0644 engine.py catalog.json /app/

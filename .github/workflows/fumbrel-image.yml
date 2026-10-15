@@ -3,10 +3,14 @@ on:
   workflow_dispatch:
     inputs:
       publish:
-        description: Publish the reviewed 0.1.1-dev candidate (main branch only)
+        description: Publish the exact reviewed 0.1.2-dev candidate
         type: boolean
         required: true
         default: false
+      source_sha:
+        description: Exact reviewed source commit, equal to this run's GITHUB_SHA
+        type: string
+        required: true
   pull_request:
     paths:
       - "willitmod-dev-fumbrel/**"
@@ -35,28 +39,58 @@ jobs:
       - run: pip install -r willitmod-dev-fumbrel/app/requirements.txt PyYAML
       - run: python scripts/fumbrel/build_catalog.py --check
       - run: python -m unittest discover -s tests/fumbrel -v
-      - uses: docker/setup-qemu-action@v3
-      - uses: docker/setup-buildx-action@v3
-      - name: Build both architectures without publishing
-        uses: docker/build-push-action@v6
-        with:
-          context: ./willitmod-dev-fumbrel/app
-          push: false
-          platforms: linux/amd64,linux/arm64
-          tags: ghcr.io/willitmod/fumbrel:0.1.1-dev
-          provenance: false
-  publish:
+  verify-images:
     needs: verify
-    if: github.event_name == 'workflow_dispatch' && inputs.publish && github.ref == 'refs/heads/main' && github.repository == 'WillItMod/5tratStore-dev'
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-latest
+            arch: amd64
+          - runner: ubuntu-24.04-arm
+            arch: arm64
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - uses: docker/setup-buildx-action@v3
+      - name: Build the two-file overlay locally, without publishing
+        run: docker build --build-arg SOURCE_COMMIT="$GITHUB_SHA" --tag "codexqa/fumbrel:$GITHUB_SHA" willitmod-dev-fumbrel/app
+      - name: Prove actual native base, runtime and file inheritance
+        run: python scripts/fumbrel/verify_image.py --image "codexqa/fumbrel:$GITHUB_SHA" --arch "${{ matrix.arch }}" --source-commit "$GITHUB_SHA" --output candidate-image-proof.json
+      - name: Retain the full verified receipt in the job summary
+        run: cat candidate-image-proof.json >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        continue-on-error: true
+        with:
+          name: fumbrel-candidate-${{ matrix.arch }}
+          path: candidate-image-proof.json
+  publish:
+    needs: [verify, verify-images]
+    if: github.event_name == 'workflow_dispatch' && inputs.publish && inputs.source_sha == github.sha && (github.ref == 'refs/heads/fix/fumbrel-legacy-ppc-stop-20261015' || github.ref == 'refs/heads/main') && github.repository == 'WillItMod/5tratStore-dev'
     runs-on: ubuntu-latest
     concurrency:
-      group: fumbrel-publish-0.1.1-dev
+      group: fumbrel-publish-0.1.2-dev
       cancel-in-progress: false
     permissions:
       contents: read
       packages: write
+    outputs:
+      digest: ${{ steps.image.outputs.digest }}
     steps:
       - uses: actions/checkout@v4
+      - name: Admit the exact reviewed source and a clean application context
+        env:
+          EXPECTED_FUMBREL_SOURCE: ${{ inputs.source_sha }}
+        run: |
+          [[ "$EXPECTED_FUMBREL_SOURCE" =~ ^[a-f0-9]{40}$ ]]
+          test "$EXPECTED_FUMBREL_SOURCE" = "$GITHUB_SHA"
+          test "$(git rev-parse HEAD)" = "$EXPECTED_FUMBREL_SOURCE"
+          test -z "$(git status --porcelain --untracked-files=all -- willitmod-dev-fumbrel/app)"
       - uses: docker/setup-qemu-action@v3
       - uses: docker/setup-buildx-action@v3
       - uses: docker/login-action@v3
@@ -68,12 +102,47 @@ jobs:
         env:
           GHCR_USERNAME: ${{ github.repository_owner }}
           GHCR_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
-        run: python scripts/fumbrel/check_publish_tag.py --repository willitmod/fumbrel --tag 0.1.1-dev
+        run: python scripts/fumbrel/check_publish_tag.py --repository willitmod/fumbrel --tag 0.1.2-dev
       - name: Publish the explicitly approved DEV candidate
+        id: image
         uses: docker/build-push-action@v6
         with:
           context: ./willitmod-dev-fumbrel/app
           push: true
           platforms: linux/amd64,linux/arm64
-          tags: ghcr.io/willitmod/fumbrel:0.1.1-dev
+          tags: ghcr.io/willitmod/fumbrel:0.1.2-dev
           provenance: false
+          build-args: |
+            SOURCE_COMMIT=${{ github.sha }}
+  verify-published-images:
+    needs: publish
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-latest
+            arch: amd64
+          - runner: ubuntu-24.04-arm
+            arch: arm64
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Verify the actual published immutable index on each native platform
+        env:
+          IMAGE_DIGEST: ${{ needs.publish.outputs.digest }}
+        run: |
+          [[ "$IMAGE_DIGEST" =~ ^sha256:[a-f0-9]{64}$ ]]
+          docker pull "ghcr.io/willitmod/fumbrel@$IMAGE_DIGEST"
+          python scripts/fumbrel/verify_image.py --image "ghcr.io/willitmod/fumbrel@$IMAGE_DIGEST" --arch "${{ matrix.arch }}" --source-commit "$GITHUB_SHA" --output published-image-proof.json
+      - name: Retain the full published receipt in the job summary
+        run: cat published-image-proof.json >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        continue-on-error: true
+        with:
+          name: fumbrel-published-${{ matrix.arch }}
+          path: published-image-proof.json
