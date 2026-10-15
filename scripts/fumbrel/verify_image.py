@@ -17,9 +17,9 @@ import tarfile
 import tempfile
 
 ROOT = Path(__file__).resolve().parents[2]
-BASE_DIGEST = 'sha256:290a91f5e8f42e51af4b9c715c449bda96071b98eb4c2de0ef97e52d9d4fba7a'
-BASE = 'ghcr.io/willitmod/fumbrel:0.1.1-dev@' + BASE_DIGEST
-RELEASE = '0.1.2-dev'
+BASE_DIGEST = 'sha256:4d7d0183604372ee340ab51c6f612cc63f832e5e357c3fb2ac77b77106816d10'
+BASE = 'ghcr.io/willitmod/fumbrel:0.1.2-dev@' + BASE_DIGEST
+RELEASE = '0.1.3-dev'
 LABELS = {'org.opencontainers.image.source', 'org.opencontainers.image.revision',
           'org.opencontainers.image.version', 'org.opencontainers.image.base.digest'}
 FILES = ('engine.py', 'catalog.json')
@@ -105,7 +105,7 @@ def verify(image, arch, source_commit):
     if {'x86_64': 'amd64', 'aarch64': 'arm64', 'arm64': 'arm64'}.get(actual_arch) != arch:
         raise ValueError('This proof requires the actual native platform')
     expected = {name: (ROOT / 'willitmod-dev-fumbrel/app' / name).read_bytes() for name in FILES}
-    record = json.loads((ROOT / 'release-records/fumbrel-0.1.1-dev-image.json').read_text())
+    record = json.loads((ROOT / 'release-records/fumbrel-0.1.2-dev-image.json').read_text())
     if record['digest'] != BASE_DIGEST:
         raise ValueError('Historical tested base receipt changed')
     run(['docker', 'pull', BASE], timeout=180)

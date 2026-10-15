@@ -17,9 +17,10 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[2]
 DEV_COMMIT = '81535f05ffc82e742b9aa32299c806de6b3b712c'
+POWPOW_COMMIT = '94801dcd23fda52be1eb193637a13d73243b04f1'
 RETAINED_CATALOG_COMMIT = '6f8ae3e7949433e64a144c9707432636bafb3e8a'
 MAIN_COMMIT = '5c68fc868c62eaeff2bb3f930cbf0193ac3931cb'
-RELEASE = '0.1.2-dev'
+RELEASE = '0.1.3-dev'
 CATALOG_PATH = 'willitmod-dev-fumbrel/app/catalog.json'
 SELF = 'willitmod-dev-fumbrel'
 POWPOW_SEEDS = ('data/postgres-init/2-schema.sql', 'data/postgres-init/3-multi-pool-partition.sql')
@@ -65,8 +66,9 @@ def retained_main(catalog_ref, repo):
 
 
 def build(dev_ref=DEV_COMMIT, retained_catalog_ref=RETAINED_CATALOG_COMMIT,
-          release=RELEASE, repo=ROOT):
+          release=RELEASE, repo=ROOT, powpow_ref=POWPOW_COMMIT):
     dev_ref = commit(dev_ref, repo)
+    powpow_ref = commit(powpow_ref, repo)
     retained_catalog_ref = commit(retained_catalog_ref, repo)
     catalog = {'format': 1, 'release': release, 'legacy_exports': LEGACY, 'apps': {}}
     entries = []
@@ -78,13 +80,21 @@ def build(dev_ref=DEV_COMMIT, retained_catalog_ref=RETAINED_CATALOG_COMMIT,
                       if path.startswith('willitmod-dev-') and path.endswith('/umbrel-app.yml')
                       and path.count('/') == 1 and path.split('/')[0] != SELF})
     for folder in folders:
+        source_ref = powpow_ref if folder == 'willitmod-dev-powpow' else dev_ref
+        source_entries = entries
+        if source_ref != dev_ref:
+            source_entries = []
+            for line in git('ls-tree', '-r', source_ref, '--', folder, repo=repo).decode().splitlines():
+                metadata, path = line.split('\t', 1)
+                mode, kind, _ = metadata.split()
+                source_entries.append((path, mode, kind))
         files = {}
-        for path, mode, kind in entries:
+        for path, mode, kind in source_entries:
             if not path.startswith(folder + '/') or not permitted(path[len(folder) + 1:]):
                 continue
             if kind != 'blob' or mode not in ('100644', '100755'):
                 raise ValueError('Recipe files must be regular Git blobs: ' + path)
-            body = git('show', dev_ref + ':' + path, repo=repo)
+            body = git('show', source_ref + ':' + path, repo=repo)
             files[path[len(folder) + 1:]] = {
                 'body': base64.b64encode(body).decode(),
                 'sha256': hashlib.sha256(body).hexdigest(), 'mode': int(mode, 8) & 0o777}
@@ -95,12 +105,12 @@ def build(dev_ref=DEV_COMMIT, retained_catalog_ref=RETAINED_CATALOG_COMMIT,
         if folder in ('willitmod-dev-btc', 'willitmod-dev-axebench', 'willitmod-dev-axelive', 'willitmod-dev-axemig'):
             aliases.append(folder.replace('willitmod-dev-', 'willitmod-'))
         entry = {'name': manifest['name'], 'version': str(manifest['version']), 'source_id': folder,
-                 'source_commit': dev_ref, 'channel': 'DEV', 'files': files}
+                 'source_commit': source_ref, 'channel': 'DEV', 'files': files}
         if folder == 'willitmod-dev-powpow':
             # These static seeds are copied by the normal Umbrel store update.
             # Fumbrel may verify their presence, but must never write app data.
             entry['required_existing_files'] = {
-                name: {'sha256': hashlib.sha256(git('show', dev_ref + ':' + folder + '/' + name, repo=repo)).hexdigest()}
+                name: {'sha256': hashlib.sha256(git('show', source_ref + ':' + folder + '/' + name, repo=repo)).hexdigest()}
                 for name in POWPOW_SEEDS}
         for alias in aliases:
             catalog['apps'][alias] = entry
@@ -115,12 +125,13 @@ def serialized(catalog):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--dev-ref', default=DEV_COMMIT)
+    parser.add_argument('--powpow-ref', default=POWPOW_COMMIT)
     parser.add_argument('--retained-catalog-ref', default=RETAINED_CATALOG_COMMIT)
     parser.add_argument('--release', default=RELEASE)
     parser.add_argument('--output', type=Path, default=ROOT / CATALOG_PATH)
     parser.add_argument('--check', action='store_true', help='Compare without changing the bundled catalog')
     args = parser.parse_args()
-    body = serialized(build(args.dev_ref, args.retained_catalog_ref, args.release))
+    body = serialized(build(args.dev_ref, args.retained_catalog_ref, args.release, powpow_ref=args.powpow_ref))
     if args.check:
         if args.output.read_text() != body:
             raise SystemExit('Bundled catalog differs from its pinned Git inputs')
