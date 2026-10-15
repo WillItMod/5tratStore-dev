@@ -69,7 +69,7 @@ Restore requires a stopped app, first backs up its current recipe, restores the
 saved metadata, and leaves it stopped. It does not undo a node database migration;
 review binary/data compatibility before restarting an older restored recipe.
 
-PowPow's bundled `0.2.37-dev.2` recipe requires the two reviewed static SQL seeds
+PowPow's bundled `0.2.37-dev.3` recipe requires the two reviewed static SQL seeds
 at `data/postgres-init/2-schema.sql` and `data/postgres-init/3-multi-pool-partition.sql`.
 Fumbrel records only their expected hashes, and verifies the existing regular
 files through a canonical local app-data path before creating a backup, stopping
@@ -159,9 +159,13 @@ an authentication, network, rate-limit or other inconclusive error blocks the ru
 The workflow never interprets a generic image-inspection failure as absence.
 A second native verification reads the actual published index returned by the
 publisher, never its mutable tag. Full receipts are written to logs and the job
-summary before an optional artifact upload. This candidate is unpublished: its
-Compose image must be pinned to its new verified multi-architecture digest before
-installation. Its Dockerfile inherits `0.1.1-dev` at immutable index
+summary before an optional artifact upload. The published `0.1.2-dev` image is pinned
+to index `sha256:4d7d0183604372ee340ab51c6f612cc63f832e5e357c3fb2ac77b77106816d10`.
+`release-records/fumbrel-0.1.2-dev-image.json` binds that public index and both native
+platform configurations to source commit `f666e677138aebe06a319459d8da62c4c02a4bea`.
+Native artifact verification does not establish ordinary Umbrel update or recovery
+acceptance; those platform receipts remain separate. Its Dockerfile inherits
+`0.1.1-dev` at immutable index
 `sha256:290a91f5e8f42e51af4b9c715c449bda96071b98eb4c2de0ef97e52d9d4fba7a`. Live acceptance results are
 recorded separately in `ACCEPTANCE.md`; that file describes `0.1.0-dev` only.
 Building ARM does not establish Raspberry Pi hardware recovery.

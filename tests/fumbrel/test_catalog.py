@@ -74,7 +74,28 @@ class CatalogTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             builder.build(retained_catalog_ref='main')
 
-    def test_release_and_workflow_match_unpublished_candidate(self):
+    def test_recipe_pins_exact_publication_and_unchanged_published_payload(self):
+        record=json.loads((ROOT/'release-records/fumbrel-0.1.2-dev-image.json').read_text())
+        self.assertEqual(record['digest'],'sha256:4d7d0183604372ee340ab51c6f612cc63f832e5e357c3fb2ac77b77106816d10')
+        self.assertEqual(record['source'],'f666e677138aebe06a319459d8da62c4c02a4bea')
+        self.assertEqual(record['workflow'],38661048787)
+        self.assertEqual(record['catalogue_source'],builder.DEV_COMMIT)
+        self.assertEqual(record['tag'],builder.RELEASE)
+        compose=yaml.safe_load((ROOT/'willitmod-dev-fumbrel/docker-compose.yml').read_text())
+        self.assertEqual(compose['services']['server']['image'],
+                         'ghcr.io/willitmod/fumbrel:'+record['tag']+'@'+record['digest'])
+        self.assertEqual(set(record['platforms']),{'amd64','arm64'})
+        for arch,expected in {'amd64':'sha256:c9f9befae396d82581c2aeeb52e4967d2dd957b9d2e339ad09422c411dabb7ab',
+                              'arm64':'sha256:5329498a28bbee8b03c56f0f8c17320135ef241ce691669561e7e41d6864c709'}.items():
+            self.assertEqual(record['platforms'][arch]['config_digest'],expected)
+            self.assertRegex(record['platforms'][arch]['manifest_digest'],r'^sha256:[a-f0-9]{64}$')
+        self.assertEqual(set(record['only_changed_runtime_files_sha256']),{'engine.py','catalog.json'})
+        for name,expected in record['only_changed_runtime_files_sha256'].items():
+            path='willitmod-dev-fumbrel/app/'+name
+            self.assertEqual(hashlib.sha256((ROOT/path).read_bytes()).hexdigest(),expected)
+            self.assertEqual((ROOT/path).read_bytes(),subprocess.check_output(['git','show',record['source']+':'+path],cwd=ROOT))
+
+    def test_release_and_workflow_match_published_candidate(self):
         manifest = yaml.safe_load((ROOT / 'willitmod-dev-fumbrel/umbrel-app.yml').read_text())
         compose = yaml.safe_load((ROOT / 'willitmod-dev-fumbrel/docker-compose.yml').read_text())
         self.assertEqual(CATALOG['release'], manifest['version'])
