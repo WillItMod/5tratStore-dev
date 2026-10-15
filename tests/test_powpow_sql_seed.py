@@ -18,6 +18,7 @@ from test_bch2_node_entrypoint_release import package_version as bch2_package_ve
 from test_ppc_immutable_release import package_version as ppc_package_version
 from test_pool_supervisor_release import package_version as supervisor_package_version
 from test_dgb_permission_shutdown import package_version as permission_package_version
+from test_powpow_startup_release import previous_startup_model, package_version as startup_package_version
 
 ROOT = Path(__file__).resolve().parents[1]
 APP = 'willitmod-dev-powpow'
@@ -27,6 +28,7 @@ def digest(value):
     return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
 
 def previous_powpow_model(app_id, current):
+    current = previous_startup_model(app_id, current)
     if app_id != APP:
         return copy.deepcopy(current)
     assert digest(current) == RECORD['afterModelSHA256']
@@ -41,13 +43,14 @@ def previous_powpow_model(app_id, current):
     return restored
 
 def package_version(app_id, historical):
-    return RECORD['packageVersion'] if app_id == APP else permission_package_version(app_id,supervisor_package_version(app_id,ppc_package_version(app_id,bch2_package_version(app_id,bc2_package_version(app_id, xec_package_version(app_id, historical))))))
+    return startup_package_version(app_id, RECORD['packageVersion']) if app_id == APP else permission_package_version(app_id,supervisor_package_version(app_id,ppc_package_version(app_id,bch2_package_version(app_id,bc2_package_version(app_id, xec_package_version(app_id, historical))))))
 
 class PowPowSqlSeedContractTests(unittest.TestCase):
     def test_seed_mount_is_deliverable_without_recipe_directory(self):
         model = yaml.safe_load((ROOT/APP/'docker-compose.yml').read_text())
         previous_powpow_model(APP, model)
-        self.assertEqual({n:s['image'] for n,s in model['services'].items() if 'image' in s}, RECORD['imagesUnchanged'])
+        normalized = previous_startup_model(APP, model)
+        self.assertEqual({n:s['image'] for n,s in normalized['services'].items() if 'image' in s}, RECORD['imagesUnchanged'])
         self.assertEqual(model['services']['app']['environment']['APP_VERSION'], RECORD['applicationVersionUnchanged'])
         mount = next(v for v in model['services']['postgres']['volumes'] if v.endswith(':/docker-entrypoint-initdb.d:ro'))
         self.assertIsInstance(mount, str)  # Both Umbrel patchers consume short volume strings.
@@ -65,7 +68,7 @@ class PowPowSqlSeedContractTests(unittest.TestCase):
     def test_recipe_revision_is_separate_from_unchanged_application(self):
         for name in ['umbrel-app.yml', 'global-app.yml']:
             manifest = yaml.safe_load((ROOT/APP/name).read_text())
-            self.assertEqual(manifest['version'], RECORD['packageVersion'])
+            self.assertEqual(manifest['version'], package_version(APP, RECORD['packageVersion']))
             self.assertIn('empty PostgreSQL', manifest['releaseNotes'])
             self.assertIn('images are unchanged', manifest['releaseNotes'])
 

@@ -13,6 +13,7 @@ import yaml
 from test_powpow_sql_seed import package_version
 from test_bch2_node_entrypoint_release import package_version as bch2_package_version
 from test_ppc_immutable_release import APP as PPC, RECORD as PPC_RECORD
+from test_powpow_startup_release import previous_startup_model
 
 from test_pool_retention_release import APPS
 
@@ -186,6 +187,7 @@ class MuxPackageTests(unittest.TestCase):
         release = json.loads((ROOT / "DIRECT-HASHRATE-2026-09-30.json").read_text())
         record = release["apps"]["willitmod-dev-powpow"]
         compose = yaml.safe_load((ROOT / "willitmod-dev-powpow/docker-compose.yml").read_text())
+        compose = previous_startup_model('willitmod-dev-powpow', compose)
         self.assertEqual(compose["services"]["pool"]["image"], record["poolImageRef"])
         self.assertEqual(record["poolSourceRevision"], record["sourceRevision"])
         version = record["version"].removesuffix("-dev")
