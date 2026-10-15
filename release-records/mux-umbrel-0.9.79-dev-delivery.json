@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "result": "PASS",
+  "appId": "willitmod-dev-5tratmux",
+  "channel": "DEV",
+  "version": "0.9.79-dev",
+  "sourceRevision": "8e5868d4b86ca7a56a436684158c64dc17b120c8",
+  "sourceTree": "a3c29335cf4680f38d95707814063ffba0298a89",
+  "imageRef": "ghcr.io/willitmod/5tratmux-app:0.9.79-umbrel-dev@sha256:d875ce12a5d23eeb63bf0bfcd88f0559cb69ff2445e38e15c2f7f68b56cbcc66",
+  "anonymousIndexAndBothPlatformsVerified": true,
+  "platforms": {
+    "amd64": {
+      "manifestDigest": "sha256:af5d72bf26d497cb497034e0befbc5531efd2208ccd6f412ae5505ed614bfb86",
+      "configDigest": "sha256:10d7b4f748162815590c381e2592ca914eee9ddce6977a6b1912683ac6663015",
+      "protectedExecutableSHA256": "b8aaa0a8079394c167a8cc46090c88e70319bad1f0e37568b4a1c063e4ee9cdd",
+      "noApplicationPythonSources": true,
+      "noSourceMaps": true,
+      "nativeStartupVerified": true,
+      "operatorAuthenticationVerified": true,
+      "httpHealthVersion": "0.9.79-dev",
+      "allLayerAuditSHA256": "a9a81c314a615dfdded6787a18a7d17b97e0d745764f7e7874b9feb48539fa10",
+      "nativeQualificationSHA256": "d1fc0646f9041d8f2996d1bab1ade0fdf79b3cf9c55cbc094acf4db09f33a011",
+      "archiveSHA256": "06e576e8be651c67419c35c231684f94f18ef79f189b8481405320506fab0aa6"
+    },
+    "arm64": {
+      "manifestDigest": "sha256:38d22f006093b6b0dc0514633a7a51003736f2decd49015b4b47ca6747a1fd74",
+      "configDigest": "sha256:92cdfd724e322ee2b81ce7853ff0f46dc8bb26352365994550d02b71d504d380",
+      "protectedExecutableSHA256": "70f7fb8122bfd10b2f65e64407043c8ed04a337c540dac3c3414db494e326eb8",
+      "noApplicationPythonSources": true,
+      "noSourceMaps": true,
+      "nativeStartupVerified": true,
+      "operatorAuthenticationVerified": true,
+      "httpHealthVersion": "0.9.79-dev",
+      "allLayerAuditSHA256": "be6f35e0de750a5aa95fe6012895a8979d1029cb5fb7aa27700c6e30417ab912",
+      "nativeQualificationSHA256": "a4b3f49e43ea2bcdd842c0663cf7647c349dcc3d6655c522afad91aa34157b07",
+      "archiveSHA256": "74bb951f6253cb2da4d8ec74eb4920d628dfc2bb4beaff2e32755bb262c4fc4c"
+    }
+  },
+  "umbrelQualification": {
+    "1.7.4": {
+      "result": "PASS",
+      "architecture": "amd64",
+      "nativeUpdateStopStartPersistenceVerified": true,
+      "nativeRestartVerified": true,
+      "receipt": "amd-native-qualification.json",
+      "receiptSHA256": "d1fc0646f9041d8f2996d1bab1ade0fdf79b3cf9c55cbc094acf4db09f33a011",
+      "actualNativeTileLaunchVerified": true,
+      "activeBrowserChecks": 15,
+      "viewportWidths": [
+        1280,
+        390
+      ],
+      "genuineSignedStagingAccessVerified": true,
+      "applicationPageErrors": 0
+    },
+    "2.0.0": {
+      "result": "PASS",
+      "architecture": "amd64",
+      "nativeUpdateStopStartPersistenceVerified": true,
+      "nativeRestartVerified": true,
+      "receipt": "amd-native-qualification.json",
+      "receiptSHA256": "d1fc0646f9041d8f2996d1bab1ade0fdf79b3cf9c55cbc094acf4db09f33a011",
+      "actualNativeTileLaunchVerified": true,
+      "activeBrowserChecks": 15,
+      "viewportWidths": [
+        1280,
+        390
+      ],
+      "genuineSignedStagingAccessVerified": true,
+      "applicationPageErrors": 0
+    }
+  },
+  "armQualification": {
+    "scope": "Official containerized UmbrelOS on native ARM; physical Pi boot not qualified",
+    "receipt": "arm-native-qualification.json",
+    "receiptSHA256": "a4b3f49e43ea2bcdd842c0663cf7647c349dcc3d6655c522afad91aa34157b07",
+    "targets": {
+      "1.7.4": {
+        "mainNativeUpdateStopStartRestartPersistenceVerified": true,
+        "originalDevUpdatePassed": false,
+        "mainActiveBrowserChecks": 15,
+        "mainReceivedJobDirectAndReconnectProofAccepted": true
+      },
+      "2.0.0": {
+        "mainNativeUpdateStopStartRestartPersistenceVerified": true,
+        "originalDevUpdatePassed": true,
+        "mainActiveBrowserChecks": 15,
+        "mainReceivedJobDirectAndReconnectProofAccepted": true
+      }
+    },
+    "retainedFailure": "ARM1.7.4 initial DEV update failed because of owned lab forwarding interference. Native DEV start recovered; normal changed-version MAIN update passed."
+  },
+  "sourceProtection": {
+    "backend": "Nuitka native executable",
+    "browserAssets": "Minified; no source maps",
+    "applicationPythonAndBytecodeAbsentFromAllLayers": true,
+    "sourceRepositoryVisibility": "private",
+    "baseSystemSupportScope": "Five unchanged Debian libstdc++ debugger helper scripts remain in the base image; hashes and package checks retained in all-layer audits."
+  },
+  "ports": {
+    "umbrelDashboard": 21222,
+    "rawStratumTcp": 7331,
+    "backendHttpDirectlyPublished": false
+  },
+  "publicationEvidence": {
+    "receipt": "journal.json",
+    "sha256": "87db493a0fb386defad92ee9610487ddbea65ea8cd26dd03fb06d8df3c925a85",
+    "planSHA256": "a9eb44e06f4e689a891414af687015ab69682e7e3957e28040d71c24dae3c3b3"
+  },
+  "wireProtocolScope": "MAIN exact compiled runtime: actual published TCP7331 subscribe/authorize/received-job historical Genesis proof accepted directly and after reconnect on both AMD OS versions and native ARM containers. DEV shares the exact architecture-specific protected executable.",
+  "limits": [
+    "Existing retained QA installations were updated; a fresh 0.9.79 install was not performed.",
+    "Physical Pi boot, physical miners and public pools were not tested.",
+    "Scrypt wire interoperability and long-run fleet capacity were not newly qualified.",
+    "One retained native owner-dashboard TRPC warning was observed; application page errors were zero.",
+    "AMD1.7.4 initial alternate headless-shell launch failed; original full Chromium passed without application or selector changes.",
+    "ARM1.7.4 initial DEV update networking failure is retained above."
+  ],
+  "observedAt": "2026-10-15T21:57:30.250954+00:00"
+}
