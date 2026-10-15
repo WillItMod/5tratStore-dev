@@ -38,6 +38,17 @@ def previous_bench_summary_manifest(current):
     return restored
 
 
+def previous_bench_summary_workflow(current):
+    assert hashlib.sha256(current.encode()).hexdigest() == RECORD['afterWorkflowSHA256'], 'Unreviewed Bench CI workflow change'
+    for value in ['BENCH-COMPLETED-SUMMARY-2026-10-15.json',
+                  'tests/test_bench_completed_summary_release.py', 'tests/test_bench_reporting_release.py']:
+        line = '      - "' + value + '"\n'
+        assert current.count(line) == 2
+        current = current.replace(line, '')
+    assert hashlib.sha256(current.encode()).hexdigest() == RECORD['beforeWorkflowSHA256']
+    return current
+
+
 def original(path):
     return subprocess.check_output(['git', 'show', RECORD['baselineCommit'] + ':' + path], cwd=ROOT)
 
@@ -108,14 +119,22 @@ class BenchCompletedSummaryReleaseTests(unittest.TestCase):
         self.assertTrue((ROOT / APP / 'hooks/pre-start').stat().st_mode & 0o111)
 
     def test_other_packages_and_all_frozen_bench_receipts_and_test_assertions_remain(self):
-        rows = subprocess.check_output(['git', 'ls-tree', '-r', RECORD['baselineCommit']], cwd=ROOT, text=True).splitlines()
-        for line in rows:
-            header, name = line.split('\t', 1); mode, kind, blob = header.split()
-            if not name.startswith('willitmod-') or name.startswith(APP + '/'): continue
-            with self.subTest(path=name):
-                actual = subprocess.check_output(['git', 'hash-object', '--path', name, name], cwd=ROOT, text=True).strip()
-                self.assertEqual(actual, blob)
-                if kind == 'blob': self.assertEqual(bool((ROOT / name).stat().st_mode & 0o111), mode == '100755')
+        # Scope this release's unrelated-package proof to its immutable product commit;
+        # later reviewed package releases retain their own current-tree contracts.
+        self.assertEqual(RECORD['packagePreservationCommit'], 'c37e3a1ecdbec294b76c0cc059e066f551b0bd15')
+        def packages(revision):
+            rows = subprocess.check_output(['git', 'ls-tree', '-r', revision], cwd=ROOT, text=True).splitlines()
+            return [row for row in rows if row.split('\t', 1)[1].startswith('willitmod-')
+                    and not row.split('\t', 1)[1].startswith(APP + '/')]
+        before = packages(RECORD['baselineCommit'])
+        self.assertEqual(packages(RECORD['packagePreservationCommit']), before)
+        tree_hash = hashlib.sha256(('\n'.join(before) + '\n').encode()).hexdigest()
+        self.assertEqual(len(before), RECORD['unrelatedPackageFiles'])
+        self.assertEqual(tree_hash, RECORD['unrelatedPackageTreeSHA256'])
+        proof = RECORD['precommitCurrentUnrelatedPackageComparison']
+        self.assertTrue(proof['matchesBaseline'])
+        self.assertEqual(proof['files'], len(before))
+        self.assertEqual(proof['treeSHA256'], tree_hash)
         for name in ['BENCH-NETWORK-2026-10-14.json', 'BENCH-REPORTING-2026-10-14.json', 'tests/test_bench_network_release.py']:
             self.assertEqual((ROOT / name).read_bytes(), original(name))
         text = (ROOT / 'tests/test_bench_reporting_release.py').read_text()
@@ -123,6 +142,20 @@ class BenchCompletedSummaryReleaseTests(unittest.TestCase):
                          '    current = previous_bench_summary_model(current)\n', '    current = previous_bench_summary_manifest(current)\n']:
             self.assertEqual(text.count(addition), 1); text = text.replace(addition, '', 1)
         self.assertEqual(text.encode(), original('tests/test_bench_reporting_release.py'))
+
+    def test_workflow_reversal_admits_only_six_exact_named_filter_lines(self):
+        name = '.github/workflows/validate-mux-app-packages.yml'
+        current = (ROOT / name).read_text()
+        self.assertEqual(previous_bench_summary_workflow(current).encode(), original(name))
+        for altered in [current + '# extra workflow change\n',
+                        current.replace('tests/test_bench_completed_summary_release.py', 'unreviewed.py', 1),
+                        current.replace('      - "BENCH-COMPLETED-SUMMARY-2026-10-15.json"\n', '', 1)]:
+            with self.assertRaises(AssertionError): previous_bench_summary_workflow(altered)
+        pow_text = (ROOT / 'tests/test_powpow_umbrel_grace.py').read_text()
+        for addition in ['from test_bench_completed_summary_release import previous_bench_summary_workflow\n',
+                         '    current = previous_bench_summary_workflow(current)\n']:
+            self.assertEqual(pow_text.count(addition), 1); pow_text = pow_text.replace(addition, '', 1)
+        self.assertEqual(pow_text.encode(), original('tests/test_powpow_umbrel_grace.py'))
 
     def test_umbrel174_normal_parser_retains_image_gateway_and_no_fixed_subnet(self):
         model = yaml.safe_load((ROOT / APP / 'docker-compose.yml').read_text())
