@@ -2,8 +2,10 @@ manifestVersion: 1
 id: willitmod-dev-powpow
 category: altcoin
 name: "PowPow"
-version: "0.2.37-dev.3"
+version: "0.2.37-dev.4"
 releaseNotes: >-
+  Apply the existing 15 minute 30 second blockchain shutdown allowance to Umbrel as well as 5tratumOS. Litecoin and Dogecoin receive SIGTERM and time to flush their data before the platform shutdown deadline. Images, wallets, pool settings, layouts and full-sync requirements are unchanged.
+
   Pool startup now handles stop requests while waiting for configuration,
   PostgreSQL or node RPC, with bounded RPC attempts. This revision changes only
   the pool entrypoint; compiled pool and node binaries, application and UI,

@@ -8,6 +8,7 @@ import unittest
 
 import yaml
 from test_axemig_stop_release import previous_mig_stop_workflow
+from test_powpow_umbrel_grace import previous_grace_model, previous_grace_workflow, package_version as grace_package_version
 
 ROOT = Path(__file__).resolve().parents[1]
 APP = 'willitmod-dev-powpow'
@@ -26,12 +27,13 @@ def package_version(app_id, historical):
         return historical
     assert historical == RECORD['previousPackageVersion'] == '0.2.37-dev.2'
     assert RECORD['packageVersion'] == '0.2.37-dev.3'
-    return RECORD['packageVersion']
+    return grace_package_version(app_id, RECORD['packageVersion'])
 
 
 def previous_startup_model(app_id, current):
     if app_id != APP:
         return copy.deepcopy(current)
+    current = previous_grace_model(app_id, current)
     assert RECORD['beforeModelSHA256'] == BASELINE
     assert RECORD['previousPoolImageRef'] == OLD
     assert RECORD['poolImageRef'] == NEW
@@ -49,9 +51,10 @@ class PowPowStartupReleaseTests(unittest.TestCase):
         model = yaml.safe_load((ROOT / APP / 'docker-compose.yml').read_text())
         before = yaml.safe_load(subprocess.check_output(['git', 'show', RECORD['baselineCommit'] + ':' + APP + '/docker-compose.yml'], cwd=ROOT))
         self.assertEqual(previous_startup_model(APP, model), before)
+        normalized = previous_grace_model(APP, model)
         for service in model['services']:
             if service != 'pool':
-                self.assertEqual(model['services'][service], before['services'][service])
+                self.assertEqual(normalized['services'][service], before['services'][service])
         self.assertEqual({n: s['image'] for n, s in model['services'].items() if 'image' in s and n != 'pool'}, RECORD['imagesUnchanged'])
         self.assertEqual(model['services']['app']['environment']['APP_VERSION'], RECORD['applicationVersionUnchanged'])
         self.assertEqual(model['services']['app']['environment']['APP_CHANNEL'], RECORD['applicationChannelUnchanged'])
@@ -107,7 +110,7 @@ class PowPowStartupReleaseTests(unittest.TestCase):
     def test_workflow_only_adds_record_and_test_to_both_filters(self):
         name = '.github/workflows/validate-mux-app-packages.yml'
         current = (ROOT / name).read_text()
-        current = previous_mig_stop_workflow(current)
+        current = previous_mig_stop_workflow(previous_grace_workflow(current))
         for value in ['POWPOW-STARTUP-SHUTDOWN-2026-10-15.json', 'tests/test_powpow_startup_release.py']:
             line = '      - "' + value + '"\n'
             self.assertEqual(current.count(line), 2)
