@@ -7,6 +7,7 @@ from pathlib import Path
 import unittest
 
 import yaml
+from app_version_normalization import previous_app_version_model
 
 ROOT = Path(__file__).resolve().parents[1]
 RECORD = json.loads((ROOT / 'POOL-SUPERVISOR-2026-10-14.json').read_text())
@@ -19,6 +20,7 @@ def digest(model):
 
 
 def previous_supervisor_model(app_id, current):
+    current = previous_app_version_model(app_id, current)
     if app_id not in RECORD['apps']:
         return copy.deepcopy(current)
     record = RECORD['apps'][app_id]
@@ -53,8 +55,9 @@ class PoolSupervisorReleaseTests(unittest.TestCase):
         for aid, record in RECORD['apps'].items():
             model = yaml.safe_load((ROOT / aid / 'docker-compose.yml').read_text())
             previous_supervisor_model(aid, model)
-            self.assertEqual({n:s['image'] for n,s in model['services'].items() if 'image' in s}, record['imagesUnchanged'])
-            self.assertEqual(model['services']['app']['environment'].get('APP_VERSION'), record['applicationVersionFieldUnchanged'])
+            normalized = previous_app_version_model(aid, model)
+            self.assertEqual({n:s['image'] for n,s in normalized['services'].items() if 'image' in s}, record['imagesUnchanged'])
+            self.assertEqual(normalized['services']['app']['environment'].get('APP_VERSION'), record['applicationVersionFieldUnchanged'])
             for mutate in ('mount', 'image', 'policy', 'guard', 'command'):
                 changed = copy.deepcopy(model)
                 if mutate == 'mount': changed['services']['ckpool']['volumes'].append('unreviewed:/other')

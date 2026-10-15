@@ -2,19 +2,21 @@
 import copy,hashlib,json,subprocess,unittest
 from pathlib import Path
 import yaml
+from app_version_normalization import previous_app_version_model, package_version as normalized_package_version
 ROOT=Path(__file__).resolve().parents[1]
 APP='willitmod-dev-axebch2'
 RECORD=json.loads((ROOT/'BCH2-RESTART-COMPLETION-2026-10-14.json').read_text())
 BASELINE='7387a836279563571a2f27ad064b3f7a8d102aac74efa9463d964f20af27e9d5'
 OLD_POOL='ghcr.io/willitmod/axebch2-ckpool:0.1.34-dev@sha256:4d2cc3813cd48211ce685e51afeaa62c3a606282bb8e6c8fa8ccc4e43ec75ec3'
 def digest(model):return hashlib.sha256(json.dumps(model,sort_keys=True,separators=(',',':')).encode()).hexdigest()
-def package_version(app_id,historical):return RECORD['packageVersion']if app_id==APP else historical
+def package_version(app_id,historical):return normalized_package_version(app_id,RECORD['packageVersion'])if app_id==APP else historical
 
 def previous_bch2_completion_model(app_id,current):
  if app_id!=APP:return copy.deepcopy(current)
  assert RECORD['beforeModelSHA256']==BASELINE
  # The preceding immutable node adapter can also receive its exact old input.
  if digest(current)==BASELINE:return copy.deepcopy(current)
+ current=previous_app_version_model(app_id,current)
  assert digest(current)==RECORD['afterModelSHA256']
  expected={('services','app','group_add'):(False,None,['${AXEBCH2_DOCKER_GID:-1000}']),('services','ckpool','image'):(True,OLD_POOL,RECORD['poolImageRef']),('services','app','environment','CKPOOL_IMAGE'):(True,OLD_POOL,RECORD['poolImageRef']),('services','app','environment','APP_VERSION'):(True,'0.2.0.12-dev.1',RECORD['packageVersion'])}
  assert len(RECORD['changes'])==len(expected)and{tuple(r['path'])for r in RECORD['changes']}==set(expected)
@@ -45,7 +47,7 @@ class Bch2RestartCompletionReleaseTests(unittest.TestCase):
    with self.subTest(service=service,key=key),self.assertRaises(AssertionError):previous_bch2_completion_model(APP,changed)
  def test_manifests_only_version_and_prepended_note(self):
   for name in ['global-app.yml','umbrel-app.yml']:
-   now=yaml.safe_load((ROOT/APP/name).read_text());old=yaml.safe_load(subprocess.check_output(['git','show',RECORD['baselineCommit']+':'+APP+'/'+name],cwd=ROOT,text=True));self.assertEqual(now.pop('version'),'0.2.0.12-dev.2');self.assertEqual(old.pop('version'),'0.2.0.12-dev.1');notes,prior=now.pop('releaseNotes'),old.pop('releaseNotes');self.assertTrue(notes.endswith('\n'+prior));self.assertIn('existing Docker socket group',notes);self.assertIn('waiting for a payout address',notes);self.assertEqual(now,old)
+   now=yaml.safe_load((ROOT/APP/name).read_text());old=yaml.safe_load(subprocess.check_output(['git','show',RECORD['baselineCommit']+':'+APP+'/'+name],cwd=ROOT,text=True));self.assertEqual(now.pop('version'),package_version(APP,RECORD['packageVersion']));self.assertEqual(old.pop('version'),'0.2.0.12-dev.1');notes,prior=now.pop('releaseNotes'),old.pop('releaseNotes');self.assertTrue(notes.endswith('\n'+prior));self.assertIn('existing Docker socket group',notes);self.assertIn('waiting for a payout address',notes);self.assertEqual(now,old)
  def test_exact_exports_and_all_other_package_bytes_retained(self):
   exports=ROOT/APP/'exports.sh';self.assertEqual(hashlib.sha256(exports.read_bytes()).hexdigest(),RECORD['exportsSHA256']);self.assertEqual(oct(exports.stat().st_mode&0o777),RECORD['exportsMode'])
   names=subprocess.check_output(['git','ls-tree','-r','--name-only',RECORD['baselineCommit'],'--',APP],cwd=ROOT,text=True).splitlines();self.assertEqual({str(p.relative_to(ROOT))for p in(ROOT/APP).rglob('*')if p.is_file()},set(names)|{APP+'/exports.sh'})

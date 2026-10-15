@@ -12,6 +12,7 @@ import unittest
 import uuid
 
 import yaml
+from app_version_normalization import package_version as normalized_package_version
 from test_xec_portable_release import package_version as xec_package_version
 from test_bc2_fresh_provenance import package_version as bc2_package_version
 from test_bch2_node_entrypoint_release import package_version as bch2_package_version
@@ -43,7 +44,8 @@ def previous_powpow_model(app_id, current):
     return restored
 
 def package_version(app_id, historical):
-    return startup_package_version(app_id, RECORD['packageVersion']) if app_id == APP else permission_package_version(app_id,supervisor_package_version(app_id,ppc_package_version(app_id,bch2_package_version(app_id,bc2_package_version(app_id, xec_package_version(app_id, historical))))))
+    version = startup_package_version(app_id, RECORD['packageVersion']) if app_id == APP else permission_package_version(app_id,supervisor_package_version(app_id,ppc_package_version(app_id,bch2_package_version(app_id,bc2_package_version(app_id, xec_package_version(app_id, historical))))))
+    return normalized_package_version(app_id, version)
 
 class PowPowSqlSeedContractTests(unittest.TestCase):
     def test_seed_mount_is_deliverable_without_recipe_directory(self):
