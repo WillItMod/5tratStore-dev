@@ -23,6 +23,48 @@ import uuid
 SELF = 'willitmod-dev-fumbrel'
 MAX_FILE = 2 * 1024 * 1024
 POWPOW_SEEDS = ('data/postgres-init/2-schema.sql', 'data/postgres-init/3-multi-pool-partition.sql')
+POWPOW = 'willitmod-dev-powpow'
+POWPOW_STOP_GRACE = 930
+# Immutable public node configurations from the observed historical indexes.
+# Unknown images/policies need manual review, never an inferred safe stop.
+POWPOW_NODES = {
+    'litecoin': {
+        'image': 'ghcr.io/willitmod/powpow-litecoin:0.2.32-dev',
+        'index': 'sha256:dc271eec167e4c33fdefea6524cf40d16d52ec56b94f6dfb0f052d21ea81b6ba',
+        'configs': {
+            'amd64': 'sha256:da6a1cc5b59c0d3190a7d9d7a0b75109fef77758c56008ab13e0d864ac30b414',
+            'arm64': 'sha256:da413e9f30ed8df5361f6e11a6b126b042b23088385ab1f0030e2b6adf726bde'},
+    },
+    'dogecoin': {
+        'image': 'ghcr.io/willitmod/powpow-dogecoin:0.2.26-dev',
+        'index': 'sha256:db33f11172b7cdbccc5cee80ca85d3b298039b54e43ed5e115cc4fd20b9a3077',
+        'configs': {
+            'amd64': 'sha256:304e5c54737066903bce7072c554f56fd7c9216a1a2f1652cd71ab40bdb7a0fb',
+            'arm64': 'sha256:4b8f5b1b7cfcdc74fcaf63b9e6ca3f6849eb7c514f51a5698d410c71065a4e4e'},
+    },
+}
+# Docker 29 may report an immutable index as image Id. Its selected platform
+# must also match these exact rootfs diff IDs from the known config digests.
+POWPOW_INDEX_ROOTFS = {'litecoin': {'amd64': ['sha256:1d69a5fd31932841d7825ef4780c06f008eea65aaa9f3110fe09d5832ed5c7d8',
+                        'sha256:f952f3d014b93124e2ad48201fe2492e6d7b180b25843e6dc75e326d523c9d2a',
+                        'sha256:4b1b0aa4b1cc3d7b7d499d358427c373df09bf5afb64c74c70ccc9ff35e36dcc',
+                        'sha256:9283019c4e313e0b1775ae004f8356f1da85d68dc54e6d611a0e69094066c139',
+                        'sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef'],
+              'arm64': ['sha256:13a56b6535801be2adde694dabaf1c2df1d862a390661907dac821c42cd565cc',
+                        'sha256:b9ce2cc5123feb58604bdb104c8ba7c4d976c412f52f9673abb8bae6e61a4e2a',
+                        'sha256:36d67ecaacf02e3f546d10ecd6f3179db0d18b695557de63a46ec3f87bd7f6f4',
+                        'sha256:0354a6cce242c583e502742982977f151d0f3e230d98930b1e8dc752310d28da',
+                        'sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef']},
+ 'dogecoin': {'amd64': ['sha256:b2008ac19409fa6fee4b52596271400498aebd0be04dffac5351bd1dcf230f2a',
+                        'sha256:a39f594bb2cb8ef59c6487de11f0550781a282069614b8bbc11c46857208af82',
+                        'sha256:32bcf2631de2777f060c517c97a0bd26c04ebcd207866f659b3fe3d015f26841',
+                        'sha256:6c23a77af1918ea3af0667d992b9fea821d7da448e6d53bfa07e4a7d765a2034',
+                        'sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef'],
+              'arm64': ['sha256:3bfd0b5a99a1f25a488230217defd5c2781ad861f692f5df22d9734bbddfc53d',
+                        'sha256:afbf40ace108a8c74bfce7abde7f30dac764eb6ba0b7f30af97772a193682cfd',
+                        'sha256:9ef15c60165e50196cbdf1affe05aeafcb4c0fa08fadd015f49b8ab831a0e6c9',
+                        'sha256:32f1f2463f9af02846a1a294aa4abcf6a284b9499adab2a6c92151ae450809b7',
+                        'sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef']}}
 
 
 class RecoveryError(Exception):
@@ -518,6 +560,7 @@ class Engine:
 
     def stop(self, app_id):
         self.stop_legacy_peercoin(app_id)
+        self.stop_legacy_powpow(app_id)
         self.step(app_id, 'Stopping through Umbrel')
         # A failed normal stop is not permission to replace a live node recipe.
         self.lifecycle(app_id, 'stop')
@@ -529,6 +572,190 @@ class Engine:
                 command(['docker', 'rm', container['id']])
         if self.running(app_id):
             raise RecoveryError('App containers are still running. No package replacement was performed.')
+
+    def powpow_node_models(self, model):
+        if not isinstance(model, dict) or not isinstance(model.get('services'), dict):
+            raise ValueError()
+        nodes = {}
+        for service, known in POWPOW_NODES.items():
+            node = model['services'][service]
+            if (not isinstance(node, dict)
+                    or node.get('image') not in (known['image'], known['image'] + '@' + known['index'])
+                    or 'build' in node or node.get('command') is not None
+                    or node.get('entrypoint') is not None or node.get('user') != '1000:1000'
+                    or node.get('volumes') != ['${APP_DATA_DIR}/data:/data']
+                    or node.get('stop_signal') not in (None, 'SIGTERM')
+                    or node.get('stop_grace_period') not in (None, '10s', 10, '15m30s', '930s', 930)):
+                raise ValueError()
+            nodes[service] = node
+        return nodes
+
+    def require_powpow_target_policy(self, app_id):
+        if app_id != POWPOW:
+            return
+        try:
+            entry = self.catalog['apps'][app_id]
+            if entry['source_id'] != POWPOW:
+                raise ValueError()
+            record = entry['files']['docker-compose.yml']
+            body = base64.b64decode(record['body'], validate=True)
+            if len(body) > MAX_FILE or digest(body) != record['sha256']:
+                raise ValueError()
+            nodes = self.powpow_node_models(yaml_load(body))
+            if any(node.get('stop_signal') != 'SIGTERM'
+                   or node.get('stop_grace_period') not in ('15m30s', '930s', 930)
+                   for node in nodes.values()):
+                raise ValueError()
+        except (KeyError, TypeError, ValueError):
+            raise RecoveryError('The bundled PowPow shutdown policy is outdated or unknown. Install a newer Fumbrel release before updating PowPow.') from None
+
+    def stop_legacy_powpow(self, app_id):
+        """Stop only the two admitted old Core nodes without Docker escalation."""
+        if app_id != POWPOW:
+            return
+        folder = self.appdir(app_id)
+        try:
+            if self.catalog['apps'][app_id]['source_id'] != POWPOW:
+                raise ValueError()
+            ids = command(['docker', 'ps', '-aq', '--no-trunc', '--filter',
+                           'label=com.docker.compose.project=' + app_id]).split()
+            if len(set(ids)) != len(ids) or any(not re.fullmatch('[0-9a-f]{64}', cid) for cid in ids):
+                raise ValueError()
+            details = json.loads(command(['docker', 'inspect', *ids])) if ids else []
+            if len(details) != len(ids) or {row['Id'] for row in details} != set(ids):
+                raise ValueError()
+            if not any(row['State']['Running'] or row['State'].get('Paused')
+                       or row['State'].get('Restarting') for row in details):
+                return {'stopped': [], 'no_running_project': True}
+            body = read_file(folder, 'docker-compose.yml')
+            if body is None:
+                raise ValueError()
+            installed = self.powpow_node_models(yaml_load(body))
+            data = folder / 'data'
+            if data.is_symlink() or data.resolve() != data or not data.is_dir():
+                raise ValueError()
+            nodes = {}
+            for row in details:
+                labels = row['Config']['Labels']
+                if labels.get('com.docker.compose.project') != app_id:
+                    raise ValueError()
+                service = labels.get('com.docker.compose.service')
+                if service not in POWPOW_NODES:
+                    continue
+                if service in nodes:
+                    raise ValueError()
+                nodes[service] = row
+            if set(nodes) != set(POWPOW_NODES):
+                raise ValueError()
+            short, never_started = [], []
+            lifecycle_fields = ('Status', 'Running', 'Paused', 'Restarting', 'OOMKilled',
+                                'Dead', 'Pid', 'ExitCode', 'Error', 'StartedAt', 'FinishedAt')
+            for service, before in nodes.items():
+                config, state, known = before['Config'], before['State'], POWPOW_NODES[service]
+                images = json.loads(command(['docker', 'image', 'inspect', installed[service]['image']]))
+                if len(images) != 1:
+                    raise ValueError()
+                image = images[0]
+                arch = image.get('Architecture')
+                index_identity = (before['Image'] == known['index']
+                                  and arch in known['configs']
+                                  and image.get('RootFS', {}).get('Type') == 'layers'
+                                  and image['RootFS'].get('Layers') == POWPOW_INDEX_ROOTFS[service][arch])
+                if (image['Id'] != before['Image']
+                        or not (known['configs'].get(arch) == before['Image'] or index_identity)
+                        or config['Image'] != installed[service]['image']
+                        or config.get('User') != '1000:1000'
+                        or config.get('Entrypoint') != ['/usr/local/bin/start-' + service]
+                        or config.get('Cmd') not in (None, [])
+                        or config.get('StopSignal') not in (None, '', 'TERM', 'SIGTERM', '15')
+                        or state.get('Paused') or state.get('Restarting') or state.get('OOMKilled')):
+                    raise ValueError()
+                mounts = before['Mounts']
+                if (len(mounts) != 1 or mounts[0].get('Type') != 'bind'
+                        or mounts[0].get('Destination') != '/data' or mounts[0].get('Source') != str(data)
+                        or mounts[0].get('RW') is not True):
+                    raise ValueError()
+                grace = config.get('StopTimeout')
+                grace = 10 if grace is None else grace
+                if isinstance(grace, bool) or not isinstance(grace, int) or grace not in (10, POWPOW_STOP_GRACE, -1):
+                    raise ValueError()
+                zero_time = lambda value: isinstance(value, str) and re.fullmatch(r'0001-01-01T00:00:00(?:\.0+)?Z', value)
+                created = (state.get('Status') == 'created'
+                           and all(state.get(key) is False for key in ('Running', 'Paused', 'Restarting', 'OOMKilled', 'Dead'))
+                           and type(state.get('Pid')) is int and state['Pid'] == 0
+                           and type(state.get('ExitCode')) is int and state['ExitCode'] == 0
+                           and state.get('Error') == ''
+                           and zero_time(state.get('StartedAt')) and zero_time(state.get('FinishedAt')))
+                node_data = data / service
+                if (node_data.is_symlink() or node_data.resolve() != node_data
+                        or (not node_data.is_dir() and not (created and not node_data.exists()))):
+                    raise ValueError()
+                started = datetime.fromisoformat(state['StartedAt'].replace('Z', '+00:00'))
+                if created:
+                    never_started.append(before['Id'])
+                elif not state['Running']:
+                    if (state['ExitCode'] != 0
+                            or zero_time(state['StartedAt'])
+                            or datetime.fromisoformat(state['FinishedAt'].replace('Z', '+00:00')) <= started):
+                        raise ValueError()
+                elif grace == 10:
+                    short.append(before['Id'])
+            latest = json.loads(command(['docker', 'inspect', *[row['Id'] for row in nodes.values()]]))
+            if len(latest) != 2 or {row['Id'] for row in latest} != {row['Id'] for row in nodes.values()}:
+                raise ValueError()
+            for row in latest:
+                before = nodes[row['Config']['Labels']['com.docker.compose.service']]
+                if (any(row[key] != before[key] for key in ('Id', 'Image', 'Config', 'Mounts'))
+                        or any(row['State'].get(key) != before['State'].get(key)
+                               for key in lifecycle_fields)):
+                    raise ValueError()
+        except (KeyError, TypeError, ValueError):
+            raise RecoveryError('PowPow node identity, data mount or stop policy needs manual review before stopping.') from None
+        if not short:
+            if never_started:
+                return {'stopped': [], 'no_preparatory_stop_required': True, 'never_started': never_started}
+            return {'stopped': [], 'adequate_or_cleanly_stopped': True}
+        self.step(app_id, 'Waiting for Litecoin and Dogecoin to shut down safely')
+        # Admit both nodes before sending either signal. One bounded client
+        # request sends TERM only; an observer timeout never kills either node.
+        try:
+            result = subprocess.run(['docker', 'stop', '--time', '-1', *short],
+                                    text=True, capture_output=True, timeout=960)
+        except subprocess.TimeoutExpired:
+            raise RecoveryError('PowPow node shutdown is still pending. Fumbrel stopped here; inspect Umbrel and wait for clean shutdown before retrying.') from None
+        except OSError:
+            raise RecoveryError('Docker is unavailable. PowPow shutdown cannot be verified; inspect Umbrel before retrying.') from None
+        if result.returncode:
+            raise RecoveryError('PowPow graceful shutdown could not be verified. Inspect Umbrel before retrying.')
+        try:
+            after = json.loads(command(['docker', 'inspect', *[row['Id'] for row in nodes.values()]]))
+            if len(after) != 2 or {row['Id'] for row in after} != {row['Id'] for row in nodes.values()}:
+                raise ValueError()
+            for row in after:
+                service = row['Config']['Labels']['com.docker.compose.service']
+                before = nodes[service]
+                if any(row[key] != before[key] for key in ('Id', 'Image', 'Config', 'Mounts')):
+                    raise ValueError()
+                state = row['State']
+                if state['StartedAt'] != before['State']['StartedAt'] or state.get('OOMKilled'):
+                    raise ValueError()
+                if row['Id'] in short:
+                    if (state['Running'] or state.get('Paused') or state.get('Restarting') or state['ExitCode'] != 0
+                            or datetime.fromisoformat(state['FinishedAt'].replace('Z', '+00:00')) <= datetime.fromisoformat(state['StartedAt'].replace('Z', '+00:00'))):
+                        raise ValueError()
+                elif any(state.get(key) != before['State'].get(key) for key in lifecycle_fields):
+                    raise ValueError()
+            current = command(['docker', 'ps', '-aq', '--no-trunc', '--filter',
+                               'label=com.docker.compose.project=' + app_id]).split()
+            if set(current) != set(ids) or len(current) != len(ids):
+                raise ValueError()
+        except (KeyError, TypeError, ValueError):
+            raise RecoveryError('PowPow did not have verified clean same-generation shutdown. Fumbrel stopped here for review.') from None
+        self.step(app_id, 'Legacy PowPow nodes stopped cleanly')
+        result = {'stopped': short, 'exit': 0}
+        if never_started:
+            result['never_started'] = never_started
+        return result
 
     def write_changes(self, folder, changes, entry=None):
         for name, body in changes.items():
@@ -554,6 +781,7 @@ class Engine:
         if mode == 'update' and is_newer(installed, entry['version']):
             raise RecoveryError('Downgrades are blocked. Install a newer Fumbrel release first.')
         if mode == 'update':
+            self.require_powpow_target_policy(app_id)
             self.require_existing_seeds(folder, entry)
             target = self.target(app_id)
             # Only exports is replaced before stop; all other metadata waits

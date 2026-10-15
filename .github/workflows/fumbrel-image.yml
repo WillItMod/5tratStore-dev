@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       publish:
-        description: Publish the exact reviewed 0.1.2-dev candidate
+        description: Publish the exact reviewed 0.1.3-dev candidate
         type: boolean
         required: true
         default: false
@@ -71,10 +71,10 @@ jobs:
           path: candidate-image-proof.json
   publish:
     needs: [verify, verify-images]
-    if: github.event_name == 'workflow_dispatch' && inputs.publish && inputs.source_sha == github.sha && (github.ref == 'refs/heads/fix/fumbrel-legacy-ppc-stop-20261015' || github.ref == 'refs/heads/main') && github.repository == 'WillItMod/5tratStore-dev'
+    if: github.event_name == 'workflow_dispatch' && inputs.publish && inputs.source_sha == github.sha && (github.ref == 'refs/heads/fix/fumbrel-legacy-pow-stop-20261015' || github.ref == 'refs/heads/main') && github.repository == 'WillItMod/5tratStore-dev'
     runs-on: ubuntu-latest
     concurrency:
-      group: fumbrel-publish-0.1.2-dev
+      group: fumbrel-publish-0.1.3-dev
       cancel-in-progress: false
     permissions:
       contents: read
@@ -102,7 +102,7 @@ jobs:
         env:
           GHCR_USERNAME: ${{ github.repository_owner }}
           GHCR_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
-        run: python scripts/fumbrel/check_publish_tag.py --repository willitmod/fumbrel --tag 0.1.2-dev
+        run: python scripts/fumbrel/check_publish_tag.py --repository willitmod/fumbrel --tag 0.1.3-dev
       - name: Publish the explicitly approved DEV candidate
         id: image
         uses: docker/build-push-action@v6
@@ -110,7 +110,7 @@ jobs:
           context: ./willitmod-dev-fumbrel/app
           push: true
           platforms: linux/amd64,linux/arm64
-          tags: ghcr.io/willitmod/fumbrel:0.1.2-dev
+          tags: ghcr.io/willitmod/fumbrel:0.1.3-dev
           provenance: false
           build-args: |
             SOURCE_COMMIT=${{ github.sha }}

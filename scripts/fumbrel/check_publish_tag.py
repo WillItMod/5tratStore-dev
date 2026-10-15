@@ -93,7 +93,7 @@ def assert_tag_absent(repository, tag, username, password, opener=None):
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--repository', default='willitmod/fumbrel')
-    parser.add_argument('--tag', default='0.1.2-dev')
+    parser.add_argument('--tag', default='0.1.3-dev')
     args = parser.parse_args(argv)
     try:
         assert_tag_absent(args.repository, args.tag, os.environ.get('GHCR_USERNAME'), os.environ.get('GHCR_PASSWORD'))
