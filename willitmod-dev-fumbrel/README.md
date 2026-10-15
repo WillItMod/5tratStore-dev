@@ -118,7 +118,7 @@ verifying those digests. AxeBC2 uses its Umbrel Compose template, not its native
 5tratumOS definition.
 
 `scripts/fumbrel/build_catalog.py` reads immutable Git blobs and their executable
-modes. Its explicit DEV input is the commit above. The 0.1.3 source candidate
+modes. Its explicit DEV input is the commit above. Release 0.1.3
 refreshes only PowPow to `0.2.37-dev.4` from
 `94801dcd23fda52be1eb193637a13d73243b04f1`; all other entries, including MAIN
 AxeSim, keep their exact previous bytes, modes and source references. Its retained-catalog input is
@@ -163,15 +163,18 @@ an authentication, network, rate-limit or other inconclusive error blocks the ru
 The workflow never interprets a generic image-inspection failure as absence.
 A second native verification reads the actual published index returned by the
 publisher, never its mutable tag. Full receipts are written to logs and the job
-summary before an optional artifact upload. The installed recipe remains on the already published `0.1.2-dev` image, pinned
-to index `sha256:4d7d0183604372ee340ab51c6f612cc63f832e5e357c3fb2ac77b77106816d10`.
+summary before an optional artifact upload. The installed recipe pins published `0.1.3-dev` to immutable index
+`sha256:06cc15c514acd9bec8ca3d3af70f6ba9e7fc369441a726ab9d84e87756b8c444`.
+`release-records/fumbrel-0.1.3-dev-image.json` binds that index and both native
+configurations to reviewed source `6648c00297b0953d9867ca338fbd81f0655a3591`.
 `release-records/fumbrel-0.1.2-dev-image.json` binds that public index and both native
 platform configurations to source commit `f666e677138aebe06a319459d8da62c4c02a4bea`.
 Native artifact verification does not establish ordinary Umbrel update or recovery
 acceptance; those platform receipts remain separate. The 0.1.3 candidate Dockerfile
 inherits that tested `0.1.2-dev` index and adds only engine.py and catalog.json.
-The recipe and manifest advance only after 0.1.3 publication and immutable artifact
-verification; no public 0.1.3 image is claimed by this source candidate. Live acceptance results are
+The recipe and manifest advance after actual native post-publication and
+anonymous immutable artifact verification. Ordinary Umbrel running/recovery
+acceptance remains separate; publishing does not establish those outcomes. Live acceptance results are
 recorded separately in `ACCEPTANCE.md`; that file describes `0.1.0-dev` only.
 Building ARM does not establish Raspberry Pi hardware recovery.
 

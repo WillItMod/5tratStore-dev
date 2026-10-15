@@ -77,14 +77,14 @@ class CatalogTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             builder.build(powpow_ref='main')
 
-    def test_recipe_pins_exact_publication_and_unchanged_published_payload(self):
+    def test_historical_012_publication_and_payload_remain_exact(self):
         record=json.loads((ROOT/'release-records/fumbrel-0.1.2-dev-image.json').read_text())
         self.assertEqual(record['digest'],'sha256:4d7d0183604372ee340ab51c6f612cc63f832e5e357c3fb2ac77b77106816d10')
         self.assertEqual(record['source'],'f666e677138aebe06a319459d8da62c4c02a4bea')
         self.assertEqual(record['workflow'],38661048787)
         self.assertEqual(record['catalogue_source'],builder.DEV_COMMIT)
         self.assertEqual(record['tag'],'0.1.2-dev')
-        compose=yaml.safe_load((ROOT/'willitmod-dev-fumbrel/docker-compose.yml').read_text())
+        compose=yaml.safe_load(builder.git('show',builder.POWPOW_COMMIT+':willitmod-dev-fumbrel/docker-compose.yml'))
         self.assertEqual(compose['services']['server']['image'],
                          'ghcr.io/willitmod/fumbrel:'+record['tag']+'@'+record['digest'])
         self.assertEqual(set(record['platforms']),{'amd64','arm64'})
@@ -95,12 +95,34 @@ class CatalogTests(unittest.TestCase):
         self.assertEqual(set(record['only_changed_runtime_files_sha256']),{'engine.py','catalog.json'})
         for name,expected in record['only_changed_runtime_files_sha256'].items():
             path='willitmod-dev-fumbrel/app/'+name
-            # The existing recipe still names the already published0.1.2 image.
-            # Preserve its exact historical payload proof while the unshipped
-            # engine/catalog candidate is reviewed; do not rewrite its record.
+            # Preserve the original 0.1.2 source/payload binding, independent
+            # of the later recipe and engine/catalog release.
             published=subprocess.check_output(['git','show',record['source']+':'+path],cwd=ROOT)
             self.assertEqual(hashlib.sha256(published).hexdigest(),expected)
             self.assertEqual(published,subprocess.check_output(['git','show',builder.POWPOW_COMMIT+':'+path],cwd=ROOT))
+
+    def test_recipe_pins_actual_published_013_and_exact_reviewed_runtime(self):
+        record=json.loads((ROOT/'release-records/fumbrel-0.1.3-dev-image.json').read_text())
+        self.assertEqual(record['digest'],'sha256:06cc15c514acd9bec8ca3d3af70f6ba9e7fc369441a726ab9d84e87756b8c444')
+        self.assertEqual(record['source'],'6648c00297b0953d9867ca338fbd81f0655a3591')
+        self.assertEqual(record['workflow'],38700002527)
+        self.assertEqual(record['tag'],builder.RELEASE)
+        self.assertEqual(record['catalogue_source'],builder.DEV_COMMIT)
+        self.assertEqual(record['powpow_source'],builder.POWPOW_COMMIT)
+        self.assertEqual(record['base_index'],'sha256:4d7d0183604372ee340ab51c6f612cc63f832e5e357c3fb2ac77b77106816d10')
+        compose=yaml.safe_load((ROOT/'willitmod-dev-fumbrel/docker-compose.yml').read_text())
+        self.assertEqual(compose['services']['server']['image'],'ghcr.io/willitmod/fumbrel:'+record['tag']+'@'+record['digest'])
+        self.assertEqual(set(record['platforms']),{'amd64','arm64'})
+        for arch,expected in {'amd64':'sha256:b859703a811cfd82945ef4b390b1f9a22694ff54020ef8726870ef96b0fe0bb0',
+                              'arm64':'sha256:eb020b54d16e49726e82a7b143e6af50a1dc43335ab0706df668f7bec554e13a'}.items():
+            self.assertEqual(record['platforms'][arch]['config_digest'],expected)
+            self.assertRegex(record['platforms'][arch]['manifest_digest'],r'^sha256:[a-f0-9]{64}$')
+        self.assertEqual(set(record['only_changed_runtime_files_sha256']),{'engine.py','catalog.json'})
+        for name,expected in record['only_changed_runtime_files_sha256'].items():
+            path='willitmod-dev-fumbrel/app/'+name
+            published=builder.git('show',record['source']+':'+path)
+            self.assertEqual(hashlib.sha256(published).hexdigest(),expected)
+            self.assertEqual((ROOT/path).read_bytes(),published)
 
     def test_only_powpow_catalog_entry_advances_from_published_012(self):
         previous=json.loads(builder.git('show',builder.POWPOW_COMMIT+':'+builder.CATALOG_PATH))
@@ -135,12 +157,12 @@ class CatalogTests(unittest.TestCase):
                   .replace('version="0.1.2-dev"','version="0.1.3-dev"'))
         self.assertEqual((ROOT/'willitmod-dev-fumbrel/app/Dockerfile').read_text(),expected)
 
-    def test_source_candidate_workflow_and_existing_public_recipe_are_separate(self):
+    def test_recipe_and_workflow_match_published_013(self):
         manifest = yaml.safe_load((ROOT / 'willitmod-dev-fumbrel/umbrel-app.yml').read_text())
         compose = yaml.safe_load((ROOT / 'willitmod-dev-fumbrel/docker-compose.yml').read_text())
-        self.assertEqual(manifest['version'], '0.1.2-dev')
+        self.assertEqual(manifest['version'], '0.1.3-dev')
         self.assertEqual(CATALOG['release'], builder.RELEASE)
-        self.assertEqual(compose['services']['server']['image'], 'ghcr.io/willitmod/fumbrel:0.1.2-dev@sha256:4d7d0183604372ee340ab51c6f612cc63f832e5e357c3fb2ac77b77106816d10')
+        self.assertEqual(compose['services']['server']['image'], 'ghcr.io/willitmod/fumbrel:0.1.3-dev@sha256:06cc15c514acd9bec8ca3d3af70f6ba9e7fc369441a726ab9d84e87756b8c444')
         workflow = yaml.load((ROOT / '.github/workflows/fumbrel-image.yml').read_text(), Loader=yaml.BaseLoader)
         self.assertIn('pull_request', workflow['on'])
         self.assertEqual(workflow['permissions'], {'contents': 'read'})

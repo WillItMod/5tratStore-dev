@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-fumbrel
 category: utilities
 name: Fumbrel
-version: "0.1.2-dev"
+version: "0.1.3-dev"
 tagline: Fuck Up on Umbrel? Recover your apps.
 description: >-
   Fumbrel — Fuck Up on Umbrel. For when an OS upgrade leaves your apps having a bad day.
@@ -38,14 +38,14 @@ path: ""
 defaultUsername: ""
 defaultPassword: ""
 releaseNotes: >-
-  Refresh all bundled DEV recipes from the reviewed store snapshot, including
-  the BCH2 node and pool restart fixes, portable XEC pool, PPC shutdown policy,
-  BC2 fresh-chain provenance, PowPow pool startup, MIG chain discovery, Bench reporting and the
-  BTC, FracAttack and DGB pool shutdown fixes. Protect selected older PPC nodes
-  with a verified graceful shutdown before normal Umbrel recovery continues;
-  an unverified or still-pending shutdown stops recovery for manual review.
-  Existing version, recipe-backup and read-only PowPow seed safeguards remain.
-  Recovery does not repair damaged data or perform mining or wallet operations.
+  Protect recognized historical PowPow Litecoin and Dogecoin containers from
+  their short shutdown grace before normal Umbrel recovery. Both node identities
+  must be admitted before one TERM-only graceful stop; unknown, dirty, changed
+  or still-pending shutdowns halt recovery for review without force or recipe
+  replacement. Already adequate shutdown policies need no preparatory stop.
+  Refresh only the bundled PowPow package to the reviewed 930-second SIGTERM
+  policy, keeping all other recipe snapshots, UI, authentication and dependencies
+  unchanged. App data and private keys stay outside recipe recovery writes.
 submitter: WillItMod
 backupIgnore:
   - data/backups
