@@ -1,4 +1,6 @@
 """Reject actual artifact contracts which broaden the two-file COPY change."""
+import ast
+import contextlib
 import copy
 import hashlib
 import importlib.util
@@ -6,6 +8,10 @@ import io
 from pathlib import Path
 import tarfile
 import unittest
+from unittest import mock
+import json
+import sys
+import tempfile
 
 ROOT=Path(__file__).resolve().parents[2]
 spec=importlib.util.spec_from_file_location('fumbrel_image_verify',ROOT/'scripts/fumbrel/verify_image.py')
@@ -39,6 +45,27 @@ class ImageInheritanceTests(unittest.TestCase):
 
     def check(self,body=None):
         return verify.check_contract(self.base,self.new,self.layer if body is None else body,self.expected,COMMIT)
+
+    def test_real_runtime_probe_respects_client_guard_before_missing_host_key(self):
+        tree=ast.parse((ROOT/'scripts/fumbrel/verify_image.py').read_text())
+        function=next(node for node in tree.body if isinstance(node,ast.FunctionDef) and node.name=='verify')
+        code=next(node.value.value for node in function.body if isinstance(node,ast.Assign)
+                  and any(isinstance(t,ast.Name) and t.id=='code' for t in node.targets))
+        sys.path.insert(0,str(ROOT/'willitmod-dev-fumbrel/app'))
+        import server
+        # Actual Flask routes and guards; no host key, SSH, credentials or fake endpoint.
+        body=io.StringIO()
+        with tempfile.TemporaryDirectory() as folder, mock.patch.object(server,'KEY_FILE',Path(folder)/'absent-public-key'):
+            with contextlib.redirect_stdout(body):
+                # Use the genuine source app files in this local regression. The
+                # native image proof executes the unchanged paths inside /app.
+                exec(code.replace("'/app/static'",repr(str(server.BASE/'static')))
+                         .replace("'/app'",repr(str(server.BASE))),{})
+        result=json.loads(body.getvalue())
+        self.assertEqual(result['health_status'],200)
+        self.assertEqual(result['ui_status'],200)
+        self.assertEqual(result['info_status_without_client_header'],403)
+        self.assertEqual(result['info_status_without_host_key'],400)
 
     def test_only_exact_two_reviewed_files_and_retained_runtime_pass(self):
         self.assertEqual(set(self.check()),{'app/engine.py','app/catalog.json'})

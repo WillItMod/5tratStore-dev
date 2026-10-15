@@ -124,8 +124,9 @@ paths=['engine.py','catalog.json','server.py','requirements.txt']+['static/'+str
 out={}
 for name in paths:
  p=pathlib.Path('/app')/name;s=p.stat();out[name]={'sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'mode':oct(s.st_mode&0o777),'uid':s.st_uid,'gid':s.st_gid}
-c=app.test_client();h=c.get('/health');u=c.get('/');i=c.get('/api/info');assert h.status_code==200 and u.status_code==200 and i.status_code==400
-print(json.dumps({'files':out,'health_status':h.status_code,'ui_status':u.status_code,'info_status_without_host_key':i.status_code,'version':CATALOG['release'],'uid':os.getuid(),'gid':os.getgid()}))"""
+c=app.test_client();h=c.get('/health');u=c.get('/');g=c.get('/api/info');i=c.get('/api/info',headers={'X-Fumbrel-Client':'1'});assert h.status_code==200 and u.status_code==200 and g.status_code==403 and i.status_code==400
+h.close();u.close();g.close();i.close()
+print(json.dumps({'files':out,'health_status':h.status_code,'ui_status':u.status_code,'info_status_without_client_header':g.status_code,'info_status_without_host_key':i.status_code,'version':CATALOG['release'],'uid':os.getuid(),'gid':os.getgid()}))"""
     out = json.loads(run(['docker', 'run', '--rm', '--network', 'none', '--read-only',
                          '--cap-drop', 'ALL', '--security-opt', 'no-new-privileges',
                          '--user', '1000:1000', '--memory', '256m', '--memory-swap', '256m',
