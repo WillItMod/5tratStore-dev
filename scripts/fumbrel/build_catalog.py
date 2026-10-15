@@ -16,10 +16,10 @@ import subprocess
 import yaml
 
 ROOT = Path(__file__).resolve().parents[2]
-DEV_COMMIT = '1e052671efc1ae49ea32140e41aa6953d2e83039'
+DEV_COMMIT = '81535f05ffc82e742b9aa32299c806de6b3b712c'
 RETAINED_CATALOG_COMMIT = '6f8ae3e7949433e64a144c9707432636bafb3e8a'
 MAIN_COMMIT = '5c68fc868c62eaeff2bb3f930cbf0193ac3931cb'
-RELEASE = '0.1.1-dev'
+RELEASE = '0.1.2-dev'
 CATALOG_PATH = 'willitmod-dev-fumbrel/app/catalog.json'
 SELF = 'willitmod-dev-fumbrel'
 POWPOW_SEEDS = ('data/postgres-init/2-schema.sql', 'data/postgres-init/3-multi-pool-partition.sql')

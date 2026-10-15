@@ -111,7 +111,7 @@ Use the same trusted connection to Umbrel that you use for its administrator UI.
 
 The catalog covers 14 app families / 18 known MAIN and DEV installation IDs.
 Thirteen packages come from DEV commit
-`1e052671efc1ae49ea32140e41aa6953d2e83039`; MAIN-only AxeSim comes from
+`81535f05ffc82e742b9aa32299c806de6b3b712c`; MAIN-only AxeSim comes from
 `5c68fc868c62eaeff2bb3f930cbf0193ac3931cb`. Each original file has a SHA-256 digest.
 MAIN identity substitutions and explicit gateway hostnames are applied after
 verifying those digests. AxeBC2 uses its Umbrel Compose template, not its native
@@ -131,9 +131,9 @@ commits:
 
 ```sh
 python scripts/fumbrel/build_catalog.py \
-  --dev-ref 1e052671efc1ae49ea32140e41aa6953d2e83039 \
+  --dev-ref 81535f05ffc82e742b9aa32299c806de6b3b712c \
   --retained-catalog-ref 6f8ae3e7949433e64a144c9707432636bafb3e8a \
-  --release 0.1.1-dev --check
+  --release 0.1.2-dev --check
 ```
 
 Run:
@@ -144,15 +144,35 @@ python -m unittest discover -s tests/fumbrel -v
 python -m unittest discover -s tests -p test_umbrel_cross_version.py -v
 ```
 
-The image workflow tests and builds `linux/amd64` and `linux/arm64` on pull requests
-without publishing. Publishing requires an explicit manual run on `main` with
-`publish` enabled and uses the new `0.1.1-dev` tag. These
+The image workflow tests source and builds the two-file overlay on native AMD64
+and ARM64 workers without publishing. The artifact verifier requires every actual
+0.1.1 base layer, unchanged runtime configuration, and a new layer containing only
+the reviewed engine and catalog with root ownership and mode 0644. UI, authentication,
+server and dependency files remain inherited from the tested base. Publishing requires an explicit manual run on the reviewed candidate branch
+`fix/fumbrel-legacy-ppc-stop-20261015` or `main`, with `publish` enabled and a
+required `source_sha` equal to the run commit. The application context must be
+clean. This uses the new `0.1.2-dev` tag, allowing publication and digest pinning
+before the recipe is merged into DEV. These
 publication runs are serialized for that tag, and an authenticated GHCR lookup
 must return HTTP 404 with `MANIFEST_UNKNOWN` before pushing. An existing tag or
 an authentication, network, rate-limit or other inconclusive error blocks the run.
 The workflow never interprets a generic image-inspection failure as absence.
-This candidate is unpublished:
-its Compose image must be pinned to the verified multi-architecture digest before
-release. It does not reuse the `0.1.0-dev` digest. Live acceptance results are
+A second native verification reads the actual published index returned by the
+publisher, never its mutable tag. Full receipts are written to logs and the job
+summary before an optional artifact upload. This candidate is unpublished: its
+Compose image must be pinned to its new verified multi-architecture digest before
+installation. Its Dockerfile inherits `0.1.1-dev` at immutable index
+`sha256:290a91f5e8f42e51af4b9c715c449bda96071b98eb4c2de0ef97e52d9d4fba7a`. Live acceptance results are
 recorded separately in `ACCEPTANCE.md`; that file describes `0.1.0-dev` only.
 Building ARM does not establish Raspberry Pi hardware recovery.
+
+
+Selected legacy `willitmod-dev-ppc` nodes with less than the bundled two-minute
+stop grace receive one preparatory standard Docker stop with an infinite grace.
+The installed source, exact container/project/service, resolved image and process
+generation must match before recovery continues. Fumbrel observes this for at
+most 150 seconds; an unverified or still-pending shutdown stops recovery for
+manual inspection without a forced kill or package replacement. Current nodes
+with adequate grace and other app families use their ordinary lifecycle path.
+The original build-only PPC recipe shape is recognized; custom build/image or
+stop policies require manual review.

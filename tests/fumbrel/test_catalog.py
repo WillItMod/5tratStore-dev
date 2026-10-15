@@ -36,13 +36,13 @@ class CatalogTests(unittest.TestCase):
                 hook = entry['files']['hooks/pre-start']
                 self.assertEqual(hook['mode'], 0o755)
                 self.assertIn(b'chown -h 1000:1000', base64.b64decode(hook['body']))
-                self.assertTrue(entry['version'].endswith('-dev.1'))
-        self.assertEqual(CATALOG['apps']['willitmod-dev-axemig']['version'], '0.1.21-dev.1')
+                self.assertEqual(entry['version'], {'willitmod-dev-axebench': '4.0.28-dev.3', 'willitmod-dev-axelive': '1.4.2-dev.1'}[app_id])
+        self.assertEqual(CATALOG['apps']['willitmod-dev-axemig']['version'], '0.1.23-dev')
         compose = base64.b64decode(CATALOG['apps']['willitmod-dev-axemig']['files']['docker-compose.yml']['body'])
         self.assertEqual(yaml.safe_load(compose)['services']['app_proxy']['environment']['APP_HOST'],
                          'willitmod-dev-axemig_server_1')
-        self.assertEqual(CATALOG['apps']['willitmod-dev-powpow']['version'], '0.2.37-dev.2')
-        self.assertEqual(CATALOG['apps']['willitmod-dev-axebch2']['version'], '0.2.0.12-dev')
+        self.assertEqual(CATALOG['apps']['willitmod-dev-powpow']['version'], '0.2.37-dev.3')
+        self.assertEqual(CATALOG['apps']['willitmod-dev-axebch2']['version'], '0.2.0.12-dev.2')
 
     def test_main_axesim_entry_is_retained_exactly(self):
         previous = json.loads(builder.git('show', builder.RETAINED_CATALOG_COMMIT + ':' + builder.CATALOG_PATH))
@@ -85,11 +85,20 @@ class CatalogTests(unittest.TestCase):
         self.assertEqual(workflow['permissions'], {'contents': 'read'})
         verify = workflow['jobs']['verify']
         self.assertFalse(any('login-action' in step.get('uses', '') for step in verify['steps']))
-        self.assertEqual([step['with']['push'] for step in verify['steps'] if 'build-push-action' in step.get('uses', '')], ['false'])
+        images = workflow['jobs']['verify-images']
+        self.assertEqual(images['needs'], 'verify')
+        self.assertEqual({entry['arch'] for entry in images['strategy']['matrix']['include']}, {'amd64', 'arm64'})
+        self.assertTrue(any('verify_image.py' in step.get('run', '') for step in images['steps']))
+        self.assertFalse(any('login-action' in step.get('uses', '') or step.get('with', {}).get('push') == 'true'
+                             for step in images['steps']))
         publish = workflow['jobs']['publish']
         for required in ("github.event_name == 'workflow_dispatch'", 'inputs.publish', "github.ref == 'refs/heads/main'"):
             self.assertIn(required, publish['if'])
-        self.assertEqual(publish['needs'], 'verify')
+        self.assertIn('inputs.source_sha == github.sha', publish['if'])
+        self.assertIn("github.ref == 'refs/heads/fix/fumbrel-legacy-ppc-stop-20261015'", publish['if'])
+        self.assertIn("github.repository == 'WillItMod/5tratStore-dev'", publish['if'])
+        self.assertEqual(workflow['on']['workflow_dispatch']['inputs']['source_sha']['required'], 'true')
+        self.assertEqual(publish['needs'], ['verify', 'verify-images'])
         self.assertEqual(publish['permissions']['packages'], 'write')
         self.assertEqual(publish['concurrency'], {'group': 'fumbrel-publish-' + builder.RELEASE, 'cancel-in-progress': 'false'})
         checks = [i for i, step in enumerate(publish['steps']) if 'check_publish_tag.py' in step.get('run', '')]
@@ -100,6 +109,21 @@ class CatalogTests(unittest.TestCase):
         check = publish['steps'][checks[0]]
         self.assertEqual(check['env']['GHCR_PASSWORD'], '${{ secrets.GITHUB_TOKEN }}')
         self.assertNotIn('GITHUB_TOKEN', check['run'])
+        admission = next(i for i, step in enumerate(publish['steps']) if 'EXPECTED_FUMBREL_SOURCE' in step.get('env', {}))
+        login = next(i for i, step in enumerate(publish['steps']) if 'login-action' in step.get('uses', ''))
+        self.assertLess(admission, login)
+        admission_step = publish['steps'][admission]
+        self.assertEqual(admission_step['env']['EXPECTED_FUMBREL_SOURCE'], '${{ inputs.source_sha }}')
+        for required in ('^[a-f0-9]{40}$', 'git rev-parse HEAD', 'git status --porcelain --untracked-files=all -- willitmod-dev-fumbrel/app'):
+            self.assertIn(required, admission_step['run'])
+        self.assertEqual(publish['outputs']['digest'], '${{ steps.image.outputs.digest }}')
+        pushed = workflow['jobs']['verify-published-images']
+        self.assertEqual(pushed['needs'], 'publish')
+        proof = next(step for step in pushed['steps'] if 'verify_image.py' in step.get('run', ''))
+        self.assertEqual(proof['env']['IMAGE_DIGEST'], '${{ needs.publish.outputs.digest }}')
+        self.assertIn('^sha256:[a-f0-9]{64}$', proof['run'])
+        self.assertIn('ghcr.io/willitmod/fumbrel@$IMAGE_DIGEST', proof['run'])
+        self.assertNotIn('fumbrel:0.1.2-dev', proof['run'])
 
 
 if __name__ == '__main__':
