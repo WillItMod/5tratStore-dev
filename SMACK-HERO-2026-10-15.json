@@ -1,0 +1,74 @@
+{
+  "channel": "DEV",
+  "version": "0.11.22-dev",
+  "imageRef": "ghcr.io/willitmod/5tratsmack-app:0.11.22-hero.6fc6597c3aba@sha256:304566aaf4374398d10e53612f1b1ccce89344e6fcf4a51293006d9c8f2111e9",
+  "sourceRevision": "6fc6597c3abaef0194a4d4bffbcd7b49e54e8758",
+  "sourceRepository": "https://github.com/WillItMod/5tratSmack-private",
+  "sourcePullRequest": 93,
+  "workflow": "hero-placeholder-overlay.yml",
+  "workflowRun": 38665179620,
+  "baselineStoreCommit": "3868f04a1d8656986a69ca249c727712645e16b7",
+  "baseIndex": "sha256:09f3dc1eea85942781e4127b6d8836c32c7fa61a0a45cbffb99b40509c38e3bb",
+  "baseVersion": "0.11.21",
+  "runtimeVersion": "0.11.21",
+  "runtimeSourceRevision": "f41e154a74afbd54f67545d0b95d18506a336fa1",
+  "images": {
+    "amd64": {
+      "manifestDigest": "sha256:573b36a7d7d788f546d1c1ddb68680d7ba6da151d55ae6a160da28aee82cc533",
+      "configDigest": "sha256:9e2f8be750593b8bf7cd542a5457f03460260c740e693c72f16f8b39cb365781"
+    },
+    "arm64": {
+      "manifestDigest": "sha256:1e54f8a423c8f17d34afcc78f45be3d719d9ce2fcab70adc36b9bff87823bac2",
+      "configDigest": "sha256:bb774a67011c696c2e55346f84191c89e1d14e5e2c23e48c74ebac10ddd3f921"
+    }
+  },
+  "runtimeContract": {
+    "beforeModelSHA256": "980e962be3a30020d9dcf4902067c5ed71b74abd38b4511921e1035570b7c157",
+    "afterModelSHA256": "0f662e4c93bd8a8d6eb1456eee3ca501ec8640571a902316eaa20b6eab4a7cd9",
+    "changes": [
+      {
+        "path": [
+          "services",
+          "app",
+          "image"
+        ],
+        "before": "ghcr.io/willitmod/5tratsmack-app:0.11.21@sha256:09f3dc1eea85942781e4127b6d8836c32c7fa61a0a45cbffb99b40509c38e3bb",
+        "after": "ghcr.io/willitmod/5tratsmack-app:0.11.22-hero.6fc6597c3aba@sha256:304566aaf4374398d10e53612f1b1ccce89344e6fcf4a51293006d9c8f2111e9"
+      },
+      {
+        "path": [
+          "services",
+          "app",
+          "environment",
+          "APP_IMAGE"
+        ],
+        "before": "ghcr.io/willitmod/5tratsmack-app:0.11.21@sha256:09f3dc1eea85942781e4127b6d8836c32c7fa61a0a45cbffb99b40509c38e3bb",
+        "after": "ghcr.io/willitmod/5tratsmack-app:0.11.22-hero.6fc6597c3aba@sha256:304566aaf4374398d10e53612f1b1ccce89344e6fcf4a51293006d9c8f2111e9"
+      }
+    ]
+  },
+  "HTML": {
+    "beforeSHA256": "bd58fd8ec4c51755deba4bbee438466d0a00d4285a49c4c68d49ba19564b359e",
+    "afterSHA256": "a8f11c10dfb56b70df8e17a9f331237e07072955aed14fd1009794e67231eab9",
+    "change": "Only the endpoint hero text becomes the escaped neutral <node-ip>:57557 placeholder"
+  },
+  "inheritedActualFiles": {
+    "compiledBackendUnchanged": true,
+    "processedJavaScriptSHA256": "aeb30271fab451049bc1df225f186987210adba7db7836a79108e99bcfb122c6",
+    "processedCSSSHA256": "e931826dde15101b9ce7cff2f14ec792cfb2645bfa2f79ff09fcd32559545bb7",
+    "allOtherApplicationFilesModesOwnersExact": true,
+    "allFiveCompressedBaseBlobDigestsSizesOrderExactBothArchitectures": true,
+    "AMDDescriptorMediaTypeConversion": "Docker-v2 gzip to OCI gzip; blob bytes unchanged"
+  },
+  "validation": {
+    "sourceTests": 20,
+    "actualNativePreAndPublishedAMDARMFileConfigLayerChecks": "PASS; observers never started, no backend/hardware/trading process",
+    "anonymousImmutableIndexConfigAndPayloadAdmission": "PASS",
+    "OCIProvenanceOrSBOMAttestation": "Not generated; source identity is bound by index/config/labels, retained blobs and native file receipts",
+    "OSRolloutAndFullMiningTradingQualification": "Not claimed"
+  },
+  "previousNotes": {
+    "characters": 2478,
+    "sha256": "c0c0adcb6b6c3640c31f00d4ba84da76d7dfa990b3101f5b909c2309d80e0f82"
+  }
+}
