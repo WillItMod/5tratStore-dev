@@ -7,6 +7,7 @@ import subprocess
 import unittest
 
 import yaml
+from test_powpow_startup_release import package_version as startup_package_version
 from test_powpow_sql_seed import RECORD as POWPOW_SEED, package_version
 from test_pool_retention_release import APPS, previous_model
 from test_recovery_release import CURRENT_APPS as RECOVERY_APPS
@@ -93,7 +94,7 @@ class UmbrelCrossVersionTests(unittest.TestCase):
                     compose=previous_model(app_id,compose)
                     version=release['package_version']
                 elif app_id == 'willitmod-dev-powpow':
-                    self.assertEqual(version, POWPOW_SEED['packageVersion'])
+                    self.assertEqual(version, startup_package_version(app_id, POWPOW_SEED['packageVersion']))
                     compose = previous_model(app_id, compose)
                     version = release['package_version']
                 elif app_id == 'willitmod-dev-ppc':

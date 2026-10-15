@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "channel": "DEV",
+  "appId": "willitmod-dev-powpow",
+  "baselineCommit": "ebd661fd15911218e0068323c4d81bb641dae47d",
+  "previousPackageVersion": "0.2.37-dev.2",
+  "packageVersion": "0.2.37-dev.3",
+  "beforeModelSHA256": "733f1fc1c8f6ea1fe538f4b29cd1db38d9a6c68adff555f342b77f0f8f7fdaab",
+  "afterModelSHA256": "b8261ee23b102026559c7ca52c3f0a19cb907c097f3c987ba72a9fef23878b28",
+  "poolImageRef": "ghcr.io/willitmod/powpow-pool:0.2.37-pool-startup.a443d6f3e552@sha256:b89d5e8c8e078fb200690b1b7ce941c2c995b18ba9cfa699ccac08ff6ddebea8",
+  "previousPoolImageRef": "ghcr.io/willitmod/powpow-pool:0.2.37-mux.88f8fc0af57e@sha256:fdedad44cc7c7700eb3043884979785a02d9915bf5a70c5b50d2f52f6ba758d8",
+  "sourceRepository": "https://github.com/WillItMod/PowPow_Build",
+  "sourceRevision": "a443d6f3e5528a5689cf8bd8d40aa6620317d20d",
+  "retainedSourceRevision": "88f8fc0af57e4731533c79f7d8f8f4936d629f6b",
+  "publicationRun": 38655938879,
+  "publicationURL": "https://github.com/WillItMod/PowPow_Build/actions/runs/38655938879",
+  "entrypointPath": "/usr/local/bin/start-powpow-pool",
+  "beforeEntrypointSHA256": "e9f781130435dfed5944067e11c387ae63a3c0feaa2c34ee95892f73ba695e6c",
+  "entrypointSHA256": "4b61f39da8ee3e36f68b2c95039244497ad7e9635b6130e240e7133140e7063e",
+  "changes": [
+    {
+      "path": [
+        "services",
+        "pool",
+        "image"
+      ],
+      "before": "ghcr.io/willitmod/powpow-pool:0.2.37-mux.88f8fc0af57e@sha256:fdedad44cc7c7700eb3043884979785a02d9915bf5a70c5b50d2f52f6ba758d8",
+      "after": "ghcr.io/willitmod/powpow-pool:0.2.37-pool-startup.a443d6f3e552@sha256:b89d5e8c8e078fb200690b1b7ce941c2c995b18ba9cfa699ccac08ff6ddebea8"
+    }
+  ],
+  "imagesUnchanged": {
+    "init_permissions": "alpine:3.22.1",
+    "app": "ghcr.io/willitmod/powpow-app:0.2.37-mux.88f8fc0af57e@sha256:59994fb26f1b9b1daf2bf25bf528d190d3beda89acd65d80bd674b49696bed8d",
+    "litecoin": "ghcr.io/willitmod/powpow-litecoin:0.2.32-dev",
+    "dogecoin": "ghcr.io/willitmod/powpow-dogecoin:0.2.26-dev",
+    "postgres": "postgres:16-alpine"
+  },
+  "applicationVersionUnchanged": "0.2.37-dev",
+  "applicationChannelUnchanged": "ALPHA",
+  "nativeImages": {
+    "amd64": {
+      "manifestDigest": "sha256:7acc81cb99047c66fb2e25838bd239f18d5a9f3adcb48c6eb5c2d9eb808a8c90",
+      "configDigest": "sha256:440f0498d037b595f9981968ef2b72d4077aa939a91723b6ae18c2ae5f563470",
+      "baseConfigDigest": "sha256:c6fc5023732aae883c13435f3f7f6b292ef1cba6d940e2cd6bafd875ddca44c5"
+    },
+    "arm64": {
+      "manifestDigest": "sha256:daee5c006061b9f7261590eaca6b6aefb0692ff45ef9afd9db690f33933d1e73",
+      "configDigest": "sha256:424e1308cfee07d0c670515c4d3fbddf9bf13e1c0f17547f290cf5913ae2829d",
+      "baseConfigDigest": "sha256:a8eb21390b4ca91e5c65058602a94753fbdbf38889b8f0d3150639c876c50669"
+    }
+  },
+  "provenance": {
+    "anonymousManifestConfigAndAttestationHashesVerified": true,
+    "spdxAndSlsaSubjectsBindEachNativeManifest": true,
+    "slsaBindsExactSource": true,
+    "cryptographicSignerVerificationClaimed": false
+  },
+  "validationScope": {
+    "actualPublishedNativeAMD64AndARM64RetentionVerified": true,
+    "fullImageRuntimeConfigUnchanged": true,
+    "allOriginalRootfsLayersUnchanged": true,
+    "singleEntrypointOverlay": true,
+    "missingConfigTERMAndINTCleanExitVerified": true,
+    "realPostgresAndClosedRPCPortWaitTERMAndINTCleanExitVerified": true,
+    "actualFullChainIBDStopQualified": false,
+    "actualAppLifecycleQualified": false,
+    "miningProtocolQualified": false,
+    "limitation": "Published image checks cover real configuration/PostgreSQL/RPC-unavailable startup waits, not live node IBD, fully synced pool execution, or accepted mining shares. No guest rollout in this source record."
+  }
+}
