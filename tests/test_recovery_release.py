@@ -7,13 +7,13 @@ import re
 import unittest
 import yaml
 from test_smack_alert_release import record as alert_record, previous_alert_model
-from test_smack_hero_release import record as hero_record
+from test_smack_hero_release import record as hero_record, package_version, store_record
 
 ROOT = Path(__file__).resolve().parents[1]
 RELEASE = json.loads((ROOT / 'RECOVERY-2026-10-02.json').read_text())
 APPS = RELEASE['apps']
 CURRENT_APPS = {**APPS, 'willitmod-dev-5tratsmack': {**alert_record(),
-    'version': hero_record()['version'], 'imageRef': hero_record()['imageRef']}}
+    'version': package_version('willitmod-dev-5tratsmack',hero_record()['version']), 'imageRef': store_record()['imageRef']}}
 SMACK = 'willitmod-dev-5tratsmack'
 DIAG = 'willitmod-dev-5tratumos-diagnostics'
 EVIDENCE_MOUNT = '/var/lib/5tratumos/diagnostics/mux:/host/mux-evidence:ro'

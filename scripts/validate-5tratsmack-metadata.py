@@ -4,6 +4,7 @@ import hashlib
 import json
 from pathlib import Path
 import re
+from smack_store_release import validate_files, PLATFORM
 
 ROOT = Path(__file__).resolve().parents[1]
 APP = ROOT / 'willitmod-dev-5tratsmack'
@@ -65,6 +66,13 @@ assert HERO['sourceRevision']=='6fc6597c3abaef0194a4d4bffbcd7b49e54e8758'
 APP_REF=HERO['imageRef']
 assert APP_REF=='ghcr.io/willitmod/5tratsmack-app:0.11.22-hero.6fc6597c3aba@sha256:304566aaf4374398d10e53612f1b1ccce89344e6fcf4a51293006d9c8f2111e9'
 
+# Admit the exact new package only after all frozen historical identities above.
+STORE=validate_files()
+assert STORE['channel']==CHANNEL.upper() and STORE['previousVersion']==PACKAGE_VERSION
+PACKAGE_VERSION=VERSION=STORE['version']
+REVISION=STORE['sourceRevision']
+APP_REF=STORE['imageRef']
+
 def scalar(value):return json.loads(value) if value.startswith('"') else value
 
 def one(pattern, text):
@@ -82,6 +90,7 @@ for key in ('APP_VERSION', 'FIVETRAT_RELEASE_TAG'):
     assert scalar(one(r'^      ' + key + r': (\S+)$', compose)) == VERSION
 assert one(r'^# Release source revision: (\S+)$', compose) == REVISION
 assert one(r'^      APP_REVISION: (\S+)$', compose) == REVISION
+assert scalar(one(r'^      APP_PLATFORM: (\S+)$', compose)) == PLATFORM
 assert one(r'^      APP_CHANNEL: (\S+)$', compose) == CHANNEL.upper()
 assert one(r'^      FIVETRAT_STORE_UPDATE_CHANNEL: (\S+)$', compose) == CHANNEL
 assert one(r'^      APP_RELEASE_PHASE: (\S+)$', compose) == ('RC1' if CHANNEL == 'dev' else 'STABLE')
@@ -105,4 +114,4 @@ assert f'- **5tratSmack** (`willitmod-dev-5tratsmack`) - `{PACKAGE_VERSION}`' in
 for phrase in ('bounded recent feed', 'coinbase output zero', 'Trade Pulse', 'Gleec', 'final transaction approval', 'Block alerts in this browser', 'local to that browser', 'OS and MUX notification acknowledgements remain separate'):
     assert phrase in manifest, phrase
 assert 'has completed public-chain' not in manifest
-print(f'5tratSmack {CHANNEL.upper()} {PACKAGE_VERSION}: HTML overlay pinned, backend {VERSION} and broker retained')
+print(f'5tratSmack {CHANNEL.upper()} {PACKAGE_VERSION}: source {REVISION}, platform export and exact published image verified; protected services retained')

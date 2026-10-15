@@ -12,6 +12,7 @@ from test_powpow_sql_seed import RECORD as POWPOW_SEED, package_version
 from test_pool_retention_release import APPS, previous_model
 from test_recovery_release import CURRENT_APPS as RECOVERY_APPS
 from test_smack_release_candidate import RECORD as SMACK_RELEASE, validate_model as previous_smack_model
+from test_smack_hero_release import STORE as smack_store
 from test_bch2_portable_readiness_release import APP as BCH2, record as bch2_record
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -160,6 +161,13 @@ printf '%s' "${JWT_SECRET-unset}"
                         # group. It must not discover or synthesize auth secrets.
                         from test_bch2_restart_completion_release import RECORD as completion_record
                         self.assertEqual(hashlib.sha256(exports.read_bytes()).hexdigest(), completion_record['exportsSHA256'])
+                        self.assertEqual(result.stdout, supplied if supplied else 'unset')
+                    elif app_id == smack_store.APP:
+                        # The exact new Smack hook declares only its platform;
+                        # authentication remains with Umbrel's existing gateway.
+                        self.assertEqual(exports.read_bytes(), smack_store.EXPORT)
+                        self.assertEqual(hashlib.sha256(exports.read_bytes()).hexdigest(),
+                                         smack_store.record()['packageFiles'][app_id + '/exports.sh']['sha256'])
                         self.assertEqual(result.stdout, supplied if supplied else 'unset')
                     else:
                         self.assertEqual(result.stdout, expected)
