@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "status": "qualified",
+  "channel": "DEV",
+  "appId": "willitmod-dev-5tratmux",
+  "version": "0.9.79-dev",
+  "baselineCommit": "4819b0e4a71d9568c98140259c0e342aa79fac8a",
+  "sourceRevision": "8e5868d4b86ca7a56a436684158c64dc17b120c8",
+  "sourceTree": "a3c29335cf4680f38d95707814063ffba0298a89",
+  "canonicalBase": "d7d1ee750f440cf31cec4b0ca70af91269281f91",
+  "imageRef": "ghcr.io/willitmod/5tratmux-app:0.9.79-umbrel-dev@sha256:d875ce12a5d23eeb63bf0bfcd88f0559cb69ff2445e38e15c2f7f68b56cbcc66",
+  "publication": {
+    "path": "release-records/mux-umbrel-0.9.79-dev-delivery.json",
+    "sha256": "f9395b68f35d5bc682f91480647f27d9259214d49d39dfcb53f9c96c27cfd451"
+  },
+  "packageFiles": {
+    "willitmod-dev-5tratmux/data/.gitkeep": {
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "mode": "0o644"
+    },
+    "willitmod-dev-5tratmux/docker-compose.yml": {
+      "sha256": "f56f8892eeabf5d7520d649cdb0b6e2d32773dd3781b02dc4033edce8585f9d8",
+      "mode": "0o644"
+    },
+    "willitmod-dev-5tratmux/hooks/pre-start": {
+      "sha256": "fefa82989c4646016643f78ff6a4efea179b712c5485fca64c3bbf1bb484737f",
+      "mode": "0o755"
+    },
+    "willitmod-dev-5tratmux/icon.png": {
+      "sha256": "3eef68f8307de4df7a43386b2dbc3cdaa2b9e97423c93945c18e6be3256ad9e8",
+      "mode": "0o644"
+    },
+    "willitmod-dev-5tratmux/umbrel-app.yml": {
+      "sha256": "a48ae705c3b55860f83913ef9bf21a48f3022ec9ec72971f7c228de0525c4d37",
+      "mode": "0o644"
+    }
+  }
+}
