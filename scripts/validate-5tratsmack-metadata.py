@@ -55,6 +55,16 @@ assert CURRENT['version']==VERSION and CURRENT['sourceRevision']==REVISION
 APP_REF=CURRENT['imageRef']
 assert re.fullmatch(r'ghcr.io/willitmod/5tratsmack-app:0\.11\.21@sha256:[0-9a-f]{64}',APP_REF)
 
+# The neutral hero overlay changes only the two APP image references. Backend
+# version/revision and every Core/pool/trading/runtime field remain inherited.
+HERO=json.loads((ROOT/'SMACK-HERO-2026-10-15.json').read_text())
+PACKAGE_VERSION='0.11.22-dev'
+assert HERO['version']==PACKAGE_VERSION and HERO['runtimeVersion']==VERSION
+assert HERO['runtimeSourceRevision']==REVISION
+assert HERO['sourceRevision']=='6fc6597c3abaef0194a4d4bffbcd7b49e54e8758'
+APP_REF=HERO['imageRef']
+assert APP_REF=='ghcr.io/willitmod/5tratsmack-app:0.11.22-hero.6fc6597c3aba@sha256:304566aaf4374398d10e53612f1b1ccce89344e6fcf4a51293006d9c8f2111e9'
+
 def scalar(value):return json.loads(value) if value.startswith('"') else value
 
 def one(pattern, text):
@@ -67,7 +77,7 @@ assert primary == (APP / 'umbrel-app.yml').read_bytes(), 'compatibility manifest
 manifest = primary.decode()
 compose = (APP / 'docker-compose.yml').read_text()
 assert one(r'^id: (\S+)$', manifest) == 'willitmod-dev-5tratsmack'
-assert one(r'^version: "([^"\n]+)"$', manifest) == VERSION
+assert one(r'^version: "([^"\n]+)"$', manifest) == PACKAGE_VERSION
 for key in ('APP_VERSION', 'FIVETRAT_RELEASE_TAG'):
     assert scalar(one(r'^      ' + key + r': (\S+)$', compose)) == VERSION
 assert one(r'^# Release source revision: (\S+)$', compose) == REVISION
@@ -91,8 +101,8 @@ assert compose.count('    hostname: 5tratsmack-app') == 1
 assert compose.count('      test: ["CMD", "curl", "--fail", "--silent", "--max-time", "3", "http://127.0.0.1:3000/api/about"]') == 1
 assert compose.count('      FIVETRAT_UPDATER_ENABLED: "0"') == 1
 assert '${APP_DATA_DIR}' in compose and '${APP_PASSWORD}' in compose
-assert f'- **5tratSmack** (`willitmod-dev-5tratsmack`) - `{VERSION}`' in (ROOT / 'README.md').read_text()
+assert f'- **5tratSmack** (`willitmod-dev-5tratsmack`) - `{PACKAGE_VERSION}`' in (ROOT / 'README.md').read_text()
 for phrase in ('bounded recent feed', 'coinbase output zero', 'Trade Pulse', 'Gleec', 'final transaction approval', 'Block alerts in this browser', 'local to that browser', 'OS and MUX notification acknowledgements remain separate'):
     assert phrase in manifest, phrase
 assert 'has completed public-chain' not in manifest
-print(f'5tratSmack {CHANNEL.upper()} {VERSION}: native app pinned, tested broker reused, metadata aligned')
+print(f'5tratSmack {CHANNEL.upper()} {PACKAGE_VERSION}: HTML overlay pinned, backend {VERSION} and broker retained')
