@@ -43,6 +43,9 @@ on:
       - "tests/test_umbrel_cross_version.py"
       - "tests/test_bench_network_release.py"
       - "BENCH-NETWORK-2026-10-14.json"
+      - "BENCH-COMPLETED-SUMMARY-2026-10-15.json"
+      - "tests/test_bench_completed_summary_release.py"
+      - "tests/test_bench_reporting_release.py"
       - ".github/workflows/validate-mux-app-packages.yml"
   push:
     branches: [main]
@@ -88,6 +91,9 @@ on:
       - "tests/test_umbrel_cross_version.py"
       - "tests/test_bench_network_release.py"
       - "BENCH-NETWORK-2026-10-14.json"
+      - "BENCH-COMPLETED-SUMMARY-2026-10-15.json"
+      - "tests/test_bench_completed_summary_release.py"
+      - "tests/test_bench_reporting_release.py"
       - ".github/workflows/validate-mux-app-packages.yml"
 permissions:
   contents: read

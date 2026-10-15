@@ -7,6 +7,7 @@ import subprocess
 import unittest
 
 import yaml
+from test_bench_completed_summary_release import previous_bench_summary_workflow
 
 ROOT = Path(__file__).resolve().parents[1]
 APP = 'willitmod-dev-powpow'
@@ -46,6 +47,7 @@ def previous_grace_model(app_id, model):
 
 
 def previous_grace_workflow(current):
+    current = previous_bench_summary_workflow(current)
     assert hashlib.sha256(current.encode()).hexdigest() == RECORD['afterWorkflowSHA256']
     for value in ['POWPOW-UMBREL-GRACE-2026-10-15.json', 'tests/test_powpow_umbrel_grace.py']:
         line = '      - "' + value + '"\n'

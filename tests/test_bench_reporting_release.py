@@ -7,6 +7,7 @@ import subprocess
 import unittest
 
 import yaml
+from test_bench_completed_summary_release import previous_bench_summary_model, previous_bench_summary_manifest
 
 ROOT = Path(__file__).resolve().parents[1]
 APP = 'willitmod-dev-axebench'
@@ -18,6 +19,7 @@ def digest(value):
 
 
 def previous_bench_reporting_model(current):
+    current = previous_bench_summary_model(current)
     assert digest(current) == RECORD['afterModelSHA256'], 'Unreviewed Bench runtime change'
     restored = copy.deepcopy(current)
     assert restored['services']['server']['image'] == RECORD['imageRef']
@@ -27,6 +29,7 @@ def previous_bench_reporting_model(current):
 
 
 def previous_bench_reporting_manifest(current):
+    current = previous_bench_summary_manifest(current)
     restored = copy.deepcopy(current)
     assert restored['version'] == RECORD['packageVersion']
     assert restored['releaseNotes'].startswith(RECORD['releaseNote'] + '\n')
