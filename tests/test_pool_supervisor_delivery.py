@@ -9,6 +9,7 @@ import unittest
 import uuid
 
 import yaml
+from app_version_normalization import previous_app_version_model, package_version
 
 ROOT = Path(__file__).resolve().parents[1]
 BASELINE = 'd5dc75a03465bb8fc1a488bcf4375abb251ecf6c'
@@ -39,7 +40,7 @@ class SourceContracts(unittest.TestCase):
     def test_only_reviewed_initializer_prefix_changes_in_each_compose_model(self):
         for app in APPS:
             with self.subTest(app=app):
-                candidate = compose(app)
+                candidate = previous_app_version_model('willitmod-dev-' + app, compose(app))
                 command = candidate['services']['init']['command'][2]
                 prefix, remainder = command.split(START, 1)
                 _, suffix = remainder.split(END, 1)
@@ -68,7 +69,7 @@ class SourceContracts(unittest.TestCase):
                     continue
                 before = yaml.safe_load(source(app, name, True))
                 after = yaml.safe_load(source(app, name))
-                self.assertEqual(after['version'], versions[app])
+                self.assertEqual(after['version'], package_version('willitmod-dev-' + app, versions[app]))
                 after['version'] = before['version']
                 after['releaseNotes'] = before['releaseNotes']
                 self.assertEqual(after, before)
