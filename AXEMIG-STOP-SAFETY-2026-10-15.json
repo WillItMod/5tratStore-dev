@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "channel": "DEV",
+  "appId": "willitmod-dev-axemig",
+  "packageVersion": "0.1.24-dev",
+  "baselineCommit": "81535f05ffc82e742b9aa32299c806de6b3b712c",
+  "beforeModelSHA256": "f1507c19b400d5a305242e495c5f14f4ba6f898a7c4b13590220d3181908d6d5",
+  "afterModelSHA256": "8b36ea4c90fb71946223d70d9e7c692fccf36a25e33996692044fbff2b26a791",
+  "beforeManifestSHA256": "5e909cd9e9ef34041999ebb31d88fee0ba7308f91d74e442c0b6a64168be5f5b",
+  "afterManifestSHA256": "e4d7a0f5fac8b2da922759e3b29ea369c82baf014f81a52c7db09d8b0bad9218",
+  "releaseNotesPrefix": "v0.1.24-dev: Waits for verified graceful node shutdown before copy or restore. A timeout or cancellation prevents file changes and automatic restarts. Layouts, chain selectors and migration data exclusions are unchanged.",
+  "changes": [
+    {
+      "path": [
+        "services",
+        "server",
+        "image"
+      ],
+      "before": "ghcr.io/willitmod/axemig:0.1.23-dev@sha256:7d9b602b35a02e475055cd1a87d74de7dfc1c83f5af01bd909841d4943a098c0",
+      "after": "ghcr.io/willitmod/axemig:0.1.24-dev@sha256:e20d2d002567980e24000263464576d06a7afd0f35f477b7d77374f4ee2774f3"
+    },
+    {
+      "path": [
+        "services",
+        "server",
+        "environment",
+        "AXEMIG_HELPER_IMAGE"
+      ],
+      "before": "ghcr.io/willitmod/axemig:0.1.23-dev@sha256:7d9b602b35a02e475055cd1a87d74de7dfc1c83f5af01bd909841d4943a098c0",
+      "after": "ghcr.io/willitmod/axemig:0.1.24-dev@sha256:e20d2d002567980e24000263464576d06a7afd0f35f477b7d77374f4ee2774f3"
+    },
+    {
+      "path": [
+        "services",
+        "server",
+        "environment",
+        "APP_VERSION"
+      ],
+      "before": "0.1.23-dev",
+      "after": "0.1.24-dev"
+    }
+  ],
+  "image": "ghcr.io/willitmod/axemig:0.1.24-dev@sha256:e20d2d002567980e24000263464576d06a7afd0f35f477b7d77374f4ee2774f3",
+  "digest": "sha256:e20d2d002567980e24000263464576d06a7afd0f35f477b7d77374f4ee2774f3",
+  "source": "d61eb84aeca85a54635a5a20167882b8b41ef98f",
+  "sourceTree": "001caf2b8ff77b41469f9eccf79d033dcc7c5d53",
+  "sourceMainMerge": "9970b8c24dd240351d7bf67e92a36bd2d3249284",
+  "appSHA256": "c035ac754ed9154450887caa97cd77728e005bb81b53a2e3125ab934175eab87",
+  "immutableBaseIndex": "sha256:7d9b602b35a02e475055cd1a87d74de7dfc1c83f5af01bd909841d4943a098c0",
+  "workflow": 38660025499,
+  "anonymousAccess": true,
+  "platforms": {
+    "amd64": {
+      "manifestDigest": "sha256:702e146962d89551e4174c2d8aa9cc78f106e7e8da461d96bbe39093b863637a",
+      "configDigest": "sha256:a7e986be5eb39dd25ba47ab9f27c42b13356a60cb8848e4c9b8fd0d1dda20794",
+      "sourceTree": "001caf2b8ff77b41469f9eccf79d033dcc7c5d53",
+      "preservedRuntimeEntries": 4016
+    },
+    "arm64": {
+      "manifestDigest": "sha256:e1bac5e8eb8b4d0d863ed3acbd48fe4d4f86e7adb640d2a3e729f7fe68026168",
+      "configDigest": "sha256:8c6cae0ac76d4e57dfef4607fd09ff35142d694521188a6c4e97d23e897a37b7",
+      "sourceTree": "001caf2b8ff77b41469f9eccf79d033dcc7c5d53",
+      "preservedRuntimeEntries": 4015
+    }
+  },
+  "validationScope": {
+    "hostSourceTests": 53,
+    "bakedRuntimeTestsPerArch": 52,
+    "onlyBakedHostGitToolingExclusion": 1,
+    "realOfflineCorePrimitiveCasesPerArch": 3,
+    "realCoreAllExitZero": true,
+    "baseDiffIDsAndRuntimeConfigPreserved": true,
+    "onlyRuntimeFileChanged": "/app/app.py",
+    "slsaSpdxSubjectsAndSourceMetadataVerified": true,
+    "cryptographicSignerVerified": false,
+    "allThreeOsNormalUpdateQualified": false,
+    "new48FunctionalChecksPerPlatformQualified": false,
+    "largerRealPartialBtcFlowQualified": false,
+    "fullAppQualified": false
+  },
+  "historicalCoreFlow": {
+    "checksPerPlatform": 48,
+    "version": "0.1.23-dev",
+    "qualification": "Historical evidence only; shared stop/start helper changed and current candidate must repeat normal48flow on all3OS before promotion"
+  },
+  "nativeRenderer": {
+    "cliSHA256": "caa747717a3a5ba12dbc231ce79987179b3c37b8ca31d8f588baa1c30c715cfc",
+    "socketAccessHelperSHA256": "e08271cf0c535aa638d83415b69858bc14c6b583f8bbad5a0f68777658985c87",
+    "rendererBlocks": [
+      {
+        "stage": "install",
+        "sha256": "9dc8fd762892a0a4d4492de4348646df87584469eb079a3d9a54d53a7d594578",
+        "bytes": 9506
+      },
+      {
+        "stage": "update",
+        "sha256": "0cf6ed5c7955a343ae7c3028c0e5a5b2872f41e8e011f41eabcf3df76f4ccd68",
+        "bytes": 9450
+      }
+    ],
+    "guestMutation": false
+  },
+  "beforeWorkflowSHA256": "219172c04ab1f21b7f364f78fa465283754761d2dd506bbc2cbea51df6938428",
+  "afterWorkflowSHA256": "8e380efe8ff50096b667a3d301b84693f4fda1f606a799533772f3342b1c19e1"
+}

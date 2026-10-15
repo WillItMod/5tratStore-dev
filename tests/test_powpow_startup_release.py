@@ -7,6 +7,7 @@ import subprocess
 import unittest
 
 import yaml
+from test_axemig_stop_release import previous_mig_stop_workflow
 
 ROOT = Path(__file__).resolve().parents[1]
 APP = 'willitmod-dev-powpow'
@@ -106,6 +107,7 @@ class PowPowStartupReleaseTests(unittest.TestCase):
     def test_workflow_only_adds_record_and_test_to_both_filters(self):
         name = '.github/workflows/validate-mux-app-packages.yml'
         current = (ROOT / name).read_text()
+        current = previous_mig_stop_workflow(current)
         for value in ['POWPOW-STARTUP-SHUTDOWN-2026-10-15.json', 'tests/test_powpow_startup_release.py']:
             line = '      - "' + value + '"\n'
             self.assertEqual(current.count(line), 2)

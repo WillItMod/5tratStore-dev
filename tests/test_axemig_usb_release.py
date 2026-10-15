@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import unittest
 import yaml
+from test_axemig_stop_release import APP, previous_mig_stop_model, previous_mig_stop_manifest
 
 ROOT = Path(__file__).resolve().parents[1]
 RECORD = json.loads((ROOT / 'AXEMIG-USB-2026-10-14.json').read_text())
@@ -17,7 +18,7 @@ def digest(model):
 
 
 def historical_usb_model():
-    model = yaml.safe_load((ROOT / 'willitmod-dev-axemig/docker-compose.yml').read_text())
+    model = previous_mig_stop_model(APP,yaml.safe_load((ROOT / 'willitmod-dev-axemig/docker-compose.yml').read_text()))
     if LATEST:
         assert digest(model) == LATEST['afterModelSHA256']
         assert {tuple(row['path']) for row in LATEST['changes']} == {
@@ -57,7 +58,7 @@ class AxemigUsbReleaseTests(unittest.TestCase):
         self.assertEqual(image, 'ghcr.io/willitmod/axemig:0.1.22-dev@' + RECORD['digest'])
 
     def test_recipe_revision_blocks_older_recovery_bundle(self):
-        manifest = yaml.safe_load((ROOT / 'willitmod-dev-axemig/umbrel-app.yml').read_text())
+        manifest = previous_mig_stop_manifest(yaml.safe_load((ROOT / 'willitmod-dev-axemig/umbrel-app.yml').read_text()))
         self.assertEqual(manifest['version'], (LATEST or RECORD)['packageVersion'])
         self.assertEqual(RECORD['packageVersion'], '0.1.22-dev')
         self.assertIn('host paths', manifest['releaseNotes'])
