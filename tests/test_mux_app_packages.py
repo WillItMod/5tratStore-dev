@@ -10,6 +10,7 @@ import tempfile
 import unittest
 
 import yaml
+from app_version_normalization import previous_app_version_model
 from test_powpow_sql_seed import package_version
 from test_bch2_node_entrypoint_release import package_version as bch2_package_version
 from test_ppc_immutable_release import APP as PPC, RECORD as PPC_RECORD
@@ -175,8 +176,10 @@ class MuxPackageTests(unittest.TestCase):
                     path = app / filename
                     if not path.exists():
                         continue
-                    service = yaml.safe_load(path.read_text())["services"]["app"]
-                    self.assertEqual(service["image"], current["imageRef"])
+                    model = yaml.safe_load(path.read_text())
+                    service = model["services"]["app"]
+                    historical = previous_app_version_model(name, model)["services"]["app"]
+                    self.assertEqual(historical["image"], current["imageRef"])
                     environment = service["environment"]
                     self.assertEqual(environment["MUX_IDENTITY_URL"],
                                      "http://172.17.0.1:21222/api/integrations/workers")
