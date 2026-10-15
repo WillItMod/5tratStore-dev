@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "appId": "willitmod-dev-powpow",
+  "channel": "DEV",
+  "baselineCommit": "81535f05ffc82e742b9aa32299c806de6b3b712c",
+  "previousPackageVersion": "0.2.37-dev.3",
+  "packageVersion": "0.2.37-dev.4",
+  "beforeModelSHA256": "b8261ee23b102026559c7ca52c3f0a19cb907c097f3c987ba72a9fef23878b28",
+  "afterModelSHA256": "a168daf8222ae4f7ada91e27f4e3799075f82a390b981df7f8ab1a1860f5a836",
+  "changes": [
+    {
+      "path": [
+        "services",
+        "litecoin",
+        "stop_signal"
+      ],
+      "beforePresent": false,
+      "after": "SIGTERM"
+    },
+    {
+      "path": [
+        "services",
+        "litecoin",
+        "stop_grace_period"
+      ],
+      "beforePresent": false,
+      "after": "15m30s"
+    },
+    {
+      "path": [
+        "services",
+        "dogecoin",
+        "stop_signal"
+      ],
+      "beforePresent": false,
+      "after": "SIGTERM"
+    },
+    {
+      "path": [
+        "services",
+        "dogecoin",
+        "stop_grace_period"
+      ],
+      "beforePresent": false,
+      "after": "15m30s"
+    }
+  ],
+  "imagesUnchanged": {
+    "init_permissions": "alpine:3.22.1",
+    "app": "ghcr.io/willitmod/powpow-app:0.2.37-mux.88f8fc0af57e@sha256:59994fb26f1b9b1daf2bf25bf528d190d3beda89acd65d80bd674b49696bed8d",
+    "litecoin": "ghcr.io/willitmod/powpow-litecoin:0.2.32-dev",
+    "dogecoin": "ghcr.io/willitmod/powpow-dogecoin:0.2.26-dev",
+    "pool": "ghcr.io/willitmod/powpow-pool:0.2.37-pool-startup.a443d6f3e552@sha256:b89d5e8c8e078fb200690b1b7ce941c2c995b18ba9cfa699ccac08ff6ddebea8",
+    "postgres": "postgres:16-alpine"
+  },
+  "nativePolicyUnchanged": {
+    "version": 1,
+    "services": {
+      "litecoin": {
+        "stop_signal": "SIGTERM",
+        "stop_grace_period": "15m30s",
+        "user": "1000:1000"
+      },
+      "dogecoin": {
+        "stop_signal": "SIGTERM",
+        "stop_grace_period": "15m30s",
+        "user": "1000:1000"
+      }
+    }
+  },
+  "observedUmbrelPreimage": {
+    "vmid": 622,
+    "source": "81535f05ffc82e742b9aa32299c806de6b3b712c",
+    "installedPackageVersion": "0.2.37-dev.3",
+    "litecoinStopSignal": null,
+    "litecoinStopTimeout": null,
+    "dogecoinStopSignal": null,
+    "dogecoinStopTimeout": null
+  },
+  "qualification": {
+    "sourceOnly": true,
+    "actualInstalledCandidatePolicyVerified": false,
+    "actualNodeStopRetentionVerified": false,
+    "miningProtocolQualified": false
+  },
+  "scope": "Exactly four standard Compose fields mirror the existing native policy. No node, wallet, mining, UI, image, init or credentials changes.",
+  "workflowBaselineCommit": "da0e9a1c834daecc8e0eb831fa01351697ab4e3f",
+  "beforeWorkflowSHA256": "8e380efe8ff50096b667a3d301b84693f4fda1f606a799533772f3342b1c19e1",
+  "afterWorkflowSHA256": "2330cee0655fa6ef14ee9240745d41927c661e7c651a9ce9ba85a5edcacf5f5c"
+}

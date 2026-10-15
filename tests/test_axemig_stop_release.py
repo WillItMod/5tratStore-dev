@@ -11,6 +11,7 @@ import tempfile
 import unittest
 
 import yaml
+from test_powpow_umbrel_grace import previous_grace_workflow
 
 ROOT=Path(__file__).resolve().parents[1]
 APP='willitmod-dev-axemig'
@@ -73,7 +74,7 @@ def baseline(name):
 class AxemigStopReleaseTests(unittest.TestCase):
     def test_workflow_only_adds_exact_four_paths_to_both_filters(self):
         name='.github/workflows/validate-mux-app-packages.yml'
-        current=(ROOT/name).read_text()
+        current=previous_grace_workflow((ROOT/name).read_text())
         expected=subprocess.check_output(['git','show',RECORD['baselineCommit']+':'+name],cwd=ROOT,text=True)
         self.assertEqual(previous_mig_stop_workflow(current),expected)
         for altered in [current.replace('tests/test_axemig_stop_release.py','unreviewed.py',1),

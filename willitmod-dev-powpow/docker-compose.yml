@@ -70,6 +70,8 @@ services:
       start_period: 90s
 
   litecoin:
+    stop_signal: SIGTERM
+    stop_grace_period: 15m30s
     image: ghcr.io/willitmod/powpow-litecoin:0.2.32-dev
     user: "1000:1000"
     restart: unless-stopped
@@ -86,6 +88,8 @@ services:
       start_period: 3m
 
   dogecoin:
+    stop_signal: SIGTERM
+    stop_grace_period: 15m30s
     image: ghcr.io/willitmod/powpow-dogecoin:0.2.26-dev
     user: "1000:1000"
     restart: unless-stopped
