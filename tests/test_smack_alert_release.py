@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 import unittest
 import yaml
-from test_smack_hero_release import previous_hero_model, record as hero_record
+from test_smack_hero_release import previous_hero_model, record as hero_record, package_version
 ROOT=Path(__file__).resolve().parents[1]
 APP='willitmod-dev-5tratsmack'
 BASELINE='7970c78f53291907c95151dcc024e47eda0709d91d3ff6bfc899bde97f00ea2c'
@@ -36,7 +36,7 @@ class SmackAlertReleaseTests(unittest.TestCase):
         self.assertRegex(r['imageRef'],r'^ghcr.io/willitmod/5tratsmack-app:0\.11\.21@sha256:[a-f0-9]{64}$')
         previous_alert_model(APP,yaml.safe_load((ROOT/APP/'docker-compose.yml').read_text()))
         for filename in ('umbrel-app.yml','5tratstore-app.yml'):
-            manifest=yaml.safe_load((ROOT/APP/filename).read_text());self.assertEqual(manifest['version'],hero_record()['version'])
+            manifest=yaml.safe_load((ROOT/APP/filename).read_text());self.assertEqual(manifest['version'],package_version(APP,hero_record()['version']))
             for text in ('detailed block-found celebration','fresh active-chain','hardware telemetry separately','Complete block and pool accounting records','OS and MUX notification acknowledgements remain separate'):self.assertIn(text,manifest['releaseNotes'])
     def test_unrelated_runtime_or_proof_metadata_changes_rejected(self):
         current=yaml.safe_load((ROOT/APP/'docker-compose.yml').read_text())

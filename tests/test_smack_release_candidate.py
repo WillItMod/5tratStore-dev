@@ -2,6 +2,7 @@
 import copy
 import hashlib
 import json
+import shutil
 from pathlib import Path
 import subprocess
 import sys
@@ -65,12 +66,18 @@ class SmackReleaseTests(unittest.TestCase):
         with tempfile.TemporaryDirectory(prefix='smack-store-metadata-') as raw:
             root = Path(raw)
             (root / 'scripts').mkdir()
-            (root / NAME).mkdir()
+            shutil.copytree(ROOT / NAME, root / NAME)
             for name in ['scripts/validate-5tratsmack-metadata.py', 'README.md',
                          'SMACK-RELEASE-2026-10-01.json', 'SMACK-PUBLISHED-IMAGES-2026-10-01.json',
                          'POOL-RETENTION-2026-10-01.json', 'RECOVERY-2026-10-02.json', 'SMACK-ALERTS-2026-10-02.json', 'SMACK-HERO-2026-10-15.json',
-                         NAME + '/umbrel-app.yml', NAME + '/5tratstore-app.yml']:
+                         'APP-VERSION-NORMALIZATION-2026-10-15.json', 'SMACK-STORE-UPDATE-2026-10-15.json',
+                         'scripts/smack_store_release.py', 'release-records/smack-0.11.23-store-image.json',
+                         'release-records/smack-0.11.23-platform-delivery.json', 'tests/test_smack_platform_delivery.py']:
+                (root / name).parent.mkdir(parents=True, exist_ok=True)
                 (root / name).write_bytes((ROOT / name).read_bytes())
+            clean = subprocess.run([sys.executable, str(root / 'scripts/validate-5tratsmack-metadata.py')],
+                                   capture_output=True, text=True, timeout=10)
+            self.assertEqual(clean.returncode, 0, clean.stderr)
             original = (ROOT / NAME / 'docker-compose.yml').read_text()
             actual = yaml.safe_load(original)['services']['app']
             for before, after in [
