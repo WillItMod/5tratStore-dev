@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import unittest
 import yaml
+from test_axemig_stop_release import APP, previous_mig_stop_model, previous_mig_stop_manifest
 
 ROOT = Path(__file__).resolve().parents[1]
 RECORD = json.loads((ROOT / 'AXEMIG-CHAIN-DISCOVERY-2026-10-14.json').read_text())
@@ -14,7 +15,7 @@ def digest(model):
 
 class AxemigChainReleaseTests(unittest.TestCase):
     def test_only_server_helper_and_version_change(self):
-        current=yaml.safe_load((ROOT/'willitmod-dev-axemig/docker-compose.yml').read_text())
+        current=previous_mig_stop_model(APP,yaml.safe_load((ROOT/'willitmod-dev-axemig/docker-compose.yml').read_text()))
         self.assertEqual(digest(current),RECORD['afterModelSHA256'])
         self.assertEqual({tuple(r['path']) for r in RECORD['changes']},{
             ('services','server','image'),('services','server','environment','AXEMIG_HELPER_IMAGE'),
@@ -32,7 +33,7 @@ class AxemigChainReleaseTests(unittest.TestCase):
         self.assertEqual(current['services']['server']['environment']['APP_VERSION'],'0.1.23-dev')
 
     def test_visible_recipe_and_published_source_binding(self):
-        manifest=yaml.safe_load((ROOT/'willitmod-dev-axemig/umbrel-app.yml').read_text())
+        manifest=previous_mig_stop_manifest(yaml.safe_load((ROOT/'willitmod-dev-axemig/umbrel-app.yml').read_text()))
         self.assertEqual(manifest['version'],RECORD['packageVersion'])
         self.assertEqual(manifest['version'],'0.1.23-dev')
         self.assertIn('independent BC2',manifest['releaseNotes'])

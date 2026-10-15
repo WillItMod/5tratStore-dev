@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-axemig
 category: bitcoin
 name: AxeMIG
-version: "0.1.23-dev"
+version: "0.1.24-dev"
 tagline: Data-only blockchain migration tool
 description: >-
   ALPHA RELEASE (DEV CHANNEL)
@@ -35,6 +35,8 @@ path: ""
 defaultUsername: ""
 defaultPassword: ""
 releaseNotes: >-
+  v0.1.24-dev: Waits for verified graceful node shutdown before copy or restore. A timeout or cancellation prevents file changes and automatic restarts. Layouts, chain selectors and migration data exclusions are unchanged.
+
   v0.1.23-dev: Keeps USB host paths usable and excludes independent BC2, BCH2,
   eCash and Peercoin chains from Bitcoin/BCH selectors. Restores stopped FracAttack
   discovery. Migration scripts, settings and layouts are unchanged.
