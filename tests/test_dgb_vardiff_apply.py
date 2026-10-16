@@ -2,6 +2,7 @@
 import base64
 import copy
 import hashlib
+import importlib.util
 import json
 import os
 from pathlib import Path
@@ -22,9 +23,18 @@ def digest(value):
     return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
 
 
+def backend_predecessor(current):
+    spec = importlib.util.spec_from_file_location('dgb_backend_predecessor', ROOT / 'scripts/dgb_backend_release.py')
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.previous_backend_model(APP, current, ROOT)
+
+
 def previous_vardiff_model(app_id, current):
     if app_id != APP:
         return copy.deepcopy(current)
+    if digest(current) != RECORD['afterModelSHA256']:
+        current = backend_predecessor(current)
     assert digest(current) == RECORD['afterModelSHA256']
     restored = copy.deepcopy(current)
     command = restored['services']['init']['command']
@@ -64,7 +74,7 @@ def apply_section(command, phase):
 
 class VarDiffSourceContract(unittest.TestCase):
     def test_exact_initializer_only_delta_and_package_revision(self):
-        model = current_model()
+        model = backend_predecessor(current_model())
         restored = previous_vardiff_model(APP, model)
         expected = copy.deepcopy(model)
         expected['services']['init']['command'] = restored['services']['init']['command']
