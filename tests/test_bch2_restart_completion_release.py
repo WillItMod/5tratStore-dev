@@ -36,6 +36,8 @@ class Bch2RestartCompletionReleaseTests(unittest.TestCase):
  def test_whole_model_only_four_fields_and_prior_node_guard_preserved(self):
   model=yaml.safe_load((ROOT/APP/'docker-compose.yml').read_text());before=yaml.safe_load(subprocess.check_output(['git','show',RECORD['baselineCommit']+':'+APP+'/docker-compose.yml'],cwd=ROOT,text=True))
   self.assertEqual(previous_bch2_completion_model(APP,model),before)
+  from app_version_normalization import health_release
+  model=health_release.previous_model(APP,model,ROOT)
   self.assertEqual(model['services']['app']['image'],RECORD['applicationImageUnchanged']);self.assertEqual(model['services']['app']['user'],'1000:1000')
   self.assertEqual(model['services']['bch2'],before['services']['bch2']);self.assertEqual(model['services']['init_permissions'],before['services']['init_permissions'])
   from test_bch2_node_entrypoint_release import previous_bch2_node_model

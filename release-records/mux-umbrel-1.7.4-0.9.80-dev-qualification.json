@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "result": "PASS",
+  "appId": "willitmod-dev-5tratmux",
+  "osVersion": "1.7.4",
+  "architecture": "amd64",
+  "channel": "DEV",
+  "observedVersion": "0.9.80-dev",
+  "sourceRevision": "8e5868d4b86ca7a56a436684158c64dc17b120c8",
+  "configDigest": "sha256:a6ad30ca54d65a0d8f76691774c5cae9fd2b144c9b95cf42dae5eb4ceae77a5a",
+  "nativeUpdateStopStartPersistenceVerified": true,
+  "nativeRuntimeHardeningVerified": true,
+  "noAppOOMOrExit137": true,
+  "evidence": [
+    {
+      "basename": "lifecycle-642-update-0.9.80-dev.json",
+      "sha256": "99e3e0e7de02ec3573388319cd15f6d3d809d07b58d2156ef3b6000259336287"
+    },
+    {
+      "basename": "mux080-native-642-dev-acceptance.json",
+      "sha256": "90019513beadb33c8677c05fc2d26e5ec14b57c5d1c09a1e2a3e38758192e97e"
+    },
+    {
+      "basename": "mux080-native-642-dev-events.json",
+      "sha256": "87ecb6cb77a309c9021e805946c9f5099638f8122268f572f9ebb1acd4d279fb"
+    }
+  ],
+  "scope": "Actual channel-specific native app-manager update stopped the prior server with exit0, started the exact wrapper image and preserved selected persistent state. This is the stop/start performed by the normal update. Native icon observation channels are recorded separately in the delivery proof. No full-chain or new physical-mining claim."
+}

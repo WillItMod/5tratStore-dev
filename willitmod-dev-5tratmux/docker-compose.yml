@@ -8,7 +8,7 @@ services:
       APP_PORT: "21222"
   server:
     # Protected runtime; release metadata binds the immutable multi-platform index.
-    image: ghcr.io/willitmod/5tratmux-app:0.9.79-umbrel-dev@sha256:d875ce12a5d23eeb63bf0bfcd88f0559cb69ff2445e38e15c2f7f68b56cbcc66
+    image: ghcr.io/willitmod/5tratmux-app:0.9.80-umbrel-dev@sha256:8f614bf5481e359da2f6cd79f95c178077e7e272da5bc29c4c023b3926ca8f18
     user: "1000:1000"
     init: true
     restart: unless-stopped
@@ -36,5 +36,5 @@ services:
       MUX_AUTH_TRUSTED_PROXIES: ${GATEWAY_IP}
       MUX_HTTP_STRICT_HOST: "1"
       MUX_HTTP_ALLOWED_HOSTS: ${DEVICE_DOMAIN_NAME},${DEVICE_HOSTNAME},localhost
-      APP_VERSION: 0.9.79-dev
+      APP_VERSION: 0.9.80-dev
       APP_CHANNEL: DEV
