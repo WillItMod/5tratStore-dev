@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "kind": "qualified-two-file-UI-overlay",
+  "result": "PASS",
+  "channel": "DEV",
+  "imageRef": "ghcr.io/willitmod/5tratmux-app:0.9.83-umbrel-dev@sha256:3e2067975c7b29d12a075a7947d3bd238db0702bc4ba826ffc2e1e2479a329e3",
+  "uiSource": {
+    "sourceRevision": "abe3c818c74102eebb971c3e5af1aeb39f408d3d",
+    "sourceTree": "c8b3d996be016c5f88b6aed8fc7bb7c52dc55825",
+    "changedFiles": {
+      "static/index.html": "e29bcfe2d4628f13b27cac3334329112c3e257e1bdc54e679965b22dee2db656",
+      "static/standalone-ui.css": "8439fa0a36fde0e2ea3bc690136de522195417c146b11b534c752e322a3d0456"
+    }
+  },
+  "staticFiles": {
+    "app/static/index.html": "e29bcfe2d4628f13b27cac3334329112c3e257e1bdc54e679965b22dee2db656",
+    "app/static/standalone-ui.css": "8439fa0a36fde0e2ea3bc690136de522195417c146b11b534c752e322a3d0456"
+  },
+  "predecessor": {
+    "record": "MUX-UMBREL-0.9.82-2026-10-16.json",
+    "sha256": "9969837502d109fe1be88ebf39c07dcaf3774082d7afd42d7ec3417fcd7b101d",
+    "delivery": {
+      "path": "release-records/mux-umbrel-0.9.82-dev-delivery.json",
+      "sha256": "25da1be5b6d882834e6cd53b7787279a30cd75a40284f73ba2f24f8bfae8168e"
+    }
+  },
+  "runtimeQualification": {
+    "scope": "unchanged-qualified-0.9.82-components-and-evidence",
+    "evidence": {
+      "path": "release-records/mux-umbrel-0.9.82-dev-delivery.json",
+      "sha256": "25da1be5b6d882834e6cd53b7787279a30cd75a40284f73ba2f24f8bfae8168e"
+    },
+    "fullRuntimeQualificationRepeated": false
+  },
+  "overlayVerification": {
+    "path": "release-records/ui083-dev-overlay-verification.json",
+    "sha256": "8c1e4c60c9a29892fed77be895bb60bbb5b9ed30836fa659ece05e2d7ca72261"
+  },
+  "baseIndex": {
+    "path": "release-records/ui083-dev-base-index.json",
+    "sha256": "5eb55feec01de1a3b4bdf16027dd22a4fdf5844c83c016996eeeace0e876ca5e"
+  },
+  "index": {
+    "path": "release-records/ui083-dev-index.json",
+    "sha256": "3e2067975c7b29d12a075a7947d3bd238db0702bc4ba826ffc2e1e2479a329e3"
+  },
+  "platforms": {
+    "amd64": {
+      "baseManifest": {
+        "path": "release-records/ui083-dev-amd64-base-manifest.json",
+        "sha256": "7b989399a0241ec14560add97728316c7e9c67f515a589a55f6bb8573dfb98eb"
+      },
+      "manifest": {
+        "path": "release-records/ui083-dev-amd64-manifest.json",
+        "sha256": "ee985273cfa1c574375cdf3bc61ff8b54b078a2679e63fe632822f507f8dfd3d"
+      },
+      "baseConfiguration": {
+        "path": "release-records/ui083-dev-amd64-base-config.json",
+        "sha256": "3cd72ad4d37a9a21ac7cca0a2cd085ea6eccc908c3a091df4af8ec40426c53bf"
+      },
+      "configuration": {
+        "path": "release-records/ui083-dev-amd64-config.json",
+        "sha256": "7cb6524edc761c1a012f9f110725ebb7f5353f43bec6cc403766d4bb00743a07"
+      }
+    },
+    "arm64": {
+      "baseManifest": {
+        "path": "release-records/ui083-dev-arm64-base-manifest.json",
+        "sha256": "984dc7bb99dcddbea915dd30f78412005741f77c4c947f2782cd3bb4350f6a88"
+      },
+      "manifest": {
+        "path": "release-records/ui083-dev-arm64-manifest.json",
+        "sha256": "526003d523a38f45bc62d70a3ceb6662027f92a9544cbfa3742a4d101dd6956d"
+      },
+      "baseConfiguration": {
+        "path": "release-records/ui083-dev-arm64-base-config.json",
+        "sha256": "32e761e4e942095ed87df4f56404ad4fab3f92e185aa56076a8e827fd07f5bf2"
+      },
+      "configuration": {
+        "path": "release-records/ui083-dev-arm64-config.json",
+        "sha256": "e87de399a12f1d52d32450bbad3b5c2e79fa311621ac06bcb449c80964d0f47b"
+      }
+    }
+  },
+  "nativeUiSmoke": {
+    "path": "release-records/ui083-startup-auth-smoke.json",
+    "sha256": "60d1264c272de742499286adf8e58cb815a0950e2c8db980a1f4facf26fcf8ad"
+  },
+  "sourceRegression": {
+    "path": "release-records/ui083-source-css-computed-visibility.json",
+    "sha256": "e1adb52bfeaad596034f36d707fe8b85e034488a1f58f68650587360d2ebcb0a"
+  },
+  "independentOverlayReview": {
+    "path": "release-records/ui083-peer-overlay-final-main-dev-review.json",
+    "sha256": "bfd176875766731c9f30d94d701d705f162a73edd2da053dfb46a965a63e94c5"
+  },
+  "scopeDisclosure": {
+    "actualRuntimeInferenceRepeated": false,
+    "actual069DeploymentClaimed": false,
+    "nativeArmStartupVerified": true,
+    "amd64StartupScope": "qemu-on-arm64",
+    "allPreviousColdFailuresAndRestartSafeOffPolicyRetained": true
+  }
+}

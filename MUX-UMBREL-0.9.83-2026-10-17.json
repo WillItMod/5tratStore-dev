@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "status": "qualified",
+  "appId": "willitmod-dev-5tratmux",
+  "channel": "DEV",
+  "version": "0.9.83-dev",
+  "uiSource": {
+    "sourceRevision": "abe3c818c74102eebb971c3e5af1aeb39f408d3d",
+    "sourceTree": "c8b3d996be016c5f88b6aed8fc7bb7c52dc55825",
+    "changedFiles": {
+      "static/index.html": "e29bcfe2d4628f13b27cac3334329112c3e257e1bdc54e679965b22dee2db656",
+      "static/standalone-ui.css": "8439fa0a36fde0e2ea3bc690136de522195417c146b11b534c752e322a3d0456"
+    }
+  },
+  "staticFiles": {
+    "app/static/index.html": "e29bcfe2d4628f13b27cac3334329112c3e257e1bdc54e679965b22dee2db656",
+    "app/static/standalone-ui.css": "8439fa0a36fde0e2ea3bc690136de522195417c146b11b534c752e322a3d0456"
+  },
+  "compiledApplicationSource": {
+    "sourceRevision": "138fd6cfd1b99cea858f19f39f8976015da1de1b",
+    "sourceTree": "75ed4c702490df1f168bf590ba055768c260d236"
+  },
+  "packageBaseProducer": {
+    "packageProducerSourceRevision": "396c137930d27fb39251147426a70bd61307bf98",
+    "packageProducerSourceTree": "ec2daf28cc1920be3e83bc791e25f3e6443769cc",
+    "packageProducerInputs": {
+      "packaging/umbrel-local-ai-release/prepare_package.py": "7c3deed5b8aa35777d1776a6a15ce0be7217dc98d40a1e082af21e88c4cb0f1c",
+      "packaging/umbrel-local-ai-release/pre-start": "fb25f9246aff606a00567ec0a0333b49397bf988b30deaff0c3da5baaaa4eb6e"
+    }
+  },
+  "packageTransformation": "qualified-0.9.82-image-and-version-with-UI-release-notes-only",
+  "imageRef": "ghcr.io/willitmod/5tratmux-app:0.9.83-umbrel-dev@sha256:3e2067975c7b29d12a075a7947d3bd238db0702bc4ba826ffc2e1e2479a329e3",
+  "localAIImageRef": "ghcr.io/willitmod/5tratmux-app:local-ai-0.1.9-umbrel@sha256:b8050920c408eab295ba5848f209d560b5207f821901e09d7a6788c1e2b175d3",
+  "platforms": {
+    "amd64": {
+      "manifestDigest": "sha256:ee985273cfa1c574375cdf3bc61ff8b54b078a2679e63fe632822f507f8dfd3d",
+      "configDigest": "sha256:7cb6524edc761c1a012f9f110725ebb7f5353f43bec6cc403766d4bb00743a07"
+    },
+    "arm64": {
+      "manifestDigest": "sha256:526003d523a38f45bc62d70a3ceb6662027f92a9544cbfa3742a4d101dd6956d",
+      "configDigest": "sha256:e87de399a12f1d52d32450bbad3b5c2e79fa311621ac06bcb449c80964d0f47b"
+    }
+  },
+  "localAIPlatforms": {
+    "amd64": {
+      "manifestDigest": "sha256:67344ce981b43db67ab704aac20f06311d1ea66a4f89b754ca0554edc374fa83",
+      "configDigest": "sha256:8788b993b93cf5a2cc0cb3f66773171184669e19f4cb4edbd54145b639b1ba5e",
+      "companionSourceRevision": "595bd51be79995642da846afa2206d2ccb96bd08",
+      "companionSourceTree": "fd8fdcb99068c3d7fb4185aff0260a86b43876a2"
+    },
+    "arm64": {
+      "manifestDigest": "sha256:665cf51df9cbf8b17edaaefcdbbfffb2a0534339c7fa6819a4a82f1a8e7e7d8a",
+      "configDigest": "sha256:6a2d44c4ef1f3dea9dcf35ff9233926c5edef28c8c50976408fab26f974e7899",
+      "companionSourceRevision": "138fd6cfd1b99cea858f19f39f8976015da1de1b",
+      "companionSourceTree": "75ed4c702490df1f168bf590ba055768c260d236"
+    }
+  },
+  "predecessor": {
+    "record": "MUX-UMBREL-0.9.82-2026-10-16.json",
+    "sha256": "9969837502d109fe1be88ebf39c07dcaf3774082d7afd42d7ec3417fcd7b101d",
+    "delivery": {
+      "path": "release-records/mux-umbrel-0.9.82-dev-delivery.json",
+      "sha256": "25da1be5b6d882834e6cd53b7787279a30cd75a40284f73ba2f24f8bfae8168e"
+    }
+  },
+  "packageFiles": {
+    "willitmod-dev-5tratmux/data/.gitkeep": {
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "mode": "0o644"
+    },
+    "willitmod-dev-5tratmux/docker-compose.yml": {
+      "sha256": "165589a5a879c3cb604eed8e9f437f770a4d08c8fc1082d4fd4b35ce06870263",
+      "mode": "0o644"
+    },
+    "willitmod-dev-5tratmux/hooks/pre-start": {
+      "sha256": "fb25f9246aff606a00567ec0a0333b49397bf988b30deaff0c3da5baaaa4eb6e",
+      "mode": "0o755"
+    },
+    "willitmod-dev-5tratmux/icon.png": {
+      "sha256": "3eef68f8307de4df7a43386b2dbc3cdaa2b9e97423c93945c18e6be3256ad9e8",
+      "mode": "0o644"
+    },
+    "willitmod-dev-5tratmux/umbrel-app.yml": {
+      "sha256": "42a696263d6a5c0eae82d84e1f60f6b26131436bf84d95a7ce883a3e4f4f8564",
+      "mode": "0o644"
+    }
+  },
+  "publication": {
+    "path": "release-records/mux-umbrel-0.9.83-dev-delivery.json",
+    "sha256": "dfa15c2174636e56660395814f37dbf5362787490efd638a50f201d3cce3e871"
+  }
+}

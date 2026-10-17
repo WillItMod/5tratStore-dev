@@ -1,0 +1,54 @@
+{
+  "channel": "DEV",
+  "version": "0.9.83-dev",
+  "sourceRevision": "abe3c818c74102eebb971c3e5af1aeb39f408d3d",
+  "baseImageRef": "ghcr.io/willitmod/5tratmux-app:0.9.82-umbrel-dev@sha256:5eb55feec01de1a3b4bdf16027dd22a4fdf5844c83c016996eeeace0e876ca5e",
+  "imageRef": "ghcr.io/willitmod/5tratmux-app:0.9.83-umbrel-dev@sha256:3e2067975c7b29d12a075a7947d3bd238db0702bc4ba826ffc2e1e2479a329e3",
+  "platforms": {
+    "amd64": {
+      "baseManifestDigest": "sha256:7b989399a0241ec14560add97728316c7e9c67f515a589a55f6bb8573dfb98eb",
+      "baseConfigDigest": "sha256:3cd72ad4d37a9a21ac7cca0a2cd085ea6eccc908c3a091df4af8ec40426c53bf",
+      "manifestDigest": "sha256:ee985273cfa1c574375cdf3bc61ff8b54b078a2679e63fe632822f507f8dfd3d",
+      "configDigest": "sha256:7cb6524edc761c1a012f9f110725ebb7f5353f43bec6cc403766d4bb00743a07",
+      "overlayLayerDigest": "sha256:b71c835b3bb6b1f234300b3761e0306ef15650a31e0c5041a1bd5bcc27b35c28",
+      "baseLayerPrefixUnchanged": true,
+      "layerMediaTypeOnlyOciDockerAliasConversion": true,
+      "overlayDiffIDVerified": true,
+      "baseRootfsPrefixUnchanged": true,
+      "onlyTwoWebFilesChanged": true,
+      "onlyVersionAndUiSourceConfigChanges": true,
+      "userEntrypointPortsVolumesUnchanged": true
+    },
+    "arm64": {
+      "baseManifestDigest": "sha256:984dc7bb99dcddbea915dd30f78412005741f77c4c947f2782cd3bb4350f6a88",
+      "baseConfigDigest": "sha256:32e761e4e942095ed87df4f56404ad4fab3f92e185aa56076a8e827fd07f5bf2",
+      "manifestDigest": "sha256:526003d523a38f45bc62d70a3ceb6662027f92a9544cbfa3742a4d101dd6956d",
+      "configDigest": "sha256:e87de399a12f1d52d32450bbad3b5c2e79fa311621ac06bcb449c80964d0f47b",
+      "overlayLayerDigest": "sha256:22c6b4b29cd96213a1a1568788e2dec013532323b07183a8735158ba410e40d1",
+      "baseLayerPrefixUnchanged": true,
+      "layerMediaTypeOnlyOciDockerAliasConversion": true,
+      "overlayDiffIDVerified": true,
+      "baseRootfsPrefixUnchanged": true,
+      "onlyTwoWebFilesChanged": true,
+      "onlyVersionAndUiSourceConfigChanges": true,
+      "userEntrypointPortsVolumesUnchanged": true
+    }
+  },
+  "overlayFiles": {
+    "app/static/index.html": {
+      "sha256": "e29bcfe2d4628f13b27cac3334329112c3e257e1bdc54e679965b22dee2db656",
+      "size": 119703,
+      "mode": "0o644",
+      "uid": 0,
+      "gid": 0
+    },
+    "app/static/standalone-ui.css": {
+      "sha256": "8439fa0a36fde0e2ea3bc690136de522195417c146b11b534c752e322a3d0456",
+      "size": 690,
+      "mode": "0o644",
+      "uid": 0,
+      "gid": 0
+    }
+  },
+  "result": "PASS"
+}
