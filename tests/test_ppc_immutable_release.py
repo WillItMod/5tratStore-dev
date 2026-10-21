@@ -7,6 +7,11 @@ import subprocess
 import unittest
 
 import yaml
+import importlib.util
+
+_SUCCESSOR_SPEC = importlib.util.spec_from_file_location("ppc_payout_status_successor", Path(__file__).resolve().parents[1] / "scripts/ppc_payout_status_release.py")
+successor = importlib.util.module_from_spec(_SUCCESSOR_SPEC)
+_SUCCESSOR_SPEC.loader.exec_module(successor)
 
 ROOT = Path(__file__).resolve().parents[1]
 APP = 'willitmod-dev-ppc'
@@ -20,10 +25,11 @@ def digest(model):
 
 
 def package_version(app_id, historical):
-    return RECORD['packageVersion'] if app_id == APP else historical
+    return successor.package_version(app_id, RECORD['packageVersion']) if app_id == APP else historical
 
 
 def previous_ppc_model(app_id, current):
+    current = successor.previous_model(app_id, current)
     if app_id != APP:
         return copy.deepcopy(current)
     assert RECORD['beforeModelSHA256'] == BASELINE
@@ -82,7 +88,7 @@ class PpcImmutableReleaseTests(unittest.TestCase):
                 previous_ppc_model(APP, changed)
 
     def test_manifest_only_advances_recipe_version_and_prepends_release_note(self):
-        current = yaml.safe_load((ROOT / APP / 'umbrel-app.yml').read_text())
+        current = successor.previous_manifest(APP, yaml.safe_load((ROOT / APP / 'umbrel-app.yml').read_text()))
         before = yaml.safe_load(subprocess.check_output(['git', 'show', RECORD['baselineCommit'] + ':' + APP + '/umbrel-app.yml'], cwd=ROOT, text=True))
         self.assertEqual(current.pop('version'), '0.2.37-dev.1')
         self.assertEqual(before.pop('version'), '0.2.37-dev')

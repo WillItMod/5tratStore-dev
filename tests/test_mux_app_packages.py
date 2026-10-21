@@ -13,7 +13,7 @@ import yaml
 from app_version_normalization import previous_app_version_model
 from test_powpow_sql_seed import package_version
 from test_bch2_node_entrypoint_release import package_version as bch2_package_version
-from test_ppc_immutable_release import APP as PPC, RECORD as PPC_RECORD
+from test_ppc_immutable_release import APP as PPC, RECORD as PPC_RECORD, successor as ppc_successor
 from test_powpow_startup_release import previous_startup_model
 
 from test_pool_retention_release import APPS
@@ -178,7 +178,7 @@ class MuxPackageTests(unittest.TestCase):
                         continue
                     model = yaml.safe_load(path.read_text())
                     service = model["services"]["app"]
-                    historical = previous_app_version_model(name, model)["services"]["app"]
+                    historical = ppc_successor.previous_model(name, previous_app_version_model(name, model))["services"]["app"]
                     self.assertEqual(historical["image"], current["imageRef"])
                     environment = service["environment"]
                     self.assertEqual(environment["MUX_IDENTITY_URL"],
