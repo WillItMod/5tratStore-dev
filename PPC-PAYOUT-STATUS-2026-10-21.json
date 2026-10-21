@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "appId": "willitmod-dev-ppc",
+  "channel": "DEV",
+  "baselineCommit": "80068694f882d44401d92ed04e9ae029e59ae5b8",
+  "sourceRepository": "https://github.com/WillItMod/AxePPC_Build",
+  "sourceRevision": "a3764b8173971e3b155073e5794bfcd1b602f706",
+  "sourceTree": "82518e630ee7dae3cddcdde45a6fc2a2026806a9",
+  "imageRef": "ghcr.io/willitmod/axeppc-app-umbrel-dev:0.2.38-mux.a3764b817397@sha256:822ecd4f43f22a469720cb30ce2f4f8c7b7c24d1be8d1fde94e0b1fc87aa25f9",
+  "priorImageRef": "ghcr.io/willitmod/axeppc-app-umbrel-dev:0.2.37-mux.5b0aac96a475@sha256:df22d1f1ba4f607d7422945cbdb0ec4ad348b9ce7ddd578d8179849db45d536d",
+  "publicationRun": 39585921897,
+  "publicationURL": "https://github.com/WillItMod/AxePPC_Build/actions/runs/39585921897",
+  "platforms": {
+    "amd64": {
+      "manifestDigest": "sha256:bfedde8c410fca2c8bd0903207e93db111450765ae0aefb90483f2f1bef4d2d5",
+      "configDigest": "sha256:4db57951172bba378d79a2f42d38325acd1b2105836395a18371670522288c99"
+    },
+    "arm64": {
+      "manifestDigest": "sha256:2afab10904e0ce5f9fee621d5374777bd50dc837fca6857f8adfc31f7b600c55",
+      "configDigest": "sha256:464758f9e41a4ff89546a5f3c5e586810b5d8c974f078ee1cb910009d98aac5a"
+    }
+  },
+  "applicationVersion": "0.2.38",
+  "packageVersion": "0.2.38-dev.1",
+  "previousPackageVersion": "0.2.37-dev.1",
+  "releaseNotePrefix": "Payout status now distinguishes node-validated, invalid, missing and not-yet-validated addresses. The channel label is informational. Node-rejected addresses are never saved, and an unavailable node is shown explicitly. Use a bare native Peercoin receiving address without a peercoin: prefix. Existing payout settings, pool configuration and stored data are retained.",
+  "runtimeChanges": [
+    [
+      "services",
+      "app",
+      "image"
+    ]
+  ],
+  "beforeModelSHA256": "c888dc49f6804f5f611706338f43e7dc577396deb37ababfefa36004d7b60dca",
+  "afterModelSHA256": "0bf21f337c11ff99bad54184cc32ac5f6af67faf306a54a423ef2f721f0f25c0",
+  "beforeManifestSHA256": "72bc9bbeccdfc4b39cb9610b760b191c8e1189f44aa172075dce9cbab71783a5",
+  "afterManifestSHA256": "eeff833db7fae83ad99854943fbb50a770da2f8be64ebf111da66e40a474fd2a",
+  "qualificationScope": {
+    "nativePublishedApplicationTests": true,
+    "provenanceVerified": true,
+    "sbomVerified": true,
+    "ordinaryAppManagerUpdateClaimed": false,
+    "miningPayoutReceiptClaimed": false,
+    "isolatedNativeArm64ExactImageMigration": {
+      "path": "release-records/ppc-0.2.38-native-arm64-migration.json",
+      "sha256": "6d2ece398f6b2d03cf85f47511d57c0548ab5f13ba89a0d17ed31f1d85836e9c",
+      "platform": "linux/arm64",
+      "stages": 9,
+      "assertions": 218,
+      "httpRequests": 57,
+      "scope": "Isolated exact-image fixture volumes, real application HTTP and native Peercoin node validation; OS app-manager update and real mining payouts are not claimed."
+    }
+  }
+}
