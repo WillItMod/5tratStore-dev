@@ -37,5 +37,38 @@
   "liveAppNodeOrMinerStarted": false,
   "liveDataAccessed": false,
   "hostPortsPublished": false,
-  "networkUsed": false
+  "networkUsed": false,
+  "unrelatedBaselineMuxGateObservation": {
+    "baselineCommit": "88c855af13a1570f70a4e705cb34a0bc4dcdcb6c",
+    "command": "python scripts/mux_umbrel_release.py",
+    "pristineBaselineExitCode": 1,
+    "candidateExitCode": 1,
+    "error": "AssertionError: Package bytes or modes changed",
+    "reason": "The unchanged baseline MUX recipe is 0.9.87 while this historical package gate admits 0.9.85.",
+    "entireMuxPackageUnchangedFromBaseline": true,
+    "muxPackageOrHistoricalEvidenceModifiedByThisRelease": false,
+    "mismatchedPackageFiles": {
+      "willitmod-dev-5tratmux/docker-compose.yml": {
+        "historicalExpected": {
+          "mode": "0o644",
+          "sha256": "8863904bc1a3b45581010574997081e999dc09a7c9567fa99e9a02a3151d9130"
+        },
+        "baselineAndCandidate": {
+          "sha256": "d44a371af24c00002e3b80af4a207ee83005086ad29c80ca69396fb9881f692b",
+          "mode": "0o644"
+        }
+      },
+      "willitmod-dev-5tratmux/umbrel-app.yml": {
+        "historicalExpected": {
+          "mode": "0o644",
+          "sha256": "f18f966e844fdd096fd27219214443ed18e5b51111ac1b999e6dd63eca829071"
+        },
+        "baselineAndCandidate": {
+          "sha256": "5c8bd5a8ea24cdac1ff6d2d445d9c177898ca6d805676947d086039bd541fe0a",
+          "mode": "0o644"
+        }
+      }
+    },
+    "fixturePlacementScope": "This new BCH2-only fixture is kept beside its BCH2 release record so unrelated MUX evidence triggers remain unchanged."
+  }
 }
