@@ -77,8 +77,10 @@ class PowPowPoolStabilityTests(unittest.TestCase):
             self.assertEqual(release.previous_model(release.APP, previous), previous)
             self.assertEqual(release.previous_model(release.APP, current), previous)
             self.assertEqual(release.previous_model("other-app", current), current)
-        self.assertEqual(release.package_version(release.APP, release.PREVIOUS_VERSION), release.VERSION)
-        self.assertEqual(release.package_version(release.APP, release.VERSION), release.VERSION)
+        successor = release.partition_successor()
+        current_version = successor.VERSION if successor is not None else release.VERSION
+        self.assertEqual(release.package_version(release.APP, release.PREVIOUS_VERSION), current_version)
+        self.assertEqual(release.package_version(release.APP, release.VERSION), current_version)
         with self.assertRaises(AssertionError):
             release.package_version(release.APP, "99.0.0")
 
