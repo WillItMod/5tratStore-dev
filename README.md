@@ -35,7 +35,7 @@ Development/test app store for WillItMod apps.
 - **AxeXEC** (`willitmod-dev-xec`) - `0.1.24-dev`
 - **5tratSmack** (`willitmod-dev-5tratsmack`) - `0.11.23-dev`
 - **FracAttack** (`willitmod-dev-fracattack`) - `0.1.11`
-- **PowPow** (`willitmod-dev-powpow`) - `0.2.37-dev.2`
+- **PowPow** (`willitmod-dev-powpow`) - `0.2.37-dev.5`
 
 Use the app manifest in each app directory as the current source of truth for the store-visible version number.
 

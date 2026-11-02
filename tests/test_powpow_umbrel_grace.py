@@ -8,6 +8,7 @@ import unittest
 
 import yaml
 from test_bench_completed_summary_release import previous_bench_summary_workflow
+from powpow_pool_stability import release as pool_stability
 
 ROOT = Path(__file__).resolve().parents[1]
 APP = 'willitmod-dev-powpow'
@@ -25,10 +26,11 @@ def package_version(app_id, historical):
         return historical
     assert historical == RECORD['previousPackageVersion'] == '0.2.37-dev.3'
     assert RECORD['packageVersion'] == '0.2.37-dev.4'
-    return RECORD['packageVersion']
+    return pool_stability.package_version(app_id, RECORD['packageVersion'])
 
 
 def previous_grace_model(app_id, model):
+    model = pool_stability.previous_model(app_id, model)
     restored = copy.deepcopy(model)
     if app_id != APP:
         return restored
@@ -59,7 +61,7 @@ def previous_grace_workflow(current):
 
 class PowPowUmbrelGraceTests(unittest.TestCase):
     def model(self):
-        return yaml.safe_load((ROOT / APP / 'docker-compose.yml').read_text())
+        return pool_stability.previous_model(APP, yaml.safe_load((ROOT / APP / 'docker-compose.yml').read_text()))
 
     def historical(self, name):
         return subprocess.check_output(['git', 'show', RECORD['baselineCommit'] + ':' + name], cwd=ROOT)
