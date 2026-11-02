@@ -9,6 +9,9 @@ on:
       - "scripts/powpow_pool_stability_release.py"
       - "tests/test_powpow_share_partition_release.py"
       - "tests/test_powpow_pool_stability_release.py"
+      - "POWPOW-PACKAGE-VERSION-2026-11-02.json"
+      - "scripts/powpow_package_version_correction.py"
+      - "tests/test_powpow_package_version_correction.py"
       - ".github/workflows/validate-powpow-share-partition.yml"
   push:
     branches: [main]
@@ -20,6 +23,9 @@ on:
       - "scripts/powpow_pool_stability_release.py"
       - "tests/test_powpow_share_partition_release.py"
       - "tests/test_powpow_pool_stability_release.py"
+      - "POWPOW-PACKAGE-VERSION-2026-11-02.json"
+      - "scripts/powpow_package_version_correction.py"
+      - "tests/test_powpow_package_version_correction.py"
       - ".github/workflows/validate-powpow-share-partition.yml"
 permissions:
   contents: read
@@ -35,6 +41,8 @@ jobs:
           python-version: "3.11"
       - run: python -m pip install PyYAML==6.0.3
       - run: python scripts/powpow_share_partition_release.py --check-baseline
+      - run: python scripts/powpow_package_version_correction.py
+      - run: python -m unittest discover -s tests -p test_powpow_package_version_correction.py -v
       - run: python -m unittest discover -s tests -p test_powpow_share_partition_release.py -v
       - name: Preserve stability, startup and historical package contracts
         env:

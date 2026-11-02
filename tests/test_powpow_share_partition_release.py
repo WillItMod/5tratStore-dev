@@ -29,7 +29,9 @@ class PowPowSharePartitionTests(unittest.TestCase):
         with patch.object(stability, 'partition_successor', return_value=release), \
                 patch.object(release, 'IMAGE_TAG', SYNTHETIC_TAG), patch.object(release, 'IMAGE_REF', SYNTHETIC_IMAGE):
             self.assertEqual(stability.validate_model(current), previous)
-            self.assertEqual(stability.package_version(release.APP, stability.PREVIOUS_VERSION), release.VERSION)
+            correction = release.version_correction()
+            expected_version = correction.VERSION if correction is not None else release.VERSION
+            self.assertEqual(stability.package_version(release.APP, stability.PREVIOUS_VERSION), expected_version)
             changed = copy.deepcopy(current)
             changed['services']['app']['image'] = 'unreviewed:latest'
             with self.assertRaises(AssertionError):
