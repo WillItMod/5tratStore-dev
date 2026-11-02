@@ -135,6 +135,12 @@ def validate(root=ROOT, *, check_baseline=False):
     if check_baseline:
         protected = [n for n in git(root, 'ls-tree', '-r', '--name-only', row['baselineCommit']).decode().splitlines()
                      if n.startswith('willitmod-') and not n.startswith(APP + '/')]
+        if (root / 'POWPOW-POOL-STABILITY-2026-11-02.json').is_file():
+            import importlib.util
+            spec = importlib.util.spec_from_file_location('powpow_retention_predecessor', root / 'scripts/powpow_pool_stability_release.py')
+            successor = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(successor)
+            protected = successor.historical_protected_paths(root, row['baselineCommit'], protected)
         assert not git(root, 'diff', '--name-only', row['baselineCommit'], '--', *protected).strip(), 'Other application changed'
     return row
 

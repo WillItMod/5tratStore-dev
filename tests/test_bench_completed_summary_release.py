@@ -7,6 +7,7 @@ import subprocess
 import unittest
 
 import yaml
+from powpow_pool_stability import release as pool_stability
 
 ROOT = Path(__file__).resolve().parents[1]
 APP = 'willitmod-dev-axebench'
@@ -152,6 +153,7 @@ class BenchCompletedSummaryReleaseTests(unittest.TestCase):
                         current.replace('      - "BENCH-COMPLETED-SUMMARY-2026-10-15.json"\n', '', 1)]:
             with self.assertRaises(AssertionError): previous_bench_summary_workflow(altered)
         pow_text = (ROOT / 'tests/test_powpow_umbrel_grace.py').read_text()
+        pow_text = pool_stability.previous_grace_test_bytes(pow_text.encode()).decode()
         for addition in ['from test_bench_completed_summary_release import previous_bench_summary_workflow\n',
                          '    current = previous_bench_summary_workflow(current)\n']:
             self.assertEqual(pow_text.count(addition), 1); pow_text = pow_text.replace(addition, '', 1)
