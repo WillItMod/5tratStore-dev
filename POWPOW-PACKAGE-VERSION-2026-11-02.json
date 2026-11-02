@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "status": "qualified-metadata-only",
+  "channel": "DEV",
+  "appId": "willitmod-dev-powpow",
+  "baselineCommit": "e09578a28413350442af8aa0aff92c96c8acaa9e",
+  "previousPackageVersion": "0.2.37-dev.6",
+  "packageVersion": "0.2.39",
+  "changedPackageFiles": [
+    "willitmod-dev-powpow/umbrel-app.yml",
+    "willitmod-dev-powpow/global-app.yml"
+  ],
+  "readmeCatalogueVersionUpdated": true,
+  "runtimeModelChanged": false,
+  "imagesChanged": false,
+  "priorReleaseRecordsAndProofsChanged": false
+}

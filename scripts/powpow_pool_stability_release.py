@@ -91,7 +91,9 @@ def package_version(app_id, historical, root=ROOT):
         return historical
     assert historical in (PREVIOUS_VERSION, VERSION), "Unreviewed preceding PowPow version"
     successor = partition_successor(root)
-    return successor.package_version(app_id, VERSION, root) if successor is not None else VERSION
+    version = successor.package_version(app_id, VERSION, root) if successor is not None else VERSION
+    correction = successor.version_correction(root) if successor is not None else None
+    return correction.package_version(app_id, version, root) if correction is not None else version
 
 
 def previous_grace_test_bytes(raw):

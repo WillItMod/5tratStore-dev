@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-powpow
 category: altcoin
 name: "PowPow"
-version: "0.2.37-dev.6"
+version: "0.2.39"
 releaseNotes: >-
   Repairs missing share-table partitions automatically when the pool starts so new shares and pool statistics can be saved. Existing database rows are preserved, and custom pool names are supported.
 
