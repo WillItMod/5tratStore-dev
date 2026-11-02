@@ -19,6 +19,26 @@ SYNTHETIC_IMAGE = release.IMAGE_TAG + "@sha256:" + "1" * 64
 
 
 class PowPowPoolStabilityTests(unittest.TestCase):
+    def test_historical_other_app_gate_admits_only_the_three_frozen_pool_files(self):
+        older = '88c855af13a1570f70a4e705cb34a0bc4dcdcb6c'
+        reviewed = {release.APP + '/' + name for name in ('docker-compose.yml', *release.MANIFESTS)}
+        others = ['willitmod-dev-5tratmux/docker-compose.yml', release.APP + '/hooks/pre-start']
+        protected = sorted(reviewed) + others
+        with patch.object(release, 'validate') as validate:
+            self.assertEqual(release.historical_protected_paths(ROOT, older, protected), others)
+            validate.assert_called_once_with(ROOT)
+        with patch.object(release, 'validate', side_effect=AssertionError('Unreviewed successor')), self.assertRaisesRegex(AssertionError, 'Unreviewed'):
+            release.historical_protected_paths(ROOT, older, protected)
+        with patch.object(release, 'validate'), self.assertRaisesRegex(AssertionError, 'inventory'):
+            release.historical_protected_paths(ROOT, older, others)
+        original_git = release.git
+        def altered_predecessor(root, *arguments):
+            if arguments[:2] == ('show', older + ':' + release.APP + '/docker-compose.yml'):
+                return b'unreviewed historical bytes'
+            return original_git(root, *arguments)
+        with patch.object(release, 'validate'), patch.object(release, 'git', side_effect=altered_predecessor), self.assertRaisesRegex(AssertionError, 'predecessor bytes'):
+            release.historical_protected_paths(ROOT, older, protected)
+
     def test_historical_grace_assertions_are_restored_byte_exactly(self):
         current = (ROOT / 'tests/test_powpow_umbrel_grace.py').read_bytes()
         original = release.baseline_bytes('tests/test_powpow_umbrel_grace.py')

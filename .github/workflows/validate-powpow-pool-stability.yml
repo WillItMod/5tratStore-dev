@@ -4,8 +4,9 @@ on:
     paths:
       - "willitmod-dev-powpow/**"
       - "POWPOW-POOL-STABILITY-2026-11-02.json"
-      - "release-records/powpow-pool-stability-*"
+      - "powpow-release-records/**"
       - "scripts/powpow_pool_stability_release.py"
+      - "scripts/bch2_retention_release.py"
       - "tests/test_powpow_pool_stability_release.py"
       - "tests/powpow_pool_stability.py"
       - "tests/test_powpow_umbrel_grace.py"
@@ -16,8 +17,9 @@ on:
     paths:
       - "willitmod-dev-powpow/**"
       - "POWPOW-POOL-STABILITY-2026-11-02.json"
-      - "release-records/powpow-pool-stability-*"
+      - "powpow-release-records/**"
       - "scripts/powpow_pool_stability_release.py"
+      - "scripts/bch2_retention_release.py"
       - "tests/test_powpow_pool_stability_release.py"
       - "tests/powpow_pool_stability.py"
       - "tests/test_powpow_umbrel_grace.py"
@@ -41,4 +43,4 @@ jobs:
       - name: Preserve the frozen PowPow and Bench release contracts
         env:
           PYTHONPATH: tests
-        run: python -m unittest test_powpow_umbrel_grace test_powpow_startup_release test_bench_completed_summary_release -v
+        run: python -m unittest test_powpow_umbrel_grace test_powpow_startup_release test_bench_completed_summary_release test_bch2_retention_permissions.RecipeReleaseTests -v

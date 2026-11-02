@@ -23,7 +23,7 @@ WORKFLOW_RUN = 41470941258
 IMAGE_TAG = "ghcr.io/willitmod/powpow-pool:0.2.37-mux.a20704f8b2ad"
 IMAGE_REF = "ghcr.io/willitmod/powpow-pool:0.2.37-mux.a20704f8b2ad@sha256:16de156be9f022b1fa2a5d9859232845dd041c457836901647353dcc57851b3c"
 RECORD_NAME = "POWPOW-POOL-STABILITY-2026-11-02.json"
-RECORD_SHA256 = "6567d9966e1d1e78cad7a120db9b1f63922d28deb4bcd65b04c88b45e19fabf7"
+RECORD_SHA256 = "b4cc68d65b2cce876d2dcadc184f25733bfef68877d1719c3231c9d477216a26"
 BEFORE_MODEL_SHA256 = "a168daf8222ae4f7ada91e27f4e3799075f82a390b981df7f8ab1a1860f5a836"
 NOTE = "Improves pool stability when miners reconnect and prevents failed share writes from exhausting database connections. Updates the pool service while retaining the application interface at version 0.2.37-dev, node images, mining settings and stored data."
 MANIFESTS = ("umbrel-app.yml", "global-app.yml")
@@ -177,6 +177,19 @@ def validate(root=ROOT, check_baseline=False):
     if check_baseline:
         validate_baseline(root)
     return result
+
+
+def historical_protected_paths(root, previous_commit, protected):
+    """Admit only this exact successor before an older other-app comparison."""
+    validate(root)
+    reviewed = {APP + '/' + name for name in ('docker-compose.yml', *MANIFESTS)}
+    assert reviewed <= set(protected), 'Historical PowPow package inventory differs'
+    for name in reviewed:
+        assert baseline_bytes(name, root) == git(root, 'show', previous_commit + ':' + name), 'Historical PowPow predecessor bytes differ'
+        before_mode = git(root, 'ls-tree', BASELINE, '--', name).decode().split()[0]
+        historical_mode = git(root, 'ls-tree', previous_commit, '--', name).decode().split()[0]
+        assert before_mode == historical_mode, 'Historical PowPow predecessor mode differs'
+    return [name for name in protected if name not in reviewed]
 
 
 if __name__ == "__main__":
