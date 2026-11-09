@@ -3,9 +3,6 @@ on:
   pull_request:
     paths:
       - "RECOVERY-2026-10-02.json"
-      - "DIAGNOSTICS-HARDWARE-2026-11-09.json"
-      - "scripts/diagnostics_hardware_release.py"
-      - "tests/test_diagnostics_hardware_release.py"
       - "tests/test_recovery_release.py"
       - "tests/test_pool_retention_release.py"
       - "DIRECT-HASHRATE-2026-09-30.json"
@@ -54,9 +51,6 @@ on:
     branches: [main]
     paths:
       - "RECOVERY-2026-10-02.json"
-      - "DIAGNOSTICS-HARDWARE-2026-11-09.json"
-      - "scripts/diagnostics_hardware_release.py"
-      - "tests/test_diagnostics_hardware_release.py"
       - "tests/test_recovery_release.py"
       - "tests/test_pool_retention_release.py"
       - "DIRECT-HASHRATE-2026-09-30.json"

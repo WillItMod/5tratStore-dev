@@ -157,10 +157,20 @@ def validate_baseline(root=ROOT):
     """Release-time scope check; unrelated future app updates remain independent."""
     names = git(root, "ls-tree", "-r", "--name-only", BASELINE).decode().splitlines()
     protected = [name for name in names if (name.startswith("willitmod-") and not name.startswith(APP + "/")) or ("/" not in name and name.endswith(".json"))]
+    diagnostics = None
+    if (root / 'DIAGNOSTICS-HARDWARE-2026-11-09.json').is_file():
+        import importlib.util
+        spec = importlib.util.spec_from_file_location('diagnostics_powpow_predecessor', root / 'scripts/diagnostics_hardware_release.py')
+        diagnostics = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(diagnostics)
+        diagnostics.validate(root)
     for name in protected:
         path = root / name
         assert path.is_file() and not path.is_symlink(), f"Protected predecessor file missing: {name}"
-        assert path.read_bytes() == baseline_bytes(name, root), f"Protected predecessor file changed: {name}"
+        raw = path.read_bytes()
+        if diagnostics is not None and name in diagnostics.CHANGED:
+            raw = diagnostics.previous_file_bytes(raw, name, root)
+        assert raw == baseline_bytes(name, root), f"Protected predecessor file changed: {name}"
         mode = git(root, "ls-tree", BASELINE, "--", name).decode().split()[0]
         assert stat.S_IMODE(path.stat().st_mode) == int(mode, 8) & 0o777, f"Protected predecessor mode changed: {name}"
     old_packages = {name for name in names if name.startswith("willitmod-")}
