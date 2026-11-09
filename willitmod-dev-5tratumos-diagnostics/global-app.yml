@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-axediagnostics
 category: utilities
 name: 5tratDiag
-version: "0.1.8"
+version: "0.1.9"
 tagline: Node diagnostics and private support with your 5tratMux licence
 description: >-
   Diagnostics and support included with a valid paid 5tratMux licence on this
@@ -12,6 +12,10 @@ description: >-
   logs, and download a bounded ZIP archive or submit it privately for support.
   Exports include retained host logs from the last 24 hours across reboots and
   the first detected kernel fault, with a warning when capture is incomplete.
+  CPU package/core temperatures are recorded in health history. A separate
+  offline helper captures read-only SMART/NVMe health and shutdown/error counters.
+  Saved kernel crash records are collected from live and archived pstore.
+  Unsupported, missing and stale hardware evidence is explicitly identified.
   Link your Discord account to open a private conversation with the maintainer
   in the dedicated 5trat Support server. Each customer has one active private
   conversation; no Discord DMs or changes to your DM privacy settings are needed.
@@ -23,12 +27,15 @@ description: >-
   relay use signed licence verification and keep the device key outside the
   diagnostics container.
 releaseNotes: >-
-  Adds a bounded, redacted MUX evidence snapshot to diagnostic exports with
-  5tratumOS 0.8.24 and 5tratMUX 0.9.67. It includes current allocation, accepted
-  work, data freshness, quality-gate reasons and DNS status. Missing or stale
-  evidence is reported explicitly. This read-only snapshot contains no wallet
-  addresses, provider secrets, controller credentials or full MUX settings.
-  The support relay and the existing review-before-upload flow are unchanged.
+  Adds labelled CPU package/core temperature history and observed maxima,
+  read-only SMART/NVMe drive health with a 15-minute history, and retained kernel
+  crash records. Platform/ACPI and CPU control readings are kept separate from
+  physical CPU readings. Missing, sleeping, unsupported, stale or denied sources
+  are never reported as healthy. A separate compiled drive helper runs without
+  network access; it needs low-level disk-query permissions but does not start
+  self-tests, change drive settings or read disk contents. Existing health
+  history, licensing, support conversations and review-before-upload are preserved.
+  New readings begin after updating; past temperatures cannot be reconstructed.
 developer: WillItMod
 website: https://5trat.com
 repo: https://github.com/WillItMod/5tratumOS-Diagnostics

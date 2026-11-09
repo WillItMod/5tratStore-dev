@@ -5,7 +5,7 @@ services:
       APP_PORT: 3000
 
   app:
-    image: ghcr.io/willitmod/5tratumos-diagnostics:0.1.8@sha256:2d1d1bd59a7706257ac13dd6c3733aac8ef3cd798fa18ce8f1b44fdc2245e48f
+    image: ghcr.io/willitmod/5tratumos-diagnostics:0.1.9@sha256:e0a05a00ec5ad5ffc826b9475188799d9f43f3a3d332daefce3392e4a9cdbec8
     restart: unless-stopped
     depends_on:
       - support-relay
@@ -15,8 +15,8 @@ services:
     tmpfs:
       - /tmp
     environment:
-      APP_VERSION: "0.1.8"
-      APP_REVISION: 1331bfc6d6968ec251e82412c25c2d0c1143d175
+      APP_VERSION: "0.1.9"
+      APP_REVISION: b3e432b32771a06839a88af3d5e007cad94d29ae
       SUPPORT_RELAY_SOCKET: /run/5tratdiag-support/relay.sock
       EXPORT_DIR: /data/exports
       TARGET_DATA_DIR: /target-app-data
@@ -27,6 +27,9 @@ services:
       HOST_VAR_LOG: /host/var-log
       HOST_DOCKER_CONTAINERS: /host/docker-containers
       HOST_JOURNAL: /host/var-log-journal
+      HOST_SYS: /host/sys
+      HOST_PSTORE_ARCHIVE: /host/pstore-archive
+      DRIVE_HEALTH_ROOT: /host/drive-health
     volumes:
       - ${APP_DATA_DIR}/data:/data
       - ${FIVETRAT_TARGET_APP_DATA_PATH:-/var/lib/5tratumos/apps/5tratsmack}:/target-app-data:ro
@@ -41,6 +44,40 @@ services:
       - /var/log:/host/var-log:ro
       - /var/lib/docker/containers:/host/docker-containers:ro
       - /var/log/journal:/host/var-log-journal:ro
+      - /sys:/host/sys:ro
+      - /var/lib/systemd/pstore:/host/pstore-archive:ro
+      - drive-health:/host/drive-health:ro
+
+  drive-probe:
+    image: ghcr.io/willitmod/5tratumos-diagnostics:0.1.9-drive-probe@sha256:46b9ad1fcf0f00b68337b791d52da9c1110052dbf454aa025f10c9899ea3a575
+    restart: unless-stopped
+    network_mode: none
+    read_only: true
+    cap_drop:
+      - ALL
+    # SMART/NVMe ioctls need these capabilities. The fixed-command offline
+    # helper is the trust boundary; read-only mounts do not restrict ioctls.
+    cap_add:
+      - SYS_RAWIO
+      - SYS_ADMIN
+    device_cgroup_rules:
+      - "b *:* r"
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp:noexec,nosuid,size=8m
+    environment:
+      HOST_SYS: /host/sys
+      HOST_DEV: /host/dev
+      DRIVE_PROBE_DATA: /data
+    volumes:
+      - /dev:/host/dev:ro
+      - /sys:/host/sys:ro
+      - /sys:/sys:ro
+      - /proc/sys/kernel/random/boot_id:/host/boot_id:ro
+      - /var/lib/5tratumos/support/install_id.txt:/host/support/install_id.txt:ro
+      - support-receipt:/mux-state:ro
+      - drive-health:/data
 
   support-relay:
     image: ghcr.io/willitmod/5tratumos-diagnostics:0.1.5-relay@sha256:37a89eb8b70f7869c83e682e6b055670529f44a93ee1d3f3076390b1664bfbff
@@ -63,3 +100,4 @@ services:
 volumes:
   support-receipt:
   support-socket:
+  drive-health:
