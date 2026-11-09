@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "channel": "DEV",
+  "appId": "willitmod-dev-5tratumos-diagnostics",
+  "version": "0.1.9",
+  "previousVersion": "0.1.8",
+  "baselineCommit": "0b08fc0dae231ba9b02a0f418ad84b32e090d90c",
+  "sourceRevision": "b3e432b32771a06839a88af3d5e007cad94d29ae",
+  "sourcePullRequest": "https://github.com/WillItMod/5tratumOS-Diagnostics/pull/6",
+  "appImage": "ghcr.io/willitmod/5tratumos-diagnostics:0.1.9@sha256:e0a05a00ec5ad5ffc826b9475188799d9f43f3a3d332daefce3392e4a9cdbec8",
+  "probeImage": "ghcr.io/willitmod/5tratumos-diagnostics:0.1.9-drive-probe@sha256:46b9ad1fcf0f00b68337b791d52da9c1110052dbf454aa025f10c9899ea3a575",
+  "changedFiles": [
+    "willitmod-dev-5tratumos-diagnostics/docker-compose.yml",
+    "willitmod-dev-5tratumos-diagnostics/global-app.yml"
+  ],
+  "packageFiles": {
+    "willitmod-dev-5tratumos-diagnostics/docker-compose.yml": {
+      "beforeSHA256": "f70825dfcf2753d8356e3f98c57f5b1cd5439c5c06a80b2c93c9199591efbc38",
+      "afterSHA256": "6cb95426a41b96043be55c237be7cd7eb1b3fca5f55f9aa8c33f2e3ad25bebb0",
+      "mode": "0o644"
+    },
+    "willitmod-dev-5tratumos-diagnostics/global-app.yml": {
+      "beforeSHA256": "a357e37d61cc738a557468925d4552d023dba5205ea16d86fbda3c3723e89680",
+      "afterSHA256": "5ddc312743e95fd38c518b2ba518d9ba69ac634be71b7ed02a481d5fb12a3f6a",
+      "mode": "0o644"
+    },
+    "willitmod-dev-5tratumos-diagnostics/icon.png": {
+      "beforeSHA256": "d4068d5cc1b122bf719258f25485eef8429876f82a1a4d40981d8854696e561e",
+      "afterSHA256": "d4068d5cc1b122bf719258f25485eef8429876f82a1a4d40981d8854696e561e",
+      "mode": "0o644"
+    }
+  },
+  "models": {
+    "docker-compose.yml": {
+      "beforeSHA256": "35668a87f1f8edb19eb676ef2f7e0d033f0aab7ea3db89e663a71e915cc8eb2d",
+      "afterSHA256": "c579baa5c5fc3148e1b2a5a8fbb4d9815bf9cddb0ee611ea26e7a8d9670381b6"
+    },
+    "global-app.yml": {
+      "beforeSHA256": "ce061f4ca41ba099deaa6acf16b8366d3822e93acb4a3bff5d6a565b3e86f10e",
+      "afterSHA256": "edfbb14208fe45b348edce57ad1b0c7dd364a7f24e29b106189eeb95d3806d8c"
+    }
+  },
+  "validation": {
+    "unitTestsPassed": 179,
+    "compiledArchitectures": [
+      "amd64",
+      "arm64"
+    ],
+    "anonymousLayerAudit": "passed",
+    "publishedConfigsMatchTested": true,
+    "realCpuSataNvmeAndArchive": "passed"
+  },
+  "scope": "CPU temperature history, isolated read-only SMART/NVMe evidence, retained text crash records and crash metadata. No binary core dumps or automatic hardware diagnosis."
+}

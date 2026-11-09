@@ -8,6 +8,7 @@ import unittest
 import yaml
 from test_smack_alert_release import record as alert_record, previous_alert_model
 from test_smack_hero_release import record as hero_record, package_version, store_record
+from test_diagnostics_hardware_release import release as diagnostics_release
 
 ROOT = Path(__file__).resolve().parents[1]
 RELEASE = json.loads((ROOT / 'RECOVERY-2026-10-02.json').read_text())
@@ -16,6 +17,7 @@ CURRENT_APPS = {**APPS, 'willitmod-dev-5tratsmack': {**alert_record(),
     'version': package_version('willitmod-dev-5tratsmack',hero_record()['version']), 'imageRef': store_record()['imageRef']}}
 SMACK = 'willitmod-dev-5tratsmack'
 DIAG = 'willitmod-dev-5tratumos-diagnostics'
+CURRENT_APPS[DIAG] = {**APPS[DIAG], 'version': diagnostics_release.package_version(DIAG, APPS[DIAG]['version'])}
 EVIDENCE_MOUNT = '/var/lib/5tratumos/diagnostics/mux:/host/mux-evidence:ro'
 BASELINES = {
     SMACK: '59f74e5fbfae0ef867586138973498828112e348308e6535ef89c5baad4ac41d',
@@ -32,6 +34,7 @@ def digest(value):
     return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
 
 def previous_recovery_model(app_id, current, filename='docker-compose.yml'):
+    current = diagnostics_release.previous_model(app_id, current, filename=filename)
     current = previous_alert_model(app_id, current)
     if app_id not in APPS:
         return copy.deepcopy(current)
