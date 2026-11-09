@@ -141,6 +141,12 @@ def validate(root=ROOT, *, check_baseline=False):
             successor = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(successor)
             protected = successor.historical_protected_paths(root, row['baselineCommit'], protected)
+        if (root / 'DIAGNOSTICS-HARDWARE-2026-11-09.json').is_file():
+            import importlib.util
+            spec = importlib.util.spec_from_file_location('diagnostics_retention_predecessor', root / 'scripts/diagnostics_hardware_release.py')
+            diagnostics_successor = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(diagnostics_successor)
+            protected = diagnostics_successor.historical_protected_paths(root, row['baselineCommit'], protected)
         assert not git(root, 'diff', '--name-only', row['baselineCommit'], '--', *protected).strip(), 'Other application changed'
     return row
 
