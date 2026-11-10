@@ -103,6 +103,26 @@
           height: min(100cqh, 75cqw);
         }
       }
+      #mouse-hint {
+        position: absolute;
+        top: 12px;
+        left: 50%;
+        max-width: calc(100% - 24px);
+        padding: 6px 12px;
+        transform: translateX(-50%);
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(4, 5, 8, 0.82);
+        color: var(--text);
+        font-size: 12px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        pointer-events: none;
+      }
+      #mouse-hint[hidden] {
+        display: none;
+      }
       #overlay {
         position: absolute;
         inset: 0;
@@ -234,6 +254,7 @@
     </div>
     <div id="stage">
       <canvas id="canvas" tabindex="-1" oncontextmenu="event.preventDefault()"></canvas>
+      <div id="mouse-hint" hidden>Click the game to capture the mouse · <kbd>Esc</kbd> releases it</div>
       <div id="overlay">
         <section class="panel" id="start-panel">
           <h1>5tratDoom</h1>
@@ -315,6 +336,7 @@
         var fullscreenBtn = document.getElementById('fullscreen');
         var newTabLink = document.getElementById('new-tab');
         var changeBtn = document.getElementById('change');
+        var mouseHint = document.getElementById('mouse-hint');
 
         var started = false;
         var running = false;
@@ -337,6 +359,7 @@
         function fail(message) {
           if (exited) return;
           running = false;
+          mouseHint.hidden = true;
           document.getElementById('error-text').textContent = message;
           showPanel('error');
           setStatus('Stopped.');
@@ -495,11 +518,8 @@
               showPanel(null);
               changeBtn.hidden = false;
               keepTitle('5tratDoom · ' + game.name);
-              setStatus(
-                game.name +
-                  ' · click the game to capture the mouse, Esc releases it' +
-                  (savesPersistent ? '' : ' · save games last until this page closes'),
-              );
+              setStatus(game.name + (savesPersistent ? '' : ' · save games last until this page closes'));
+              updateMouseHint();
               canvas.focus();
               if (savesPersistent) window.setInterval(syncSaves, 5000);
               try {
@@ -511,6 +531,7 @@
             onExit: function () {
               exited = true;
               running = false;
+              mouseHint.hidden = true;
               syncSaves();
               showPanel('end');
               setStatus('Game closed.');
@@ -607,9 +628,58 @@
           newTabLink.href = window.location.href;
         }
 
-        canvas.addEventListener('mousedown', function () {
-          canvas.focus();
-        });
+        // Mouse capture. The engine's own capture request is unreliable in
+        // browsers, so the cursor could leave the game while turning. Capture
+        // it from the page on click instead; the engine then gets relative
+        // mouse movement for as long as the capture lasts (until Esc).
+        function mouseCaptured() {
+          return document.pointerLockElement === canvas;
+        }
+
+        function updateMouseHint() {
+          mouseHint.hidden = !running || exited || mouseCaptured();
+        }
+
+        // Some embedded browsers (for example app web views) never allow mouse
+        // capture. Say so plainly rather than letting the cursor drift off.
+        function captureRefused(error) {
+          var name = error && error.name;
+          if (name !== 'WrongDocumentError' && name !== 'NotSupportedError') return;
+          mouseHint.textContent =
+            'This window cannot capture the mouse. Turn with ← →, or open 5tratDoom in Chrome, Edge, Firefox or Safari.';
+          updateMouseHint();
+        }
+
+        function captureMouse() {
+          if (!running || exited || mouseCaptured()) return;
+          if (!canvas.requestPointerLock) {
+            captureRefused({ name: 'NotSupportedError' });
+            return;
+          }
+          try {
+            var request = canvas.requestPointerLock();
+            if (request && request.catch) request.catch(captureRefused);
+          } catch (error) {
+            captureRefused(error);
+          }
+        }
+
+        // Capture phase on the stage, so the click that captures the mouse
+        // does not also reach the engine and fire a shot.
+        stage.addEventListener(
+          'mousedown',
+          function (event) {
+            if (event.target !== canvas) return;
+            canvas.focus();
+            if (running && !exited && !mouseCaptured()) {
+              event.preventDefault();
+              event.stopPropagation();
+              captureMouse();
+            }
+          },
+          true,
+        );
+        document.addEventListener('pointerlockchange', updateMouseHint);
 
         document.addEventListener('visibilitychange', function () {
           if (document.visibilityState === 'hidden') syncSaves();

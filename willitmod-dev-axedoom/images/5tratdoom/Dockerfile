@@ -64,7 +64,7 @@ RUN cd /out \
 
 FROM nginxinc/nginx-unprivileged:1.28-alpine@sha256:7377697a821c131a924a7105fafbe7414db4e9fcc77a6f08f776f33f141ec3f8
 
-ARG APP_VERSION=0.2.0
+ARG APP_VERSION=0.2.1
 LABEL org.opencontainers.image.title="5tratDoom" \
   org.opencontainers.image.description="Chocolate Doom (WebAssembly) with Freedoom, played natively in the browser" \
   org.opencontainers.image.version="${APP_VERSION}" \
