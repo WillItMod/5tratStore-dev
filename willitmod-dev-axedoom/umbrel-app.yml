@@ -2,7 +2,7 @@ manifestVersion: 1
 id: willitmod-dev-axedoom
 category: gaming
 name: 5tratDoom
-version: "0.2.0"
+version: "0.2.1"
 tagline: Play Doom in your browser (Freedoom)
 description: >-
   Chocolate Doom compiled to WebAssembly, so the game runs natively in your
@@ -24,6 +24,11 @@ path: ""
 defaultUsername: ""
 defaultPassword: ""
 releaseNotes: >-
+  v0.2.1: Clicking the game now captures the mouse, so it no longer drifts off
+  the game while turning (Esc releases it). Windows that cannot capture the
+  mouse explain how to play instead.
+
+
   v0.2.0: Doom now runs natively in the browser (WebAssembly) instead of being
   streamed from a VNC desktop. Adds sound effects, a choice of Freedoom:
   Phase 1 or Phase 2, and save games kept in your browser. The app keeps its
