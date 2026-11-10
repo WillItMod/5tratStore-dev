@@ -147,6 +147,12 @@ def validate(root=ROOT, *, check_baseline=False):
             diagnostics_successor = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(diagnostics_successor)
             protected = diagnostics_successor.historical_protected_paths(root, row['baselineCommit'], protected)
+        if (root / 'XEC-NODE-2026-11-10.json').is_file():
+            import importlib.util
+            spec = importlib.util.spec_from_file_location('xec_node_retention_predecessor', root / 'scripts/xec_node_release.py')
+            xec_successor = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(xec_successor)
+            protected = xec_successor.historical_protected_paths(root, row['baselineCommit'], protected)
         assert not git(root, 'diff', '--name-only', row['baselineCommit'], '--', *protected).strip(), 'Other application changed'
     return row
 

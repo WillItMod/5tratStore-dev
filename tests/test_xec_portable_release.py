@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import unittest
 import yaml
+from test_xec_node_release import is_current as node_release_current, package_version as node_package_version, previous_xec_node_model
 
 ROOT = Path(__file__).resolve().parents[1]
 APP = 'willitmod-dev-xec'
@@ -16,12 +17,15 @@ def digest(model):
 
 
 def package_version(app_id, historical):
-    return RECORD['packageVersion'] if app_id == APP else historical
+    return node_package_version(app_id, RECORD['packageVersion']) if app_id == APP else historical
 
 
 def previous_xec_model(app_id, current):
     if app_id != APP:
         return copy.deepcopy(current)
+    # Reverse the later node-only release before checking this pool release.
+    if node_release_current(app_id, current):
+        current = previous_xec_node_model(app_id, current)
     assert digest(current) == RECORD['afterModelSHA256']
     expected = {('services', 'ckpool', 'image'), ('services', 'app', 'environment', 'CKPOOL_IMAGE')}
     assert len(RECORD['changes']) == 2 and {tuple(row['path']) for row in RECORD['changes']} == expected
@@ -42,10 +46,11 @@ class XecPortableReleaseTests(unittest.TestCase):
     def test_only_pool_binary_references_change(self):
         current = yaml.safe_load((ROOT / APP / 'docker-compose.yml').read_text())
         previous_xec_model(APP, current)
-        self.assertEqual(current['services']['app']['image'], RECORD['applicationImageUnchanged'])
-        self.assertEqual(current['services']['xecd']['image'], RECORD['nodeImageUnchanged'])
+        released = previous_xec_node_model(APP, current) if node_release_current(APP, current) else current
+        self.assertEqual(released['services']['app']['image'], RECORD['applicationImageUnchanged'])
+        self.assertEqual(released['services']['xecd']['image'], RECORD['nodeImageUnchanged'])
         manifest = yaml.safe_load((ROOT / APP / 'umbrel-app.yml').read_text())
-        self.assertEqual(manifest['version'], RECORD['packageVersion'])
+        self.assertEqual(manifest['version'], package_version(APP, None))
         self.assertIn('portable SHA256', manifest['releaseNotes'])
 
     def test_unrelated_consensus_storage_and_pool_settings_are_rejected(self):
