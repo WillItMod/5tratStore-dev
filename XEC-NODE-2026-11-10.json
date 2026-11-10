@@ -55,7 +55,26 @@
   "reindexRequested": false,
   "validationScope": {
     "nodeImageVersionVerified": true,
-    "onBoxUpgradeQualified": false,
-    "miningProtocolQualified": false
+    "onBoxUpgradeQualified": true,
+    "arm64RegtestQualified": true,
+    "miningProtocolQualified": false,
+    "networkUpgradeActivationObserved": false
+  },
+  "testEvidence": {
+    "amd64": {
+      "environment": "5tratumOS DEV test box; DEV catalogue synced from the candidate branch, then 5tratumos app update axexec, then catalogue restored to main",
+      "result": "Updated 0.1.24-dev.1 to 0.1.25-dev in about 10 seconds with a clean node shutdown. Bitcoin ABC 0.34.3 loaded the existing chain without rewind, verified the last 6 blocks, stayed healthy at the tip and followed the next block.",
+      "chainAgreement": {
+        "974956": "0000000000000000572017008912cacdedf29c444cb549ab7756b616c6de80e2",
+        "matchedSource": "chronik.e.cash"
+      },
+      "pool": "ckpool reconnected after node warm-up and received block templates. Its existing cash-address warning predates this node update.",
+      "testedAt": "2026-11-10T16:02:50Z"
+    },
+    "arm64": {
+      "environment": "Apple Silicon host, native linux/arm64 container",
+      "result": "Bitcoin ABC 0.34.3 started in regtest, connected to a second node, mined a block and returned getblocktemplate at height 2",
+      "mainnetSyncQualified": false
+    }
   }
 }
