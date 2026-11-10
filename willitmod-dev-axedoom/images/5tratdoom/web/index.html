@@ -1,0 +1,647 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>5tratDoom</title>
+    <style>
+      :root {
+        --bg: #07080c;
+        --panel: rgba(13, 15, 22, 0.94);
+        --line: rgba(255, 255, 255, 0.12);
+        --text: #e5e7eb;
+        --muted: #94a3b8;
+        --accent: #ff5a1f;
+        --accent-2: #ffb020;
+        --danger: #f87171;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        background: var(--bg);
+        color: var(--text);
+        font: 14px/1.45 ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+      }
+      .bar {
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-height: 40px;
+        padding: 6px 12px;
+        border-bottom: 1px solid var(--line);
+        background: #0b0d13;
+      }
+      .brand {
+        font-weight: 800;
+        letter-spacing: 0.02em;
+      }
+      #status {
+        flex: 1 1 auto;
+        min-width: 0;
+        overflow: hidden;
+        color: var(--muted);
+        font-size: 12px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+      .btn {
+        flex: 0 0 auto;
+        padding: 5px 10px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--text);
+        font: inherit;
+        font-size: 12px;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .btn:hover,
+      .btn:focus-visible {
+        border-color: var(--accent);
+        outline: none;
+      }
+      .btn[hidden] {
+        display: none;
+      }
+      #stage {
+        position: relative;
+        display: flex;
+        flex: 1 1 auto;
+        align-items: center;
+        justify-content: center;
+        min-height: 0;
+        background: #000;
+        container-type: size;
+      }
+      /* The canvas must have no border or padding, or mouse input is offset. */
+      #canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        outline: none;
+        image-rendering: pixelated;
+      }
+      /* Keep Doom's 4:3 picture, letterboxed, at any window shape. */
+      @supports (width: 1cqw) {
+        #canvas {
+          width: min(100cqw, 133.333cqh);
+          height: min(100cqh, 75cqw);
+        }
+      }
+      #overlay {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        overflow: auto;
+        padding: 16px;
+        background: radial-gradient(ellipse at 50% 0%, rgba(255, 90, 31, 0.16), transparent 60%), rgba(4, 5, 8, 0.96);
+      }
+      #overlay[hidden],
+      .panel[hidden] {
+        display: none;
+      }
+      .panel {
+        width: min(560px, 100%);
+        padding: 20px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: var(--panel);
+        box-shadow: 0 24px 70px rgba(0, 0, 0, 0.6);
+      }
+      h1 {
+        margin: 0;
+        font-size: 24px;
+        letter-spacing: -0.01em;
+      }
+      .lead {
+        margin: 6px 0 16px;
+        color: var(--muted);
+      }
+      .choices {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 10px;
+      }
+      .choice {
+        padding: 14px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.04);
+        color: inherit;
+        font: inherit;
+        text-align: left;
+        cursor: pointer;
+      }
+      .choice:hover,
+      .choice:focus-visible {
+        border-color: var(--accent);
+        background: rgba(255, 90, 31, 0.1);
+        outline: none;
+      }
+      .choice strong {
+        display: block;
+        font-size: 16px;
+      }
+      .choice span {
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .choice.last {
+        border-color: rgba(255, 176, 32, 0.55);
+      }
+      .keys {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 5px 14px;
+        margin: 16px 0 0;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .keys dt {
+        color: var(--text);
+      }
+      .keys dd {
+        margin: 0;
+      }
+      kbd {
+        display: inline-block;
+        min-width: 1.6em;
+        padding: 0 5px;
+        border: 1px solid var(--line);
+        border-bottom-width: 2px;
+        border-radius: 5px;
+        background: rgba(255, 255, 255, 0.06);
+        font: 11px/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        text-align: center;
+      }
+      .note {
+        margin: 14px 0 0;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .note a {
+        color: var(--accent-2);
+      }
+      .progress {
+        height: 6px;
+        margin: 14px 0 8px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.08);
+      }
+      .progress i {
+        display: block;
+        width: 0;
+        height: 100%;
+        background: linear-gradient(90deg, var(--accent), var(--accent-2));
+        transition: width 0.15s;
+      }
+      #error-text {
+        color: var(--danger);
+        overflow-wrap: anywhere;
+      }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bar">
+      <span class="brand">5tratDoom</span>
+      <span id="status">Choose a game to start.</span>
+      <button class="btn" id="fullscreen" type="button" hidden>Fullscreen</button>
+      <a class="btn" id="new-tab" target="_blank" rel="noopener" hidden>Open in new tab</a>
+      <button class="btn" id="change" type="button" hidden>Change game</button>
+    </div>
+    <div id="stage">
+      <canvas id="canvas" tabindex="-1" oncontextmenu="event.preventDefault()"></canvas>
+      <div id="overlay">
+        <section class="panel" id="start-panel">
+          <h1>5tratDoom</h1>
+          <p class="lead">Chocolate Doom running natively in your browser, with the free Freedoom game data.</p>
+          <div class="choices">
+            <button class="choice" type="button" data-game="freedoom1">
+              <strong>Freedoom: Phase 1</strong>
+              <span>Four episodes, in the style of the original Doom.</span>
+            </button>
+            <button class="choice" type="button" data-game="freedoom2">
+              <strong>Freedoom: Phase 2</strong>
+              <span>One 32-level campaign, in the style of Doom II.</span>
+            </button>
+          </div>
+          <dl class="keys">
+            <dt><kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd></dt>
+            <dd>Move and strafe</dd>
+            <dt>Mouse or <kbd>←</kbd> <kbd>→</kbd></dt>
+            <dd>Turn (click the game to capture the mouse)</dd>
+            <dt><kbd>Space</kbd> or left click</dt>
+            <dd>Fire</dd>
+            <dt><kbd>E</kbd> or right click</dt>
+            <dd>Open doors, press switches</dd>
+            <dt><kbd>Shift</kbd> &nbsp; <kbd>1</kbd>–<kbd>7</kbd> &nbsp; <kbd>Tab</kbd></dt>
+            <dd>Run, choose weapon, map</dd>
+            <dt><kbd>Esc</kbd></dt>
+            <dd>Menu: new game, save, load, options</dd>
+          </dl>
+          <p class="note">
+            Needs a keyboard. Save games are kept in this browser.
+            <a href="licenses/NOTICE.md" target="_blank" rel="noopener">Licences</a>
+          </p>
+        </section>
+
+        <section class="panel" id="load-panel" hidden>
+          <h1 id="load-title">Loading…</h1>
+          <div class="progress"><i id="progress-bar"></i></div>
+          <div class="note" id="progress-text">Starting download…</div>
+        </section>
+
+        <section class="panel" id="error-panel" hidden>
+          <h1>Doom could not start</h1>
+          <p class="lead" id="error-text"></p>
+          <div class="actions"><button class="btn" type="button" data-reload>Reload</button></div>
+        </section>
+
+        <section class="panel" id="end-panel" hidden>
+          <h1>Game closed</h1>
+          <p class="lead">Your save games are kept in this browser.</p>
+          <div class="actions"><button class="btn" type="button" data-reload>Play again</button></div>
+        </section>
+      </div>
+    </div>
+    <noscript>5tratDoom needs JavaScript and WebAssembly.</noscript>
+
+    <script>
+      (function () {
+        'use strict';
+
+        var GAMES = {
+          freedoom1: { wad: 'freedoom1.wad', name: 'Freedoom: Phase 1' },
+          freedoom2: { wad: 'freedoom2.wad', name: 'Freedoom: Phase 2' },
+        };
+        var SAVE_ROOT = '/saves';
+        var LAST_GAME_KEY = '5tratdoom.lastGame';
+
+        var stage = document.getElementById('stage');
+        var canvas = document.getElementById('canvas');
+        var overlay = document.getElementById('overlay');
+        var panels = {
+          start: document.getElementById('start-panel'),
+          load: document.getElementById('load-panel'),
+          error: document.getElementById('error-panel'),
+          end: document.getElementById('end-panel'),
+        };
+        var statusEl = document.getElementById('status');
+        var progressBar = document.getElementById('progress-bar');
+        var progressText = document.getElementById('progress-text');
+        var fullscreenBtn = document.getElementById('fullscreen');
+        var newTabLink = document.getElementById('new-tab');
+        var changeBtn = document.getElementById('change');
+
+        var started = false;
+        var running = false;
+        var exited = false;
+        var savesPersistent = false;
+        var syncing = false;
+        var syncAgain = false;
+
+        function setStatus(text) {
+          statusEl.textContent = text;
+        }
+
+        function showPanel(name) {
+          Object.keys(panels).forEach(function (key) {
+            panels[key].hidden = key !== name;
+          });
+          overlay.hidden = !name;
+        }
+
+        function fail(message) {
+          if (exited) return;
+          running = false;
+          document.getElementById('error-text').textContent = message;
+          showPanel('error');
+          setStatus('Stopped.');
+          if (document.pointerLockElement && document.exitPointerLock) document.exitPointerLock();
+        }
+
+        function isExitSignal(value) {
+          var text = String((value && (value.name || value.message)) || value || '');
+          return value === 'unwind' || /ExitStatus|^unwind$/.test(text);
+        }
+
+        function megabytes(bytes) {
+          return (bytes / 1048576).toFixed(1) + ' MB';
+        }
+
+        function storageGet(key) {
+          try {
+            return window.localStorage.getItem(key);
+          } catch (e) {
+            return null;
+          }
+        }
+
+        function storageSet(key, value) {
+          try {
+            window.localStorage.setItem(key, value);
+          } catch (e) {}
+        }
+
+        async function fetchBytes(url, expected, onProgress) {
+          var response = await fetch(url);
+          if (!response.ok) throw new Error(url + ' returned HTTP ' + response.status);
+          if (!response.body || !response.body.getReader) {
+            var whole = new Uint8Array(await response.arrayBuffer());
+            onProgress(whole.length, whole.length);
+            return whole;
+          }
+          var reader = response.body.getReader();
+          var chunks = [];
+          var received = 0;
+          for (;;) {
+            var step = await reader.read();
+            if (step.done) break;
+            chunks.push(step.value);
+            received += step.value.length;
+            onProgress(received, expected);
+          }
+          var bytes = new Uint8Array(received);
+          var offset = 0;
+          chunks.forEach(function (chunk) {
+            bytes.set(chunk, offset);
+            offset += chunk.length;
+          });
+          return bytes;
+        }
+
+        async function fetchText(url) {
+          var response = await fetch(url);
+          if (!response.ok) throw new Error(url + ' returned HTTP ' + response.status);
+          return response.text();
+        }
+
+        function syncSaves() {
+          if (!savesPersistent || typeof FS === 'undefined') return;
+          if (syncing) {
+            syncAgain = true;
+            return;
+          }
+          syncing = true;
+          FS.syncfs(false, function (error) {
+            syncing = false;
+            if (error) console.warn('5tratDoom: could not store save games', error);
+            if (syncAgain) {
+              syncAgain = false;
+              syncSaves();
+            }
+          });
+        }
+
+        // The engine renames the page after itself; keep the app's own title.
+        function keepTitle(title) {
+          document.title = title;
+          var element = document.querySelector('title');
+          if (!element || !window.MutationObserver) return;
+          new MutationObserver(function () {
+            if (document.title !== title) document.title = title;
+          }).observe(element, { childList: true, characterData: true, subtree: true });
+        }
+
+        function ensureDirectory(path) {
+          try {
+            FS.mkdir(path);
+          } catch (e) {}
+        }
+
+        function writeIfMissing(path, text) {
+          try {
+            FS.stat(path);
+          } catch (e) {
+            FS.writeFile(path, text);
+          }
+        }
+
+        function boot(id, game, wad, config, extraConfig) {
+          var saveDir = SAVE_ROOT + '/' + id;
+          var args = [
+            '-iwad', '/' + game.wad,
+            '-window',
+            '-nogui',
+            // OPL music emulation busy-waits for an audio thread, which
+            // freezes the single-threaded browser build. Sound effects work.
+            '-nomusic',
+            '-config', saveDir + '/default.cfg',
+            '-extraconfig', saveDir + '/chocolate-doom.cfg',
+            '-savedir', saveDir,
+          ];
+
+          window.Module = {
+            noInitialRun: true,
+            canvas: canvas,
+            print: function (text) {
+              console.log(text);
+            },
+            printErr: function (text) {
+              console.warn(text);
+            },
+            setStatus: function () {},
+            preRun: [
+              function () {
+                FS.writeFile('/' + game.wad, wad, { canOwn: true });
+                ensureDirectory(SAVE_ROOT);
+                var persistent = typeof IDBFS !== 'undefined';
+                if (persistent) FS.mount(IDBFS, {}, SAVE_ROOT);
+                Module.addRunDependency('5tratdoom-saves');
+                var finish = function (error) {
+                  if (error) console.warn('5tratDoom: save games will not persist', error);
+                  savesPersistent = persistent && !error;
+                  ensureDirectory(saveDir);
+                  writeIfMissing(saveDir + '/default.cfg', config);
+                  writeIfMissing(saveDir + '/chocolate-doom.cfg', extraConfig);
+                  Module.removeRunDependency('5tratdoom-saves');
+                };
+                if (persistent) {
+                  try {
+                    FS.syncfs(true, finish);
+                  } catch (error) {
+                    finish(error);
+                  }
+                } else {
+                  finish(null);
+                }
+              },
+            ],
+            onRuntimeInitialized: function () {
+              running = true;
+              showPanel(null);
+              changeBtn.hidden = false;
+              keepTitle('5tratDoom · ' + game.name);
+              setStatus(
+                game.name +
+                  ' · click the game to capture the mouse, Esc releases it' +
+                  (savesPersistent ? '' : ' · save games last until this page closes'),
+              );
+              canvas.focus();
+              if (savesPersistent) window.setInterval(syncSaves, 5000);
+              try {
+                callMain(args);
+              } catch (error) {
+                if (!isExitSignal(error)) throw error;
+              }
+            },
+            onExit: function () {
+              exited = true;
+              running = false;
+              syncSaves();
+              showPanel('end');
+              setStatus('Game closed.');
+            },
+            onAbort: function (what) {
+              fail('The game engine stopped: ' + String(what || 'unknown error'));
+            },
+          };
+
+          progressText.textContent = 'Starting the game engine…';
+          var script = document.createElement('script');
+          script.src = 'websockets-doom.js';
+          script.onerror = function () {
+            fail('The game engine could not be downloaded. Check the app is running, then reload.');
+          };
+          document.body.appendChild(script);
+        }
+
+        async function start(id) {
+          var game = GAMES[id];
+          if (!game || started) return;
+          started = true;
+          storageSet(LAST_GAME_KEY, id);
+          document.getElementById('load-title').textContent = 'Loading ' + game.name;
+          showPanel('load');
+          setStatus('Loading ' + game.name + '…');
+          try {
+            var sizes = await fetch('assets.json')
+              .then(function (response) {
+                return response.ok ? response.json() : {};
+              })
+              .catch(function () {
+                return {};
+              });
+            var expected = Number(sizes[game.wad]) || 0;
+            var results = await Promise.all([
+              fetchBytes(game.wad, expected, function (received, total) {
+                var percent = total ? Math.min(100, (received / total) * 100) : 0;
+                progressBar.style.width = (total ? percent : 50) + '%';
+                progressText.textContent =
+                  'Downloading game data: ' + megabytes(received) + (total ? ' of ' + megabytes(total) : '');
+              }),
+              fetchText('default.cfg'),
+              fetchText('chocolate-doom.cfg'),
+            ]);
+            progressBar.style.width = '100%';
+            boot(id, game, results[0], results[1], results[2]);
+          } catch (error) {
+            fail('Download failed: ' + (error && error.message ? error.message : String(error)));
+          }
+        }
+
+        Array.prototype.forEach.call(document.querySelectorAll('[data-game]'), function (button) {
+          var id = button.getAttribute('data-game');
+          if (storageGet(LAST_GAME_KEY) === id) button.classList.add('last');
+          button.addEventListener('click', function () {
+            start(id);
+          });
+        });
+
+        Array.prototype.forEach.call(document.querySelectorAll('[data-reload]'), function (button) {
+          button.addEventListener('click', function () {
+            window.location.reload();
+          });
+        });
+
+        changeBtn.addEventListener('click', function () {
+          syncSaves();
+          window.setTimeout(function () {
+            window.location.reload();
+          }, 300);
+        });
+
+        // Fullscreen works when this page is opened directly. Inside the 5tratumOS
+        // portal window (an iframe without fullscreen permission) offer a new tab.
+        var canFullscreen = !!(document.fullscreenEnabled || document.webkitFullscreenEnabled);
+        var framed = false;
+        try {
+          framed = window.self !== window.top;
+        } catch (e) {
+          framed = true;
+        }
+        if (canFullscreen) {
+          fullscreenBtn.hidden = false;
+          fullscreenBtn.addEventListener('click', function () {
+            var request = stage.requestFullscreen || stage.webkitRequestFullscreen;
+            if (request) {
+              Promise.resolve(request.call(stage)).catch(function () {});
+            }
+            canvas.focus();
+          });
+        } else if (framed) {
+          newTabLink.hidden = false;
+          newTabLink.href = window.location.href;
+        }
+
+        canvas.addEventListener('mousedown', function () {
+          canvas.focus();
+        });
+
+        document.addEventListener('visibilitychange', function () {
+          if (document.visibilityState === 'hidden') syncSaves();
+        });
+        window.addEventListener('pagehide', syncSaves);
+
+        window.addEventListener('error', function (event) {
+          if (isExitSignal(event.error || event.message)) {
+            event.preventDefault();
+            return;
+          }
+          if (started && !exited) fail(String(event.message || 'Unexpected error'));
+        });
+        window.addEventListener('unhandledrejection', function (event) {
+          var reason = event.reason;
+          // A refused mouse capture (e.g. the window lost focus) is not fatal:
+          // the next click asks again.
+          var pointerLock = reason && /pointer ?lock/i.test(String(reason.message || reason));
+          if (isExitSignal(reason) || pointerLock) {
+            event.preventDefault();
+            return;
+          }
+          if (started && !running && !exited) {
+            fail(String((event.reason && event.reason.message) || event.reason || 'Unexpected error'));
+          }
+        });
+
+        if (typeof WebAssembly !== 'object') {
+          started = true;
+          fail('This browser does not support WebAssembly. Try a current version of Chrome, Edge, Firefox or Safari.');
+        }
+      })();
+    </script>
+  </body>
+</html>

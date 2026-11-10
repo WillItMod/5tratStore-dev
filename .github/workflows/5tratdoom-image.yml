@@ -1,0 +1,118 @@
+name: Build 5tratDoom image (multi-arch)
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "willitmod-dev-axedoom/images/5tratdoom/**"
+      - ".github/workflows/5tratdoom-image.yml"
+  push:
+    branches: [main]
+    paths:
+      - "willitmod-dev-axedoom/images/5tratdoom/**"
+      - ".github/workflows/5tratdoom-image.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: 5tratdoom-image-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  CONTEXT: willitmod-dev-axedoom/images/5tratdoom
+  IMAGE: ghcr.io/willitmod/5tratdoom
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Read the image version
+        id: version
+        run: |
+          tag="$(tr -d '[:space:]' < "${CONTEXT}/VERSION")"
+          [[ "${tag}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || { echo "Invalid VERSION: ${tag}"; exit 1; }
+          echo "tag=${tag}" >> "$GITHUB_OUTPUT"
+
+      - name: Build for amd64 and load locally
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ env.CONTEXT }}
+          platforms: linux/amd64
+          build-args: APP_VERSION=${{ steps.version.outputs.tag }}
+          load: true
+          tags: 5tratdoom:ci
+          provenance: false
+          cache-from: type=gha,scope=5tratdoom
+          cache-to: type=gha,scope=5tratdoom,mode=max
+
+      - name: Smoke test the served game files
+        run: |
+          set -euo pipefail
+          docker run -d --name 5tratdoom-ci --read-only --tmpfs /tmp --cap-drop ALL \
+            --security-opt no-new-privileges:true -p 127.0.0.1:18080:8080 5tratdoom:ci
+          trap 'docker logs 5tratdoom-ci || true; docker rm -f 5tratdoom-ci >/dev/null 2>&1 || true' EXIT
+          for _ in $(seq 1 30); do curl -fsS http://127.0.0.1:18080/healthz >/dev/null && break; sleep 1; done
+          base=http://127.0.0.1:18080
+          out="$(mktemp -d)"
+          curl -fsS -o "$out/root.html" "$base/"
+          grep -q 'websockets-doom.js' "$out/root.html"
+          # Older portals redirect /apps/axedoom/ to the former noVNC page.
+          curl -fsS -o "$out/legacy.html" "$base/vnc_lite.html?scale=1&path=apps/axedoom/websockify"
+          cmp "$out/root.html" "$out/legacy.html"
+          curl -fsS -o /dev/null -D "$out/wasm.headers" "$base/websockets-doom.wasm"
+          grep -qi '^content-type: application/wasm' "$out/wasm.headers"
+          curl -fsS -o "$out/engine.js" "$base/websockets-doom.js"
+          grep -q 'IDBFS' "$out/engine.js"
+          for wad in freedoom1.wad freedoom2.wad; do
+            [ "$(curl -fsS -r 0-3 "$base/$wad")" = IWAD ]
+          done
+          curl -fsS -H 'Accept-Encoding: gzip' -o /dev/null -D "$out/wad.headers" "$base/freedoom2.wad"
+          grep -qi '^content-encoding: gzip' "$out/wad.headers"
+          curl -fsS -o "$out/assets.json" "$base/assets.json"
+          python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); assert all(d[k] > 0 for k in ("freedoom1.wad","freedoom2.wad","websockets-doom.wasm"))' "$out/assets.json"
+          curl -fsS -o "$out/notice.md" "$base/licenses/NOTICE.md"
+          grep -q 'Freedoom' "$out/notice.md"
+
+      - name: Check whether this version is already published
+        id: published
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        run: |
+          if docker buildx imagetools inspect "${IMAGE}:${{ steps.version.outputs.tag }}" >/dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "${IMAGE}:${{ steps.version.outputs.tag }} is already published; bump VERSION to publish a new image." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: docker/login-action@v3
+        if: steps.published.outputs.exists == 'false'
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and publish amd64 + arm64
+        id: push
+        if: steps.published.outputs.exists == 'false'
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ env.CONTEXT }}
+          platforms: linux/amd64,linux/arm64
+          build-args: APP_VERSION=${{ steps.version.outputs.tag }}
+          push: true
+          tags: ${{ env.IMAGE }}:${{ steps.version.outputs.tag }}
+          labels: org.opencontainers.image.revision=${{ github.sha }}
+          provenance: false
+          cache-from: type=gha,scope=5tratdoom
+
+      - name: Record the published digest
+        if: steps.published.outputs.exists == 'false'
+        run: echo "Published \`${IMAGE}:${{ steps.version.outputs.tag }}@${{ steps.push.outputs.digest }}\`" >> "$GITHUB_STEP_SUMMARY"
