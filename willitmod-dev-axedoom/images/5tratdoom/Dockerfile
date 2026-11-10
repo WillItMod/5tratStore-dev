@@ -1,4 +1,4 @@
-# AxeDoom: Chocolate Doom compiled to WebAssembly and played in the browser.
+# 5tratDoom: Chocolate Doom compiled to WebAssembly and played in the browser.
 #
 # The container only serves static files. The game itself runs in the
 # viewer's browser, so there is no X server, VNC session or emulator here.
@@ -65,7 +65,7 @@ RUN cd /out \
 FROM nginxinc/nginx-unprivileged:1.28-alpine@sha256:7377697a821c131a924a7105fafbe7414db4e9fcc77a6f08f776f33f141ec3f8
 
 ARG APP_VERSION=0.2.0
-LABEL org.opencontainers.image.title="AxeDoom" \
+LABEL org.opencontainers.image.title="5tratDoom" \
   org.opencontainers.image.description="Chocolate Doom (WebAssembly) with Freedoom, played natively in the browser" \
   org.opencontainers.image.version="${APP_VERSION}" \
   org.opencontainers.image.source="https://github.com/WillItMod/5tratStore-dev" \

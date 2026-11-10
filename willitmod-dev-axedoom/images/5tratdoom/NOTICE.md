@@ -1,6 +1,6 @@
-# AxeDoom third-party software
+# 5tratDoom third-party software
 
-AxeDoom packages two free software projects. It contains no id Software game
+5tratDoom packages two free software projects. It contains no id Software game
 data.
 
 ## Chocolate Doom (WebAssembly port)
@@ -11,7 +11,7 @@ data.
 - Licence: GNU General Public License v2 (see `chocolate-doom-COPYING.md`)
 - Build changes: source maps removed and the Emscripten IndexedDB filesystem
   linked (`-lidbfs.js`) so save games persist in the browser. The exact build
-  recipe is `willitmod-dev-axedoom/images/axedoom/Dockerfile` in
+  recipe is `willitmod-dev-axedoom/images/5tratdoom/Dockerfile` in
   https://github.com/WillItMod/5tratStore-dev.
 
 ## Freedoom

@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="dark" />
-    <title>AxeDoom</title>
+    <title>5tratDoom</title>
     <style>
       :root {
         --bg: #07080c;
@@ -226,7 +226,7 @@
   </head>
   <body>
     <div class="bar">
-      <span class="brand">AxeDoom</span>
+      <span class="brand">5tratDoom</span>
       <span id="status">Choose a game to start.</span>
       <button class="btn" id="fullscreen" type="button" hidden>Fullscreen</button>
       <a class="btn" id="new-tab" target="_blank" rel="noopener" hidden>Open in new tab</a>
@@ -236,7 +236,7 @@
       <canvas id="canvas" tabindex="-1" oncontextmenu="event.preventDefault()"></canvas>
       <div id="overlay">
         <section class="panel" id="start-panel">
-          <h1>AxeDoom</h1>
+          <h1>5tratDoom</h1>
           <p class="lead">Chocolate Doom running natively in your browser, with the free Freedoom game data.</p>
           <div class="choices">
             <button class="choice" type="button" data-game="freedoom1">
@@ -287,7 +287,7 @@
         </section>
       </div>
     </div>
-    <noscript>AxeDoom needs JavaScript and WebAssembly.</noscript>
+    <noscript>5tratDoom needs JavaScript and WebAssembly.</noscript>
 
     <script>
       (function () {
@@ -298,7 +298,7 @@
           freedoom2: { wad: 'freedoom2.wad', name: 'Freedoom: Phase 2' },
         };
         var SAVE_ROOT = '/saves';
-        var LAST_GAME_KEY = 'axedoom.lastGame';
+        var LAST_GAME_KEY = '5tratdoom.lastGame';
 
         var stage = document.getElementById('stage');
         var canvas = document.getElementById('canvas');
@@ -408,7 +408,7 @@
           syncing = true;
           FS.syncfs(false, function (error) {
             syncing = false;
-            if (error) console.warn('AxeDoom: could not store save games', error);
+            if (error) console.warn('5tratDoom: could not store save games', error);
             if (syncAgain) {
               syncAgain = false;
               syncSaves();
@@ -470,14 +470,14 @@
                 ensureDirectory(SAVE_ROOT);
                 var persistent = typeof IDBFS !== 'undefined';
                 if (persistent) FS.mount(IDBFS, {}, SAVE_ROOT);
-                Module.addRunDependency('axedoom-saves');
+                Module.addRunDependency('5tratdoom-saves');
                 var finish = function (error) {
-                  if (error) console.warn('AxeDoom: save games will not persist', error);
+                  if (error) console.warn('5tratDoom: save games will not persist', error);
                   savesPersistent = persistent && !error;
                   ensureDirectory(saveDir);
                   writeIfMissing(saveDir + '/default.cfg', config);
                   writeIfMissing(saveDir + '/chocolate-doom.cfg', extraConfig);
-                  Module.removeRunDependency('axedoom-saves');
+                  Module.removeRunDependency('5tratdoom-saves');
                 };
                 if (persistent) {
                   try {
@@ -494,7 +494,7 @@
               running = true;
               showPanel(null);
               changeBtn.hidden = false;
-              keepTitle('AxeDoom · ' + game.name);
+              keepTitle('5tratDoom · ' + game.name);
               setStatus(
                 game.name +
                   ' · click the game to capture the mouse, Esc releases it' +
