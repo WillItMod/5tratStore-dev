@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "appId": "willitmod-dev-xec",
+  "channel": "DEV",
+  "baselineCommit": "31a7fec17262d7f1d56ff949987ed6d9522211e3",
+  "previousPackageVersion": "0.1.24-dev.1",
+  "version": "0.1.25-dev",
+  "coreVersion": "0.34.3",
+  "previousCoreVersion": "0.33.4",
+  "upstreamRepository": "https://github.com/Bitcoin-ABC/bitcoin-abc",
+  "upstreamRevision": "5621f13e073c007bed66a35fdfda3bc67772bab6",
+  "reason": "Bitcoin ABC 0.34.x is required to stay in sync with eCash after the network upgrade at MTP 1794744000 (2026-11-15 12:00:00 UTC).",
+  "previousNodeImageRef": "ghcr.io/willitmod/xecd-abc:0.33.4-nojemalloc-r1",
+  "nodeImageRef": "ghcr.io/willitmod/xecd-abc:0.34.3-nojemalloc-r1@sha256:0d806800b35583fb7c3a21a07027df9b5e0e382eae62ec533ce0fc6f52b03653",
+  "buildRepository": "https://github.com/WillItMod/xecd-abc-docker",
+  "buildRevision": "1d710b9259f89a16d432190a78adc2694009a24f",
+  "publicationRun": 42847959531,
+  "images": {
+    "amd64": {
+      "manifestDigest": "sha256:a026995cbee6163acc007c038e23c82933daada21829b259b5ccba52a7fb3c95",
+      "configDigest": "sha256:c0e14087640b391f4cf18ea03d0b7405d1f1a9b17aadcf1728146b484a19979a"
+    },
+    "arm64": {
+      "manifestDigest": "sha256:682e18d8a4fb4ab0e38fee5e19243d25b96f0e913055a38b0df6c317997d031a",
+      "configDigest": "sha256:2859de50a26b42f3ee76de003b5ed7590f8bedb27be15457cbcbbfb78f28cc2d"
+    }
+  },
+  "versionOutput": "Bitcoin ABC version v0.34.3-5621f13e073c",
+  "runtimeContract": {
+    "beforeModelSHA256": "80abd479d292b2a87e1ffab725d01815c1b5c4637f47f568912da67f6403070d",
+    "afterModelSHA256": "f9365c61555fd54ebbc214ce768e034739ed42ab02223c6116b7c58b8ff6aa99",
+    "changes": [
+      {
+        "path": [
+          "services",
+          "xecd",
+          "image"
+        ],
+        "before": "ghcr.io/willitmod/xecd-abc:0.33.4-nojemalloc-r1",
+        "after": "ghcr.io/willitmod/xecd-abc:0.34.3-nojemalloc-r1@sha256:0d806800b35583fb7c3a21a07027df9b5e0e382eae62ec533ce0fc6f52b03653"
+      },
+      {
+        "path": [
+          "services",
+          "app",
+          "environment",
+          "XECD_IMAGE"
+        ],
+        "before": "ghcr.io/willitmod/xecd-abc:0.33.4-nojemalloc-r1",
+        "after": "ghcr.io/willitmod/xecd-abc:0.34.3-nojemalloc-r1@sha256:0d806800b35583fb7c3a21a07027df9b5e0e382eae62ec533ce0fc6f52b03653"
+      }
+    ]
+  },
+  "unchanged": "App, pool and init images; pool and app settings; ports; mounts; node launcher; chain and wallet data.",
+  "reindexRequested": false,
+  "validationScope": {
+    "nodeImageVersionVerified": true,
+    "onBoxUpgradeQualified": false,
+    "miningProtocolQualified": false
+  }
+}
