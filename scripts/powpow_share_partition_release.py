@@ -144,17 +144,40 @@ def validate_baseline(root=ROOT):
         diagnostics = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(diagnostics)
         diagnostics.validate(root)
+    # Later node-only successors: each validates its exact delta, then its
+    # changed files are compared at their predecessor bytes.
+    xec_node = node_core = None
+    if (root / 'XEC-NODE-2026-11-10.json').is_file():
+        import importlib.util
+        spec = importlib.util.spec_from_file_location('xec_node_partition_predecessor', root / 'scripts/xec_node_release.py')
+        xec_node = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(xec_node)
+        xec_node.validate(root)
+    if (root / 'NODE-CORE-2026-11-10.json').is_file():
+        import importlib.util
+        spec = importlib.util.spec_from_file_location('node_core_partition_predecessor', root / 'scripts/node_core_release.py')
+        node_core = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(node_core)
+        node_core.validate(root)
+    node_core_changed = node_core.changed_files(root) if node_core is not None else set()
     for name in protected:
         path = root / name
         assert path.is_file() and not path.is_symlink(), f"Protected predecessor file missing: {name}"
         raw = path.read_bytes()
         if diagnostics is not None and name in diagnostics.CHANGED:
             raw = diagnostics.previous_file_bytes(raw, name, root)
+        if xec_node is not None and name in xec_node.CHANGED:
+            raw = xec_node.baseline_bytes(root, name)
+        if name in node_core_changed:
+            raw = node_core.current_bytes(root, name)
         assert raw == baseline_bytes(name, root), f"Protected predecessor file changed: {name}"
         mode = git(root, "ls-tree", BASELINE, "--", name).decode().split()[0]
         assert stat.S_IMODE(path.stat().st_mode) == int(mode, 8) & 0o777, f"Protected predecessor mode changed: {name}"
     old_packages = {name for name in names if name.startswith("willitmod-")}
     actual = {str(path.relative_to(root)) for directory in root.glob("willitmod-*") if directory.is_dir() for path in directory.rglob("*") if not path.is_dir() or path.is_symlink()}
+    # 5tratDoom (willitmod-dev-axedoom) is a separately admitted new package;
+    # its published ports are pinned by test_app_version_normalization.
+    actual = {name for name in actual if not name.startswith("willitmod-dev-axedoom/")}
     assert actual == old_packages, "Store package file set changed outside approved successor"
 
 
